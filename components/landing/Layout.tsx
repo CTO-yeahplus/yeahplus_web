@@ -20,7 +20,7 @@ export function Header() {
     <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-white/5">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
-           <span className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-700 rounded-lg flex items-center justify-center text-white font-bold">Y</span>
+           <span className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-700 rounded-lg flex items-center justify-center text-white font-bold">Y+</span>
            <span className="font-bold text-lg tracking-tight text-white group-hover:text-gray-300 transition-colors">YeahPlus</span>
         </Link>
         
@@ -57,7 +57,7 @@ export function Footer() {
         <div>
           <h2 className="text-2xl font-bold text-white mb-6">YeahPlus.</h2>
           <div className="space-y-2 text-xs text-zinc-500 font-mono">
-            <p>CEO: Jaehyeok Ko | Reg: 283-88-02519</p>
+            <p>CEO: Jaehyuk Ko | Reg: 283-88-02519</p>
             <p>Gyeonggi-do, Paju-si, Gyoha-ro 159-33, 3F 304-A318</p>
             <p>E-commerce: 2022-GyeonggiPaju-2995</p>
           </div>
@@ -66,15 +66,13 @@ export function Footer() {
            <div className="flex gap-8 text-sm text-zinc-400">
              <Link href="mailto:contact@yeahplus.co.kr" className="hover:text-white transition-colors">Contact</Link>
              <span className="text-zinc-700">|</span>
-             <Link href="#" className="hover:text-white transition-colors">Terms</Link>
-             <span className="text-zinc-700">|</span>
-             <Link href="#" className="hover:text-white transition-colors">Privacy</Link>
+             
            </div>
            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-pointer group">
               <Globe className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white" />
               <span className="text-xs font-bold text-zinc-400 group-hover:text-white">Korea (Republic of)</span>
            </div>
-           <p className="text-xs text-zinc-600">© 2026 YeahPlus Co., Ltd. Designed in Korea.</p>
+           <p className="text-xs text-zinc-300">© 2022-2026 YeahPlus Co., Ltd. Designed in Korea.</p>
         </div>
       </div>
     </footer>

@@ -144,8 +144,8 @@ export function Roadmap() {
                       step.status === 'upcoming' ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30' : 
                       'bg-zinc-800 text-zinc-500'
                     }`}>{step.year}</span>
-                    <h3 className={`text-2xl font-bold mb-3 ${step.status === 'active' ? 'text-white' : step.status === 'vision' ? 'text-purple-200' : 'text-zinc-500'}`}>{step.title}</h3>
-                    <p className={`text-sm leading-relaxed font-medium max-w-sm ml-0 md:ml-auto md:mr-0 inline-block ${step.status === 'active' ? 'text-zinc-300' : 'text-zinc-600'}`}>{step.desc}</p>
+                    <h3 className={`text-2xl font-bold mb-3 ${step.status === 'active' ? 'text-white' : step.status === 'vision' ? 'text-purple-200' : 'text-zinc-400'}`}>{step.title}</h3>
+                    <p className={`text-sm leading-relaxed font-medium max-w-sm ml-0 md:ml-auto md:mr-0 inline-block ${step.status === 'active' ? 'text-zinc-300' : 'text-zinc-500'}`}>{step.desc}</p>
                   </div>
                 </div>
                 <div className="absolute left-[-5px] md:left-1/2 md:-translate-x-1/2 top-0 w-3 h-3 rounded-full z-10 border-4 border-[#050505] box-content" style={{ backgroundColor: step.status === 'active' ? '#fff' : step.status === 'vision' ? '#a855f7' : '#3f3f46', boxShadow: step.status === 'active' ? '0 0 15px rgba(255,255,255,0.5)' : 'none' }} />
