@@ -1,88 +1,105 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { RefreshCw, Zap, Activity, Briefcase, ArrowRight, Linkedin, Megaphone } from "lucide-react";
+import { RefreshCw, Zap, Activity, Briefcase, ArrowUpRight, ArrowRight, Linkedin, Megaphone } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 // JobType을 Sections에서 가져옵니다. 경로가 맞는지 확인해주세요.
 import { JobType } from "./Sections"; 
+import { useLanguage } from "@/lib/i18n"; // 상단에 임포트
 
-// 1. The Architects (CTO Only)
 export function TheArchitects() {
+  const { t } = useLanguage();
+
   return (
-    <section className="py-32 px-6 bg-[#050505] border-t border-white/5">
-      <div className="max-w-4xl mx-auto text-center">
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-white mb-2">The Architect.</h2>
-          <p className="text-zinc-500">Engineering the bridge between Human and AI.</p>
+    <section id="architect" className="py-32 px-6 bg-[#050505] border-t border-white/5">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-24">
+          <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <span className="text-xs font-bold tracking-widest uppercase text-indigo-400 mb-4 block">The Architect</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight whitespace-pre-line">{t.architect.headline}</h2>
+          </motion.div>
         </div>
 
-        <motion.div 
-          whileHover={{ y: -5 }}
-          className="group relative bg-[#1c1c1e] rounded-[2.5rem] p-10 md:p-12 border border-white/5 shadow-2xl inline-block text-left max-w-2xl w-full"
-        >
-          <div className="absolute inset-0 bg-gradient-to-b from-indigo-500/5 to-transparent rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        <div className="bg-[#0a0a0a] rounded-[3rem] p-8 md:p-16 border border-white/5 flex flex-col lg:flex-row gap-16 items-center lg:items-start relative overflow-hidden group">
           
-          <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-8">
-            <div className="flex-shrink-0">
-               <div className="w-32 h-32 md:w-40 md:h-40 bg-zinc-800 rounded-full flex items-center justify-center overflow-hidden border-4 border-[#2c2c2e] group-hover:border-indigo-500/30 transition-colors duration-500">
-                  <img src="/img/eko_profile.jpeg" alt="CTO Eugene Ko" className="w-full h-full object-cover" />
-               </div>
-            </div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-            <div className="flex-1 text-center md:text-left">
-              <h3 className="text-3xl font-bold text-white mb-1">Eugene Ko</h3>
-              <div className="text-xs font-bold uppercase tracking-widest text-indigo-400 mb-4">Founder & CTO</div>
-              
-              <p className="text-zinc-400 leading-relaxed mb-8">
-                "기술은 복잡하지만 경험은 단순해야 합니다."<br/><br/>
-                NeuroVoca의 FSRS 알고리즘과 Sub-tube의 자동화 엔진을 설계했습니다. 
-                뇌과학과 생성형 AI의 결합을 통해, 인간의 학습과 생산성을 극대화하는 인터페이스를 구축하고 있습니다.
-              </p>
-
-              <div className="flex justify-center md:justify-start">
-                <Link 
-                  href="https://www.linkedin.com/in/eugene-ko-32910a154" 
-                  target="_blank"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2c2c2e] hover:bg-[#0077b5] text-white text-sm font-medium transition-colors duration-300 group/btn"
-                >
-                  <Linkedin className="w-4 h-4" />
-                  <span>Connect on LinkedIn</span>
-                  <ArrowRight className="w-3 h-3 opacity-50 group-hover/btn:translate-x-1 transition-transform" />
-                </Link>
+          <div className="flex flex-col gap-6 shrink-0 z-10 w-full lg:w-72">
+            
+            <div className="w-48 h-48 mx-auto rounded-full bg-[#111] p-2 shrink-0 border border-white/10 transition-transform duration-500 hover:scale-105">
+              <div className="w-full h-full rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
+                <img src="/img/eko_profile.jpeg" alt="Founder Eugene Ko" className="w-full h-full object-cover" />
               </div>
             </div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
 
-// 2. Engine Playground
-export function EnginePlayground() {
-  const [memory, setMemory] = useState(100);
-  const [day, setDay] = useState(0);
-  const handleReview = () => { setMemory(100); setDay(0); };
-  const simulateDecay = () => { if (memory > 10) setMemory(prev => prev - (prev * 0.1)); setDay(prev => prev + 1); };
-
-  return (
-    <section className="py-32 px-6 bg-black relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-900/20 rounded-full blur-[120px] pointer-events-none" />
-      <div className="max-w-4xl mx-auto relative z-10 text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold text-indigo-400 mb-6 animate-pulse"><Activity className="w-3 h-3" /> Live Demo</div>
-        <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Experience the Engine.</h2>
-        <p className="text-zinc-400 mb-12 max-w-2xl mx-auto">FSRS 알고리즘이 당신의 기억을 어떻게 유지하는지 시뮬레이션해보세요.<br/>시간이 지날수록 흐릿해지는 기억을 단 한 번의 복습으로 완벽하게 복구합니다.</p>
-        <div className="bg-[#1c1c1e] rounded-3xl p-8 border border-white/10 shadow-2xl max-w-lg mx-auto">
-          <div className="flex justify-between items-end mb-8 h-32 relative">
-             <div className="w-full bg-zinc-800 h-2 rounded-full absolute bottom-0 overflow-hidden">
-                <motion.div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500" animate={{ width: `${memory}%` }} transition={{ type: "spring", stiffness: 100 }} />
-             </div>
-             <div className="absolute bottom-4 left-0 w-full flex justify-between text-xs text-zinc-500 font-mono"><span>Retention: {Math.round(memory)}%</span><span>Day {day}</span></div>
+            <div className="w-full aspect-[4/3] bg-[#111] rounded-2xl border border-white/10 overflow-hidden relative group/img cursor-default">
+              <img src="/img/lucasfilm_group.jpg" alt="With George Lucas at Lucasfilm" className="w-full h-full object-cover grayscale opacity-70 group-hover/img:grayscale-0 group-hover/img:opacity-100 transition-all duration-500 group-hover/img:scale-105" />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-4">
+                <p className="text-[10px] font-mono text-zinc-400 tracking-tight flex items-center justify-between">
+                  <span>With George Lucas</span>
+                  <span className="text-zinc-600">Lucasfilm Ltd.</span>
+                </p>
+              </div>
+            </div>
+            
           </div>
-          <div className="flex gap-4 justify-center">
-             <button onClick={simulateDecay} className="px-6 py-3 rounded-xl bg-zinc-800 text-white font-bold hover:bg-zinc-700 transition-colors flex items-center gap-2 text-sm"><RefreshCw className="w-4 h-4" /> Wait (Decay)</button>
-             <button onClick={handleReview} className="px-6 py-3 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-500 transition-colors flex items-center gap-2 text-sm shadow-lg shadow-indigo-900/50"><Zap className="w-4 h-4" /> Review Now</button>
+
+          <div className="flex-1 z-10 w-full text-left">
+            <div className="mb-12">
+              <h3 className="text-4xl font-bold text-white mb-2">Eugene Ko</h3>
+              <p className="text-xl text-zinc-500 font-medium max-w-xl leading-relaxed">
+                {t.architect.quote}
+              </p>
+              
+              <div className="flex flex-wrap gap-3 mt-6">
+                {/* 💡 LinkedIn Hover Effect */}
+                <a href="https://www.linkedin.com/in/eugene-ko-32910a154/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white text-xs font-bold hover:bg-[#0077b5] hover:border-[#0077b5] transition-all duration-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                  LinkedIn
+                </a>
+                {/* 💡 IMDb Hover Effect */}
+                <a href="https://www.imdb.com/name/nm6031012/?ref_=fn_t_1" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white text-xs font-bold hover:bg-[#f5c518] hover:text-black hover:border-[#f5c518] transition-all duration-300">
+                  IMDb <ArrowUpRight className="w-3 h-3" />
+                </a>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              {/* 💡 Current (인생네컷 - 핑크/퍼플) */}
+              <div className="flex flex-col md:flex-row gap-4 md:gap-8 bg-[#111] p-6 rounded-2xl border border-white/5 hover:border-pink-500/30 transition-colors">
+                <div className="shrink-0 w-24 pt-1">
+                  <span className="text-[10px] font-bold tracking-widest uppercase text-pink-400 bg-pink-500/10 px-3 py-1 rounded-full border border-pink-500/20">Current</span>
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-white mb-2">{t.architect.currentTitle}</h4>
+                  <p className="text-sm text-zinc-400 leading-relaxed">{t.architect.currentDesc}</p>
+                </div>
+              </div>
+              
+              {/* 💡 Career (학계/VFX - 블루) */}
+              <div className="flex flex-col md:flex-row gap-4 md:gap-8 bg-transparent p-6 rounded-2xl border border-transparent hover:bg-[#111] hover:border-blue-500/30 transition-all">
+                <div className="shrink-0 w-24 pt-1">
+                  <span className="text-[10px] font-bold tracking-widest uppercase text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full border border-blue-500/20">Career</span>
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-zinc-200 mb-2">{t.architect.careerTitle}</h4>
+                  <p className="text-sm text-zinc-500 leading-relaxed">{t.architect.careerDesc}</p>
+                </div>
+              </div>
+
+              {/* 💡 Origin (루카스필름 - 골드) */}
+              <div className="flex flex-col md:flex-row gap-4 md:gap-8 bg-transparent p-6 rounded-2xl border border-transparent hover:bg-[#111] hover:border-yellow-500/30 transition-all">
+                <div className="shrink-0 w-24 pt-1">
+                  <span className="text-[10px] font-bold tracking-widest uppercase text-yellow-500 bg-yellow-500/10 px-3 py-1 rounded-full border border-yellow-500/20">Origin</span>
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-zinc-400 mb-2">{t.architect.originTitle}</h4>
+                  <p className="text-sm text-zinc-600 leading-relaxed">{t.architect.originDesc}</p>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -90,38 +107,46 @@ export function EnginePlayground() {
   );
 }
 
-// 3. Partners
-export function Partners() {
-  const partners = ["TechCrunch", "Product Hunt", "OpenAI", "Microsoft for Startups"];
-  return (
-    <section className="py-16 border-t border-b border-white/5 bg-[#0a0a0a]">
-      <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8">
-        <span className="text-xs font-bold text-zinc-600 uppercase tracking-widest">Trusted by & Featured in</span>
-        <div className="flex flex-wrap gap-8 md:gap-12 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
-          {partners.map((p, i) => <span key={i} className="text-lg font-bold text-white cursor-default hover:text-indigo-400 transition-colors">{p}</span>)}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// 4. Roadmap (2026 Active)
+// 4. Roadmap (2026 Ecosystem Expanded)
 export function Roadmap() {
+  const { t } = useLanguage();
   const steps = [
-    { year: "Future", title: "Singularity", desc: "개인화된 AI 튜터와의 완전한 대화형 학습 환경 구축. 기술이 사라지고 오직 대화만이 남는 순간.", status: "vision" },
-    { year: "2026", title: "Ecosystem", desc: "NeuroVoca B2B 엔터프라이즈 솔루션 및 API 개발. 전 세계의 교육 기관을 우리의 신경망으로 연결합니다.", status: "active" },
-    { year: "2025", title: "NeuroVoca", desc: "기억의 유효기간을 재정의하다. 뇌과학 기반 암기 엔진의 정식 런칭.", status: "completed" },
-    { year: "2024", title: "Sub-Tube", desc: "언어의 장벽을 허무는 시작. 글로벌 영상 번역 자동화 플랫폼 런칭.", status: "completed" },
-    { year: "2023", title: "Foundation", desc: "핵심 소프트웨어 납품 및 기술 검증 완료. 안정적인 엔진의 기반을 닦았습니다.", status: "completed" },
-    { year: "2022", title: "Genesis", desc: "YeahPlus 창업. 인간의 잠재력을 확장하겠다는 비전의 시작.", status: "completed" },
+    { 
+      ...t.roadmap.steps[0], 
+      status: "vision" 
+    },
+    { 
+      year: t.roadmap.steps[1].year, 
+      title: t.roadmap.steps[1].title, 
+      desc: (
+        <div className="space-y-4">
+          <p>{t.roadmap.steps[1].descMain}</p>
+          <div className="pt-3 border-t border-white/10 space-y-3">
+             <div className="flex flex-col gap-1">
+                <span className="text-xs font-bold text-indigo-400">{t.roadmap.steps[1].proj1Title}</span>
+                <span className="text-zinc-400">{t.roadmap.steps[1].proj1Desc}</span>
+             </div>
+             <div className="flex flex-col gap-1">
+                <span className="text-xs font-bold text-purple-400">{t.roadmap.steps[1].proj2Title}</span>
+                <span className="text-zinc-400">{t.roadmap.steps[1].proj2Desc}</span>
+             </div>
+          </div>
+        </div>
+      ),
+      status: "active"
+    },
+    { ...t.roadmap.steps[2], status: "completed" },
+    { ...t.roadmap.steps[3], status: "completed" },
+    { ...t.roadmap.steps[4], status: "completed" },
+    { ...t.roadmap.steps[5], status: "completed" },
   ];
 
   return (
     <section id="roadmap" className="py-32 px-6 bg-[#050505] border-t border-white/5 overflow-hidden">
       <div className="max-w-4xl mx-auto">
         <div className="mb-20 text-center">
-          <h2 className="text-3xl font-bold text-white mb-2">The Horizon.</h2>
-          <p className="text-zinc-500">From Genesis to Singularity.</p>
+          <h2 className="text-3xl font-bold text-white mb-2">{t.roadmap.title}</h2>
+          <p className="text-zinc-500">{t.roadmap.subtitle}</p>
         </div>
 
         <div className="relative border-l-2 border-zinc-800 ml-4 md:ml-0 md:border-l-0">
@@ -145,7 +170,9 @@ export function Roadmap() {
                       'bg-zinc-800 text-zinc-500'
                     }`}>{step.year}</span>
                     <h3 className={`text-2xl font-bold mb-3 ${step.status === 'active' ? 'text-white' : step.status === 'vision' ? 'text-purple-200' : 'text-zinc-400'}`}>{step.title}</h3>
-                    <p className={`text-sm leading-relaxed font-medium max-w-sm ml-0 md:ml-auto md:mr-0 inline-block ${step.status === 'active' ? 'text-zinc-300' : 'text-zinc-500'}`}>{step.desc}</p>
+                    <div className={`text-sm leading-relaxed font-medium max-w-sm ml-0 md:ml-auto md:mr-0 inline-block text-left ${step.status === 'active' ? 'text-zinc-300' : 'text-zinc-500'}`}>
+                        {step.desc}
+                    </div>
                   </div>
                 </div>
                 <div className="absolute left-[-5px] md:left-1/2 md:-translate-x-1/2 top-0 w-3 h-3 rounded-full z-10 border-4 border-[#050505] box-content" style={{ backgroundColor: step.status === 'active' ? '#fff' : step.status === 'vision' ? '#a855f7' : '#3f3f46', boxShadow: step.status === 'active' ? '0 0 15px rgba(255,255,255,0.5)' : 'none' }} />

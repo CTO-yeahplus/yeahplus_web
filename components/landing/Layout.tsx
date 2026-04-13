@@ -13,7 +13,6 @@ export function Header() {
     { name: "Products", href: "#products" },
     { name: "Timeline", href: "#roadmap" },
     { name: "Team", href: "#team" },
-    { name: "Careers", href: "#careers" },
   ];
 
   return (
@@ -72,7 +71,7 @@ export function Footer() {
               <Globe className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white" />
               <span className="text-xs font-bold text-zinc-400 group-hover:text-white">Korea (Republic of)</span>
            </div>
-           <p className="text-xs text-zinc-300">© 2022-2026 YeahPlus Co., Ltd. Designed in Korea.</p>
+           <p className="text-xs text-zinc-300">© 2022-2026 YeahPlus Co., Ltd.</p>
         </div>
       </div>
     </footer>

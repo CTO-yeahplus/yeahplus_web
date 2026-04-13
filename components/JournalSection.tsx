@@ -2,7 +2,7 @@
 import { ArrowUpRight } from "lucide-react";
 
 const articles = [
-  { category: "Vision", title: "왜 우리는 단어장에 집착하는가?", date: "Oct 2, 2024" },
+  { category: "Vision", title: "왜 우리는 단어장에 집착하는가?", date: "Oct 2, 2025" },
   { category: "Technology", title: "FSRS v4.5: 기억의 유통기한을 계산하다", date: "Sep 15, 2024" },
   { category: "Productivity", title: "유튜브 자막 번역이 크리에이터 경제에 미치는 영향", date: "Aug 28, 2024" },
 ];
