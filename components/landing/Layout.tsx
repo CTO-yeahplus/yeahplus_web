@@ -19,8 +19,14 @@ export function Header() {
     <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-white/5">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
-           <span className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-700 rounded-lg flex items-center justify-center text-white font-bold">Y+</span>
-           <span className="font-bold text-lg tracking-tight text-white group-hover:text-gray-300 transition-colors">YeahPlus</span>
+        <span className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center shrink-0 bg-black/20 border border-white/10">
+          <img 
+            src="/icon.png" 
+            alt="YeahPlus Logo" 
+            className="w-full h-full object-cover" 
+          />
+        </span>
+        <span className="font-bold text-lg tracking-tight text-white group-hover:text-gray-300 transition-colors">YeahPlus</span>
         </Link>
         
         {/* Desktop Nav */}
