@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>24STILLS — 아날로그 필름 카메라</title>
+<meta name="description" content="하루 24컷, 3일의 기다림. 디지털 시대에 담는 아날로그 필름의 감성. / 24 frames a day, a 3-day wait — analog film in a digital age." />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="24STILLS — 아날로그 필름 카메라" />
+<meta property="og:description" content="하루 24컷, 3일의 기다림. 디지털 시대에 담는 아날로그 필름의 감성." />
+<meta property="og:site_name" content="24STILLS" />
+<meta property="og:url" content="https://www.yeahplus.co.kr/24stills/" />
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0A0A0A; --fg: #F5F5F0; --muted: #777; --dim: #444;
+    --red: #A5392B; --gold: #D4AF46; --line: #1C1C1C; --card: #121212;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Language toggle ── */
+  .langToggle {
+    position: fixed; top: 16px; right: 16px; z-index: 50;
+    display: flex; gap: 2px; background: #161616; border: 1px solid var(--line);
+    border-radius: 20px; padding: 3px;
+  }
+  .langToggle button {
+    background: transparent; border: none; cursor: pointer;
+    color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: 1px;
+    padding: 5px 12px; border-radius: 16px; font-family: inherit;
+  }
+  .langToggle button.on { background: var(--fg); color: #0A0A0A; }
+
+  /* ── Hero ── */
+  .hero { text-align: center; padding: 88px 24px 56px; }
+  .logo24 { font-size: 76px; font-weight: 900; letter-spacing: -3px; line-height: 1; color: var(--fg); }
+  .logoSub { font-size: 17px; font-weight: 900; letter-spacing: 9px; color: var(--red); margin-top: -4px; }
+  .tagline { font-size: 19px; font-weight: 700; margin-top: 28px; }
+  .subtag { font-size: 14px; color: var(--muted); margin-top: 10px; }
+  .heroChips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 22px; }
+  .chip { font-size: 12px; color: var(--gold); border: 1px solid #D4AF4640; border-radius: 20px; padding: 5px 12px; }
+
+  /* ── CTA ── */
+  .cta-row { display: flex; justify-content: center; margin-top: 34px; }
+  .btn-store {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--fg); color: #0A0A0A;
+    font-size: 15px; font-weight: 800; letter-spacing: 0.3px;
+    padding: 14px 28px; border-radius: 12px;
+  }
+  .btn-store small { font-weight: 600; color: #555; }
+
+  /* ── Sections ── */
+  section { padding: 44px 0; border-top: 1px solid var(--line); }
+  .label { font-size: 11px; font-weight: 800; letter-spacing: 3px; color: var(--red); text-transform: uppercase; margin-bottom: 22px; }
+  h2 { font-size: 22px; font-weight: 900; letter-spacing: -0.3px; margin-bottom: 8px; }
+  .lead { color: var(--muted); font-size: 14px; margin-bottom: 26px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+  .feat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+  .feat .ico { font-size: 22px; }
+  .feat h3 { font-size: 15px; font-weight: 800; margin: 12px 0 6px; }
+  .feat p { font-size: 13px; color: var(--muted); }
+
+  /* ── Steps ── */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
+  .step { text-align: center; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 24px 16px; }
+  .step .num { font-size: 13px; font-weight: 900; color: var(--gold); letter-spacing: 2px; }
+  .step h3 { font-size: 15px; font-weight: 800; margin: 10px 0 6px; }
+  .step p { font-size: 12.5px; color: var(--muted); }
+
+  /* ── Final CTA ── */
+  .finalCta { text-align: center; padding: 56px 24px; border-top: 1px solid var(--line); }
+  .finalCta h2 { margin-bottom: 18px; }
+
+  /* ── Footer ── */
+  footer { border-top: 1px solid var(--line); padding: 30px 24px 60px; text-align: center; }
+  .flinks { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+  .flinks a:hover { color: var(--fg); }
+  .fbrand { font-size: 11px; letter-spacing: 2px; color: var(--dim); }
+  .fcopy { font-size: 11px; color: var(--dim); margin-top: 6px; }
+</style>
+</head>
+<body>
+
+  <!-- Language toggle -->
+  <div class="langToggle" role="group" aria-label="Language">
+    <button id="langKo" type="button" onclick="setLang('ko')">KO</button>
+    <button id="langEn" type="button" onclick="setLang('en')">EN</button>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="logo24">24</div>
+    <div class="logoSub">STILLS</div>
+    <p class="tagline t" data-ko="하루 24컷, 3일의 기다림." data-en="24 frames a day. A 3-day wait."></p>
+    <p class="subtag t" data-ko="디지털 시대에 담는 아날로그 필름의 감성" data-en="Analog film, in a digital age."></p>
+    <div class="heroChips">
+      <span class="chip t" data-ko="프리미엄 필름 18종" data-en="18 premium films"></span>
+      <span class="chip t" data-ko="3일 현상" data-en="3-day develop"></span>
+      <span class="chip t" data-ko="공동 롤 · 랜덤 롤" data-en="Shared &amp; random rolls"></span>
+    </div>
+    <div class="cta-row">
+      <a class="btn-store t" href="https://apps.apple.com/app/24stills/id6769758084"
+         data-ko="App Store에서 다운로드 <small>· 무료</small>"
+         data-en="Download on the App Store <small>· Free</small>"></a>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- FEATURES -->
+    <section>
+      <div class="label">Features</div>
+      <h2 class="t" data-ko="필름으로 찍는 즐거움, 그대로." data-en="The joy of shooting film."></h2>
+      <p class="lead t" data-ko="셔터를 누르는 순간의 설렘과 기다림. 24STILLS는 필름 카메라의 경험을 디지털에 옮겨 담았어요."
+         data-en="The thrill of the shutter, and the wait. 24STILLS brings the film camera experience to digital."></p>
+      <div class="grid">
+        <div class="feat"><div class="ico">🎞️</div>
+          <h3 class="t" data-ko="프리미엄 필름 18종" data-en="18 premium films"></h3>
+          <p class="t" data-ko="크로모제닉 클래식부터 시네마틱·빈티지·풍경까지. 장면에 맞는 필름을 골라 촬영하세요."
+             data-en="From chromogenic classics to cinematic, vintage and landscape tones — pick the film for the moment."></p></div>
+        <div class="feat"><div class="ico">⏳</div>
+          <h3 class="t" data-ko="3일의 현상" data-en="A 3-day develop"></h3>
+          <p class="t" data-ko="찍은 사진은 바로 보이지 않아요. 3일을 기다려 현상되는 순간, 필름의 감성이 완성됩니다."
+             data-en="Photos don't appear right away. They develop over 3 days — that's when the film feeling lands."></p></div>
+        <div class="feat"><div class="ico">👥</div>
+          <h3 class="t" data-ko="공동 롤 · 랜덤 롤" data-en="Shared &amp; random rolls"></h3>
+          <p class="t" data-ko="친구와 한 롤을 함께 채우거나, 낯선 이와 랜덤으로 매칭되어 24컷을 완성해요."
+             data-en="Fill a roll together with a friend, or get randomly matched to complete 24 frames."></p></div>
+        <div class="feat"><div class="ico">✨</div>
+          <h3 class="t" data-ko="Film Grain & LUT" data-en="Film Grain & LUT"></h3>
+          <p class="t" data-ko="은염 입자감과 컬러 그레이딩까지. 디테일한 질감으로 나만의 톤을 만드세요."
+             data-en="Silver-halide grain and color grading — craft your own tone with fine texture."></p></div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section>
+      <div class="label">How it works</div>
+      <h2 class="t" data-ko="찍고 — 기다리고 — 꺼내보고." data-en="Shoot — wait — reveal."></h2>
+      <p class="lead t" data-ko="필름 카메라의 리듬 그대로." data-en="The rhythm of a film camera."></p>
+      <div class="steps">
+        <div class="step"><div class="num">01</div>
+          <h3 class="t" data-ko="촬영" data-en="Shoot"></h3>
+          <p class="t" data-ko="하루 24컷, 필름을 고르고 셔터를 누르세요." data-en="24 frames a day — pick a film and press the shutter."></p></div>
+        <div class="step"><div class="num">02</div>
+          <h3 class="t" data-ko="현상" data-en="Develop"></h3>
+          <p class="t" data-ko="3일을 기다리면 사진이 현상돼 나타나요." data-en="Wait 3 days and your photos develop and appear."></p></div>
+        <div class="step"><div class="num">03</div>
+          <h3 class="t" data-ko="소장 · 공유" data-en="Keep & Share"></h3>
+          <p class="t" data-ko="필름 롤로 간직하고, 마음에 드는 컷을 공유하세요." data-en="Keep them as a film roll and share your favorite frames."></p></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- FINAL CTA -->
+  <div class="finalCta">
+    <h2 class="t" data-ko="지금, 첫 롤을 시작하세요." data-en="Start your first roll today."></h2>
+    <a class="btn-store t" href="https://apps.apple.com/app/24stills/id6769758084"
+       data-ko="App Store에서 다운로드 <small>· 무료</small>"
+       data-en="Download on the App Store <small>· Free</small>"></a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="flinks">
+      <a class="t" href="https://www.yeahplus.co.kr/24stills/privacy.html" data-ko="개인정보처리방침" data-en="Privacy Policy"></a>
+      <a class="t" href="https://www.yeahplus.co.kr/24stills/terms.html" data-ko="이용약관" data-en="Terms of Service"></a>
+      <a class="t" href="https://www.yeahplus.co.kr/24stills/support.html" data-ko="지원 / 문의" data-en="Support"></a>
+    </div>
+    <div class="fbrand">24STILLS · YEAHPLUS Inc.</div>
+    <div class="fcopy">contact@yeahplus.co.kr · © 2026 YEAHPLUS Inc. All rights reserved.</div>
+  </footer>
+
+  <script>
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('.t').forEach(function (el) {
+        var v = el.getAttribute('data-' + lang);
+        if (v !== null) el.innerHTML = v;
+      });
+      document.title = lang === 'ko' ? '24STILLS — 아날로그 필름 카메라' : '24STILLS — Analog Film Camera';
+      var ko = document.getElementById('langKo'), en = document.getElementById('langEn');
+      ko.classList.toggle('on', lang === 'ko');
+      en.classList.toggle('on', lang === 'en');
+      try { localStorage.setItem('24stills_lang', lang); } catch (e) {}
+    }
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('24stills_lang'); } catch (e) {}
+      var nav = (navigator.language || 'en').toLowerCase();
+      setLang(saved || (nav.indexOf('ko') === 0 ? 'ko' : 'en'));
+    })();
+  </script>
+
+</body>
+</html>
