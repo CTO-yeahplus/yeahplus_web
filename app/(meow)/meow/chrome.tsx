@@ -17,6 +17,7 @@ function Header() {
         <nav className="nav-links">
           <Link href="/meow/feed">{t.nav.feed}</Link>
           <Link href="/meow/faq">{t.nav.faq}</Link>
+          <Link href="/meow/support">{t.nav.support}</Link>
           <Link href="/meow/terms">{t.nav.terms}</Link>
           <Link href="/meow/privacy">{t.nav.privacy}</Link>
         </nav>
@@ -26,7 +27,7 @@ function Header() {
 }
 
 function Footer({ year }: { year: number }) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   return (
     <footer className="site-footer">
       <div className="container footer-inner">
@@ -34,20 +35,35 @@ function Footer({ year }: { year: number }) {
           <Link href="/meow">{t.nav.home}</Link>
           <Link href="/meow/feed">{t.nav.feed}</Link>
           <Link href="/meow/faq">{t.nav.faq}</Link>
+          <Link href="/meow/support">{t.nav.support}</Link>
           <Link href="/meow/terms">{t.nav.terms}</Link>
           <Link href="/meow/privacy">{t.nav.privacy}</Link>
           <a href="mailto:contact@yeahplus.co.kr">{t.nav.contact}</a>
         </div>
 
-        {/* 법인 등록 정보는 법적 표기이므로 한국어 원문 유지 */}
+        {/* 법인 등록 정보 — 한국어 선택 시 한글, 그 외 언어는 영어 표기 */}
         <div className="footer-company">
-          주식회사 예아플러스 · 대표자 고재혁 · 사업자등록번호 283-88-02519
-          <br />
-          통신판매업신고번호 2022-경기파주-2995
-          <br />
-          경기도 파주시 교하로159번길 33, 3층 304호 에이318(목동동, 목동프라자)
-          <br />
-          문의: <a href="mailto:contact@yeahplus.co.kr">contact@yeahplus.co.kr</a>
+          {lang === 'ko' ? (
+            <>
+              주식회사 예아플러스 · 대표자 고재혁 · 사업자등록번호 283-88-02519
+              <br />
+              통신판매업신고번호 2022-경기파주-2995
+              <br />
+              경기도 파주시 교하로159번길 33, 3층 304호 에이318(목동동, 목동프라자)
+              <br />
+              문의: <a href="mailto:contact@yeahplus.co.kr">contact@yeahplus.co.kr</a>
+            </>
+          ) : (
+            <>
+              yeahplus Co., Ltd. · CEO Jaehyuk Ko · Business Reg. No. 283-88-02519
+              <br />
+              Mail-Order Sales Reg. No. 2022-Gyeonggi Paju-2995
+              <br />
+              3F 304-A318, 33 Gyoha-ro 159beon-gil, Paju-si, Gyeonggi-do, Republic of Korea
+              <br />
+              Contact: <a href="mailto:contact@yeahplus.co.kr">contact@yeahplus.co.kr</a>
+            </>
+          )}
         </div>
 
         <div className="footer-copy">{t.footer.copy(year)}</div>

@@ -87,3 +87,49 @@ export function Heart({ size = 24, className, style }: IconProps) {
     </svg>
   );
 }
+
+export function Mail({ size = 24, strokeWidth = 1.8, className, style }: IconProps) {
+  return (
+    <svg {...stroke(size, strokeWidth)} className={className} style={style}>
+      <rect x="3" y="5" width="18" height="14" rx="2.5" />
+      <path d="M4 7.5l7.3 5a1.2 1.2 0 001.4 0l7.3-5" />
+    </svg>
+  );
+}
+
+export function Clock({ size = 24, strokeWidth = 1.8, className, style }: IconProps) {
+  return (
+    <svg {...stroke(size, strokeWidth)} className={className} style={style}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7.5V12l3 1.8" />
+    </svg>
+  );
+}
+
+export function MessageCircle({ size = 24, strokeWidth = 1.8, className, style }: IconProps) {
+  return (
+    <svg {...stroke(size, strokeWidth)} className={className} style={style}>
+      <path d="M21 11.5a7.5 7.5 0 01-10.9 6.7L4 20l1.8-6.1A7.5 7.5 0 1121 11.5z" />
+    </svg>
+  );
+}
+
+export function HelpCircle({ size = 24, strokeWidth = 1.8, className, style }: IconProps) {
+  return (
+    <svg {...stroke(size, strokeWidth)} className={className} style={style}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9.6 9.3a2.4 2.4 0 014.6.9c0 1.6-2.2 2-2.2 3.4" />
+      <circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function CreditCard({ size = 24, strokeWidth = 1.8, className, style }: IconProps) {
+  return (
+    <svg {...stroke(size, strokeWidth)} className={className} style={style}>
+      <rect x="3" y="5.5" width="18" height="13" rx="2.5" />
+      <path d="M3 9.5h18" />
+      <path d="M6.5 14.5h3" />
+    </svg>
+  );
+}

@@ -16,7 +16,7 @@ export const LANGS: { code: Lang; label: string; aria: string }[] = [
 type FaqItem = { q: string; a: React.ReactNode };
 
 type Dict = {
-  nav: { feed: string; faq: string; terms: string; privacy: string; home: string; contact: string };
+  nav: { feed: string; faq: string; terms: string; privacy: string; support: string; home: string; contact: string };
   footer: { copy: (year: number) => string };
   home: {
     badge: string;
@@ -35,6 +35,18 @@ type Dict = {
     items: FaqItem[];
     notFound: React.ReactNode;
   };
+  support: {
+    title: string;
+    intro: string;
+    channelsTitle: string;
+    channels: { icon: 'mail' | 'chat' | 'card'; label: string; value: string; desc: string; href?: string }[];
+    infoTitle: string;
+    hours: { label: string; value: string; note: string };
+    response: { label: string; value: string; note: string };
+    topicsTitle: string;
+    topics: { label: string; href: string }[];
+    note: React.ReactNode;
+  };
 };
 
 const MAIL = 'contact@yeahplus.co.kr';
@@ -44,7 +56,7 @@ const privacyLink = (label: string) => <a href="/meow/privacy">{label}</a>;
 export const dictionaries: Record<Lang, Dict> = {
   // ─────────────────────────────── 한국어 ───────────────────────────────
   ko: {
-    nav: { feed: '피드', faq: 'FAQ', terms: '이용약관', privacy: '개인정보처리방침', home: '홈', contact: '문의' },
+    nav: { feed: '피드', faq: 'FAQ', terms: '이용약관', privacy: '개인정보처리방침', support: '고객지원', home: '홈', contact: '문의' },
     footer: { copy: (y) => `© ${y} 주식회사 예아플러스 (yeahplus Co., Ltd.) All rights reserved.` },
     home: {
       badge: '우리 냥이가 주인공',
@@ -82,11 +94,32 @@ export const dictionaries: Record<Lang, Dict> = {
       ],
       notFound: <>원하는 답을 찾지 못하셨나요? {mailLink} 으로 문의해 주세요.</>,
     },
+    support: {
+      title: '고객지원',
+      intro: '무엇을 도와드릴까요? 아래 채널로 문의해 주세요. 문의 전 FAQ를 먼저 확인하시면 더 빠르게 해결됩니다.',
+      channelsTitle: '문의 채널',
+      channels: [
+        { icon: 'mail', label: '이메일 문의', value: 'contact@yeahplus.co.kr', desc: '가장 정확한 방법입니다. 가입한 이메일과 함께 문의 내용을 보내주세요.', href: 'mailto:contact@yeahplus.co.kr' },
+        { icon: 'chat', label: '앱 내 문의', value: '설정 › 문의하기', desc: '앱에서 바로 문의하면 기기·버전 정보가 함께 전달되어 더 빠릅니다.' },
+        { icon: 'card', label: '결제·환불', value: 'App Store · Google Play', desc: '구독 관리·해지 및 환불은 각 스토어의 계정 설정에서 진행됩니다.' },
+      ],
+      infoTitle: '운영 및 응답',
+      hours: { label: '운영 시간', value: '평일 10:00–18:00 (KST)', note: '주말·공휴일 휴무' },
+      response: { label: '응답 시간', value: '영업일 기준 1–2일 이내', note: '문의량이 많을 경우 다소 지연될 수 있습니다.' },
+      topicsTitle: '자주 찾는 도움말',
+      topics: [
+        { label: '자주 묻는 질문(FAQ)', href: '/meow/faq' },
+        { label: '결제·구독·환불', href: '/meow/faq' },
+        { label: '계정 삭제', href: '/meow/faq' },
+        { label: '개인정보처리방침', href: '/meow/privacy' },
+      ],
+      note: <>더 궁금한 점이 있으면 언제든 {mailLink} 로 연락 주세요.</>,
+    },
   },
 
   // ─────────────────────────────── English ───────────────────────────────
   en: {
-    nav: { feed: 'Feed', faq: 'FAQ', terms: 'Terms', privacy: 'Privacy Policy', home: 'Home', contact: 'Contact' },
+    nav: { feed: 'Feed', faq: 'FAQ', terms: 'Terms', privacy: 'Privacy Policy', support: 'Support', home: 'Home', contact: 'Contact' },
     footer: { copy: (y) => `© ${y} yeahplus Co., Ltd. All rights reserved.` },
     home: {
       badge: 'Your cat, the star',
@@ -124,11 +157,32 @@ export const dictionaries: Record<Lang, Dict> = {
       ],
       notFound: <>Didn’t find the answer you were looking for? Contact us at {mailLink}.</>,
     },
+    support: {
+      title: 'Support',
+      intro: 'How can we help? Reach us through the channels below. Checking the FAQ first often gets you an answer faster.',
+      channelsTitle: 'Contact channels',
+      channels: [
+        { icon: 'mail', label: 'Email us', value: 'contact@yeahplus.co.kr', desc: 'The most reliable way. Please include the email you signed up with.', href: 'mailto:contact@yeahplus.co.kr' },
+        { icon: 'chat', label: 'In-app inquiry', value: 'Settings › Contact us', desc: 'Asking from within the app is faster — your device and version info are attached automatically.' },
+        { icon: 'card', label: 'Payments & refunds', value: 'App Store · Google Play', desc: 'Manage or cancel subscriptions and request refunds from your account settings in each store.' },
+      ],
+      infoTitle: 'Hours & response',
+      hours: { label: 'Support hours', value: 'Weekdays 10:00–18:00 (KST)', note: 'Closed on weekends and holidays' },
+      response: { label: 'Response time', value: 'Within 1–2 business days', note: 'Replies may take a little longer during busy periods.' },
+      topicsTitle: 'Popular help topics',
+      topics: [
+        { label: 'Frequently Asked Questions', href: '/meow/faq' },
+        { label: 'Payments, subscriptions & refunds', href: '/meow/faq' },
+        { label: 'Deleting your account', href: '/meow/faq' },
+        { label: 'Privacy Policy', href: '/meow/privacy' },
+      ],
+      note: <>Still have questions? Reach us anytime at {mailLink}.</>,
+    },
   },
 
   // ─────────────────────────────── 日本語 ───────────────────────────────
   ja: {
-    nav: { feed: 'フィード', faq: 'よくある質問', terms: '利用規約', privacy: 'プライバシーポリシー', home: 'ホーム', contact: 'お問い合わせ' },
+    nav: { feed: 'フィード', faq: 'よくある質問', terms: '利用規約', privacy: 'プライバシーポリシー', support: 'サポート', home: 'ホーム', contact: 'お問い合わせ' },
     footer: { copy: (y) => `© ${y} yeahplus Co., Ltd. All rights reserved.` },
     home: {
       badge: 'うちの猫が主役',
@@ -166,11 +220,32 @@ export const dictionaries: Record<Lang, Dict> = {
       ],
       notFound: <>お探しの答えが見つかりませんでしたか？ {mailLink} までお問い合わせください。</>,
     },
+    support: {
+      title: 'サポート',
+      intro: 'どうされましたか？下記の窓口までお問い合わせください。お問い合わせ前にFAQをご確認いただくと、より早く解決できます。',
+      channelsTitle: 'お問い合わせ窓口',
+      channels: [
+        { icon: 'mail', label: 'メールで問い合わせ', value: 'contact@yeahplus.co.kr', desc: '最も確実な方法です。ご登録のメールアドレスを添えてお送りください。', href: 'mailto:contact@yeahplus.co.kr' },
+        { icon: 'chat', label: 'アプリ内から問い合わせ', value: '設定 › お問い合わせ', desc: 'アプリから送ると端末・バージョン情報が一緒に届くため、より早く対応できます。' },
+        { icon: 'card', label: '決済・返金', value: 'App Store · Google Play', desc: 'サブスクの管理・解約や返金は、各ストアのアカウント設定から行います。' },
+      ],
+      infoTitle: '営業時間・応答',
+      hours: { label: '営業時間', value: '平日 10:00–18:00 (KST)', note: '土日・祝日は休業' },
+      response: { label: '応答時間', value: '営業日ベースで1〜2日以内', note: 'お問い合わせが多い場合は遅れることがあります。' },
+      topicsTitle: 'よくあるヘルプ',
+      topics: [
+        { label: 'よくある質問（FAQ）', href: '/meow/faq' },
+        { label: '決済・サブスク・返金', href: '/meow/faq' },
+        { label: 'アカウントの削除', href: '/meow/faq' },
+        { label: 'プライバシーポリシー', href: '/meow/privacy' },
+      ],
+      note: <>その他ご不明な点は、いつでも {mailLink} までご連絡ください。</>,
+    },
   },
 
   // ────────────────────────── 普通话 (简体中文) ──────────────────────────
   zh: {
-    nav: { feed: '动态', faq: '常见问题', terms: '使用条款', privacy: '隐私政策', home: '首页', contact: '联系我们' },
+    nav: { feed: '动态', faq: '常见问题', terms: '使用条款', privacy: '隐私政策', support: '客户支持', home: '首页', contact: '联系我们' },
     footer: { copy: (y) => `© ${y} yeahplus Co., Ltd. 保留所有权利。` },
     home: {
       badge: '我家猫咪当主角',
@@ -208,11 +283,32 @@ export const dictionaries: Record<Lang, Dict> = {
       ],
       notFound: <>没有找到想要的答案吗？请通过 {mailLink} 联系我们。</>,
     },
+    support: {
+      title: '客户支持',
+      intro: '需要什么帮助？请通过以下渠道联系我们。咨询前先查看 FAQ，通常能更快找到答案。',
+      channelsTitle: '联系渠道',
+      channels: [
+        { icon: 'mail', label: '邮件咨询', value: 'contact@yeahplus.co.kr', desc: '最可靠的方式。请附上您注册时使用的邮箱。', href: 'mailto:contact@yeahplus.co.kr' },
+        { icon: 'chat', label: '应用内咨询', value: '设置 › 联系我们', desc: '在应用内咨询会自动附带设备与版本信息，处理更快。' },
+        { icon: 'card', label: '付款与退款', value: 'App Store · Google Play', desc: '订阅的管理、取消及退款请在各商店的账号设置中办理。' },
+      ],
+      infoTitle: '服务时间与响应',
+      hours: { label: '服务时间', value: '工作日 10:00–18:00（KST）', note: '周末及节假日休息' },
+      response: { label: '响应时间', value: '工作日 1–2 天内', note: '咨询量较大时可能略有延迟。' },
+      topicsTitle: '常见帮助主题',
+      topics: [
+        { label: '常见问题（FAQ）', href: '/meow/faq' },
+        { label: '付款・订阅・退款', href: '/meow/faq' },
+        { label: '删除账号', href: '/meow/faq' },
+        { label: '隐私政策', href: '/meow/privacy' },
+      ],
+      note: <>还有其他疑问？欢迎随时通过 {mailLink} 联系我们。</>,
+    },
   },
 
   // ────────────────────────── 廣東話 (繁體中文) ──────────────────────────
   yue: {
-    nav: { feed: '動態', faq: '常見問題', terms: '使用條款', privacy: '私隱政策', home: '主頁', contact: '聯絡我們' },
+    nav: { feed: '動態', faq: '常見問題', terms: '使用條款', privacy: '私隱政策', support: '客戶支援', home: '主頁', contact: '聯絡我們' },
     footer: { copy: (y) => `© ${y} yeahplus Co., Ltd. 版權所有。` },
     home: {
       badge: '我隻貓做主角',
@@ -249,6 +345,27 @@ export const dictionaries: Record<Lang, Dict> = {
         { q: '點樣聯絡你哋？', a: <>請透過 {mailLink} 聯絡我哋。</> },
       ],
       notFound: <>搵唔到想要嘅答案？請透過 {mailLink} 聯絡我哋。</>,
+    },
+    support: {
+      title: '客戶支援',
+      intro: '需要咩幫助？請透過以下渠道聯絡我哋。查詢前先睇 FAQ，通常可以更快搵到答案。',
+      channelsTitle: '聯絡渠道',
+      channels: [
+        { icon: 'mail', label: '電郵查詢', value: 'contact@yeahplus.co.kr', desc: '最可靠嘅方法。請附上你註冊時用嘅電郵。', href: 'mailto:contact@yeahplus.co.kr' },
+        { icon: 'chat', label: '應用程式內查詢', value: '設定 › 聯絡我哋', desc: '喺應用程式入面查詢會自動附上裝置同版本資料，處理更快。' },
+        { icon: 'card', label: '付款同退款', value: 'App Store · Google Play', desc: '訂閱嘅管理、取消同退款請喺各商店嘅帳戶設定辦理。' },
+      ],
+      infoTitle: '服務時間同回覆',
+      hours: { label: '服務時間', value: '平日 10:00–18:00（KST）', note: '週末同公眾假期休息' },
+      response: { label: '回覆時間', value: '工作日 1–2 日內', note: '查詢多嘅時候可能會稍為延遲。' },
+      topicsTitle: '常見幫助主題',
+      topics: [
+        { label: '常見問題（FAQ）', href: '/meow/faq' },
+        { label: '付款・訂閱・退款', href: '/meow/faq' },
+        { label: '刪除帳戶', href: '/meow/faq' },
+        { label: '私隱政策', href: '/meow/privacy' },
+      ],
+      note: <>仲有其他疑問？歡迎隨時透過 {mailLink} 聯絡我哋。</>,
     },
   },
 };
