@@ -33,6 +33,23 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 시연 영상 (YouTube Shorts, 세로 9:16) */}
+      <section className="demo" aria-label={t.video.title}>
+        <div className="demo-head">
+          <h2 className="showcase-title">{t.video.title}</h2>
+          <p className="showcase-sub">{t.video.subtitle}</p>
+        </div>
+        <div className="demo-frame">
+          <iframe
+            src="https://www.youtube.com/embed/b8bRrrsecUY?rel=0&playsinline=1"
+            title={t.video.title}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        </div>
+      </section>
+
       <section className="features" aria-label={h.badge}>
         {h.features.map((f, i) => {
           const Icon = FEATURE_ICONS[i];

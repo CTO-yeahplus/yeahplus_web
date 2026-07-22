@@ -30,6 +30,7 @@ type Dict = {
     subLead: string;
   };
   gallery: { title: string; subtitle: string };
+  video: { title: string; subtitle: string };
   faq: {
     title: string;
     items: FaqItem[];
@@ -77,6 +78,10 @@ export const dictionaries: Record<Lang, Dict> = {
     gallery: {
       title: '한 장의 사진,\n무한한 변신.',
       subtitle: '스티커·프레임부터 AI 아트까지. 우리 냥이가 주인공이 되는 순간들.',
+    },
+    video: {
+      title: '시연 영상',
+      subtitle: '묘해가 실제로 어떻게 동작하는지 짧은 영상으로 확인하세요.',
     },
     faq: {
       title: '자주 묻는 질문',
@@ -141,6 +146,10 @@ export const dictionaries: Record<Lang, Dict> = {
       title: 'One photo.\nInfinite transformations.',
       subtitle: 'From stickers and frames to AI art — the moments your cat becomes the star.',
     },
+    video: {
+      title: 'See it in action',
+      subtitle: 'Watch a short clip of how MYOHAE works.',
+    },
     faq: {
       title: 'Frequently Asked Questions',
       items: [
@@ -203,6 +212,10 @@ export const dictionaries: Record<Lang, Dict> = {
     gallery: {
       title: '一枚の写真から、\n無限の変身。',
       subtitle: 'ステッカー・フレームからAIアートまで。うちの猫が主役になる瞬間。',
+    },
+    video: {
+      title: 'デモ動画',
+      subtitle: 'MYOHAEが実際にどう動くのか、ショート動画でご覧ください。',
     },
     faq: {
       title: 'よくある質問',
@@ -267,6 +280,10 @@ export const dictionaries: Record<Lang, Dict> = {
       title: '一张照片，\n无限变身。',
       subtitle: '从贴纸、相框到 AI 艺术——猫咪成为主角的每一刻。',
     },
+    video: {
+      title: '演示视频',
+      subtitle: '用短视频看看 MYOHAE 的实际效果。',
+    },
     faq: {
       title: '常见问题',
       items: [
@@ -329,6 +346,10 @@ export const dictionaries: Record<Lang, Dict> = {
     gallery: {
       title: '一張相，\n變化無限。',
       subtitle: '由貼紙、相框到 AI 藝術——貓貓做主角嘅每一刻。',
+    },
+    video: {
+      title: '示範影片',
+      subtitle: '用短片睇下 MYOHAE 實際點運作。',
     },
     faq: {
       title: '常見問題',
