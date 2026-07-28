@@ -1,10 +1,11 @@
 "use client";
 
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
-import { 
-  ArrowRight, Brain, Youtube, ChevronRight, Zap, Globe, Layers, 
-  ArrowUpRight, Check, Play, Calendar, Clock, 
-  Server, Activity, Shield // ✅ Server, Activity 아이콘 추가됨
+import {
+  ArrowRight, Brain, Youtube, ChevronRight, Zap, Globe, Layers,
+  ArrowUpRight, Check, Play, Calendar, Clock,
+  Server, Activity, Shield, // ✅ Server, Activity 아이콘 추가됨
+  Cat, Camera, Shirt // ✅ 라이브 4개 앱 아이콘
 } from "lucide-react";
 import Link from "next/link";
 import React, { useState, MouseEvent } from "react";
@@ -191,136 +192,96 @@ function PremiumSpotlightCard({
 
 export function Ecosystem() {
   const { t } = useLanguage(); // 💡 언어 데이터 불러오기
+
+  // 라이브 4개 앱 — 모두 yeahplus 자체 제작 (AI × Content)
+  const apps: {
+    name: string; Icon: typeof Brain; logo: string | null; logoBg: string; image: string | null;
+    href: string; domain: string; accent: string; hover: string; desc: string; badges: readonly string[];
+  }[] = [
+    { name: "묘해 (MYOHAE)", Icon: Cat, logo: "/meow/myohae_logo.png", logoBg: "#ffffff", image: "/img/meow.jpg",
+      href: "https://yeahplus.co.kr/meow", domain: "yeahplus.co.kr/meow",
+      accent: "#a78bfa", hover: "rgba(124,77,255,0.12)", desc: t.ecosystem.meow.desc, badges: t.ecosystem.meow.badges },
+    { name: "24STILLS", Icon: Camera, logo: "/24stills/24_logo.png", logoBg: "#0A0A0A", image: "/img/24stills.png",
+      href: "https://yeahplus.co.kr/24stills", domain: "yeahplus.co.kr/24stills",
+      accent: "#e0b84e", hover: "rgba(212,175,70,0.12)", desc: t.ecosystem.stills.desc, badges: t.ecosystem.stills.badges },
+    { name: "AURA", Icon: Shirt, logo: "/img/aura_logo_1k.png", logoBg: "#000000", image: "/img/aura.png",
+      href: "https://auraootd.com", domain: "auraootd.com",
+      accent: "#f0a6c0", hover: "rgba(233,166,182,0.14)", desc: t.ecosystem.aura.desc, badges: t.ecosystem.aura.badges },
+    { name: "뇌새김 (NeuroVoca)", Icon: Brain, logo: null, logoBg: "#ffffff", image: null,
+      href: "https://neurovoca.co.kr", domain: "neurovoca.co.kr",
+      accent: "#818cf8", hover: "rgba(79,70,229,0.14)", desc: t.ecosystem.neuro.desc, badges: t.ecosystem.neuro.badges },
+  ];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl mx-auto px-6 pb-12">
-      
-      {/* 1. NeuroVoca - Blue Tone */}
-      <a href="https://neurovoca.co.kr" target="_blank" rel="noopener noreferrer" className="block group">
-        <PremiumSpotlightCard hoverColor="rgba(59, 130, 246, 0.1)">
-          <div className="flex flex-col h-full">
-            
-            {/* 💡 Visual Area: 뇌과학 알고리즘의 신경망을 추상적으로 표현 */}
-            <div className="h-48 mb-8 rounded-2xl bg-gradient-to-br from-blue-900/20 to-transparent border border-blue-500/10 flex items-center justify-center relative overflow-hidden">
-               <motion.div animate={{ scale: [1, 1.1, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 4, repeat: Infinity }} className="absolute w-32 h-32 bg-blue-500/20 rounded-full blur-2xl" />
-               <Brain className="w-12 h-12 text-blue-400/80 z-10" />
-               <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:20px_20px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_10%,transparent_100%)]" />
-            </div>
+      {apps.map((app) => (
+        <a key={app.name} href={app.href} target="_blank" rel="noopener noreferrer" className="block group">
+          <PremiumSpotlightCard hoverColor={app.hover}>
+            <div className="flex flex-col h-full">
 
-            <div className="mb-6">
-              <div className="flex items-center gap-3 mb-4">
-                <h3 className="text-3xl font-bold text-white group-hover:text-blue-400 transition-colors">NeuroVoca</h3>
-                <span className="px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 text-[10px] font-bold tracking-widest uppercase border border-blue-500/20">Live</span>
+              {/* Visual — 큰 이미지로 그리드 채우기 */}
+              <div
+                className="h-64 mb-8 rounded-2xl border border-white/10 flex items-center justify-center relative overflow-hidden"
+                style={{ background: `linear-gradient(135deg, ${app.accent}22, transparent)` }}
+              >
+                {app.image ? (
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={app.image} alt={`${app.name} 미리보기`} className="absolute inset-0 w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  </>
+                ) : (
+                  <>
+                    <div className="absolute w-32 h-32 rounded-full blur-2xl" style={{ background: `${app.accent}33` }} />
+                    <app.Icon className="w-14 h-14 z-10" style={{ color: app.accent }} strokeWidth={1.5} />
+                  </>
+                )}
               </div>
-              <p className="text-xl text-zinc-400 font-medium mb-6">{t.ecosystem.neuro.desc}</p>
-              <div className="flex flex-wrap gap-2">
-                {["FSRS 4.5", "기억 안정성", "개인화 알고리즘"].map((kw) => (
-                  <span key={kw} className="px-3 py-1 rounded-full bg-blue-500/5 text-blue-300/50 text-xs border border-blue-500/10">{kw}</span>
-                ))}
-              </div>
-            </div>
-            <div className="mt-auto opacity-0 group-hover:opacity-100 transition-all">
-              <span className="text-sm font-semibold text-blue-400 flex items-center gap-2">{t.ecosystem.visit} neurovoca.co.kr <ArrowUpRight className="w-4 h-4"/></span>
-            </div>
-          </div>
-        </PremiumSpotlightCard>
-      </a>
 
-      {/* 2. Sub-tube - Red Tone */}
-      <a href="https://sub-tube.com" target="_blank" rel="noopener noreferrer" className="block group">
-        <PremiumSpotlightCard hoverColor="rgba(239, 68, 68, 0.1)">
-          <div className="flex flex-col h-full">
-            
-            {/* 💡 Visual Area: 콘텐츠가 전 세계로 퍼져나가는 파동을 표현 */}
-            <div className="h-48 mb-8 rounded-2xl bg-gradient-to-br from-red-900/20 to-transparent border border-red-500/10 flex items-center justify-center relative overflow-hidden">
-               {[...Array(3)].map((_, i) => (
-                 <motion.div key={i} animate={{ scale: [1, 2.5], opacity: [0.5, 0] }} transition={{ duration: 3, repeat: Infinity, delay: i * 1 }} className="absolute w-16 h-16 border border-red-500/30 rounded-full" />
-               ))}
-               <Youtube className="w-12 h-12 text-red-500/80 z-10" />
-            </div>
-
-            <div className="mb-6">
-              <div className="flex items-center gap-3 mb-4">
-                <h3 className="text-3xl font-bold text-white group-hover:text-red-500 transition-colors">Sub-tube</h3>
-                <span className="px-2 py-0.5 rounded-full bg-red-500/10 text-red-500 text-[10px] font-bold tracking-widest uppercase border border-red-500/20">Live</span>
+              <div className="mb-6">
+                <div className="flex items-center gap-3 mb-4">
+                  {/* 앱 아이콘 — 타이틀 앞으로 */}
+                  {app.logo ? (
+                    <span className="w-9 h-9 rounded-[10px] overflow-hidden shrink-0 border border-white/10 shadow-md" style={{ background: app.logoBg }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={app.logo} alt={`${app.name} 로고`} className="w-full h-full object-cover" />
+                    </span>
+                  ) : (
+                    <span className="w-9 h-9 rounded-[10px] shrink-0 flex items-center justify-center border" style={{ background: `${app.accent}1a`, borderColor: `${app.accent}33` }}>
+                      <app.Icon className="w-5 h-5" style={{ color: app.accent }} strokeWidth={1.7} />
+                    </span>
+                  )}
+                  <h3 className="text-3xl font-bold text-white transition-colors">{app.name}</h3>
+                  <span
+                    className="px-2 py-0.5 rounded-full text-[10px] font-bold tracking-widest uppercase border"
+                    style={{ color: app.accent, borderColor: `${app.accent}55`, background: `${app.accent}1a` }}
+                  >
+                    Live
+                  </span>
+                </div>
+                <p className="text-xl text-zinc-400 font-medium mb-6">{app.desc}</p>
+                <div className="flex flex-wrap gap-2">
+                  {app.badges.map((kw) => (
+                    <span
+                      key={kw}
+                      className="px-3 py-1 rounded-full text-xs border"
+                      style={{ color: `${app.accent}cc`, borderColor: `${app.accent}22`, background: `${app.accent}0d` }}
+                    >
+                      {kw}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <p className="text-xl text-zinc-400 font-medium mb-6">{t.ecosystem.subtube.desc}</p>
-              <div className="flex flex-wrap gap-2">
-                {["3클릭 번역", "다국어 동기화", "트래픽 확장"].map((kw) => (
-                  <span key={kw} className="px-3 py-1 rounded-full bg-red-500/5 text-red-400/50 text-xs border border-red-500/10">{kw}</span>
-                ))}
-              </div>
-            </div>
-            <div className="mt-auto opacity-0 group-hover:opacity-100 transition-all">
-              <span className="text-sm font-semibold text-red-500 flex items-center gap-2">{t.ecosystem.neuro.desc} sub-tube.com <ArrowUpRight className="w-4 h-4"/></span>
-            </div>
-          </div>
-        </PremiumSpotlightCard>
-      </a>
 
-      {/* 3. 대나무 숲 - Green Tone */}
-      <div className="block group cursor-default">
-        <PremiumSpotlightCard hoverColor="rgba(34, 197, 94, 0.1)">
-          <div className="flex flex-col h-full">
-            
-            {/* 💡 Visual Area: 프라이버시와 평온함을 상징하는 블러 쉴드 */}
-            <div className="h-48 mb-8 rounded-2xl bg-gradient-to-br from-green-900/20 to-transparent border border-green-500/10 flex items-center justify-center relative overflow-hidden">
-               <motion.div animate={{ y: [-5, 5, -5] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} className="w-20 h-20 bg-green-500/10 backdrop-blur-md border border-green-500/20 rounded-2xl rotate-12 flex items-center justify-center z-10">
-                 <span className="text-4xl opacity-50">🎋</span>
-               </motion.div>
-            </div>
-
-            <div className="mb-6">
-              <div className="flex items-center gap-3 mb-4">
-                <h3 className="text-3xl font-bold text-white group-hover:text-green-500 transition-colors">BambooForrest</h3>
-                <span className="px-2 py-0.5 rounded-full bg-green-500/10 text-green-500 text-[10px] font-bold tracking-widest uppercase border border-green-500/20">Beta</span>
-              </div>
-              <p className="text-xl text-zinc-400 font-medium mb-6">{t.ecosystem.bamboo.desc}</p>
-              <div className="flex flex-wrap gap-2">
-                {["자아 탐색", "AI 심리 상담", "프라이버시"].map((kw) => (
-                  <span key={kw} className="px-3 py-1 rounded-full bg-green-500/5 text-green-400/50 text-xs border border-green-500/10">{kw}</span>
-                ))}
+              <div className="mt-auto opacity-0 group-hover:opacity-100 transition-all">
+                <span className="text-sm font-semibold flex items-center gap-2" style={{ color: app.accent }}>
+                  {t.ecosystem.visit} {app.domain} <ArrowUpRight className="w-4 h-4" />
+                </span>
               </div>
             </div>
-            <div className="mt-auto">
-              <span className="text-xs font-bold text-green-600 tracking-tighter uppercase">{t.ecosystem.coming}</span>
-            </div>
-          </div>
-        </PremiumSpotlightCard>
-      </div>
-
-      {/* 4. AURA - Black & White Tone */}
-      <a href="https://auraootd.com" target="_blank" rel="noopener noreferrer" className="block group">
-        <PremiumSpotlightCard hoverColor="rgba(255, 255, 255, 0.08)">
-          <div className="flex flex-col h-full">
-            
-            {/* 💡 Visual Area: 하이퍼로컬 날씨와 스타일링의 세련된 교차점 */}
-            <div className="h-48 mb-8 rounded-2xl bg-gradient-to-br from-white/5 to-transparent border border-white/10 flex items-center justify-center relative overflow-hidden">
-               <div className="absolute w-full h-full flex justify-center items-center opacity-20">
-                 <div className="w-16 h-16 rounded-full border border-white rotate-45" />
-                 <div className="w-16 h-16 rounded-full border border-white -translate-x-8" />
-               </div>
-               <span className="text-4xl z-10 opacity-80">✨</span>
-            </div>
-
-            <div className="mb-6">
-              <div className="flex items-center gap-3 mb-4">
-                <h3 className="text-3xl font-bold text-white group-hover:text-zinc-300 transition-colors">AURA</h3>
-                <span className="px-2 py-0.5 rounded-full bg-white/10 text-white text-[10px] font-bold tracking-widest uppercase border border-white/20">Live</span>
-              </div>
-              <p className="text-xl text-zinc-400 font-medium mb-6">{t.ecosystem.aura.desc}</p>
-              <div className="flex flex-wrap gap-2">
-                {["하이퍼로컬 날씨", "AI 스타일링", "실시간 OOTD"].map((kw) => (
-                  <span key={kw} className="px-3 py-1 rounded-full bg-white/5 text-white/30 text-xs border border-white/10">{kw}</span>
-                ))}
-              </div>
-            </div>
-            <div className="mt-auto opacity-0 group-hover:opacity-100 transition-all">
-              <span className="text-sm font-semibold text-white flex items-center gap-2">{t.ecosystem.visit} auraootd.com <ArrowUpRight className="w-4 h-4"/></span>
-            </div>
-          </div>
-        </PremiumSpotlightCard>
-      </a>
-
+          </PremiumSpotlightCard>
+        </a>
+      ))}
     </div>
   );
 }

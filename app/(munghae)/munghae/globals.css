@@ -1,0 +1,246 @@
+/* MUNGHAE(멍해) 랜딩 — 밤하늘·별빛·촛불의 따뜻한 추모 톤 */
+:root {
+  --night: #0e1330;
+  --night2: #161d44;
+  --night3: #222b5c;
+  --gold: #f4c77b;
+  --gold-soft: #fbe8c4;
+  --blossom: #e9a6b6;
+  --sky: #8fb8e6;
+
+  --cream: #fbf7f2;
+  --warm-mist: #f2ebe1;
+  --warm-line: #eadfd2;
+  --ink: #2b2a31;
+  --ink-soft: #4b4954;
+  --muted: #5c6278;
+  --maxw: 1000px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard",
+    "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 22px; }
+
+/* ── Header ── */
+.mh-header {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(251, 247, 242, 0.82);
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--warm-line);
+}
+.mh-nav { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+.mh-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; letter-spacing: 0.02em; color: var(--ink); }
+.mh-mark { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 9px;
+  background: var(--night); color: var(--gold); }
+.mh-links { display: flex; gap: 20px; font-size: 14px; font-weight: 600; }
+.mh-links a { color: var(--muted); }
+.mh-links a:hover { color: var(--night3); }
+
+/* ── Hero (밤하늘) ── */
+.mh-hero {
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #26306a 0%, var(--night2) 42%, var(--night) 78%);
+  color: #fff; text-align: center;
+  padding: 96px 22px 108px;
+}
+.mh-hero::before { /* 별빛 */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1.6px 1.6px at 12% 22%, #fff, transparent),
+    radial-gradient(1.4px 1.4px at 28% 60%, #fff, transparent),
+    radial-gradient(1.8px 1.8px at 42% 30%, var(--gold-soft), transparent),
+    radial-gradient(1.3px 1.3px at 58% 68%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 70% 24%, #fff, transparent),
+    radial-gradient(2px 2px at 82% 52%, var(--gold-soft), transparent),
+    radial-gradient(1.3px 1.3px at 90% 34%, #fff, transparent),
+    radial-gradient(1.4px 1.4px at 20% 80%, #fff, transparent),
+    radial-gradient(1.6px 1.6px at 66% 84%, #fff, transparent),
+    radial-gradient(1.3px 1.3px at 36% 88%, var(--gold-soft), transparent);
+  opacity: 0.9;
+  animation: mh-twinkle 5s ease-in-out infinite alternate;
+}
+@keyframes mh-twinkle { from { opacity: 0.55; } to { opacity: 1; } }
+.mh-hero-inner { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; }
+.mh-eyebrow {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold); background: rgba(244, 199, 123, 0.1);
+  border: 1px solid rgba(244, 199, 123, 0.28); border-radius: 999px; padding: 7px 14px; margin-bottom: 26px;
+}
+.mh-hero h1 {
+  font-size: clamp(32px, 6vw, 60px); line-height: 1.18; letter-spacing: -0.02em;
+  font-weight: 800; margin: 0 0 20px; white-space: pre-line;
+}
+.mh-hero h1 .accent { color: var(--gold); }
+.mh-hero p { font-size: clamp(15px, 2.3vw, 19px); color: #cfd4ea; margin: 0 auto 34px; max-width: 560px; white-space: pre-line; }
+.mh-cta { display: inline-flex; align-items: center; gap: 9px; padding: 14px 26px; border-radius: 999px;
+  background: var(--gold); color: var(--night); font-weight: 800; font-size: 15px;
+  box-shadow: 0 10px 30px rgba(244, 199, 123, 0.3); transition: transform .25s ease, box-shadow .25s ease; }
+.mh-cta:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(244, 199, 123, 0.4); }
+.mh-cta-note { display: block; margin-top: 14px; font-size: 12.5px; color: #9aa1c4; }
+
+/* ── Section shell ── */
+.mh-section { padding: 84px 0; }
+.mh-section.alt { background: var(--warm-mist); }
+.mh-sec-head { text-align: center; max-width: 640px; margin: 0 auto 46px; }
+.mh-sec-head h2 { font-size: clamp(26px, 4.4vw, 40px); letter-spacing: -0.02em; margin: 0 0 12px; }
+.mh-sec-head p { color: var(--muted); font-size: 16px; margin: 0; line-height: 1.7; }
+
+/* ── Feature cards ── */
+.mh-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.mh-card {
+  background: #fff; border: 1px solid var(--warm-line); border-radius: 22px; padding: 26px;
+  box-shadow: 0 8px 26px rgba(43, 42, 49, 0.05);
+  transition: transform .28s ease, box-shadow .28s ease;
+}
+.mh-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(43, 42, 49, 0.1); }
+.mh-card .ic { width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center;
+  background: var(--night); color: var(--gold); margin-bottom: 16px; }
+.mh-card h3 { font-size: 18px; margin: 0 0 8px; color: var(--ink); }
+.mh-card p { font-size: 14.5px; color: var(--muted); margin: 0; line-height: 1.65; }
+
+/* ── Steps ── */
+.mh-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; counter-reset: step; }
+.mh-step { text-align: center; }
+.mh-step .num {
+  width: 52px; height: 52px; margin: 0 auto 16px; border-radius: 50%;
+  display: grid; place-items: center; font-weight: 800; font-size: 20px;
+  color: var(--night); background: var(--gold-soft); border: 1px solid var(--gold);
+}
+.mh-step h3 { font-size: 17px; margin: 0 0 8px; }
+.mh-step p { color: var(--muted); font-size: 14px; margin: 0; }
+
+/* ── Quote / emotional band ── */
+.mh-quote {
+  position: relative; overflow: hidden;
+  background: radial-gradient(900px 400px at 50% 120%, #26306a 0%, var(--night2) 55%, var(--night) 100%);
+  color: #fff; text-align: center; padding: 90px 22px;
+}
+.mh-quote p { position: relative; z-index: 1; font-size: clamp(20px, 3.4vw, 30px); font-weight: 700;
+  line-height: 1.5; letter-spacing: -0.01em; max-width: 720px; margin: 0 auto; white-space: pre-line; }
+.mh-quote .by { display: block; margin-top: 20px; font-size: 14px; font-weight: 500; color: var(--gold); }
+
+/* ── Final CTA ── */
+.mh-final { text-align: center; padding: 88px 22px; }
+.mh-final h2 { font-size: clamp(26px, 4.4vw, 38px); margin: 0 0 14px; letter-spacing: -0.02em; }
+.mh-final p { color: var(--muted); font-size: 16px; margin: 0 0 30px; }
+
+/* ── Footer (밤하늘) ── */
+.mh-footer { background: var(--night); color: #cfd4ea; padding: 56px 22px 40px; }
+.mh-footer-inner { max-width: var(--maxw); margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+.mh-footer-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; align-items: flex-start; }
+.mh-footer .fbrand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 18px; color: #fff; }
+.mh-footer-links { display: flex; flex-wrap: wrap; gap: 18px; font-size: 14px; }
+.mh-footer-links a { color: #b9c0e0; }
+.mh-footer-links a:hover { color: var(--gold); }
+.mh-footer-co { font-size: 12.5px; color: #8f97bd; line-height: 1.85; border-top: 1px solid #2c355f; padding-top: 20px; }
+.mh-footer-co a { color: #b9c0e0; }
+
+/* ── Legal doc pages ── */
+.mh-doc { max-width: 760px; margin: 0 auto; padding: 40px 0 64px; }
+.mh-doc h1 { font-size: clamp(26px, 4vw, 36px); margin: 0 0 8px; letter-spacing: -0.02em; }
+.mh-doc .updated { color: var(--muted); font-size: 13.5px; margin: 0 0 32px; }
+.mh-doc h2 { font-size: 19px; margin: 32px 0 10px; color: var(--ink); }
+.mh-doc p { color: var(--ink-soft); font-size: 15px; line-height: 1.8; margin: 0 0 12px; }
+.mh-doc .lead { color: var(--muted); }
+.mh-doc .legal-note { color: var(--muted); font-size: 13px; margin-top: 28px; line-height: 1.8; }
+.mh-doc a { color: var(--night3); text-decoration: underline; }
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .mh-features { grid-template-columns: repeat(2, 1fr); }
+  .mh-steps { grid-template-columns: 1fr; gap: 28px; }
+}
+@media (max-width: 560px) {
+  .mh-links { gap: 14px; }
+  .mh-section { padding: 60px 0; }
+  .mh-features { grid-template-columns: 1fr; }
+  .mh-hero { padding: 72px 22px 84px; }
+}
+
+/* ── Logo image (앱 아이콘형) ── */
+.mh-logo-img { border-radius: 9px; object-fit: cover; display: block; }
+
+/* ── Support (고객지원) page ── */
+.mh-support { max-width: var(--maxw); margin: 0 auto; padding: 44px 22px 64px; }
+.mh-support-head { margin-bottom: 34px; }
+.mh-support-head h1 { font-size: clamp(28px, 5vw, 40px); letter-spacing: -0.02em; margin: 0 0 12px; }
+.mh-support-head p { color: var(--muted); font-size: 16px; line-height: 1.7; max-width: 640px; margin: 0; }
+.mh-h2 { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 40px 0 16px; }
+
+.mh-channels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.mh-ch {
+  display: flex; gap: 14px; align-items: flex-start; padding: 20px;
+  border-radius: 18px; background: #fff; border: 1px solid var(--warm-line);
+  box-shadow: 0 6px 20px rgba(43,42,49,0.05); color: inherit;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+a.mh-ch:hover { transform: translateY(-3px); box-shadow: 0 14px 32px rgba(43,42,49,0.1); border-color: var(--gold); }
+.mh-ch .ic { flex: none; width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; color: var(--gold); background: var(--night); }
+.mh-ch .lab { font-weight: 700; font-size: 15px; color: var(--ink); }
+.mh-ch .val { font-size: 14px; color: var(--night3); font-weight: 600; word-break: break-word; }
+.mh-ch .dsc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-top: 4px; }
+
+.mh-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.mh-info-card { display: flex; gap: 14px; align-items: flex-start; padding: 20px; border-radius: 18px; background: #fff; border: 1px solid var(--warm-line); }
+.mh-info-card .ic { flex: none; width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; color: var(--gold); background: var(--night); }
+.mh-info-card .lab { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 700; }
+.mh-info-card .val { font-size: 18px; font-weight: 700; color: var(--ink); margin-top: 2px; }
+.mh-info-card .note { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+.mh-topics { list-style: none; padding: 0; margin: 0; border: 1px solid var(--warm-line); border-radius: 16px; overflow: hidden; background: #fff; }
+.mh-topics li + li { border-top: 1px solid var(--warm-line); }
+.mh-topics a { display: flex; align-items: center; gap: 12px; padding: 16px 18px; color: var(--ink); font-size: 15px; font-weight: 500; transition: background .2s ease; }
+.mh-topics a:hover { background: var(--warm-mist); }
+.mh-topics .chev { margin-left: auto; color: var(--muted); font-size: 20px; line-height: 1; }
+
+.mh-appinfo { border: 1px solid var(--warm-line); border-radius: 16px; background: var(--warm-mist); padding: 18px 20px; font-size: 13.5px; color: var(--ink-soft); line-height: 1.9; }
+.mh-appinfo b { color: var(--ink); }
+.mh-support-note { color: var(--muted); font-size: 14px; line-height: 1.7; margin: 26px 0 8px; }
+
+@media (max-width: 860px) { .mh-channels { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .mh-info { grid-template-columns: 1fr; } }
+
+/* ── 생활공간 그린 톤 ── */
+:root { --life: #4caf8d; --life-soft: #ddf0e7; --life-ink: #2c6e52; }
+
+.mh-kicker { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 12px; padding: 5px 12px; border-radius: 999px; }
+.mh-kicker.life { color: var(--life-ink); background: var(--life-soft); }
+.mh-kicker.gold { color: #8a6a1e; background: var(--gold-soft); }
+
+/* 두 개의 공간 (dual cards) */
+.mh-duo { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+.duo-card { border-radius: 26px; padding: 34px; min-height: 232px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+.duo-ic { width: 52px; height: 52px; border-radius: 15px; display: grid; place-items: center; margin-bottom: 18px; }
+.duo-tag { font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.duo-card h3 { font-size: clamp(22px, 3vw, 28px); margin: 0 0 12px; letter-spacing: -0.01em; }
+.duo-card p { font-size: 15px; line-height: 1.7; margin: 0; max-width: 44ch; }
+
+.duo-life { background: linear-gradient(160deg, #eafaf3 0%, var(--life-soft) 100%); border: 1px solid #cde9dd; }
+.duo-life .duo-ic { background: var(--life); color: #fff; }
+.duo-life .duo-tag { color: var(--life-ink); }
+.duo-life h3 { color: var(--life-ink); }
+.duo-life p { color: #3f6b58; }
+
+.duo-memorial { background: radial-gradient(620px 320px at 22% 0%, #26306a 0%, var(--night2) 55%, var(--night) 100%); border: 1px solid #2c355f; }
+.duo-memorial .duo-ic { background: rgba(244, 199, 123, 0.14); color: var(--gold); border: 1px solid rgba(244, 199, 123, 0.3); }
+.duo-memorial .duo-tag { color: var(--gold); }
+.duo-memorial h3 { color: #fff; }
+.duo-memorial p { color: #c7cdea; }
+
+/* 생활 섹션: 카드 아이콘 그린 */
+.mh-section.life { background: linear-gradient(180deg, #f3fbf7 0%, var(--warm-mist) 100%); }
+.mh-section.life .mh-card .ic { background: var(--life-soft); color: var(--life-ink); }
+.mh-section.life .mh-card:hover { box-shadow: 0 18px 40px rgba(76, 175, 141, 0.14); }
+
+@media (max-width: 720px) { .mh-duo { grid-template-columns: 1fr; } }

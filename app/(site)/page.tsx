@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Header, Footer } from "@/components/landing/Layout";
 import { 
-  Hero, DeviceShowcase, Ecosystem, VoicesSection, SystemStatus, 
-  CoreValues, TechStack, FaqSection, FinalCTA, 
-  ProjectType, ArticleType, JobType 
-} from "@/components/landing/Sections"; 
+  Hero, DeviceShowcase, Ecosystem, VoicesSection,
+  CoreValues, TechStack, FaqSection, FinalCTA,
+  ProjectType, ArticleType, JobType
+} from "@/components/landing/Sections";
 import { TheArchitects, Careers, Roadmap, Newsletter } from "@/components/landing/NewSections";
 import { ProjectModal, JournalModal, JobModal } from "@/components/landing/Modals"; 
 // 💡 방금 만든 i18n 모듈 임포트
@@ -74,11 +74,7 @@ function MainContent() {
         <div className="pb-0"><Ecosystem /></div>
       </SectionShell>
       
-      <SectionShell number="02" title={lang === 'ko' ? "증명" : "The Proof"} className="bg-black">
-         <div className="-mt-24 pb-24"><SystemStatus /></div>
-      </SectionShell>
-      
-      <SectionShell id="roadmap" number="03" title={lang === 'ko' ? "우리의 DNA" : "Our DNA"} className="bg-[#080808]">
+      <SectionShell id="roadmap" number="02" title={lang === 'ko' ? "우리의 DNA" : "Our DNA"} className="bg-[#080808]">
         <div className="-mt-24"><Roadmap /></div>
         <div className="-mt-24 pb-24"><TechStack /></div>
         <div className="pb-0"><CoreValues /></div>

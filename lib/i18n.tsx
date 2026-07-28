@@ -6,17 +6,16 @@ import React, { createContext, useContext, useState } from "react";
 export const dictionaries = {
   ko: {
     hero: {
-      title: "Tech fades.\nLife remains.",
-      desc1: "복잡한 기술은 저희가 다루겠습니다. 그저 일상을 즐기면 됩니다.",
-      desc2: "YeahPlus는 1020 세대가 장벽 없이 혁신을 누릴 수 있도록, 삶에 가장 자연스럽게 스며드는 기술을 설계합니다.",
+      title: "AI × Content",
+      desc1: "일상을 바꾸는 앱을 만듭니다.",
+      desc2: "YeahPlus는 사진·필름·패션·학습에 AI를 더해, 매일 쓰는 앱을 직접 만듭니다.",
     },
     ecosystem: {
-      neuro: { desc: "뇌과학이 설계한 완벽한 지식 각인 엔진.", badges: ["FSRS 4.5", "기억 안정성", "개인화 알고리즘"] },
-      subtube: { desc: "글로벌 콘텐츠 자동화 솔루션.", badges: ["3클릭 번역", "다국어 동기화", "트래픽 확장"] },
-      bamboo: { desc: "나를 찾아가는 심리 대화. 가장 안전한 익명 공간.", badges: ["자아 탐색", "AI 심리 상담", "프라이버시"] },
-      aura: { desc: "데이터로 큐레이션하는 가장 완벽한 AURA.", badges: ["하이퍼로컬 날씨", "AI 스타일링", "실시간 OOTD"] },
+      meow: { desc: "집에서 찍은 우리 냥이, AI 아트로 작품이 되다.", badges: ["AI 아트", "사진 꾸미기", "커뮤니티"] },
+      stills: { desc: "한달 24컷, 3일의 기다림. 디지털 시대의 아날로그 필름.", badges: ["필름 18종", "AI 그레이딩", "3일 현상"] },
+      aura: { desc: "오늘의 룩을 발견하고, 바로 따라 사는 패션·뷰티 커뮤니티.", badges: ["AI 개인화", "바로 쇼핑", "OOTD"] },
+      neuro: { desc: "뇌과학이 설계한 AI 영어 암기 엔진.", badges: ["FSRS 4.5", "AI 맥락 학습", "개인화"] },
       visit: "방문하기",
-      coming: "Coming Soon in 2026"
     },
     architect: {
       title: "The Architect",
@@ -31,37 +30,36 @@ export const dictionaries = {
     },
     roadmap: {
         title: "The Horizon.",
-        subtitle: "From Genesis to Singularity.",
+        subtitle: "From Genesis to AI × Content.",
         steps: [
-          { year: "Future", title: "Singularity", desc: "개인화된 AI 튜터와의 완전한 대화형 학습 환경 구축. 기술이 사라지고 오직 대화만이 남는 순간." },
-          { 
-            year: "2026", title: "Ecosystem Expansion", 
-            descMain: "NeuroVoca B2B 엔터프라이즈 솔루션 및 API 런칭. 전 세계의 교육 기관을 우리의 신경망으로 연결합니다.",
-            proj1Title: "Project: Bamboo Forest (대나무 숲)",
-            proj1Desc: "청소년과 20대를 위한 자아 탐색 AI. 가장 안전한 심리 대화 인터페이스.",
-            proj2Title: "Project: AURA",
-            proj2Desc: "하이퍼로컬 날씨 데이터 기반 OOTD 큐레이션. 초개인화 라이프스타일 엔진."
+          { year: "Future", title: "The Next", desc: "AI × Content로 일상의 더 많은 콘텐츠를 확장합니다. 사진·필름·패션·학습을 넘어, 매일의 순간이 AI로 완성되는 미래." },
+          {
+            year: "2026", title: "AI × Content 생태계",
+            descMain: "사진·필름·패션·학습, 네 개의 라이브 앱으로 AI × Content 생태계를 완성했습니다.",
+            proj1Title: "묘해 · 24STILLS",
+            proj1Desc: "집에서 찍은 반려동물을 AI 아트로. 아날로그 필름 카메라의 감성을 디지털로.",
+            proj2Title: "AURA · 뇌새김",
+            proj2Desc: "취향 기반 패션·뷰티 큐레이션과, 뇌과학이 설계한 AI 영어 암기 엔진."
           },
-          { year: "2025", title: "NeuroVoca", desc: "기억의 유효기간을 재정의하다. 뇌과학 기반 암기 엔진의 정식 런칭." },
-          { year: "2024", title: "Sub-Tube", desc: "언어의 장벽을 허무는 시작. 글로벌 영상 번역 자동화 플랫폼 런칭." },
+          { year: "2025", title: "뇌새김 (NeuroVoca)", desc: "기억의 유효기간을 재정의하다. 뇌과학 기반 AI 암기 엔진의 정식 런칭." },
+          { year: "2024", title: "Content Labs", desc: "AI × Content 실험의 시작. 사진·영상·학습 도메인에서 아이디어를 프로토타이핑하며 방향을 다졌습니다." },
           { year: "2023", title: "Foundation", desc: "핵심 소프트웨어 납품 및 기술 검증 완료. 안정적인 엔진의 기반을 닦았습니다." },
-          { year: "2022", title: "Genesis", desc: "YeahPlus 창업. 인간의 잠재력을 확장하겠다는 비전의 시작." }
+          { year: "2022", title: "Genesis", desc: "YeahPlus 창업. 콘텐츠에 AI를 더해 일상을 확장하겠다는 비전의 시작." }
         ]
       }
   },
   en: {
     hero: {
-      title: "Tech fades.\nLife remains.",
-      desc1: "We handle the complex technology. You just enjoy your life.",
-      desc2: "YeahPlus designs seamless technology for Gen Z & Millennials, allowing them to experience innovation without barriers.",
+      title: "AI × Content",
+      desc1: "We build apps that reshape everyday life.",
+      desc2: "YeahPlus adds AI to photos, film, fashion, and learning — apps we design and ship ourselves.",
     },
     ecosystem: {
-      neuro: { desc: "The ultimate knowledge imprinting engine designed by neuroscience.", badges: ["FSRS 4.5", "Memory Stability", "AI Personalized"] },
-      subtube: { desc: "Global content automation solution.", badges: ["3-Click Translation", "Multilingual Sync", "Global Traffic"] },
-      bamboo: { desc: "A safe, anonymous space for self-discovery & psychological conversation.", badges: ["Self-Discovery", "AI Counseling", "Total Privacy"] },
-      aura: { desc: "The most perfect AURA curated by hyper-local data.", badges: ["Hyper-local Weather", "AI Styling", "Real-time OOTD"] },
+      meow: { desc: "Your cat at home, turned into art by AI.", badges: ["AI Art", "Photo Decor", "Community"] },
+      stills: { desc: "24 frames a day, a 3-day wait. Analog film in a digital age.", badges: ["18 Films", "AI Grading", "3-Day Develop"] },
+      aura: { desc: "Discover today's look and shop it right away.", badges: ["AI Personalization", "Instant Shop", "OOTD"] },
+      neuro: { desc: "An AI English memory engine designed by neuroscience.", badges: ["FSRS 4.5", "AI Context", "Personalized"] },
       visit: "Visit",
-      coming: "Coming Soon in 2026"
     },
     architect: {
       title: "The Architect",
@@ -76,21 +74,21 @@ export const dictionaries = {
     },
     roadmap: {
         title: "The Horizon.",
-        subtitle: "From Genesis to Singularity.",
+        subtitle: "From Genesis to AI × Content.",
         steps: [
-          { year: "Future", title: "Singularity", desc: "Building a fully conversational learning environment with personalized AI tutors. The moment tech fades and only conversation remains." },
-          { 
-            year: "2026", title: "Ecosystem Expansion", 
-            descMain: "Launch of NeuroVoca B2B Enterprise Solutions and APIs. Connecting educational institutions worldwide to our neural network.",
-            proj1Title: "Project: Bamboo Forest",
-            proj1Desc: "Self-discovery AI for Gen Z. The safest interface for psychological conversation.",
-            proj2Title: "Project: AURA",
-            proj2Desc: "Hyper-local weather data-based OOTD curation. A hyper-personalized lifestyle engine."
+          { year: "Future", title: "The Next", desc: "Expanding AI × Content to more of everyday life — beyond photos, film, fashion, and learning, toward a future where every moment is completed by AI." },
+          {
+            year: "2026", title: "AI × Content Ecosystem",
+            descMain: "Photos, film, fashion, and learning — four live apps completing our AI × Content ecosystem.",
+            proj1Title: "MYOHAE · 24STILLS",
+            proj1Desc: "Turn your pet's photos into AI art, and bring the analog film camera feeling to digital.",
+            proj2Title: "AURA · NeuroVoca",
+            proj2Desc: "Taste-based fashion & beauty curation, and a neuroscience-designed AI English memory engine."
           },
-          { year: "2025", title: "NeuroVoca", desc: "Redefining the expiration date of memory. Official launch of the neuroscience-based memorization engine." },
-          { year: "2024", title: "Sub-Tube", desc: "The beginning of breaking language barriers. Launch of the global video translation automation platform." },
+          { year: "2025", title: "NeuroVoca", desc: "Redefining the expiration date of memory. Official launch of the neuroscience-based AI memorization engine." },
+          { year: "2024", title: "Content Labs", desc: "The start of our AI × Content experiments — prototyping ideas across photo, video, and learning domains." },
           { year: "2023", title: "Foundation", desc: "Completion of core software delivery and technical verification. Laid the foundation for a stable engine." },
-          { year: "2022", title: "Genesis", desc: "Founding of YeahPlus. The beginning of our vision to expand human potential." }
+          { year: "2022", title: "Genesis", desc: "Founding of YeahPlus — a vision to expand everyday life by adding AI to content." }
         ]
       }
   }
