@@ -1,0 +1,476 @@
+/* ARKE — Classical(에디토리얼) 톤: 따뜻한 종이 바탕 · 먹색 · 금빛 획.
+   ARKE 앱의 @theme 토큰을 그대로 옮겨오되 클래스는 ark- 프리픽스로 네임스페이스.
+   한글 본문은 Pretendard(고딕), 라틴·브랜드 제목만 Cormorant Garamond(세리프). */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap');
+
+:root {
+  --ark-bg: #f3f2f2;
+  --ark-paper: #f8f4f4;
+  --ark-ink: #201f1d;
+  --ark-ink-soft: #444141;
+  --ark-sub: #7d7979;
+  --ark-line: #d7d3d3;
+  --ark-gold: #a06f24;
+  --ark-gold-soft: #b68235;
+  --ark-gold-pale: #d7b57e;
+  --ark-gold-light: #fff3e4;
+  --ark-radius: 7px;
+  --ark-maxw: 1080px;
+  --ark-font-kr: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+    'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+  --ark-font-heading: 'Cormorant Garamond', var(--ark-font-kr);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--ark-bg);
+  color: var(--ark-ink);
+  font-family: var(--ark-font-kr);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* 한글은 어절 단위로 줄바꿈 — 단어 중간에서 끊기지 않게. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+a { color: var(--ark-gold); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.ark-app { min-height: 100vh; display: flex; flex-direction: column; }
+.ark-container { max-width: var(--ark-maxw); margin: 0 auto; width: 100%; padding: 0 24px; }
+.ark-main { flex: 1; }
+
+/* ── Nav ── */
+.ark-nav {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(243, 242, 242, 0.86);
+  backdrop-filter: saturate(140%) blur(12px);
+  -webkit-backdrop-filter: saturate(140%) blur(12px);
+  border-bottom: 1px solid var(--ark-line);
+}
+.ark-nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding: 12px 24px; max-width: var(--ark-maxw); margin: 0 auto; width: 100%;
+}
+.ark-brand { display: flex; align-items: center; gap: 10px; color: var(--ark-ink); white-space: nowrap; }
+.ark-brand:hover { text-decoration: none; }
+.ark-brand-logo {
+  width: 32px; height: 32px; border-radius: 4px; display: block; flex: none;
+  border: 1px solid var(--ark-line);
+}
+.ark-brand-name {
+  font-family: var(--ark-font-heading); font-size: 22px; font-weight: 600;
+  letter-spacing: 0.14em; line-height: 1;
+}
+.ark-nav-links { display: flex; align-items: center; gap: 20px; font-size: 14px; }
+.ark-nav-links a { color: var(--ark-sub); white-space: nowrap; }
+.ark-nav-links a:hover { color: var(--ark-ink); text-decoration: none; }
+.ark-nav-cta {
+  border: 1px solid var(--ark-gold); border-radius: var(--ark-radius);
+  padding: 6px 14px; color: var(--ark-gold) !important;
+}
+.ark-nav-cta:hover { background: var(--ark-gold-light); }
+
+/* ── Buttons ── */
+.ark-btn {
+  display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+  padding: 12px 22px; border-radius: var(--ark-radius);
+  font-size: 15px; font-weight: 600; border: 1px solid transparent; cursor: pointer;
+}
+.ark-btn-primary { background: var(--ark-ink); color: var(--ark-paper); }
+.ark-btn-primary:hover { text-decoration: none; background: #2d2b2b; }
+.ark-btn-ghost { background: transparent; color: var(--ark-ink); border-color: var(--ark-line); }
+.ark-btn-ghost:hover { text-decoration: none; border-color: var(--ark-gold); color: var(--ark-gold); }
+.ark-btn-gold { background: var(--ark-gold-soft); color: #201f1d; }
+.ark-btn-gold:hover { text-decoration: none; background: var(--ark-gold); color: #fff; }
+[aria-disabled='true'] { opacity: 0.5; pointer-events: none; }
+
+/* ── Hero ── */
+.ark-hero { padding: 84px 24px 20px; text-align: center; }
+.ark-hero-inner { max-width: 760px; margin: 0 auto; }
+.ark-badge {
+  display: inline-block; padding: 5px 13px; border-radius: 999px;
+  border: 1px solid var(--ark-line); background: var(--ark-paper);
+  color: var(--ark-sub); font-size: 12.5px; font-weight: 600; letter-spacing: 0.02em;
+}
+.ark-hero-logo {
+  width: 84px; height: 84px; display: block; margin: 26px auto 0;
+  border: 1px solid var(--ark-line); border-radius: var(--ark-radius);
+}
+.ark-hero-title {
+  font-size: 44px; font-weight: 700; line-height: 1.32; letter-spacing: -0.01em;
+  margin: 22px 0 0;
+}
+.ark-hero-title em {
+  font-family: var(--ark-font-heading); font-style: normal; font-weight: 600;
+  letter-spacing: 0.08em; color: var(--ark-gold);
+}
+.ark-hero-sub {
+  color: var(--ark-ink-soft); font-size: 17px; margin: 18px auto 0; max-width: 600px;
+}
+.ark-cta-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+.ark-hero-note { color: var(--ark-sub); font-size: 12.5px; margin-top: 16px; }
+
+/* 금빛 얇은 획 — 섹션 사이 구분자 */
+.ark-rule {
+  max-width: 720px; margin: 56px auto 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ark-gold-soft), transparent);
+  opacity: 0.65;
+}
+
+/* ── Stats ── */
+.ark-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  background: var(--ark-line); border: 1px solid var(--ark-line);
+  border-radius: var(--ark-radius); overflow: hidden; margin-top: 48px;
+}
+.ark-stat { background: var(--ark-paper); padding: 20px 14px; text-align: center; }
+.ark-stat-v {
+  font-family: var(--ark-font-heading); font-size: 34px; font-weight: 600;
+  line-height: 1.1; color: var(--ark-gold);
+}
+.ark-stat-l { color: var(--ark-sub); font-size: 12.5px; margin-top: 4px; }
+
+/* ── Section heads ── */
+.ark-section { padding-top: 72px; }
+.ark-kicker {
+  color: var(--ark-gold); font-size: 11.5px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase; margin: 0 0 10px;
+}
+.ark-section-title { font-size: 28px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+.ark-section-lead { color: var(--ark-sub); font-size: 15px; margin: 10px 0 0; max-width: 560px; }
+.ark-section-head { margin-bottom: 28px; }
+
+/* ── 두 과목 카드 ── */
+.ark-subjects { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.ark-subject {
+  position: relative; overflow: hidden; border-radius: var(--ark-radius);
+  padding: 28px 26px 26px; border: 1px solid var(--ark-line); background: var(--ark-paper);
+}
+.ark-subject-math { background: var(--ark-ink); border-color: var(--ark-ink); color: #eae7e7; }
+.ark-glyph {
+  position: absolute; top: -18px; right: 6px; pointer-events: none; user-select: none;
+  font-family: var(--ark-font-heading); font-size: 108px; line-height: 1;
+  color: rgba(182, 130, 53, 0.16);
+}
+.ark-subject-eyebrow { font-size: 13px; font-weight: 600; color: var(--ark-gold); margin: 0; }
+.ark-subject-math .ark-subject-eyebrow { color: var(--ark-gold-pale); }
+.ark-subject-title { font-size: 22px; font-weight: 700; margin: 6px 0 0; }
+.ark-subject-desc { font-size: 14.5px; margin: 8px 0 0; color: var(--ark-sub); }
+.ark-subject-math .ark-subject-desc { color: #9b9797; }
+.ark-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
+.ark-chip {
+  font-size: 12.5px; padding: 4px 10px; border-radius: 999px;
+  border: 1px solid var(--ark-line); color: var(--ark-ink-soft); background: #fff;
+}
+.ark-subject-math .ark-chip {
+  border-color: rgba(215, 181, 126, 0.4); color: var(--ark-gold-pale); background: transparent;
+}
+
+/* ── 학습 루프 ── */
+.ark-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.ark-step {
+  border: 1px solid var(--ark-line); border-radius: var(--ark-radius);
+  padding: 24px 22px; background: var(--ark-paper);
+}
+.ark-step-no {
+  font-family: var(--ark-font-heading); font-size: 15px; font-weight: 700;
+  letter-spacing: 0.18em; color: var(--ark-gold);
+}
+.ark-step h3 { font-size: 18px; margin: 10px 0 6px; }
+.ark-step p { font-size: 14.5px; color: var(--ark-sub); margin: 0; }
+.ark-step-note {
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--ark-line);
+  font-size: 13px; color: var(--ark-ink-soft);
+}
+
+/* ── 영어 유형 태그 ── */
+.ark-types { display: flex; flex-wrap: wrap; gap: 8px; }
+.ark-type {
+  border: 1px solid var(--ark-line); border-radius: var(--ark-radius);
+  background: var(--ark-paper); padding: 9px 16px; font-size: 14.5px; font-weight: 600;
+}
+.ark-type span { color: var(--ark-sub); font-weight: 500; font-size: 12.5px; margin-left: 7px; }
+
+/* ── 기능 그리드 ── */
+.ark-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.ark-feature {
+  border: 1px solid var(--ark-line); border-radius: var(--ark-radius);
+  padding: 24px 22px; background: var(--ark-paper);
+}
+.ark-feature-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: var(--ark-radius);
+  border: 1px solid var(--ark-line); background: var(--ark-gold-light); color: var(--ark-gold);
+}
+.ark-feature-icon svg { display: block; }
+.ark-feature h3 { font-size: 17px; margin: 14px 0 6px; }
+.ark-feature p { font-size: 14px; color: var(--ark-sub); margin: 0; }
+
+/* ── 화면 미리보기(목업) ── */
+.ark-phones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.ark-phone-wrap { text-align: center; }
+.ark-phone {
+  max-width: 268px; margin: 0 auto; padding: 10px;
+  border: 1px solid var(--ark-line); border-radius: 24px; background: #fff;
+  box-shadow: 0 14px 34px rgba(45, 43, 43, 0.13);
+}
+.ark-scr {
+  background: var(--ark-bg); border-radius: 16px; padding: 13px;
+  /* 세 목업의 프레임 높이를 맞춘다(내용이 짧은 화면은 .ark-m-spacer 로 채움). */
+  height: 462px; overflow: hidden;
+  display: flex; flex-direction: column; gap: 9px; text-align: left;
+}
+.ark-phone-cap { font-size: 13px; color: var(--ark-sub); margin: 14px 0 0; }
+.ark-phone-cap strong { display: block; color: var(--ark-ink); font-size: 14.5px; margin-bottom: 2px; }
+
+.ark-m-top { display: flex; align-items: center; justify-content: space-between; }
+.ark-m-brand { font-family: var(--ark-font-heading); font-size: 14px; font-weight: 600; letter-spacing: 0.14em; }
+.ark-m-chip {
+  display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 999px;
+  background: var(--ark-gold-light); color: var(--ark-gold); border: 1px solid rgba(160, 111, 36, 0.25);
+}
+.ark-m-goal {
+  border: 1px solid var(--ark-line); border-radius: 8px; background: #fff; padding: 10px;
+}
+.ark-m-goal-row { display: flex; justify-content: space-between; font-size: 10px; color: var(--ark-sub); margin-bottom: 6px; }
+.ark-m-bar { height: 5px; border-radius: 3px; background: #e4e0e0; overflow: hidden; }
+.ark-m-bar i { display: block; height: 100%; background: var(--ark-gold-soft); }
+.ark-m-card { border: 1px solid var(--ark-line); border-radius: 8px; background: #fff; padding: 11px; }
+.ark-m-card-ink { background: var(--ark-ink); border-color: var(--ark-ink); }
+.ark-m-label { font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em; color: var(--ark-gold); }
+.ark-m-card-ink .ark-m-label { color: var(--ark-gold-pale); }
+.ark-m-title { font-size: 12.5px; font-weight: 700; margin: 4px 0 0; }
+.ark-m-card-ink .ark-m-title { color: #f8f4f4; }
+.ark-m-sub { font-size: 10px; color: var(--ark-sub); margin: 3px 0 0; }
+.ark-m-pill {
+  display: inline-block; margin-top: 9px; font-size: 10px; font-weight: 700;
+  padding: 4px 11px; border-radius: 6px; background: var(--ark-gold-soft); color: #201f1d;
+}
+.ark-m-pill-ghost { background: transparent; border: 1px solid var(--ark-line); color: var(--ark-sub); }
+.ark-m-card-ink .ark-m-pill-ghost { border-color: rgba(215, 181, 126, 0.4); color: var(--ark-gold-pale); }
+.ark-m-lines { display: flex; flex-direction: column; gap: 6px; }
+.ark-m-line { height: 5px; border-radius: 3px; background: #e4e0e0; }
+.ark-m-line.w90 { width: 90%; }
+.ark-m-line.w70 { width: 70%; }
+.ark-m-line.w55 { width: 55%; }
+.ark-m-line.gold { background: var(--ark-gold-pale); }
+.ark-m-dots { display: flex; gap: 4px; align-items: center; }
+.ark-m-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ark-line); }
+.ark-m-dot.on { background: var(--ark-gold); }
+.ark-m-opts { display: flex; flex-direction: column; gap: 6px; }
+.ark-m-opt {
+  display: flex; align-items: center; gap: 7px; font-size: 10px; color: var(--ark-sub);
+  border: 1px solid var(--ark-line); border-radius: 6px; padding: 7px 9px; background: #fff;
+}
+.ark-m-opt.sel { border-color: var(--ark-gold); background: var(--ark-gold-light); color: var(--ark-ink); font-weight: 600; }
+.ark-m-opt em { font-style: normal; font-weight: 700; color: var(--ark-ink); }
+.ark-m-tabs { display: flex; gap: 4px; }
+.ark-m-tab {
+  flex: 1; text-align: center; font-size: 9.5px; font-weight: 600; padding: 5px 0;
+  border: 1px solid var(--ark-line); border-radius: 5px; background: #fff; color: var(--ark-sub);
+}
+.ark-m-tab.on { background: var(--ark-ink); border-color: var(--ark-ink); color: #f8f4f4; }
+.ark-m-answer {
+  display: inline-flex; align-items: center; gap: 5px; align-self: flex-start;
+  font-size: 10px; font-weight: 700; color: #3f7a4f;
+  border: 1px solid rgba(63, 122, 79, 0.35); background: rgba(63, 122, 79, 0.09);
+  border-radius: 999px; padding: 3px 10px;
+}
+.ark-m-vocab { display: flex; flex-wrap: wrap; gap: 4px; }
+.ark-m-vocab span {
+  font-size: 9.5px; padding: 2px 7px; border-radius: 999px;
+  border: 1px solid var(--ark-line); color: var(--ark-sub); background: #fff;
+}
+.ark-m-spacer { flex: 1; }
+
+/* ── 기능 카드 안의 작은 도해 ── */
+.ark-fig {
+  height: 106px; border: 1px solid var(--ark-line); border-radius: 6px; background: #fff;
+  padding: 12px 14px; display: flex; flex-direction: column; justify-content: center; gap: 8px;
+  overflow: hidden;
+}
+.ark-fig-graph { display: block; width: 100%; height: 100%; }
+.ark-fig-graph line { stroke: #d7d3d3; stroke-width: 1.2; }
+.ark-fig-graph circle { fill: #fff; stroke: #c9c4c4; stroke-width: 1.2; }
+.ark-fig-graph circle.on { fill: var(--ark-gold-soft); stroke: var(--ark-gold); }
+.ark-fig-graph circle.weak { fill: #fff; stroke: var(--ark-gold); stroke-dasharray: 3 2; }
+.ark-fig-row { display: flex; align-items: center; gap: 7px; }
+.ark-fig-tag {
+  font-size: 9.5px; font-weight: 700; padding: 3px 8px; border-radius: 5px;
+  border: 1px solid var(--ark-line); color: var(--ark-sub); background: var(--ark-bg);
+}
+.ark-fig-tag.on { background: var(--ark-ink); border-color: var(--ark-ink); color: #f8f4f4; }
+.ark-fig-tag.gold { background: var(--ark-gold-light); border-color: rgba(160, 111, 36, 0.3); color: var(--ark-gold); }
+.ark-fig-line { height: 5px; border-radius: 3px; background: #e4e0e0; flex: 1; }
+.ark-fig-line.gold { background: var(--ark-gold-pale); }
+.ark-fig-bars { display: flex; align-items: flex-end; gap: 7px; height: 52px; }
+.ark-fig-bars i { flex: 1; border-radius: 2px 2px 0 0; background: #e4e0e0; }
+.ark-fig-bars i.on { background: var(--ark-gold-soft); }
+.ark-fig-streak { display: flex; gap: 6px; align-items: center; }
+.ark-fig-streak span {
+  width: 17px; height: 17px; border-radius: 5px; border: 1px solid var(--ark-line); background: var(--ark-bg);
+}
+.ark-fig-streak span.on { background: var(--ark-gold-soft); border-color: var(--ark-gold); }
+.ark-fig-code { display: flex; gap: 5px; }
+.ark-fig-code span {
+  width: 21px; height: 26px; border-radius: 5px; border: 1px solid var(--ark-line); background: var(--ark-bg);
+  display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--ark-sub);
+}
+.ark-fig-code span.on { border-color: var(--ark-gold); color: var(--ark-gold); background: var(--ark-gold-light); }
+.ark-fig-cap { font-size: 10px; color: var(--ark-sub); }
+
+/* ── 요금제 ── */
+.ark-plans { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.ark-plan {
+  border: 1px solid var(--ark-line); border-radius: var(--ark-radius);
+  padding: 28px 26px; background: var(--ark-paper);
+}
+.ark-plan-featured { border-color: var(--ark-gold); background: #fff; }
+.ark-plan-name { font-size: 14px; font-weight: 700; color: var(--ark-gold); margin: 0; }
+.ark-price { font-size: 30px; font-weight: 700; margin: 10px 0 0; letter-spacing: -0.02em; }
+.ark-price small { font-size: 14px; font-weight: 500; color: var(--ark-sub); margin-left: 4px; }
+.ark-price-sub { font-size: 13px; color: var(--ark-sub); margin: 6px 0 0; }
+.ark-plan-list { list-style: none; padding: 0; margin: 20px 0 0; }
+.ark-plan-list li {
+  display: flex; gap: 9px; align-items: flex-start;
+  font-size: 14px; color: var(--ark-ink-soft); padding: 5px 0;
+}
+.ark-plan-list svg { flex: none; margin-top: 3px; color: var(--ark-gold); }
+.ark-plan-note { font-size: 12.5px; color: var(--ark-sub); margin: 18px 0 0; }
+
+/* 플랜 비교표 */
+.ark-compare-wrap {
+  margin-top: 16px; border: 1px solid var(--ark-line); border-radius: var(--ark-radius);
+  overflow: hidden; background: var(--ark-paper);
+}
+.ark-compare { width: 100%; border-collapse: collapse; font-size: 14px; }
+.ark-compare th, .ark-compare td { padding: 13px 16px; border-bottom: 1px solid var(--ark-line); }
+.ark-compare tr:last-child th, .ark-compare tr:last-child td { border-bottom: none; }
+.ark-compare thead th { background: #fff; font-size: 13px; font-weight: 700; text-align: center; }
+.ark-compare thead th:first-child { text-align: left; color: var(--ark-sub); font-weight: 500; }
+.ark-compare thead th.gold { color: var(--ark-gold); }
+.ark-compare tbody th { text-align: left; font-weight: 600; color: var(--ark-ink); }
+.ark-compare td { text-align: center; color: var(--ark-ink-soft); }
+.ark-compare td.muted { color: #b0abab; }
+.ark-compare td.yes { color: var(--ark-gold); }
+.ark-compare .col-premium { background: #fff; }
+
+/* ── FAQ ── */
+.ark-faq { width: 100%; }
+.ark-faq-item {
+  border: 1px solid var(--ark-line); border-radius: var(--ark-radius);
+  background: var(--ark-paper); padding: 2px 18px; margin-bottom: 10px;
+}
+.ark-faq-item summary {
+  cursor: pointer; font-weight: 600; font-size: 15.5px; padding: 14px 0; list-style: none;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+}
+.ark-faq-item summary::-webkit-details-marker { display: none; }
+.ark-faq-item summary::after {
+  content: ''; flex: none; width: 15px; height: 15px;
+  background-color: var(--ark-gold);
+  -webkit-mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform 0.2s ease;
+}
+.ark-faq-item[open] summary::after { transform: rotate(180deg); }
+.ark-faq-item p { margin: 0 0 16px; color: var(--ark-sub); font-size: 14.5px; }
+
+/* ── CTA band ── */
+.ark-cta-band {
+  margin-top: 80px; background: var(--ark-ink); color: var(--ark-paper);
+  border-radius: var(--ark-radius); padding: 52px 28px; text-align: center;
+}
+.ark-cta-band h2 { font-size: 26px; margin: 0 0 8px; }
+.ark-cta-band p { color: #9b9797; margin: 0 0 24px; font-size: 15px; }
+
+/* ── Footer ── */
+.ark-footer {
+  border-top: 1px solid var(--ark-line); margin-top: 72px; padding: 32px 24px 40px;
+  text-align: center;
+}
+.ark-footer-links {
+  display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+  font-size: 14px; margin-bottom: 16px;
+}
+.ark-footer-links a { color: var(--ark-sub); }
+.ark-footer-company { color: var(--ark-sub); font-size: 12.5px; line-height: 1.95; }
+.ark-footer-copy { color: #9b9797; font-size: 12px; margin-top: 12px; }
+
+/* ── 법적 고지 페이지(개인정보처리방침 · 이용약관) ── */
+.ark-legal { max-width: 760px; margin: 0 auto; padding: 48px 24px 8px; }
+.ark-legal-head { border-bottom: 1px solid var(--ark-line); padding-bottom: 22px; }
+.ark-legal h1 { font-size: 30px; margin: 0; }
+.ark-legal-meta { color: var(--ark-sub); font-size: 13px; margin: 8px 0 0; }
+.ark-legal-intro { font-size: 15px; color: var(--ark-ink-soft); margin: 26px 0 0; }
+.ark-legal section { margin-top: 34px; }
+.ark-legal h2 { font-size: 19px; margin: 0 0 12px; }
+.ark-legal p { font-size: 14.5px; color: var(--ark-ink-soft); margin: 0 0 12px; line-height: 1.85; }
+.ark-legal p:last-child { margin-bottom: 0; }
+.ark-legal-fine { font-size: 13px; color: var(--ark-sub); }
+.ark-legal strong { color: var(--ark-ink); }
+.ark-legal-table-wrap {
+  border: 1px solid var(--ark-line); border-radius: var(--ark-radius);
+  overflow: hidden; margin-bottom: 12px;
+}
+.ark-legal-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+.ark-legal-table th {
+  background: var(--ark-paper); border-bottom: 1px solid var(--ark-line);
+  padding: 10px 12px; font-weight: 600; color: var(--ark-ink);
+}
+.ark-legal-table td {
+  border-bottom: 1px solid var(--ark-line); padding: 10px 12px;
+  color: var(--ark-ink-soft); vertical-align: top;
+}
+.ark-legal-table tr:last-child td { border-bottom: none; }
+.ark-legal-box {
+  border: 1px solid var(--ark-line); border-radius: var(--ark-radius);
+  background: var(--ark-paper); padding: 16px 18px; font-size: 13px; line-height: 1.95;
+}
+/* 지원 페이지처럼 법적 고지 레이아웃 안에 FAQ가 들어갈 때. */
+.ark-legal .ark-faq-item summary { font-size: 15px; }
+.ark-legal .ark-faq-item p { color: var(--ark-sub); margin: 0 0 16px; }
+.ark-legal .ark-legal-box strong { font-weight: 700; }
+
+.ark-legal-foot {
+  margin-top: 48px; border-top: 1px solid var(--ark-line); padding-top: 22px;
+  font-size: 13px; color: var(--ark-sub);
+}
+.ark-legal-foot span { padding: 0 8px; }
+
+/* ── Responsive ── */
+@media (max-width: 880px) {
+  .ark-features { grid-template-columns: repeat(2, 1fr); }
+  .ark-stats { grid-template-columns: repeat(2, 1fr); }
+  .ark-phones { grid-template-columns: 1fr; gap: 34px; }
+}
+
+@media (max-width: 720px) {
+  .ark-container { padding: 0 18px; }
+  .ark-nav-inner { padding: 10px 18px; gap: 10px; }
+  .ark-nav-links { gap: 12px; font-size: 13px; }
+  .ark-nav-cta { padding: 5px 11px; }
+  .ark-hero { padding-top: 56px; }
+  .ark-hero-title { font-size: 31px; }
+  .ark-hero-sub { font-size: 15.5px; }
+  .ark-section { padding-top: 56px; }
+  .ark-section-title { font-size: 23px; }
+  .ark-subjects, .ark-steps, .ark-features, .ark-plans { grid-template-columns: 1fr; }
+  .ark-cta-band { padding: 40px 22px; }
+  .ark-legal h1 { font-size: 25px; }
+}
+
+@media (max-width: 520px) {
+  .ark-nav-links .ark-nav-hide { display: none; }
+  .ark-stats { grid-template-columns: repeat(2, 1fr); }
+  .ark-compare th, .ark-compare td { padding: 11px 10px; font-size: 12.5px; }
+  .ark-legal-table { font-size: 12.5px; }
+  .ark-legal-table th, .ark-legal-table td { padding: 8px 9px; }
+}
