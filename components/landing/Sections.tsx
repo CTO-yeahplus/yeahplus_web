@@ -5,7 +5,8 @@ import {
   ArrowRight, Brain, Youtube, ChevronRight, Zap, Globe, Layers,
   ArrowUpRight, Check, Play, Calendar, Clock,
   Server, Activity, Shield, // ✅ Server, Activity 아이콘 추가됨
-  Cat, Camera, Shirt // ✅ 라이브 4개 앱 아이콘
+  Cat, Camera, Shirt, // ✅ 라이브 4개 앱 아이콘
+  Dog, PlaneLanding, GraduationCap, Type, Dices, Moon // ✅ 신규 앱 아이콘
 } from "lucide-react";
 import Link from "next/link";
 import React, { useState, MouseEvent } from "react";
@@ -193,10 +194,11 @@ function PremiumSpotlightCard({
 export function Ecosystem() {
   const { t } = useLanguage(); // 💡 언어 데이터 불러오기
 
-  // 라이브 4개 앱 — 모두 yeahplus 자체 제작 (AI × Content)
+  // yeahplus 자체 제작 앱 — 라이브 4종 + 출시 준비 중 5종 (AI × Content)
   const apps: {
     name: string; Icon: typeof Brain; logo: string | null; logoBg: string; image: string | null;
     href: string; domain: string; accent: string; hover: string; desc: string; badges: readonly string[];
+    status?: "live" | "soon"; fit?: "cover" | "contain";
   }[] = [
     { name: "묘해 (MYOHAE)", Icon: Cat, logo: "/meow/myohae_logo.png", logoBg: "#ffffff", image: "/img/meow.jpg",
       href: "https://yeahplus.co.kr/meow", domain: "yeahplus.co.kr/meow",
@@ -210,6 +212,24 @@ export function Ecosystem() {
     { name: "뇌새김 (NeuroVoca)", Icon: Brain, logo: null, logoBg: "#ffffff", image: null,
       href: "https://neurovoca.co.kr", domain: "neurovoca.co.kr",
       accent: "#818cf8", hover: "rgba(79,70,229,0.14)", desc: t.ecosystem.neuro.desc, badges: t.ecosystem.neuro.badges },
+    { name: "월덕 (WOLDEOK)", Icon: Moon, logo: "/img/woldeok_logo.png", logoBg: "#0f1424", image: "/img/woldeok_wide.png",
+      href: "https://woldeok.app", domain: "woldeok.app",
+      accent: "#f6c86b", hover: "rgba(246,200,107,0.12)", desc: t.ecosystem.woldeok.desc, badges: t.ecosystem.woldeok.badges },
+    { name: "멍해 (MUNGHAE)", Icon: Dog, logo: "/munghae/munghae_logo.png", logoBg: "#0e1330", image: "/munghae/ss.png",
+      href: "https://yeahplus.co.kr/munghae", domain: "yeahplus.co.kr/munghae",
+      accent: "#f4c77b", hover: "rgba(244,199,123,0.12)", desc: t.ecosystem.munghae.desc, badges: t.ecosystem.munghae.badges, status: "soon" },
+    { name: "TOWER 68", Icon: PlaneLanding, logo: "/tower68/tower68_logo.png", logoBg: "#0b1020", image: "/tower68/ss.png",
+      href: "https://yeahplus.co.kr/tower68", domain: "yeahplus.co.kr/tower68",
+      accent: "#ffc93c", hover: "rgba(255,201,60,0.12)", desc: t.ecosystem.tower68.desc, badges: t.ecosystem.tower68.badges, status: "soon" },
+    { name: "ARKE", Icon: GraduationCap, logo: "/arke/arke_logo.png", logoBg: "#f3f2f2", image: "/arke/ss.png",
+      href: "https://yeahplus.co.kr/arke", domain: "yeahplus.co.kr/arke",
+      accent: "#c28d41", hover: "rgba(182,130,53,0.14)", desc: t.ecosystem.arke.desc, badges: t.ecosystem.arke.badges, status: "soon" },
+    { name: "WORDFORGE", Icon: Type, logo: "/wordforge/wordforge_logo.png", logoBg: "#16130f", image: "/wordforge/ss.png",
+      href: "https://yeahplus.co.kr/wordforge", domain: "yeahplus.co.kr/wordforge",
+      accent: "#ffd27a", hover: "rgba(255,210,122,0.12)", desc: t.ecosystem.wordforge.desc, badges: t.ecosystem.wordforge.badges, status: "soon" },
+    { name: "PIPFORGE", Icon: Dices, logo: "/pipforge/pipforge_icon.png", logoBg: "#16130f", image: "/pipforge/ss.png",
+      href: "https://yeahplus.co.kr/pipforge", domain: "yeahplus.co.kr/pipforge",
+      accent: "#e8a33d", hover: "rgba(232,163,61,0.14)", desc: t.ecosystem.pipforge.desc, badges: t.ecosystem.pipforge.badges, status: "soon" },
   ];
 
   return (
@@ -226,9 +246,29 @@ export function Ecosystem() {
               >
                 {app.image ? (
                   <>
+                    {/* 세로 스크린샷·로고 아트는 흐린 배경 위에 전체를 보여준다 */}
+                    {app.fit === "contain" && (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={app.image}
+                        alt=""
+                        aria-hidden
+                        className="absolute inset-0 w-full h-full object-cover scale-125 blur-2xl opacity-40"
+                      />
+                    )}
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={app.image} alt={`${app.name} 미리보기`} className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                    <img
+                      src={app.image}
+                      alt={`${app.name} 미리보기`}
+                      className={`absolute inset-0 w-full h-full ${
+                        app.fit === "contain"
+                          ? "object-contain p-3 drop-shadow-[0_12px_32px_rgba(0,0,0,0.65)]"
+                          : "object-cover"
+                      }`}
+                    />
+                    {app.fit !== "contain" && (
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                    )}
                   </>
                 ) : (
                   <>
@@ -253,10 +293,14 @@ export function Ecosystem() {
                   )}
                   <h3 className="text-3xl font-bold text-white transition-colors">{app.name}</h3>
                   <span
-                    className="px-2 py-0.5 rounded-full text-[10px] font-bold tracking-widest uppercase border"
-                    style={{ color: app.accent, borderColor: `${app.accent}55`, background: `${app.accent}1a` }}
+                    className="px-2 py-0.5 rounded-full text-[10px] font-bold tracking-widest uppercase border whitespace-nowrap"
+                    style={
+                      app.status === "soon"
+                        ? { color: "#a1a1aa", borderColor: "rgba(255,255,255,0.18)", background: "rgba(255,255,255,0.05)" }
+                        : { color: app.accent, borderColor: `${app.accent}55`, background: `${app.accent}1a` }
+                    }
                   >
-                    Live
+                    {app.status === "soon" ? t.ecosystem.soon : "Live"}
                   </span>
                 </div>
                 <p className="text-xl text-zinc-400 font-medium mb-6">{app.desc}</p>

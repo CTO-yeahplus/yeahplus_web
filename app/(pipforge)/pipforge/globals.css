@@ -1,0 +1,163 @@
+/* PIPFORGE — 원본 src/site.css 를 그대로 옮기고 클래스만 pf- 프리픽스로 네임스페이스했다.
+   (라우트 그룹이라 다른 사이트의 스타일과 섞이지 않지만, 표기를 통일해 둔다.) */
+:root {
+  --pf-bg: #16130f;
+  --pf-bg2: #241c11;
+  --pf-panel: #241f18;
+  --pf-line: #3d3527;
+  --pf-amber: #e8a33d;
+  --pf-gold: #ffd27a;
+  --pf-ink: #f0e8d8;
+  --pf-dim: #a89a80;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--pf-bg);
+  color: var(--pf-ink);
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Segoe UI',
+    'Noto Sans KR', Roboto, sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+a { color: var(--pf-amber); }
+
+.pf-app { display: flex; flex-direction: column; min-height: 100vh; }
+
+/* nav */
+.pf-nav {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 14px clamp(16px, 4vw, 48px); border-bottom: 1px solid var(--pf-line);
+  position: sticky; top: 0; background: rgba(22, 19, 15, 0.92);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 10;
+}
+.pf-nav-logo {
+  font-family: Georgia, 'Times New Roman', serif; font-size: 20px; letter-spacing: 2px;
+  color: var(--pf-gold); text-decoration: none; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.pf-nav-logo b { color: var(--pf-amber); }
+.pf-nav-logo img { width: 26px; height: 26px; border-radius: 7px; display: block; }
+.pf-nav-links { display: flex; gap: clamp(10px, 2.5vw, 22px); align-items: center; flex-wrap: wrap; }
+.pf-nav-links a { color: var(--pf-dim); text-decoration: none; font-size: 14.5px; font-weight: 600; white-space: nowrap; }
+.pf-nav-links a.on, .pf-nav-links a:hover { color: var(--pf-gold); }
+.pf-lang-btn {
+  background: var(--pf-panel); border: 1px solid var(--pf-line); color: var(--pf-dim);
+  border-radius: 16px; padding: 5px 13px; font-size: 12.5px; font-weight: 700; cursor: pointer;
+  font-family: inherit;
+}
+.pf-lang-btn:hover { color: var(--pf-gold); border-color: var(--pf-amber); }
+
+.pf-main { flex: 1; width: 100%; max-width: 1000px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px); }
+
+/* hero */
+.pf-hero {
+  text-align: center; padding: 72px 0 56px;
+  background: radial-gradient(ellipse 90% 60% at 50% 0%, rgba(232, 163, 61, 0.1), transparent 70%);
+}
+.pf-hero-icon {
+  width: 112px; height: 112px; border-radius: 26px;
+  box-shadow: 0 12px 44px rgba(0, 0, 0, 0.6); margin: 0 auto 22px; display: block;
+}
+.pf-hero-tag { font-size: 13px; letter-spacing: 4px; color: var(--pf-dim); text-transform: uppercase; margin-bottom: 10px; }
+.pf-hero h1 {
+  font-family: Georgia, 'Times New Roman', serif; font-size: clamp(38px, 7vw, 64px); line-height: 1.15;
+  color: var(--pf-gold); text-shadow: 0 0 40px rgba(232, 163, 61, 0.35); margin-bottom: 18px;
+}
+.pf-hero-sub { max-width: 560px; margin: 0 auto 30px; color: var(--pf-ink); font-size: 16.5px; }
+.pf-cta {
+  display: inline-block; background: linear-gradient(180deg, #f0b04a, #cf8b25); color: #241a08;
+  font-weight: 800; font-size: 17px; padding: 15px 30px; border-radius: 14px; text-decoration: none;
+  box-shadow: 0 4px 0 #8a5d16, 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+.pf-cta:hover { filter: brightness(1.07); }
+.pf-cta-small { font-size: 14.5px; padding: 11px 20px; margin: 14px 0 6px; }
+.pf-cta-sub { margin-top: 12px; color: var(--pf-dim); font-size: 13.5px; }
+.pf-badge-line { margin-top: 26px; color: var(--pf-amber); font-size: 14px; font-weight: 700; letter-spacing: 0.5px; }
+
+/* features */
+.pf-features { padding: 40px 0 8px; }
+.pf-features h2, .pf-shots h2 {
+  font-family: Georgia, 'Times New Roman', serif; font-size: 26px; color: var(--pf-gold);
+  text-align: center; margin-bottom: 26px;
+}
+.pf-feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+.pf-feature { background: var(--pf-panel); border: 1px solid var(--pf-line); border-radius: 14px; padding: 20px 22px; }
+.pf-f-ico {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 10px; margin-bottom: 10px;
+  border: 1px solid var(--pf-line); background: #1c1812; color: var(--pf-amber);
+}
+.pf-f-ico svg { display: block; }
+.pf-feature h3 { font-size: 16.5px; color: var(--pf-gold); margin-bottom: 6px; }
+.pf-feature p { font-size: 14px; color: var(--pf-dim); }
+
+/* screenshots */
+.pf-shots { padding: 44px 0 30px; }
+.pf-shot-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.pf-shot-row img {
+  width: min(260px, 80vw); height: auto; border-radius: 22px; border: 1px solid var(--pf-line);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+}
+
+/* doc pages */
+.pf-doc { padding: 52px 0 60px; max-width: 760px; }
+.pf-doc h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 32px; color: var(--pf-gold); margin-bottom: 6px; }
+.pf-doc-sub { color: var(--pf-dim); font-size: 13.5px; margin-bottom: 22px; }
+.pf-doc h3 { font-size: 17px; color: var(--pf-amber); margin: 26px 0 8px; }
+.pf-doc p { font-size: 15px; margin-bottom: 8px; }
+.pf-callout {
+  background: var(--pf-panel); border: 1px solid var(--pf-line); border-left: 3px solid var(--pf-amber);
+  border-radius: 10px; padding: 16px 18px; font-weight: 700; color: var(--pf-gold); margin: 14px 0 8px;
+}
+
+/* faq */
+.pf-faq-list { margin-top: 26px; }
+.pf-faq { background: var(--pf-panel); border: 1px solid var(--pf-line); border-radius: 12px; padding: 0 18px; margin-bottom: 10px; }
+.pf-faq summary {
+  cursor: pointer; font-weight: 700; font-size: 15px; padding: 15px 0; color: var(--pf-ink);
+  list-style: none; position: relative; padding-right: 26px;
+}
+.pf-faq summary::-webkit-details-marker { display: none; }
+.pf-faq summary::after {
+  content: ''; position: absolute; right: 2px; top: 50%; margin-top: -8px;
+  width: 16px; height: 16px; background-color: var(--pf-amber);
+  -webkit-mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform 0.2s ease;
+}
+.pf-faq[open] summary::after { transform: rotate(180deg); }
+.pf-faq p { color: var(--pf-dim); font-size: 14.5px; padding-bottom: 15px; }
+
+/* 메일 버튼 폴백(주소 복사) */
+.pf-mailrow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 14px 0 6px; }
+.pf-copybtn {
+  font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer;
+  padding: 10px 16px; border-radius: 12px;
+  background: transparent; border: 1px solid var(--pf-line); color: var(--pf-dim);
+}
+.pf-copybtn:hover { border-color: var(--pf-amber); color: var(--pf-gold); }
+.pf-mailhint { flex-basis: 100%; font-size: 12.5px; color: #8d8168; }
+
+/* footer */
+.pf-footer {
+  border-top: 1px solid var(--pf-line); margin-top: 40px; padding: 26px clamp(16px, 4vw, 48px);
+  text-align: center; color: var(--pf-dim); font-size: 13px; line-height: 2;
+}
+.pf-footer-links a { color: var(--pf-dim); text-decoration: none; }
+.pf-footer-links a:hover { color: var(--pf-gold); text-decoration: underline; }
+.pf-footer-company { margin-top: 10px; font-size: 12.5px; line-height: 1.9; color: #8d8168; }
+
+@media (max-width: 560px) {
+  .pf-nav { padding: 10px 16px; }
+  .pf-nav-logo { font-size: 17px; letter-spacing: 1px; }
+  .pf-nav-links { gap: 10px; }
+  .pf-nav-links a { font-size: 13.5px; }
+  .pf-hero { padding-top: 48px; }
+  .pf-doc h1 { font-size: 26px; }
+}

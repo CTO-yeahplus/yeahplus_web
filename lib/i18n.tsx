@@ -15,7 +15,14 @@ export const dictionaries = {
       stills: { desc: "한달 24컷, 3일의 기다림. 디지털 시대의 아날로그 필름.", badges: ["필름 18종", "AI 그레이딩", "3일 현상"] },
       aura: { desc: "오늘의 룩을 발견하고, 바로 따라 사는 패션·뷰티 커뮤니티.", badges: ["AI 개인화", "바로 쇼핑", "OOTD"] },
       neuro: { desc: "뇌과학이 설계한 AI 영어 암기 엔진.", badges: ["FSRS 4.5", "AI 맥락 학습", "개인화"] },
+      woldeok: { desc: "생년월일만 넣으면 사주 원국과 오늘의 흐름을 읽어주는 운세.", badges: ["사주 원국", "오늘의 운세", "웹에서 바로"] },
+      munghae: { desc: "우리 강아지의 하루를 AI가 그려주는 반려 다이어리.", badges: ["AI 아트", "생활공간", "반려 기록"] },
+      tower68: { desc: "JFK 관제탑 31년, 1시간 68대. 손끝으로 하늘의 질서를.", badges: ["라인 드로잉", "버터 랜딩", "캐주얼 아케이드"] },
+      arke: { desc: "오늘 뭘 풀지 정해주는 고2 수능 코치. 수학 + 영어.", badges: ["오답 진단", "AI 3단 해설", "개념맵"] },
+      wordforge: { desc: "자모를 이어 낱말을 만들고 점수를 터뜨리는 워드 로그라이크.", badges: ["한글 조합", "로그라이크", "오프라인"] },
+      pipforge: { desc: "주사위 눈을 직접 세공해 배율을 쌓는 주사위 로그라이크.", badges: ["주사위 세공", "참 45종", "광고 없음"] },
       visit: "방문하기",
+      soon: "준비 중",
     },
     architect: {
       title: "The Architect",
@@ -35,11 +42,11 @@ export const dictionaries = {
           { year: "Future", title: "The Next", desc: "AI × Content로 일상의 더 많은 콘텐츠를 확장합니다. 사진·필름·패션·학습을 넘어, 매일의 순간이 AI로 완성되는 미래." },
           {
             year: "2026", title: "AI × Content 생태계",
-            descMain: "사진·필름·패션·학습, 네 개의 라이브 앱으로 AI × Content 생태계를 완성했습니다.",
-            proj1Title: "묘해 · 24STILLS",
-            proj1Desc: "집에서 찍은 반려동물을 AI 아트로. 아날로그 필름 카메라의 감성을 디지털로.",
-            proj2Title: "AURA · 뇌새김",
-            proj2Desc: "취향 기반 패션·뷰티 큐레이션과, 뇌과학이 설계한 AI 영어 암기 엔진."
+            descMain: "사진·필름·패션·학습에 운세까지, 다섯 개의 라이브 서비스로 생태계를 넓혔습니다. 여기에 게임과 학습 앱 다섯 개가 출시를 준비하고 있습니다.",
+            proj1Title: "라이브 — 묘해 · 24STILLS · AURA · 뇌새김 · 월덕",
+            proj1Desc: "반려동물 AI 아트, 아날로그 필름, 취향 기반 패션·뷰티, 뇌과학 암기 엔진, 그리고 사주로 읽는 오늘의 흐름.",
+            proj2Title: "준비 중 — 멍해 · TOWER 68 · ARKE · WORDFORGE · PIPFORGE",
+            proj2Desc: "반려 다이어리와 고2 수능 코치, 그리고 관제·낱말·주사위 세 편의 아케이드 로그라이크."
           },
           { year: "2025", title: "뇌새김 (NeuroVoca)", desc: "기억의 유효기간을 재정의하다. 뇌과학 기반 AI 암기 엔진의 정식 런칭." },
           { year: "2024", title: "Content Labs", desc: "AI × Content 실험의 시작. 사진·영상·학습 도메인에서 아이디어를 프로토타이핑하며 방향을 다졌습니다." },
@@ -59,7 +66,14 @@ export const dictionaries = {
       stills: { desc: "24 frames a day, a 3-day wait. Analog film in a digital age.", badges: ["18 Films", "AI Grading", "3-Day Develop"] },
       aura: { desc: "Discover today's look and shop it right away.", badges: ["AI Personalization", "Instant Shop", "OOTD"] },
       neuro: { desc: "An AI English memory engine designed by neuroscience.", badges: ["FSRS 4.5", "AI Context", "Personalized"] },
+      woldeok: { desc: "Enter your birth date and read your saju chart and today's flow.", badges: ["Saju Chart", "Daily Fortune", "On the Web"] },
+      munghae: { desc: "A companion diary where AI illustrates your dog's day.", badges: ["AI Art", "Living Space", "Pet Journal"] },
+      tower68: { desc: "31 years in the JFK tower, 68 landings in one hour.", badges: ["Line Drawing", "Butter Landing", "Casual Arcade"] },
+      arke: { desc: "A Korean SAT coach that decides what to study today. Math + English.", badges: ["Error Diagnosis", "3-Step AI Explainer", "Concept Map"] },
+      wordforge: { desc: "Chain letters into words and blow up the score. A word roguelike.", badges: ["Hangul Assembly", "Roguelike", "Offline"] },
+      pipforge: { desc: "Chisel your own dice and stack absurd multipliers.", badges: ["Dice Forging", "45 Charms", "No Ads"] },
       visit: "Visit",
+      soon: "Coming Soon",
     },
     architect: {
       title: "The Architect",
@@ -79,11 +93,11 @@ export const dictionaries = {
           { year: "Future", title: "The Next", desc: "Expanding AI × Content to more of everyday life — beyond photos, film, fashion, and learning, toward a future where every moment is completed by AI." },
           {
             year: "2026", title: "AI × Content Ecosystem",
-            descMain: "Photos, film, fashion, and learning — four live apps completing our AI × Content ecosystem.",
-            proj1Title: "MYOHAE · 24STILLS",
-            proj1Desc: "Turn your pet's photos into AI art, and bring the analog film camera feeling to digital.",
-            proj2Title: "AURA · NeuroVoca",
-            proj2Desc: "Taste-based fashion & beauty curation, and a neuroscience-designed AI English memory engine."
+            descMain: "Photos, film, fashion, learning — and now fortune. Five live services, with five more games and learning apps preparing to launch.",
+            proj1Title: "LIVE — MYOHAE · 24STILLS · AURA · NeuroVoca · WOLDEOK",
+            proj1Desc: "Pet photos as AI art, analog film in a digital age, taste-based fashion curation, a neuroscience memory engine, and today's flow read from your saju chart.",
+            proj2Title: "COMING SOON — MUNGHAE · TOWER 68 · ARKE · WORDFORGE · PIPFORGE",
+            proj2Desc: "A companion diary and a Korean SAT coach, plus three arcade roguelikes built on air traffic, words, and dice."
           },
           { year: "2025", title: "NeuroVoca", desc: "Redefining the expiration date of memory. Official launch of the neuroscience-based AI memorization engine." },
           { year: "2024", title: "Content Labs", desc: "The start of our AI × Content experiments — prototyping ideas across photo, video, and learning domains." },
