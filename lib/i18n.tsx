@@ -39,7 +39,7 @@ export const dictionaries = {
         title: "The Horizon.",
         subtitle: "From Genesis to AI × Content.",
         steps: [
-          { year: "Future", title: "The Next", desc: "AI × Content로 일상의 더 많은 콘텐츠를 확장합니다. 사진·필름·패션·학습을 넘어, 매일의 순간이 AI로 완성되는 미래." },
+          { year: "Future", title: "The Next", desc: "사진·필름·패션·학습·운세·게임을 넘어, 일상의 더 많은 순간으로 AI × Content를 확장합니다. 오늘 무엇을 보고 무엇을 할지, 그 사소한 선택까지 AI가 함께 완성하는 미래." },
           {
             year: "2026", title: "AI × Content 생태계",
             descMain: "사진·필름·패션·학습에 운세까지, 다섯 개의 라이브 서비스로 생태계를 넓혔습니다. 여기에 게임과 학습 앱 다섯 개가 출시를 준비하고 있습니다.",
@@ -90,7 +90,7 @@ export const dictionaries = {
         title: "The Horizon.",
         subtitle: "From Genesis to AI × Content.",
         steps: [
-          { year: "Future", title: "The Next", desc: "Expanding AI × Content to more of everyday life — beyond photos, film, fashion, and learning, toward a future where every moment is completed by AI." },
+          { year: "Future", title: "The Next", desc: "Beyond photos, film, fashion, learning, fortune, and games — expanding AI × Content into more moments of everyday life, down to the small choices of what to see and what to do today." },
           {
             year: "2026", title: "AI × Content Ecosystem",
             descMain: "Photos, film, fashion, learning — and now fortune. Five live services, with five more games and learning apps preparing to launch.",

@@ -1,0 +1,170 @@
+/* Jadeforge — 원본 정적 사이트의 스타일을 그대로 옮기고 클래스는 jf- 프리픽스로 네임스페이스했다. */
+:root {
+  --jf-bg: #0e1a13;
+  --jf-panel: #16241b;
+  --jf-panel2: #1e3024;
+  --jf-line: #2e4636;
+  --jf-ink: #e8f2e8;
+  --jf-dim: #8fa896;
+  --jf-gold: #ffd27a;
+  --jf-amber: #e8a33d;
+  --jf-jade: #7fd8a8;
+  --jf-red: #c23b2e;
+  --jf-accent: var(--jf-jade);
+  --jf-brand: var(--jf-jade);
+  --jf-h1b: var(--jf-gold);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--jf-bg);
+  color: var(--jf-ink);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo',
+    'Noto Sans KR', Roboto, sans-serif;
+  line-height: 1.7;
+  overflow-x: hidden;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+a { color: var(--jf-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.jf-app { min-height: 100vh; display: flex; flex-direction: column; }
+.jf-wrap { max-width: 860px; margin: 0 auto; padding: 0 22px; width: 100%; }
+.jf-main { flex: 1; }
+
+/* ── nav ── */
+.jf-nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 0; flex-wrap: wrap; }
+.jf-brand {
+  display: inline-flex; align-items: center; gap: 8px; font-family: Georgia, 'Times New Roman', serif;
+  letter-spacing: 2px; color: var(--jf-brand); font-weight: bold; white-space: nowrap;
+}
+.jf-brand:hover { text-decoration: none; }
+.jf-links { display: flex; gap: 18px; align-items: center; font-size: 14px; color: var(--jf-dim); flex-wrap: wrap; }
+.jf-links a { color: var(--jf-dim); }
+.jf-links a:hover { color: var(--jf-ink); text-decoration: none; }
+.jf-links a.on { color: var(--jf-brand); }
+.jf-lang-btn {
+  background: var(--jf-panel2); border: 1px solid var(--jf-line); color: var(--jf-ink);
+  border-radius: 16px; padding: 4px 12px; font-size: 13px; cursor: pointer; font-family: inherit;
+}
+.jf-lang-btn:hover { border-color: var(--jf-accent); color: var(--jf-brand); }
+
+/* ── hero ── */
+.jf-header {
+  position: relative; text-align: center; padding: 64px 0 70px;
+  background: radial-gradient(ellipse at 50% 0%, #15281c 0%, var(--jf-bg) 68%);
+}
+.jf-emblem { position: relative; width: 104px; height: 104px; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; }
+.jf-em-ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--jf-jade), var(--jf-gold), #1a5236, var(--jf-jade));
+  -webkit-mask: radial-gradient(circle, transparent 0 57%, #000 58%);
+  mask: radial-gradient(circle, transparent 0 57%, #000 58%);
+  animation: jf-spin 14s linear infinite;
+}
+@keyframes jf-spin { to { transform: rotate(360deg); } }
+.jf-em-glyph { font-size: 48px; color: var(--jf-jade); text-shadow: 0 0 30px rgba(127, 216, 168, 0.65); font-weight: bold; }
+.jf-h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 44px; letter-spacing: 4px; color: var(--jf-brand); }
+.jf-h1 b { color: var(--jf-h1b); }
+.jf-tagline { color: var(--jf-dim); letter-spacing: 3px; font-size: 13px; text-transform: uppercase; margin-top: 6px; }
+.jf-pitch { max-width: 560px; margin: 22px auto 0; font-size: 17px; }
+.jf-store-row { margin-top: 30px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; align-items: center; }
+.jf-store-btn {
+  display: inline-flex; align-items: center; gap: 10px; background: #000; border: 1px solid #444;
+  color: #fff; border-radius: 12px; padding: 10px 22px; font-size: 15px; font-weight: 600;
+}
+.jf-store-btn:hover { text-decoration: none; border-color: #666; }
+.jf-store-btn small { display: block; font-size: 10.5px; color: #aaa; font-weight: 400; line-height: 1.2; text-align: left; }
+.jf-price-tag { align-self: center; color: var(--jf-dim); font-size: 13px; }
+[aria-disabled='true'] { opacity: 0.55; pointer-events: none; }
+
+/* ── 떠다니는 장식 ── */
+.jf-floats { position: absolute; inset: 0; overflow: hidden; pointer-events: none; opacity: 0.55; }
+.jf-ft {
+  position: absolute; width: 52px; height: 68px; border-radius: 7px;
+  background: linear-gradient(160deg, #fdf9ee, #eadfc2);
+  border-bottom: 4px solid #2f6e4c;
+  display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5); animation: jf-drift 9s ease-in-out infinite;
+}
+.jf-ft.g { color: #2f7a4c; }
+.jf-ft.r { color: var(--jf-red); }
+.jf-ft.a { color: #b8862e; }
+.jf-ft.w { color: #3a5a8a; }
+@keyframes jf-drift {
+  0%, 100% { transform: translateY(0) rotate(var(--r, -8deg)); }
+  50% { transform: translateY(-16px) rotate(calc(var(--r, -8deg) + 4deg)); }
+}
+
+/* ── sections ── */
+.jf-section { padding: 52px 0; border-top: 1px solid var(--jf-line); }
+.jf-h2 { font-family: Georgia, 'Times New Roman', serif; color: var(--jf-brand); font-size: 26px; margin-bottom: 20px; letter-spacing: 1px; }
+.jf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.jf-feat { background: var(--jf-panel); border: 1px solid var(--jf-line); border-radius: 14px; padding: 18px 20px; }
+.jf-fi {
+  display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px;
+  border-radius: 10px; border: 1px solid var(--jf-line); background: var(--jf-panel2); color: var(--jf-accent);
+}
+.jf-fi svg { display: block; }
+.jf-feat b { display: block; margin: 8px 0 4px; color: var(--jf-brand); font-size: 15.5px; }
+.jf-feat p { color: var(--jf-dim); font-size: 14px; line-height: 1.6; }
+.jf-loop {
+  background: var(--jf-panel); border: 1px solid var(--jf-line); border-radius: 14px;
+  padding: 20px 24px; font-size: 15.5px; text-align: center; color: var(--jf-ink);
+}
+.jf-loop b { color: var(--jf-accent); }
+
+/* ── 문서(지원·방침·약관) ── */
+.jf-doc { max-width: 720px; margin: 0 auto; padding: 40px 0 20px; }
+.jf-doc-head { text-align: center; padding-bottom: 26px; border-bottom: 1px solid var(--jf-line); margin-bottom: 30px; }
+.jf-doc-head h1 { font-size: 24px; color: var(--jf-brand); display: inline-flex; align-items: center; gap: 10px; }
+.jf-sub { color: var(--jf-dim); font-size: 14px; margin-top: 6px; }
+.jf-doc h2 { font-size: 19px; color: var(--jf-brand); margin: 30px 0 10px; }
+.jf-doc h3 { font-size: 16px; color: var(--jf-accent); margin: 22px 0 6px; }
+.jf-doc p { margin: 8px 0; font-size: 15px; }
+.jf-doc strong { color: var(--jf-brand); }
+.jf-card { background: var(--jf-panel); border: 1px solid var(--jf-line); border-radius: 12px; padding: 18px 20px; margin: 16px 0; }
+.jf-big { font-size: 17px; font-weight: 700; color: var(--jf-brand); }
+.jf-faq { background: var(--jf-panel); border: 1px solid var(--jf-line); border-radius: 12px; padding: 14px 18px; margin: 10px 0; }
+.jf-faq summary {
+  cursor: pointer; font-weight: 700; font-size: 15px; color: var(--jf-ink);
+  list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 14px;
+}
+.jf-faq summary::-webkit-details-marker { display: none; }
+.jf-faq summary::after {
+  content: ''; flex: none; width: 15px; height: 15px; background-color: var(--jf-accent);
+  -webkit-mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform 0.2s ease;
+}
+.jf-faq[open] summary::after { transform: rotate(180deg); }
+.jf-faq p { margin-top: 10px; color: var(--jf-dim); font-size: 14.5px; }
+.jf-contact {
+  background: var(--jf-panel); border: 1px solid var(--jf-accent); border-radius: 12px;
+  padding: 16px 20px; margin-top: 26px; text-align: center;
+}
+.jf-mailrow { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.jf-copybtn {
+  font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; padding: 8px 14px; border-radius: 10px;
+  background: transparent; border: 1px solid var(--jf-line); color: var(--jf-dim);
+}
+.jf-copybtn:hover { border-color: var(--jf-accent); color: var(--jf-brand); }
+
+/* ── footer ── */
+.jf-footer { border-top: 1px solid var(--jf-line); padding: 26px 0 44px; color: var(--jf-dim); font-size: 13px; text-align: center; }
+.jf-footer-links { margin-bottom: 8px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+.jf-footer-links a { color: var(--jf-dim); }
+.jf-footer-links a:hover { color: var(--jf-brand); text-decoration: none; }
+.jf-series { margin-top: 8px; font-size: 13px; }
+.jf-company { margin-top: 14px; font-size: 12.5px; line-height: 1.9; opacity: 0.85; }
+
+@media (max-width: 600px) {
+  .jf-h1 { font-size: 34px; }
+  .jf-nav { padding: 12px 0; }
+  .jf-links { gap: 12px; font-size: 13px; }
+  .jf-doc-head h1 { font-size: 20px; }
+}
