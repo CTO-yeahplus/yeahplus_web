@@ -75,9 +75,31 @@ export function Hero() {
         </h1>
       </motion.div>
       <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }} className="text-xl md:text-2xl text-zinc-400 max-w-3xl leading-relaxed font-light mb-12">
-        {t.hero.desc1}<br className="hidden md:block"/>
+        {t.hero.desc1}<br className="hidden md:block"/>{" "}
         {t.hero.desc2}
       </motion.p>
+
+      {/* 히어로 CTA — 첫 화면에서 다음 행동을 바로 고를 수 있게 한다. */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+        className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full max-w-xs sm:max-w-none sm:w-auto"
+      >
+        <a
+          href="#products"
+          className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white text-black text-sm font-bold hover:bg-zinc-200 transition-colors"
+        >
+          {t.hero.ctaPrimary}
+          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+        </a>
+        <a
+          href="#roadmap"
+          className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full border border-white/15 text-sm font-medium text-zinc-300 hover:text-white hover:border-white/40 transition-colors"
+        >
+          {t.hero.ctaSecondary}
+        </a>
+      </motion.div>
     </section>
   );
 }
@@ -393,14 +415,24 @@ export function SystemStatus() {
 
 // --- 6. Core Values ---
 export function CoreValues() {
+  const { t } = useLanguage();
+  const icons = [Zap, Globe, Layers];
+
   return (
     <section className="py-24 bg-[#0a0a0a] border-t border-white/5">
       <div className="max-w-5xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 text-center md:text-left">
-            <div><Zap className="w-8 h-8 text-white mb-6 mx-auto md:mx-0"/><h4 className="text-lg font-bold text-white mb-3">Zero Latency.</h4><p className="text-zinc-500 leading-relaxed">기술은 기다림을 주어서는 안 됩니다.<br/>생각의 속도로 반응하는 경험을 설계합니다.</p></div>
-            <div><Globe className="w-8 h-8 text-white mb-6 mx-auto md:mx-0"/><h4 className="text-lg font-bold text-white mb-3">Infinite Context.</h4><p className="text-zinc-500 leading-relaxed">단편적인 정보는 의미가 없습니다.<br/>무한한 맥락 속에서 지식을 연결합니다.</p></div>
-            <div><Layers className="w-8 h-8 text-white mb-6 mx-auto md:mx-0"/><h4 className="text-lg font-bold text-white mb-3">Scientific Precision.</h4><p className="text-zinc-500 leading-relaxed">감각이 아닌 데이터로 증명합니다.<br/>가장 효율적인 경로를 알고리즘으로 제시합니다.</p></div>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 text-center md:text-left">
+          {t.values.items.map((v, i) => {
+            const Icon = icons[i];
+            return (
+              <div key={v.title}>
+                <Icon className="w-8 h-8 text-white mb-6 mx-auto md:mx-0" />
+                <h4 className="text-lg font-bold text-white mb-3">{v.title}</h4>
+                <p className="text-zinc-500 leading-relaxed whitespace-pre-line">{v.desc}</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
@@ -408,11 +440,12 @@ export function CoreValues() {
 
 // --- 7. Tech Stack ---
 export function TechStack() {
+  const { t } = useLanguage();
   const techs = ["Next.js", "Supabase", "OpenAI", "Vercel", "Tailwind CSS", "Framer Motion"];
   return (
     <div className="py-16 border-t border-b border-white/5 bg-black overflow-hidden relative">
       <div className="max-w-5xl mx-auto px-6 text-center">
-          <p className="text-xs text-zinc-600 uppercase tracking-widest mb-8">Built on Modern Infrastructure</p>
+          <p className="text-xs text-zinc-600 uppercase tracking-widest mb-8">{t.tech.label}</p>
           <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-700">
           {techs.map((tech) => <span key={tech} className="text-lg md:text-xl font-bold text-white cursor-default">{tech}</span>)}
         </div>
@@ -458,13 +491,15 @@ export function FaqSection() {
 
 // --- 10. Final CTA ---
 export function FinalCTA() {
+  const { t } = useLanguage();
+
   return (
     <section className="py-32 px-6 bg-black text-center relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-indigo-900/10 pointer-events-none" />
       <div className="relative z-10 max-w-2xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">Ready to transform?</h2>
-        <p className="text-xl text-zinc-400 mb-10">We are looking for partners, creators, and visionaries.<br/>Join the ecosystem of YeahPlus.</p>
-        <Link href="mailto:contact@yeahplus.co.kr" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-black rounded-full font-bold text-lg hover:bg-zinc-200 transition-colors">Contact Us <ArrowRight className="w-5 h-5" /></Link>
+        <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">{t.cta.title}</h2>
+        <p className="text-xl text-zinc-400 mb-10 whitespace-pre-line">{t.cta.desc}</p>
+        <Link href="mailto:contact@yeahplus.co.kr" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-black rounded-full font-bold text-lg hover:bg-zinc-200 transition-colors">{t.cta.button} <ArrowRight className="w-5 h-5" /></Link>
       </div>
     </section>
   );

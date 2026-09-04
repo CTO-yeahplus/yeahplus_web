@@ -1,14 +1,46 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 // --- 1. Dictionaries (번역 데이터) ---
 export const dictionaries = {
   ko: {
+    nav: {
+      vision: "비전",
+      products: "제품",
+      timeline: "타임라인",
+      team: "팀",
+      contact: "문의하기",
+      menu: "메뉴 열기",
+      close: "메뉴 닫기",
+    },
     hero: {
       title: "AI × Content",
       desc1: "일상을 바꾸는 앱을 만듭니다.",
       desc2: "YeahPlus는 사진·필름·패션·학습에 AI를 더해, 매일 쓰는 앱을 직접 만듭니다.",
+      ctaPrimary: "제품 보러가기",
+      ctaSecondary: "회사 소개",
+    },
+    values: {
+      items: [
+        { title: "Zero Latency.", desc: "기술은 기다림을 주어서는 안 됩니다.\n생각의 속도로 반응하는 경험을 설계합니다." },
+        { title: "Infinite Context.", desc: "단편적인 정보는 의미가 없습니다.\n무한한 맥락 속에서 지식을 연결합니다." },
+        { title: "Scientific Precision.", desc: "감각이 아닌 데이터로 증명합니다.\n가장 효율적인 경로를 알고리즘으로 제시합니다." },
+      ],
+    },
+    tech: { label: "우리가 쓰는 기술" },
+    cta: {
+      title: "함께 만들 준비가 되셨나요?",
+      desc: "파트너, 크리에이터, 그리고 같은 방향을 보는 분들을 찾고 있습니다.\nYeahPlus 생태계에 합류하세요.",
+      button: "문의하기",
+    },
+    footer: {
+      contact: "문의",
+      country: "대한민국",
+      rights: "All rights reserved.",
+      ceo: "대표",
+      biz: "사업자등록번호",
+      mailorder: "통신판매업신고",
     },
     ecosystem: {
       meow: { desc: "집에서 찍은 우리 냥이, AI 아트로 작품이 되다.", badges: ["AI 아트", "사진 꾸미기", "커뮤니티"] },
@@ -56,10 +88,42 @@ export const dictionaries = {
       }
   },
   en: {
+    nav: {
+      vision: "Vision",
+      products: "Products",
+      timeline: "Timeline",
+      team: "Team",
+      contact: "Contact Us",
+      menu: "Open menu",
+      close: "Close menu",
+    },
     hero: {
       title: "AI × Content",
       desc1: "We build apps that reshape everyday life.",
       desc2: "YeahPlus adds AI to photos, film, fashion, and learning — apps we design and ship ourselves.",
+      ctaPrimary: "See the products",
+      ctaSecondary: "About us",
+    },
+    values: {
+      items: [
+        { title: "Zero Latency.", desc: "Technology should never make you wait.\nWe design experiences that answer at the speed of thought." },
+        { title: "Infinite Context.", desc: "Fragments of information mean nothing.\nWe connect knowledge inside an endless context." },
+        { title: "Scientific Precision.", desc: "We prove it with data, not instinct.\nAlgorithms find the most efficient path." },
+      ],
+    },
+    tech: { label: "Built on Modern Infrastructure" },
+    cta: {
+      title: "Ready to build with us?",
+      desc: "We are looking for partners, creators, and visionaries.\nJoin the ecosystem of YeahPlus.",
+      button: "Contact Us",
+    },
+    footer: {
+      contact: "Contact",
+      country: "Korea (Republic of)",
+      rights: "All rights reserved.",
+      ceo: "CEO",
+      biz: "Business Reg. No.",
+      mailorder: "Mail-order Reg.",
     },
     ecosystem: {
       meow: { desc: "Your cat at home, turned into art by AI.", badges: ["AI Art", "Photo Decor", "Community"] },
@@ -119,7 +183,25 @@ const LanguageContext = createContext<{
 } | null>(null);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLang] = useState<Language>("ko"); // 기본 언어: 한국어
+  // 서버 렌더와 첫 클라이언트 렌더를 'ko'로 맞춘 뒤, 마운트 후 저장값·브라우저 언어를 반영한다.
+  const [lang, setLang] = useState<Language>("ko");
+
+  useEffect(() => {
+    let next: Language | null = null;
+    try {
+      const saved = localStorage.getItem("yp_site_lang");
+      if (saved === "ko" || saved === "en") next = saved;
+    } catch {}
+    if (!next) next = (navigator.language || "ko").toLowerCase().startsWith("ko") ? "ko" : "en";
+    if (next !== "ko") setLang(next);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    try {
+      localStorage.setItem("yp_site_lang", lang);
+    } catch {}
+  }, [lang]);
 
   const toggleLang = () => setLang((prev) => (prev === "ko" ? "en" : "ko"));
   const t = dictionaries[lang];

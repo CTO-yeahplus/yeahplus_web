@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { Header, Footer } from "@/components/landing/Layout";
 import { 
   Hero, DeviceShowcase, Ecosystem, VoicesSection,
@@ -32,22 +32,6 @@ function SectionShell({ id, title, number, children, className = "bg-black" }: a
   );
 }
 
-// 💡 언어 토글 버튼 컴포넌트 (Glassmorphism 스타일)
-function LanguageToggle() {
-  const { lang, toggleLang } = useLanguage();
-  return (
-    <motion.button 
-      initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-      onClick={toggleLang}
-      className="fixed bottom-8 right-8 z-50 flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/80 backdrop-blur-md border border-white/10 shadow-2xl hover:bg-white hover:text-black transition-all duration-300 font-mono text-xs uppercase tracking-widest text-zinc-400 group"
-    >
-      <span className={lang === 'en' ? 'font-bold text-white group-hover:text-black' : ''}>EN</span>
-      <span className="opacity-30">/</span>
-      <span className={lang === 'ko' ? 'font-bold text-white group-hover:text-black' : ''}>KR</span>
-    </motion.button>
-  );
-}
-
 function MainContent() {
   const [activeProject, setActiveProject] = useState<ProjectType>(null);
   const [activeArticle, setActiveArticle] = useState<ArticleType | null>(null);
@@ -63,7 +47,6 @@ function MainContent() {
 
   return (
     <main className="min-h-screen bg-black text-white selection:bg-indigo-500/30 font-sans relative">
-      <LanguageToggle /> {/* 우측 하단 플로팅 토글 */}
       <Header />
       
       <div id="vision" className="bg-black pb-24 border-b border-white/5">
