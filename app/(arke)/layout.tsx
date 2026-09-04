@@ -2,19 +2,26 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import './arke/globals.css';
 import { COMPANY, CONTACT_EMAIL } from './arke/legal';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: 'ARKE — 고2 수능 코치 · 수학 + 영어',
   description:
     '수학은 오답 진단 → 개념맵 → 오늘의 처방, 영어는 유형별 훈련 → AI 3단 해설 → 오답노트. 고2 수능 대비를 하나의 앱에서.',
   metadataBase: new URL('https://yeahplus.co.kr'),
+  alternates: { canonical: '/arke' },
   openGraph: {
+    siteName: 'YeahPlus',
+    locale: 'ko_KR',
+    url: '/arke',
     title: 'ARKE — 고2 수능 코치',
     description: '오늘 뭘 풀지, ARKE가 정합니다. 수학·영어 통합 수능 훈련 앱.',
     type: 'website',
     images: ['/arke/arke_logo.png'],
   },
   icons: { icon: '/arke/arke_logo.png' },
+  twitter: { card: 'summary_large_image' },
 };
 
 const YEAR = new Date().getFullYear();
@@ -84,6 +91,8 @@ export default function ArkeLayout({ children }: { children: React.ReactNode }) 
           <main className="ark-main">{children}</main>
           <Footer />
         </div>
+              <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

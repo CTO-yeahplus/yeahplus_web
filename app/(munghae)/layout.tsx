@@ -1,17 +1,24 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import './munghae/globals.css';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: '멍해 (MUNGHAE) — 별이 된 아이들을 기억하는 공간',
   description:
     '떠난 반려동물을 위한 디지털 추모공원, 멍해(MUNGHAE). 추모공간을 만들고 추억을 담고 촛불을 밝히며, 기일에는 잊지 않도록 함께 기억합니다.',
   metadataBase: new URL('https://yeahplus.co.kr'),
+  alternates: { canonical: '/munghae' },
   openGraph: {
+    siteName: 'YeahPlus',
+    locale: 'ko_KR',
+    url: '/munghae',
     title: '멍해 (MUNGHAE)',
     description: '별이 된 아이들을 기억하는 공간. 반려동물을 위한 디지털 추모공원.',
     type: 'website',
   },
+  twitter: { card: 'summary_large_image' },
 };
 
 const YEAR = new Date().getFullYear();
@@ -66,6 +73,8 @@ export default function MunghaeLayout({ children }: { children: React.ReactNode 
             </div>
           </div>
         </footer>
+              <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

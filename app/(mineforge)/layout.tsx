@@ -1,17 +1,23 @@
 import type { Metadata, Viewport } from 'next';
 import './mineforge/globals.css';
 import SiteShell from './mineforge/chrome';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: 'Mineforge — A Minesweeper Roguelike · 마인포지',
   description: 'Minesweeper × roguelike deckbuilding. Chain your digs into seams, salt the board with treasure. No ads, no IAP — pay once. 지뢰찾기 로그라이크, 광고·인앱결제 없음.',
   metadataBase: new URL('https://yeahplus.co.kr'),
+  alternates: { canonical: '/mineforge' },
   openGraph: {
+    siteName: 'YeahPlus',
+    locale: 'ko_KR',
+    url: '/mineforge',
     title: 'Mineforge — A Minesweeper Roguelike',
     description: 'Dig. Chain. Detonate. Minesweeper crossed with a roguelike builder.',
     type: 'website',
-    url: 'https://yeahplus.co.kr/mineforge',
   },
+  twitter: { card: 'summary_large_image' },
 };
 
 export const viewport: Viewport = { themeColor: '#131926' };
@@ -23,6 +29,8 @@ export default function MineforgeLayout({ children }: { children: React.ReactNod
     <html lang="ko">
       <body>
         <SiteShell year={YEAR}>{children}</SiteShell>
+              <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
