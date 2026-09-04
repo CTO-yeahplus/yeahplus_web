@@ -6,7 +6,8 @@ import {
   ArrowUpRight, Check, Play, Calendar, Clock,
   Server, Activity, Shield, // ✅ Server, Activity 아이콘 추가됨
   Cat, Camera, Shirt, // ✅ 라이브 4개 앱 아이콘
-  Dog, PlaneLanding, GraduationCap, Type, Dices, Moon // ✅ 신규 앱 아이콘
+  Dog, PlaneLanding, GraduationCap, Type, Dices, Moon, // ✅ 신규 앱 아이콘
+  Spade, Pickaxe, Gem // ✅ Forge 3종
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -214,6 +215,22 @@ function PremiumSpotlightCard({
   );
 }
 
+/** 자사 경로는 next/link 로 이동하고, 외부 도메인만 새 탭으로 연다. */
+function AppCardLink({ href, children }: { href: string; children: React.ReactNode }) {
+  if (href.startsWith("/")) {
+    return (
+      <Link href={href} className="block group">
+        {children}
+      </Link>
+    );
+  }
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className="block group">
+      {children}
+    </a>
+  );
+}
+
 export function Ecosystem() {
   const { t } = useLanguage(); // 💡 언어 데이터 불러오기
 
@@ -224,10 +241,10 @@ export function Ecosystem() {
     status?: "live" | "soon"; fit?: "cover" | "contain";
   }[] = [
     { name: "묘해 (MYOHAE)", Icon: Cat, logo: "/meow/myohae_logo.png", logoBg: "#ffffff", image: "/img/meow.webp",
-      href: "https://yeahplus.co.kr/meow", domain: "yeahplus.co.kr/meow",
+      href: "/meow", domain: "yeahplus.co.kr/meow",
       accent: "#a78bfa", hover: "rgba(124,77,255,0.12)", desc: t.ecosystem.meow.desc, badges: t.ecosystem.meow.badges },
     { name: "24STILLS", Icon: Camera, logo: "/24stills/24_logo.png", logoBg: "#0A0A0A", image: "/img/24stills.webp",
-      href: "https://yeahplus.co.kr/24stills", domain: "yeahplus.co.kr/24stills",
+      href: "/24stills", domain: "yeahplus.co.kr/24stills",
       accent: "#e0b84e", hover: "rgba(212,175,70,0.12)", desc: t.ecosystem.stills.desc, badges: t.ecosystem.stills.badges },
     { name: "AURA", Icon: Shirt, logo: "/img/aura_logo_1k.png", logoBg: "#000000", image: "/img/aura.webp",
       href: "https://auraootd.com", domain: "auraootd.com",
@@ -239,26 +256,35 @@ export function Ecosystem() {
       href: "https://woldeok.app", domain: "woldeok.app",
       accent: "#f6c86b", hover: "rgba(246,200,107,0.12)", desc: t.ecosystem.woldeok.desc, badges: t.ecosystem.woldeok.badges },
     { name: "멍해 (MUNGHAE)", Icon: Dog, logo: "/munghae/munghae_logo.png", logoBg: "#0e1330", image: "/munghae/ss.webp",
-      href: "https://yeahplus.co.kr/munghae", domain: "yeahplus.co.kr/munghae",
+      href: "/munghae", domain: "yeahplus.co.kr/munghae",
       accent: "#f4c77b", hover: "rgba(244,199,123,0.12)", desc: t.ecosystem.munghae.desc, badges: t.ecosystem.munghae.badges, status: "soon" },
     { name: "TOWER 68", Icon: PlaneLanding, logo: "/tower68/tower68_logo.png", logoBg: "#0b1020", image: "/tower68/ss.webp",
-      href: "https://yeahplus.co.kr/tower68", domain: "yeahplus.co.kr/tower68",
+      href: "/tower68", domain: "yeahplus.co.kr/tower68",
       accent: "#ffc93c", hover: "rgba(255,201,60,0.12)", desc: t.ecosystem.tower68.desc, badges: t.ecosystem.tower68.badges, status: "soon" },
     { name: "ARKE", Icon: GraduationCap, logo: "/arke/arke_logo.png", logoBg: "#f3f2f2", image: "/arke/ss.webp",
-      href: "https://yeahplus.co.kr/arke", domain: "yeahplus.co.kr/arke",
+      href: "/arke", domain: "yeahplus.co.kr/arke",
       accent: "#c28d41", hover: "rgba(182,130,53,0.14)", desc: t.ecosystem.arke.desc, badges: t.ecosystem.arke.badges, status: "soon" },
     { name: "WORDFORGE", Icon: Type, logo: "/wordforge/wordforge_logo.png", logoBg: "#16130f", image: "/wordforge/ss.webp",
-      href: "https://yeahplus.co.kr/wordforge", domain: "yeahplus.co.kr/wordforge",
+      href: "/wordforge", domain: "yeahplus.co.kr/wordforge",
       accent: "#ffd27a", hover: "rgba(255,210,122,0.12)", desc: t.ecosystem.wordforge.desc, badges: t.ecosystem.wordforge.badges, status: "soon" },
     { name: "PIPFORGE", Icon: Dices, logo: "/pipforge/pipforge_icon.png", logoBg: "#16130f", image: "/pipforge/ss.webp",
-      href: "https://yeahplus.co.kr/pipforge", domain: "yeahplus.co.kr/pipforge",
+      href: "/pipforge", domain: "yeahplus.co.kr/pipforge",
       accent: "#e8a33d", hover: "rgba(232,163,61,0.14)", desc: t.ecosystem.pipforge.desc, badges: t.ecosystem.pipforge.badges, status: "soon" },
+    { name: "ACEFORGE", Icon: Spade, logo: null, logoBg: "#16130f", image: null,
+      href: "/aceforge", domain: "yeahplus.co.kr/aceforge",
+      accent: "#e8a33d", hover: "rgba(232,163,61,0.14)", desc: t.ecosystem.aceforge.desc, badges: t.ecosystem.aceforge.badges, status: "soon" },
+    { name: "MINEFORGE", Icon: Pickaxe, logo: null, logoBg: "#16130f", image: null,
+      href: "/mineforge", domain: "yeahplus.co.kr/mineforge",
+      accent: "#ffc86e", hover: "rgba(255,200,110,0.14)", desc: t.ecosystem.mineforge.desc, badges: t.ecosystem.mineforge.badges, status: "soon" },
+    { name: "JADEFORGE", Icon: Gem, logo: null, logoBg: "#0f1a14", image: null,
+      href: "/jadeforge", domain: "yeahplus.co.kr/jadeforge",
+      accent: "#7fd8a8", hover: "rgba(127,216,168,0.14)", desc: t.ecosystem.jadeforge.desc, badges: t.ecosystem.jadeforge.badges, status: "soon" },
   ];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl mx-auto px-6 pb-12">
       {apps.map((app) => (
-        <a key={app.name} href={app.href} target="_blank" rel="noopener noreferrer" className="block group">
+        <AppCardLink key={app.name} href={app.href}>
           <PremiumSpotlightCard hoverColor={app.hover}>
             <div className="flex flex-col h-full">
 
@@ -348,7 +374,7 @@ export function Ecosystem() {
               </div>
             </div>
           </PremiumSpotlightCard>
-        </a>
+        </AppCardLink>
       ))}
     </div>
   );

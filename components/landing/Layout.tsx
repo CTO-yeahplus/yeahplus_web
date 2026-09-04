@@ -147,33 +147,131 @@ export function Header() {
   );
 }
 
+/** 자사 경로는 next/link, 외부 도메인은 새 탭. */
+function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const cls = "text-zinc-500 hover:text-white transition-colors";
+  if (href.startsWith("/")) {
+    return (
+      <Link href={href} className={cls}>
+        {children}
+      </Link>
+    );
+  }
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
+      {children}
+    </a>
+  );
+}
+
+const PRODUCT_LINKS = [
+  { label: "묘해 (MYOHAE)", href: "/meow" },
+  { label: "24STILLS", href: "/24stills" },
+  { label: "AURA", href: "https://auraootd.com" },
+  { label: "뇌새김 (NeuroVoca)", href: "https://neurovoca.co.kr" },
+  { label: "월덕 (WOLDEOK)", href: "https://woldeok.app" },
+  { label: "멍해 (MUNGHAE)", href: "/munghae" },
+  { label: "ARKE", href: "/arke" },
+];
+
+const GAME_LINKS = [
+  { label: "TOWER 68", href: "/tower68" },
+  { label: "WORDFORGE", href: "/wordforge" },
+  { label: "PIPFORGE", href: "/pipforge" },
+  { label: "ACEFORGE", href: "/aceforge" },
+  { label: "MINEFORGE", href: "/mineforge" },
+  { label: "JADEFORGE", href: "/jadeforge" },
+];
+
 export function Footer() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
 
   return (
     <footer className="py-20 px-6 bg-black border-t border-white/5">
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
-        <div>
-          <h2 className="text-2xl font-bold text-white mb-6">YeahPlus.</h2>
-          <div className="space-y-2 text-xs text-zinc-500 font-mono">
-            <p>
-              {t.footer.ceo}: Jaehyuk Ko | {t.footer.biz}: 283-88-02519
-            </p>
-            <p>Gyeonggi-do, Paju-si, Gyoha-ro 159-33, 3F 304-A318</p>
-            <p>{t.footer.mailorder}: 2022-GyeonggiPaju-2995</p>
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-8">
+          <div className="col-span-2 md:col-span-1">
+            <h2 className="text-2xl font-bold text-white mb-4">YeahPlus.</h2>
+            <a
+              href="mailto:contact@yeahplus.co.kr"
+              className="block text-sm text-zinc-400 hover:text-white transition-colors"
+            >
+              contact@yeahplus.co.kr
+            </a>
+            <div className="mt-6">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+                <Globe className="w-3.5 h-3.5 text-zinc-500" />
+                <span className="text-xs font-bold text-zinc-500">{t.footer.country}</span>
+              </span>
+            </div>
+          </div>
+
+          <nav aria-label={t.footer.products}>
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.08em] text-white mb-4">
+              {t.footer.products}
+            </h3>
+            <ul className="space-y-2.5 text-sm">
+              {PRODUCT_LINKS.map((l) => (
+                <li key={l.href}>
+                  <FooterLink href={l.href}>{l.label}</FooterLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label={t.footer.games}>
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.08em] text-white mb-4">
+              {t.footer.games}
+            </h3>
+            <ul className="space-y-2.5 text-sm">
+              {GAME_LINKS.map((l) => (
+                <li key={l.href}>
+                  <FooterLink href={l.href}>{l.label}</FooterLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div>
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.08em] text-white mb-4">
+              {t.footer.company}
+            </h3>
+            <ul className="space-y-2.5 text-sm">
+              <li>
+                <a href="#vision" className="text-zinc-500 hover:text-white transition-colors">
+                  {t.nav.vision}
+                </a>
+              </li>
+              <li>
+                <a href="#team" className="text-zinc-500 hover:text-white transition-colors">
+                  {t.nav.team}
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:contact@yeahplus.co.kr"
+                  className="text-zinc-500 hover:text-white transition-colors"
+                >
+                  {t.footer.contact}
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
-        <div className="flex flex-col items-start md:items-end gap-8">
-          <div className="flex gap-6 text-sm text-zinc-400">
-            <a href="mailto:contact@yeahplus.co.kr" className="hover:text-white transition-colors">
-              {t.footer.contact}
-            </a>
+
+        <div className="mt-14 pt-8 border-t border-white/5 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div className="space-y-1.5 text-xs text-zinc-600 font-mono">
+            <p>
+              {t.footer.ceo}: {lang === "ko" ? "고재혁" : "Jaehyuk Ko"} | {t.footer.biz}: 283-88-02519
+            </p>
+            <p>{t.footer.address}</p>
+            <p>
+              {t.footer.mailorder}: {lang === "ko" ? "2022-경기파주-2995" : "2022-Gyeonggi Paju-2995"}
+            </p>
           </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
-            <Globe className="w-3.5 h-3.5 text-zinc-500" />
-            <span className="text-xs font-bold text-zinc-500">{t.footer.country}</span>
-          </div>
-          <p className="text-xs text-zinc-300">© 2022-2026 YeahPlus Co., Ltd. {t.footer.rights}</p>
+          <p className="text-xs text-zinc-400 shrink-0">
+            © 2022-2026 YeahPlus Co., Ltd. {t.footer.rights}
+          </p>
         </div>
       </div>
     </footer>
