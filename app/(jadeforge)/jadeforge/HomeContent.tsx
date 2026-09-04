@@ -133,6 +133,33 @@ export default function HomeContent() {
               : 'No ads. No in-app purchases. No accounts, no network. Pay once — luck is the only microtransaction.'}
           </p>
         </section>
+
+        <section className="jf-section" id="series">
+          <h2 className="jf-h2">{ko ? 'Forge 시리즈' : 'The Forge series'}</h2>
+          <p>
+            {ko
+              ? '같은 규칙으로 벼려낸 로그라이크 다섯 편. 광고도, 인앱결제도, 계정도 없습니다.'
+              : 'Five roguelikes forged from one ruleset. No ads, no in-app purchases, no accounts.'}
+          </p>
+          <div className="jf-series-grid">
+            <a href="/wordforge">
+              <b>WORDFORGE</b>
+              <span>{ko ? '한글 워드 로그라이크' : 'A Hangul word roguelike'}</span>
+            </a>
+            <a href="/pipforge">
+              <b>PIPFORGE</b>
+              <span>{ko ? '주사위 로그라이크' : 'A dice roguelike'}</span>
+            </a>
+            <a href="/aceforge">
+              <b>ACEFORGE</b>
+              <span>{ko ? '솔리테어 로그라이크' : 'A solitaire roguelike'}</span>
+            </a>
+            <a href="/mineforge">
+              <b>MINEFORGE</b>
+              <span>{ko ? '지뢰찾기 로그라이크' : 'A minesweeper roguelike'}</span>
+            </a>
+          </div>
+        </section>
       </div>
     </main>
   );

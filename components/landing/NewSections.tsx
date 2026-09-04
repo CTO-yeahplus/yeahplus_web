@@ -3,12 +3,8 @@
 import Image from "next/image";
 
 import { motion } from "framer-motion";
-import { RefreshCw, Zap, Activity, Briefcase, ArrowUpRight, ArrowRight, Linkedin, Megaphone } from "lucide-react";
-import { useState } from "react";
-import Link from "next/link";
-// JobType을 Sections에서 가져옵니다. 경로가 맞는지 확인해주세요.
-import { JobType } from "./Sections"; 
-import { useLanguage } from "@/lib/i18n"; // 상단에 임포트
+import { ArrowUpRight } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 export function TheArchitects() {
   const { t } = useLanguage();
@@ -182,89 +178,6 @@ export function Roadmap() {
             ))}
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-// 5. Careers (Fixed: Accepts onOpenJob Prop)
-export function Careers({ onOpenJob }: { onOpenJob: (job: JobType) => void }) {
-  const jobs: JobType[] = [
-    { 
-      title: "Senior AI Engineer", 
-      type: "Full-time", 
-      loc: "Seoul / Remote",
-      desc: "NeuroVoca의 핵심인 FSRS 알고리즘을 고도화하고, 생성형 AI(LLM) 파이프라인을 최적화하는 역할입니다.",
-      responsibilities: ["FSRS 알고리즘 개선 및 최적화", "RAG 기반의 콘텐츠 생성 파이프라인 구축", "모델 서빙 인프라 설계 및 운영"]
-    },
-    { 
-      title: "Product Designer", 
-      type: "Full-time", 
-      loc: "Seoul",
-      desc: "복잡한 기술을 가장 단순하고 우아한 인터페이스로 풀어내는 역할을 담당합니다. 사용자의 학습 경험(UX)을 설계합니다.",
-      responsibilities: ["NeuroVoca/Sub-tube UI/UX 디자인", "디자인 시스템 구축 및 유지보수", "사용자 리서치 및 프로토타이핑"]
-    }
-  ];
-
-  const ambassadorJob: JobType = {
-      title: "YeahPlus Ambassador",
-      type: "Part-time / Remote",
-      loc: "Global",
-      desc: "YeahPlus의 혁신적인 서비스를 전 세계에 알리는 목소리가 되어주세요. 소셜 미디어와 커뮤니티에서 우리 브랜드를 대변합니다.",
-      responsibilities: ["소셜 미디어 콘텐츠 제작 및 홍보", "커뮤니티 내 브랜드 바이럴 마케팅", "초기 사용자 피드백 수집"]
-  };
-
-  return (
-    <section id="careers" className="py-24 px-6 bg-black border-t border-white/5">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
-          <div><h2 className="text-3xl font-bold text-white mb-2">Join the Mission.</h2><p className="text-zinc-500">Build the future of learning with us.</p></div>
-        </div>
-
-        <div className="grid gap-4">
-          {/* Regular Jobs */}
-          {jobs.map((job, i) => (
-            <div key={i} onClick={() => onOpenJob(job)} className="group flex items-center justify-between p-6 rounded-2xl bg-[#111111] border border-white/5 hover:border-indigo-500/30 hover:bg-[#161616] transition-all cursor-pointer">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-full bg-white/5 group-hover:bg-indigo-500/20 group-hover:text-indigo-400 transition-colors"><Briefcase className="w-5 h-5 text-zinc-400" /></div>
-                <div><h4 className="text-lg font-bold text-white mb-1 group-hover:text-indigo-400 transition-colors">{job.title}</h4><div className="flex items-center gap-3 text-xs text-zinc-500"><span>{job.type}</span><span className="w-1 h-1 rounded-full bg-zinc-700" /><span>{job.loc}</span></div></div>
-              </div>
-              <div className="px-4 py-2 rounded-full border border-white/10 text-xs font-bold text-zinc-400 group-hover:bg-indigo-500 group-hover:text-white group-hover:border-transparent transition-all">Apply</div>
-            </div>
-          ))}
-
-          {/* Ambassador Card */}
-          <div onClick={() => onOpenJob(ambassadorJob)} className="group flex items-center justify-between p-6 rounded-2xl bg-gradient-to-r from-[#111111] to-[#1a1033] border border-white/5 hover:border-purple-500/30 transition-all cursor-pointer mt-4">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-full bg-purple-500/10 text-purple-400"><Megaphone className="w-5 h-5" /></div>
-                <div>
-                    <div className="flex items-center gap-2">
-                        <h4 className="text-lg font-bold text-white mb-1 group-hover:text-purple-400 transition-colors">YeahPlus Ambassador</h4>
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500 text-white">HOT</span>
-                    </div>
-                    <div className="text-xs text-zinc-400">Be the voice of innovation. Spread the impact.</div>
-                </div>
-              </div>
-              <div className="px-4 py-2 rounded-full border border-white/10 text-xs font-bold text-zinc-400 group-hover:bg-purple-600 group-hover:text-white group-hover:border-transparent transition-all">Join</div>
-            </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// 6. Newsletter
-export function Newsletter() {
-  return (
-    <section className="py-24 px-6 bg-black border-t border-white/5">
-      <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-3xl font-bold text-white mb-4">Join the Inner Circle.</h2>
-        <p className="text-zinc-400 mb-8 max-w-lg mx-auto">교육과 기술의 미래에 대한 YeahPlus의 인사이트를 가장 먼저 받아보세요.<br/>스팸은 없습니다. 오직 영감(Inspiration)만 보냅니다.</p>
-        <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
-          <input type="email" placeholder="enter@your.email" className="flex-1 bg-white/5 border border-white/10 rounded-full px-6 py-4 text-white placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all" />
-          <button className="bg-white text-black px-8 py-4 rounded-full font-bold hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2 group">Subscribe <ArrowRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" /></button>
-        </form>
-        <p className="text-xs text-zinc-600 mt-6">By subscribing, you agree to our Privacy Policy. Unsubscribe anytime.</p>
       </div>
     </section>
   );

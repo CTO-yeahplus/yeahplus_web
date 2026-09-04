@@ -168,3 +168,14 @@ a:hover { text-decoration: underline; }
   .jf-links { gap: 12px; font-size: 13px; }
   .jf-doc-head h1 { font-size: 20px; }
 }
+
+/* ── Forge 시리즈 상호 링크 카드 ── */
+.jf-series-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 18px; }
+.jf-series-grid a {
+  display: block; text-decoration: none; padding: 16px 18px; border-radius: 12px;
+  border: 1px solid var(--jf-line); background: var(--jf-panel);
+  color: inherit; transition: border-color .18s ease, transform .18s ease;
+}
+.jf-series-grid a:hover { border-color: var(--jf-accent); text-decoration: none; transform: translateY(-2px); }
+.jf-series-grid b { display: block; color: var(--jf-brand); letter-spacing: 1px; margin-bottom: 4px; }
+.jf-series-grid span { display: block; font-size: 13px; color: var(--jf-dim); }

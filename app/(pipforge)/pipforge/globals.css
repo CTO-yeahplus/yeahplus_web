@@ -161,3 +161,14 @@ a { color: var(--pf-amber); }
   .pf-hero { padding-top: 48px; }
   .pf-doc h1 { font-size: 26px; }
 }
+
+/* ── Forge 시리즈 상호 링크 카드 ── */
+.pf-series-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 18px; }
+.pf-series-grid a {
+  display: block; text-decoration: none; padding: 16px 18px; border-radius: 12px;
+  border: 1px solid var(--pf-line); background: var(--pf-panel);
+  color: inherit; transition: border-color .18s ease, transform .18s ease;
+}
+.pf-series-grid a:hover { border-color: var(--pf-accent); text-decoration: none; transform: translateY(-2px); }
+.pf-series-grid b { display: block; color: var(--pf-brand); letter-spacing: 1px; margin-bottom: 4px; }
+.pf-series-grid span { display: block; font-size: 13px; color: var(--pf-dim); }

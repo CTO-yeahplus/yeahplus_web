@@ -254,6 +254,33 @@ export default function HomeContent() {
             {t.appstore}
           </a>
         </section>
+
+        <section className="wf-section" id="series">
+          <h2 className="wf-h2">{lang === 'ko' ? 'Forge 시리즈' : 'The Forge series'}</h2>
+          <p>
+            {lang === 'ko'
+              ? '같은 규칙으로 벼려낸 로그라이크 다섯 편. 광고도, 인앱결제도, 계정도 없습니다.'
+              : 'Five roguelikes forged from one ruleset. No ads, no in-app purchases, no accounts.'}
+          </p>
+          <div className="wf-series-grid">
+              <a href="/pipforge">
+                <b>PIPFORGE</b>
+                <span>{lang === 'ko' ? '주사위 로그라이크' : 'A dice roguelike'}</span>
+              </a>
+              <a href="/aceforge">
+                <b>ACEFORGE</b>
+                <span>{lang === 'ko' ? '솔리테어 로그라이크' : 'A solitaire roguelike'}</span>
+              </a>
+              <a href="/mineforge">
+                <b>MINEFORGE</b>
+                <span>{lang === 'ko' ? '지뢰찾기 로그라이크' : 'A minesweeper roguelike'}</span>
+              </a>
+              <a href="/jadeforge">
+                <b>JADEFORGE</b>
+                <span>{lang === 'ko' ? '마작 로그라이크' : 'A mahjong roguelike'}</span>
+              </a>
+          </div>
+        </section>
       </div>
     </main>
   );
