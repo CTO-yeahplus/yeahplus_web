@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { motion } from "framer-motion";
 import { RefreshCw, Zap, Activity, Briefcase, ArrowUpRight, ArrowRight, Linkedin, Megaphone } from "lucide-react";
 import { useState } from "react";
@@ -29,12 +31,12 @@ export function TheArchitects() {
             
             <div className="w-48 h-48 mx-auto rounded-full bg-[#111] p-2 shrink-0 border border-white/10 transition-transform duration-500 hover:scale-105">
               <div className="w-full h-full rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
-                <img src="/img/eko_profile.jpeg" alt="Founder Eugene Ko" className="w-full h-full object-cover" />
+                <Image src="/img/eko_profile.jpeg" alt="Founder Eugene Ko" width={384} height={384} className="w-full h-full object-cover" />
               </div>
             </div>
 
             <div className="w-full aspect-[4/3] bg-[#111] rounded-2xl border border-white/10 overflow-hidden relative group/img cursor-default">
-              <img src="/img/lucasfilm_group.jpg" alt="With George Lucas at Lucasfilm" className="w-full h-full object-cover grayscale opacity-70 group-hover/img:grayscale-0 group-hover/img:opacity-100 transition-all duration-500 group-hover/img:scale-105" />
+              <Image src="/img/lucasfilm_group.jpg" alt="With George Lucas at Lucasfilm" width={859} height={704} className="w-full h-full object-cover grayscale opacity-70 group-hover/img:grayscale-0 group-hover/img:opacity-100 transition-all duration-500 group-hover/img:scale-105" />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-4">
                 <p className="text-[10px] font-mono text-zinc-400 tracking-tight flex items-center justify-between">
                   <span>With George Lucas</span>

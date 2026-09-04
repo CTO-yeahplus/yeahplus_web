@@ -9,6 +9,7 @@ import {
   Dog, PlaneLanding, GraduationCap, Type, Dices, Moon // ✅ 신규 앱 아이콘
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import React, { useState, MouseEvent } from "react";
 import { useLanguage } from "@/lib/i18n"; // 상단에 임포트 추가
 
@@ -222,34 +223,34 @@ export function Ecosystem() {
     href: string; domain: string; accent: string; hover: string; desc: string; badges: readonly string[];
     status?: "live" | "soon"; fit?: "cover" | "contain";
   }[] = [
-    { name: "묘해 (MYOHAE)", Icon: Cat, logo: "/meow/myohae_logo.png", logoBg: "#ffffff", image: "/img/meow.jpg",
+    { name: "묘해 (MYOHAE)", Icon: Cat, logo: "/meow/myohae_logo.png", logoBg: "#ffffff", image: "/img/meow.webp",
       href: "https://yeahplus.co.kr/meow", domain: "yeahplus.co.kr/meow",
       accent: "#a78bfa", hover: "rgba(124,77,255,0.12)", desc: t.ecosystem.meow.desc, badges: t.ecosystem.meow.badges },
-    { name: "24STILLS", Icon: Camera, logo: "/24stills/24_logo.png", logoBg: "#0A0A0A", image: "/img/24stills.png",
+    { name: "24STILLS", Icon: Camera, logo: "/24stills/24_logo.png", logoBg: "#0A0A0A", image: "/img/24stills.webp",
       href: "https://yeahplus.co.kr/24stills", domain: "yeahplus.co.kr/24stills",
       accent: "#e0b84e", hover: "rgba(212,175,70,0.12)", desc: t.ecosystem.stills.desc, badges: t.ecosystem.stills.badges },
-    { name: "AURA", Icon: Shirt, logo: "/img/aura_logo_1k.png", logoBg: "#000000", image: "/img/aura.png",
+    { name: "AURA", Icon: Shirt, logo: "/img/aura_logo_1k.png", logoBg: "#000000", image: "/img/aura.webp",
       href: "https://auraootd.com", domain: "auraootd.com",
       accent: "#f0a6c0", hover: "rgba(233,166,182,0.14)", desc: t.ecosystem.aura.desc, badges: t.ecosystem.aura.badges },
     { name: "뇌새김 (NeuroVoca)", Icon: Brain, logo: null, logoBg: "#ffffff", image: null,
       href: "https://neurovoca.co.kr", domain: "neurovoca.co.kr",
       accent: "#818cf8", hover: "rgba(79,70,229,0.14)", desc: t.ecosystem.neuro.desc, badges: t.ecosystem.neuro.badges },
-    { name: "월덕 (WOLDEOK)", Icon: Moon, logo: "/img/woldeok_logo.png", logoBg: "#0f1424", image: "/img/woldeok_wide.png",
+    { name: "월덕 (WOLDEOK)", Icon: Moon, logo: "/img/woldeok_logo.png", logoBg: "#0f1424", image: "/img/woldeok_wide.webp",
       href: "https://woldeok.app", domain: "woldeok.app",
       accent: "#f6c86b", hover: "rgba(246,200,107,0.12)", desc: t.ecosystem.woldeok.desc, badges: t.ecosystem.woldeok.badges },
-    { name: "멍해 (MUNGHAE)", Icon: Dog, logo: "/munghae/munghae_logo.png", logoBg: "#0e1330", image: "/munghae/ss.png",
+    { name: "멍해 (MUNGHAE)", Icon: Dog, logo: "/munghae/munghae_logo.png", logoBg: "#0e1330", image: "/munghae/ss.webp",
       href: "https://yeahplus.co.kr/munghae", domain: "yeahplus.co.kr/munghae",
       accent: "#f4c77b", hover: "rgba(244,199,123,0.12)", desc: t.ecosystem.munghae.desc, badges: t.ecosystem.munghae.badges, status: "soon" },
-    { name: "TOWER 68", Icon: PlaneLanding, logo: "/tower68/tower68_logo.png", logoBg: "#0b1020", image: "/tower68/ss.png",
+    { name: "TOWER 68", Icon: PlaneLanding, logo: "/tower68/tower68_logo.png", logoBg: "#0b1020", image: "/tower68/ss.webp",
       href: "https://yeahplus.co.kr/tower68", domain: "yeahplus.co.kr/tower68",
       accent: "#ffc93c", hover: "rgba(255,201,60,0.12)", desc: t.ecosystem.tower68.desc, badges: t.ecosystem.tower68.badges, status: "soon" },
-    { name: "ARKE", Icon: GraduationCap, logo: "/arke/arke_logo.png", logoBg: "#f3f2f2", image: "/arke/ss.png",
+    { name: "ARKE", Icon: GraduationCap, logo: "/arke/arke_logo.png", logoBg: "#f3f2f2", image: "/arke/ss.webp",
       href: "https://yeahplus.co.kr/arke", domain: "yeahplus.co.kr/arke",
       accent: "#c28d41", hover: "rgba(182,130,53,0.14)", desc: t.ecosystem.arke.desc, badges: t.ecosystem.arke.badges, status: "soon" },
-    { name: "WORDFORGE", Icon: Type, logo: "/wordforge/wordforge_logo.png", logoBg: "#16130f", image: "/wordforge/ss.png",
+    { name: "WORDFORGE", Icon: Type, logo: "/wordforge/wordforge_logo.png", logoBg: "#16130f", image: "/wordforge/ss.webp",
       href: "https://yeahplus.co.kr/wordforge", domain: "yeahplus.co.kr/wordforge",
       accent: "#ffd27a", hover: "rgba(255,210,122,0.12)", desc: t.ecosystem.wordforge.desc, badges: t.ecosystem.wordforge.badges, status: "soon" },
-    { name: "PIPFORGE", Icon: Dices, logo: "/pipforge/pipforge_icon.png", logoBg: "#16130f", image: "/pipforge/ss.png",
+    { name: "PIPFORGE", Icon: Dices, logo: "/pipforge/pipforge_icon.png", logoBg: "#16130f", image: "/pipforge/ss.webp",
       href: "https://yeahplus.co.kr/pipforge", domain: "yeahplus.co.kr/pipforge",
       accent: "#e8a33d", hover: "rgba(232,163,61,0.14)", desc: t.ecosystem.pipforge.desc, badges: t.ecosystem.pipforge.badges, status: "soon" },
   ];
@@ -270,23 +271,25 @@ export function Ecosystem() {
                   <>
                     {/* 세로 스크린샷·로고 아트는 흐린 배경 위에 전체를 보여준다 */}
                     {app.fit === "contain" && (
-                      /* eslint-disable-next-line @next/next/no-img-element */
-                      <img
+                      <Image
                         src={app.image}
                         alt=""
                         aria-hidden
-                        className="absolute inset-0 w-full h-full object-cover scale-125 blur-2xl opacity-40"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 560px"
+                        className="object-cover scale-125 blur-2xl opacity-40"
                       />
                     )}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       src={app.image}
                       alt={`${app.name} 미리보기`}
-                      className={`absolute inset-0 w-full h-full ${
+                      fill
+                      sizes="(max-width: 768px) 100vw, 560px"
+                      className={
                         app.fit === "contain"
                           ? "object-contain p-3 drop-shadow-[0_12px_32px_rgba(0,0,0,0.65)]"
                           : "object-cover"
-                      }`}
+                      }
                     />
                     {app.fit !== "contain" && (
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
@@ -305,8 +308,7 @@ export function Ecosystem() {
                   {/* 앱 아이콘 — 타이틀 앞으로 */}
                   {app.logo ? (
                     <span className="w-9 h-9 rounded-[10px] overflow-hidden shrink-0 border border-white/10 shadow-md" style={{ background: app.logoBg }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={app.logo} alt={`${app.name} 로고`} className="w-full h-full object-cover" />
+                      <Image src={app.logo} alt={`${app.name} 로고`} width={72} height={72} className="w-full h-full object-cover" />
                     </span>
                   ) : (
                     <span className="w-9 h-9 rounded-[10px] shrink-0 flex items-center justify-center border" style={{ background: `${app.accent}1a`, borderColor: `${app.accent}33` }}>
