@@ -6,6 +6,9 @@ import { useLang } from './i18n';
 
 const FEATURE_ICONS = [Palette, Sparkles, Globe2];
 
+/** 묘해 App Store 페이지 — 두 CTA 가 같은 주소를 쓴다. */
+const APP_STORE_URL = 'https://apps.apple.com/kr/app/id6787869861';
+
 export default function HomePage() {
   const { t } = useLang();
   const h = t.home;
@@ -23,8 +26,13 @@ export default function HomePage() {
         </h1>
         <p className="lead">{h.lead}</p>
         <div className="cta-row">
-          {/* 출시 후 실제 App Store / Google Play 링크로 교체하세요 */}
-          <a className="btn btn-primary" href="#" aria-label={h.ctaAppStore}>
+          <a
+            className="btn btn-primary"
+            href={APP_STORE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={h.ctaAppStore}
+          >
             <Apple size={18} strokeWidth={2} /> {h.ctaAppStore}
           </a>
           <Link className="btn btn-ghost" href="/meow/feed">
@@ -87,7 +95,13 @@ export default function HomePage() {
         <h1 style={{ fontSize: 26 }}>{h.subTitle}</h1>
         <p className="lead">{h.subLead}</p>
         <div className="cta-row">
-          <a className="btn btn-primary" href="#">
+          <a
+            className="btn btn-primary"
+            href={APP_STORE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={h.ctaAppStore}
+          >
             <Apple size={18} strokeWidth={2} /> {h.ctaAppStore}
           </a>
         </div>
