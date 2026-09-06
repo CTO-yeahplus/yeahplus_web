@@ -137,7 +137,7 @@ export function Ecosystem() {
       accent: "#f4c77b", hover: "rgba(244,199,123,0.12)", desc: t.ecosystem.munghae.desc, badges: t.ecosystem.munghae.badges, status: "soon" },
     { name: "TOWER 68", Icon: PlaneLanding, logo: "/tower68/tower68_logo.png", logoBg: "#0b1020", image: "/tower68/ss.webp",
       href: "/tower68", domain: "yeahplus.co.kr/tower68",
-      accent: "#ffc93c", hover: "rgba(255,201,60,0.12)", desc: t.ecosystem.tower68.desc, badges: t.ecosystem.tower68.badges, status: "soon" },
+      accent: "#ffc93c", hover: "rgba(255,201,60,0.12)", desc: t.ecosystem.tower68.desc, badges: t.ecosystem.tower68.badges },
     { name: "ARKE", Icon: GraduationCap, logo: "/arke/arke_logo.png", logoBg: "#f3f2f2", image: "/arke/ss.webp",
       href: "/arke", domain: "yeahplus.co.kr/arke",
       accent: "#c28d41", hover: "rgba(182,130,53,0.14)", desc: t.ecosystem.arke.desc, badges: t.ecosystem.arke.badges, status: "soon" },

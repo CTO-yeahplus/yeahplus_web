@@ -6,6 +6,9 @@ import { useEffect } from 'react';
 import { Clapperboard, PlaneLanding, Radio, Spline, Trophy, Wind } from 'lucide-react';
 import { useI18n } from './i18n';
 
+/** TOWER 68 App Store 페이지 — 히어로와 하단 배너가 같은 주소를 쓴다. */
+const APP_STORE_URL = 'https://apps.apple.com/kr/app/tower-68/id6790672799';
+
 // 이전 정적 배포(HashRouter) 주소 호환: /tower68/#/privacy → /tower68/privacy
 const HASH_ROUTES = ['support', 'privacy', 'terms', 'contact'];
 
@@ -47,8 +50,12 @@ export default function HomeContent() {
           </p>
           <p className="t68-hero-sub">{h.sub}</p>
           <div className="t68-hero-cta">
-            {/* 앱이 App Store 에 라이브되면 아래 href 를 실제 링크로 교체하세요. */}
-            <a className="t68-btn t68-btn-primary" href="#" aria-disabled="true">
+            <a
+              className="t68-btn t68-btn-primary"
+              href={APP_STORE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {h.appstore}
             </a>
             <Link className="t68-btn t68-btn-ghost" href="/tower68/support">
@@ -108,7 +115,12 @@ export default function HomeContent() {
       <section className="t68-cta-band">
         <h2>{h.ctaTitle}</h2>
         <p>{h.ctaText}</p>
-        <a className="t68-btn t68-btn-primary" href="#" aria-disabled="true">
+        <a
+          className="t68-btn t68-btn-primary"
+          href={APP_STORE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {h.appstore}
         </a>
       </section>
