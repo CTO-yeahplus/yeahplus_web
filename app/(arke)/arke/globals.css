@@ -216,79 +216,17 @@ a:hover { text-decoration: underline; }
 .ark-phones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 .ark-phone-wrap { text-align: center; }
 .ark-phone {
-  max-width: 268px; margin: 0 auto; padding: 10px;
-  border: 1px solid var(--ark-line); border-radius: 24px; background: #fff;
+  max-width: 268px; margin: 0 auto; padding: 8px;
+  border: 1px solid var(--ark-line); border-radius: 26px; background: #fff;
   box-shadow: 0 14px 34px rgba(45, 43, 43, 0.13);
 }
-.ark-scr {
-  background: var(--ark-bg); border-radius: 16px; padding: 13px;
-  /* 세 목업의 프레임 높이를 맞춘다(내용이 짧은 화면은 .ark-m-spacer 로 채움). */
-  height: 462px; overflow: hidden;
-  display: flex; flex-direction: column; gap: 9px; text-align: left;
+/* 실제 스크린샷 — 기기 프레임 안쪽에 딱 맞게 깎는다. */
+.ark-shot {
+  display: block; width: 100%; height: auto;
+  border-radius: 18px; background: var(--ark-bg);
 }
 .ark-phone-cap { font-size: 13px; color: var(--ark-sub); margin: 14px 0 0; }
 .ark-phone-cap strong { display: block; color: var(--ark-ink); font-size: 14.5px; margin-bottom: 2px; }
-
-.ark-m-top { display: flex; align-items: center; justify-content: space-between; }
-.ark-m-brand { font-family: var(--ark-font-heading); font-size: 14px; font-weight: 600; letter-spacing: 0.14em; }
-.ark-m-chip {
-  display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 700;
-  padding: 2px 8px; border-radius: 999px;
-  background: var(--ark-gold-light); color: var(--ark-gold); border: 1px solid rgba(160, 111, 36, 0.25);
-}
-.ark-m-goal {
-  border: 1px solid var(--ark-line); border-radius: 8px; background: #fff; padding: 10px;
-}
-.ark-m-goal-row { display: flex; justify-content: space-between; font-size: 10px; color: var(--ark-sub); margin-bottom: 6px; }
-.ark-m-bar { height: 5px; border-radius: 3px; background: #e4e0e0; overflow: hidden; }
-.ark-m-bar i { display: block; height: 100%; background: var(--ark-gold-soft); }
-.ark-m-card { border: 1px solid var(--ark-line); border-radius: 8px; background: #fff; padding: 11px; }
-.ark-m-card-ink { background: var(--ark-ink); border-color: var(--ark-ink); }
-.ark-m-label { font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em; color: var(--ark-gold); }
-.ark-m-card-ink .ark-m-label { color: var(--ark-gold-pale); }
-.ark-m-title { font-size: 12.5px; font-weight: 700; margin: 4px 0 0; }
-.ark-m-card-ink .ark-m-title { color: #f8f4f4; }
-.ark-m-sub { font-size: 10px; color: var(--ark-sub); margin: 3px 0 0; }
-.ark-m-pill {
-  display: inline-block; margin-top: 9px; font-size: 10px; font-weight: 700;
-  padding: 4px 11px; border-radius: 6px; background: var(--ark-gold-soft); color: #201f1d;
-}
-.ark-m-pill-ghost { background: transparent; border: 1px solid var(--ark-line); color: var(--ark-sub); }
-.ark-m-card-ink .ark-m-pill-ghost { border-color: rgba(215, 181, 126, 0.4); color: var(--ark-gold-pale); }
-.ark-m-lines { display: flex; flex-direction: column; gap: 6px; }
-.ark-m-line { height: 5px; border-radius: 3px; background: #e4e0e0; }
-.ark-m-line.w90 { width: 90%; }
-.ark-m-line.w70 { width: 70%; }
-.ark-m-line.w55 { width: 55%; }
-.ark-m-line.gold { background: var(--ark-gold-pale); }
-.ark-m-dots { display: flex; gap: 4px; align-items: center; }
-.ark-m-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ark-line); }
-.ark-m-dot.on { background: var(--ark-gold); }
-.ark-m-opts { display: flex; flex-direction: column; gap: 6px; }
-.ark-m-opt {
-  display: flex; align-items: center; gap: 7px; font-size: 10px; color: var(--ark-sub);
-  border: 1px solid var(--ark-line); border-radius: 6px; padding: 7px 9px; background: #fff;
-}
-.ark-m-opt.sel { border-color: var(--ark-gold); background: var(--ark-gold-light); color: var(--ark-ink); font-weight: 600; }
-.ark-m-opt em { font-style: normal; font-weight: 700; color: var(--ark-ink); }
-.ark-m-tabs { display: flex; gap: 4px; }
-.ark-m-tab {
-  flex: 1; text-align: center; font-size: 9.5px; font-weight: 600; padding: 5px 0;
-  border: 1px solid var(--ark-line); border-radius: 5px; background: #fff; color: var(--ark-sub);
-}
-.ark-m-tab.on { background: var(--ark-ink); border-color: var(--ark-ink); color: #f8f4f4; }
-.ark-m-answer {
-  display: inline-flex; align-items: center; gap: 5px; align-self: flex-start;
-  font-size: 10px; font-weight: 700; color: #3f7a4f;
-  border: 1px solid rgba(63, 122, 79, 0.35); background: rgba(63, 122, 79, 0.09);
-  border-radius: 999px; padding: 3px 10px;
-}
-.ark-m-vocab { display: flex; flex-wrap: wrap; gap: 4px; }
-.ark-m-vocab span {
-  font-size: 9.5px; padding: 2px 7px; border-radius: 999px;
-  border: 1px solid var(--ark-line); color: var(--ark-sub); background: #fff;
-}
-.ark-m-spacer { flex: 1; }
 
 /* ── 기능 카드 안의 작은 도해 ── */
 .ark-fig {

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Check, Flame } from 'lucide-react';
 import { CONTACT_EMAIL } from './legal';
 
@@ -8,8 +9,8 @@ export const dynamic = 'force-static';
 
 const STATS = [
   { v: '2', l: '과목 통합 (수학·영어)' },
-  { v: '7', l: '수능 영어 독해 유형' },
-  { v: '60', l: '수학 개념 그래프 노드' },
+  { v: '12', l: '수능 영어 독해 유형' },
+  { v: '53', l: '수학 개념 그래프 노드' },
   { v: '3', l: '단계 AI 해설' },
 ];
 
@@ -18,13 +19,13 @@ const LOOP = [
     no: '01',
     title: '진단 — 틀린 이유부터',
     desc: '점수 대신 원인을 봅니다. 오답을 개념·유형 단위로 쪼개 어디서 무너졌는지 짚습니다.',
-    note: '수학 오답 진단 · 영어 유형 진단',
+    note: '수학 오답 진단 · 영어 유형별 정답률',
   },
   {
     no: '02',
     title: '처방 — 오늘 풀 것만',
     desc: '취약한 개념과 유형에서 오늘치 분량만 골라 줍니다. 뭘 풀지 고민하는 시간이 사라집니다.',
-    note: '수학 데일리 5문제 · 영어 3문항 세트',
+    note: '수학 처방 4슬롯 · 영어 3문항 세트',
   },
   {
     no: '03',
@@ -34,14 +35,20 @@ const LOOP = [
   },
 ];
 
+// 앱의 QUESTION_TYPE_LABELS 와 같은 순서·같은 이름을 쓴다.
 const ENGLISH_TYPES = [
   { ko: '빈칸 추론', en: 'blank' },
-  { ko: '순서 배열', en: 'order' },
+  { ko: '글의 순서', en: 'order' },
   { ko: '문장 삽입', en: 'insertion' },
-  { ko: '주제·요지', en: 'main idea' },
-  { ko: '함축 의미', en: 'implication' },
+  { ko: '요지·주제', en: 'main idea' },
+  { ko: '함의 추론', en: 'implication' },
   { ko: '어법', en: 'grammar' },
-  { ko: '요약문', en: 'summary' },
+  { ko: '문단 요약', en: 'summary' },
+  { ko: '글의 목적', en: 'purpose' },
+  { ko: '심경·분위기', en: 'mood' },
+  { ko: '필자의 주장', en: 'claim' },
+  { ko: '문맥 어휘', en: 'vocabulary' },
+  { ko: '내용 일치', en: 'content match' },
 ];
 
 /* ── 기능 카드에 들어가는 작은 도해 ── */
@@ -118,7 +125,7 @@ function FigDashboard() {
         <i className="on" style={{ height: '88%' }} />
         <i style={{ height: '52%' }} />
       </div>
-      <div className="ark-fig-cap">최근 7일 학습량 · 수학 + 영어 합산</div>
+      <div className="ark-fig-cap">최근 8주 추세 · 수학 + 영어 합산</div>
     </>
   );
 }
@@ -166,11 +173,64 @@ function FigLogin() {
   );
 }
 
+function FigWeekly() {
+  return (
+    <>
+      <div className="ark-fig-row">
+        <span className="ark-fig-tag gold">이번 주 3문항</span>
+        <span className="ark-fig-tag">전국 공통</span>
+      </div>
+      <div className="ark-fig-bars" aria-hidden>
+        <i style={{ height: '38%' }} />
+        <i className="on" style={{ height: '72%' }} />
+        <i style={{ height: '54%' }} />
+      </div>
+      <div className="ark-fig-cap">문항별 실제 정답률</div>
+    </>
+  );
+}
+
+function FigReminder() {
+  return (
+    <>
+      <div className="ark-fig-row">
+        <span className="ark-fig-tag">오답</span>
+        <span className="ark-fig-tag gold">D+3</span>
+        <span className="ark-fig-tag gold">D+7</span>
+        <span className="ark-fig-tag">졸업</span>
+      </div>
+      <div className="ark-fig-cap">두 번 맞히면 큐에서 내려갑니다</div>
+    </>
+  );
+}
+
+/** 실제 앱 스크린샷(App Store 제출본에서 문구 배너만 떼어낸 것). */
+const SCREENS = [
+  {
+    src: '/arke/shots/prescription.webp',
+    alt: 'ARKE 수학 · 오늘의 처방 화면',
+    title: '오늘의 처방',
+    cap: '왜 이 문항인지 이유와 함께',
+  },
+  {
+    src: '/arke/shots/conceptmap.webp',
+    alt: 'ARKE 수학 · 개념 진단과 취약 개념 히트맵 화면',
+    title: '개념 진단',
+    cap: '어느 개념부터 손봐야 하는지',
+  },
+  {
+    src: '/arke/shots/record.webp',
+    alt: 'ARKE 기록 · 통합 대시보드 화면',
+    title: '기록',
+    cap: '푼 문항 · 정답률 · 공부한 날',
+  },
+];
+
 const FEATURES = [
   {
     fig: <FigConceptMap />,
     title: '개념 지도',
-    desc: '약 60개 수학 개념과 선수 관계를 그래프로 잇습니다. 틀린 문항에서 출발해 뿌리 개념까지 거슬러 올라갑니다.',
+    desc: '수학 개념 53개와 선수 관계를 그래프로 잇습니다. 틀린 문항에서 출발해 뿌리 개념까지 거슬러 올라갑니다.',
   },
   {
     fig: <FigExplanation />,
@@ -185,12 +245,22 @@ const FEATURES = [
   {
     fig: <FigDashboard />,
     title: '통합 대시보드',
-    desc: '두 과목의 정답률, 이번 주 학습량, 취약 개념 요약을 한 장으로 확인합니다.',
+    desc: '푼 문항·정답률·공부한 날·학습 시간을 이번 주와 지난주로 나란히 놓고, 최근 8주 추세까지 봅니다.',
   },
   {
     fig: <FigStreak />,
     title: '스트릭과 배지',
     desc: '수학·영어를 합산한 연속 학습일과 XP 레벨. 유형별 정복 배지로 오늘 하루를 이어 갑니다.',
+  },
+  {
+    fig: <FigWeekly />,
+    title: '주간 챌린지',
+    desc: '매주 월요일, 전국이 같은 3문항을 풉니다. 다 풀면 다른 학생들이 몇 %나 맞혔는지 실제 참여 기록으로 보여 줍니다.',
+  },
+  {
+    fig: <FigReminder />,
+    title: '복습 알림',
+    desc: '틀린 문항은 3일 뒤에 다시 나옵니다. 한 번 맞히면 7일 뒤, 두 번 맞히면 졸업. 복습할 날이 오면 알림으로 알려 드립니다.',
   },
   {
     fig: <FigLogin />,
@@ -199,33 +269,38 @@ const FEATURES = [
   },
 ];
 
+// 아래 두 목록과 비교표는 앱의 apps/web/src/lib/plans.ts 를 그대로 따른다.
+// 값을 바꿀 일이 생기면 코드를 먼저 보고 여기를 맞춘다 — 반대로 하면 어긋난다.
 const FREE_FEATURES = [
-  '하루 훈련 2세트 (세트당 3문항)',
-  '오답노트 최근 20문항',
-  '유형 진단 · 개념맵 열람',
-  '스트릭 · XP · 배지',
+  '매일 수학 처방 1문항',
+  '매일 영어 훈련 1세트 (3문항)',
+  '정답과 풀이 · 힌트 1단계',
+  '주간 챌린지 · 기록 · 스트릭 · 배지',
 ];
 
 const PREMIUM_FEATURES = [
-  '훈련 세트 무제한',
-  '오답노트 전체 기록',
-  '해설 “오답 분석” 탭 열람',
-  '무료 플랜의 모든 기능',
+  '수학 처방 4슬롯 전체 · 영어 훈련 무제한',
+  '단계 힌트 3단 전체',
+  '취약 개념 맵 · 오답노트 전체 기록',
+  '해설 “오답 분석” 탭 · 학부모 주간 리포트',
 ];
 
 const COMPARE: { label: string; free: string; premium: string }[] = [
-  { label: '하루 훈련 세트', free: '2세트 (6문항)', premium: '무제한' },
-  { label: '오답노트 기록', free: '최근 20문항', premium: '전체 기록' },
+  { label: '하루 수학 처방', free: '1문항', premium: '4슬롯 전체' },
+  { label: '하루 영어 훈련', free: '1세트 (3문항)', premium: '무제한' },
+  { label: '수학 단계 힌트', free: '1단', premium: '3단 전체' },
+  { label: '오답노트 기록', free: '최근 5문항', premium: '전체 기록' },
+  { label: '취약 개념 맵', free: '—', premium: '열람' },
   { label: '해설 “오답 분석” 탭', free: '—', premium: '열람' },
+  { label: '학부모 주간 리포트', free: '—', premium: '열람' },
   { label: '구조 분석 · 정답 근거 해설', free: '열람', premium: '열람' },
-  { label: '유형 진단 · 개념맵', free: '열람', premium: '열람' },
-  { label: '스트릭 · XP · 배지', free: '포함', premium: '포함' },
+  { label: '주간 챌린지 · 기록 · 배지', free: '포함', premium: '포함' },
 ];
 
 const FAQ: [string, string][] = [
   [
     '누구를 위한 앱인가요?',
-    '수능을 준비하는 고2를 기준으로 설계했습니다. 수학은 고2 과정 개념 그래프를 따라가고, 영어는 수능 독해 7개 유형을 훈련합니다. 고3·재수생이 취약 유형을 다시 훑는 용도로 써도 무방합니다.',
+    '수능을 준비하는 고2를 기준으로 설계했습니다. 수학은 고2 과정 개념 그래프를 따라가고, 영어는 수능 독해 12개 유형을 훈련합니다. 고3·재수생이 취약 유형을 다시 훑는 용도로 써도 무방합니다.',
   ],
   [
     '수학과 영어를 따로 설치해야 하나요?',
@@ -236,8 +311,16 @@ const FAQ: [string, string][] = [
     '생성과 검증에 서로 다른 모델을 붙여 교차검증하지만, AI가 만든 결과에는 오류가 섞일 수 있습니다. ARKE의 진단과 처방은 학습 참고 자료이며 성적을 보장하지 않습니다. 중요한 판단은 선생님과 함께 확인해 주세요.',
   ],
   [
+    '무료로는 어디까지 쓸 수 있나요?',
+    '매일 수학 처방 1문항과 영어 훈련 1세트(3문항)를 정답·풀이까지 그대로 봅니다. 주간 챌린지·기록·스트릭·배지도 무료입니다. 프리미엄은 처방 4슬롯 전체, 3단 힌트, 취약 개념 맵, 오답노트 전체 기록, 학부모 주간 리포트를 엽니다.',
+  ],
+  [
+    '영어 지문은 어디서 가져오나요?',
+    '앱에 실린 영어 지문 139개는 전부 자체 제작물입니다. 기출 원문은 출제 원리를 분석하는 단계에만 참고하고 앱에 싣지 않습니다. 수학 문항도 자체 제작입니다.',
+  ],
+  [
     '앱은 언제 나오나요?',
-    'iOS 앱을 준비하고 있습니다. App Store 출시가 확정되면 이 페이지의 버튼이 실제 다운로드 링크로 바뀝니다.',
+    'iOS 앱이 App Store 심사를 받고 있습니다. 승인되면 이 페이지의 버튼이 실제 다운로드 링크로 바뀝니다.',
   ],
   [
     '문의는 어디로 하나요?',
@@ -265,13 +348,13 @@ export default function ArkeLandingPage() {
           <div className="ark-cta-row">
             {/* 앱이 App Store 에 라이브되면 아래 href 를 실제 링크로 교체하세요. */}
             <a className="ark-btn ark-btn-primary" href="#" aria-disabled="true">
-              App Store (준비 중)
+              App Store (심사 중)
             </a>
             <a className="ark-btn ark-btn-ghost" href="#features">
               기능 살펴보기
             </a>
           </div>
-          <p className="ark-hero-note">수학 · 영어 통합 · iPhone 앱 준비 중</p>
+          <p className="ark-hero-note">수학 · 영어 통합 · iPhone 앱 심사 중</p>
         </div>
         <div className="ark-rule" />
       </section>
@@ -287,158 +370,35 @@ export default function ArkeLandingPage() {
         </div>
       </div>
 
-      {/* ── 화면 미리보기 ── */}
+      {/* ── 화면 미리보기 — 실제 앱 스크린샷 ── */}
       <section className="ark-section ark-container" id="screens">
         <div className="ark-section-head">
           <p className="ark-kicker">Screens</p>
           <h2 className="ark-section-title">앱을 열면 이렇게 보입니다.</h2>
           <p className="ark-section-lead">
-            할 일을 고르는 화면, 세 문항을 푸는 화면, 왜 틀렸는지 읽는 화면. 하루 한 바퀴는 이 세 장이 전부입니다.
+            오늘 풀 것을 고르는 화면, 어디서 무너졌는지 읽는 화면, 이번 주가 어땠는지 보는 화면.
+            하루 한 바퀴는 이 세 장이 전부입니다.
           </p>
         </div>
         <div className="ark-phones">
-          {/* 1. 통합 홈 */}
-          <div className="ark-phone-wrap">
-            <div className="ark-phone">
-              <div className="ark-scr">
-                <div className="ark-m-top">
-                  <span className="ark-m-brand">ARKE</span>
-                  <span className="ark-m-chip">
-                    <Flame size={10} strokeWidth={2.2} aria-hidden /> 12일 연속
-                  </span>
-                </div>
-                <div className="ark-m-goal">
-                  <div className="ark-m-goal-row">
-                    <span>오늘의 목표</span>
-                    <span>6 / 8문항</span>
-                  </div>
-                  <div className="ark-m-bar">
-                    <i style={{ width: '75%' }} />
-                  </div>
-                  <div className="ark-m-goal-row" style={{ margin: '8px 0 0' }}>
-                    <span>Lv.4 · XP 1,240</span>
-                    <span>수학 5 · 영어 1</span>
-                  </div>
-                </div>
-                <div className="ark-m-card ark-m-card-ink">
-                  <p className="ark-m-label">Σ 수학 · 오늘의 처방</p>
-                  <p className="ark-m-title">취약 개념 5문제</p>
-                  <p className="ark-m-sub">미분계수의 정의 · 접선의 방정식</p>
-                  <span className="ark-m-pill">처방 받기</span>
-                  <span className="ark-m-pill ark-m-pill-ghost" style={{ marginLeft: 6 }}>
-                    개념맵
-                  </span>
-                </div>
-                <div className="ark-m-card">
-                  <p className="ark-m-label">✦ 영어 · 오늘의 훈련</p>
-                  <p className="ark-m-title">빈칸 추론 3문항</p>
-                  <p className="ark-m-sub">최근 정답률 52% · 가장 약한 유형</p>
-                  <span className="ark-m-pill">훈련 시작</span>
-                  <span className="ark-m-pill ark-m-pill-ghost" style={{ marginLeft: 6 }}>
-                    오답노트
-                  </span>
-                </div>
-                <div className="ark-m-spacer" />
+          {SCREENS.map((sc) => (
+            <div className="ark-phone-wrap" key={sc.src}>
+              <div className="ark-phone">
+                <Image
+                  className="ark-shot"
+                  src={sc.src}
+                  alt={sc.alt}
+                  width={760}
+                  height={1491}
+                  sizes="(max-width: 720px) 90vw, 268px"
+                />
               </div>
+              <p className="ark-phone-cap">
+                <strong>{sc.title}</strong>
+                {sc.cap}
+              </p>
             </div>
-            <p className="ark-phone-cap">
-              <strong>오늘 할 일</strong>
-              두 과목의 오늘치를 한 화면에서
-            </p>
-          </div>
-
-          {/* 2. 영어 훈련 */}
-          <div className="ark-phone-wrap">
-            <div className="ark-phone">
-              <div className="ark-scr">
-                <div className="ark-m-top">
-                  <span className="ark-m-chip">빈칸 추론</span>
-                  <div className="ark-m-dots" aria-hidden>
-                    <span className="ark-m-dot on" />
-                    <span className="ark-m-dot on" />
-                    <span className="ark-m-dot" />
-                  </div>
-                </div>
-                <div className="ark-m-card">
-                  <div className="ark-m-lines">
-                    <span className="ark-m-line" />
-                    <span className="ark-m-line w90" />
-                    <span className="ark-m-line w70" />
-                    <span className="ark-m-line gold w55" />
-                    <span className="ark-m-line w90" />
-                    <span className="ark-m-line w70" />
-                  </div>
-                </div>
-                <div className="ark-m-opts">
-                  <div className="ark-m-opt">
-                    <em>①</em>
-                    <span className="ark-m-line w70" />
-                  </div>
-                  <div className="ark-m-opt">
-                    <em>②</em>
-                    <span className="ark-m-line w90" />
-                  </div>
-                  <div className="ark-m-opt sel">
-                    <em>③</em>
-                    <span className="ark-m-line w70" />
-                  </div>
-                  <div className="ark-m-opt">
-                    <em>④</em>
-                    <span className="ark-m-line w55" />
-                  </div>
-                </div>
-                <div className="ark-m-spacer" />
-                <span className="ark-m-pill" style={{ textAlign: 'center' }}>
-                  제출하기
-                </span>
-              </div>
-            </div>
-            <p className="ark-phone-cap">
-              <strong>3문항 세트</strong>
-              약한 유형에서 뽑은 오늘의 훈련
-            </p>
-          </div>
-
-          {/* 3. AI 3단 해설 */}
-          <div className="ark-phone-wrap">
-            <div className="ark-phone">
-              <div className="ark-scr">
-                <span className="ark-m-answer">정답 ③ · 맞았습니다</span>
-                <div className="ark-m-tabs">
-                  <span className="ark-m-tab on">구조 분석</span>
-                  <span className="ark-m-tab">정답 근거</span>
-                  <span className="ark-m-tab">오답 분석</span>
-                </div>
-                <div className="ark-m-card">
-                  <div className="ark-m-lines">
-                    <span className="ark-m-line w90" />
-                    <span className="ark-m-line" />
-                    <span className="ark-m-line gold w70" />
-                    <span className="ark-m-line w90" />
-                  </div>
-                </div>
-                <div className="ark-m-card">
-                  <p className="ark-m-label" style={{ marginBottom: 7 }}>
-                    지문 어휘
-                  </p>
-                  <div className="ark-m-vocab">
-                    <span>substantial</span>
-                    <span>infer</span>
-                    <span>arbitrary</span>
-                    <span>yield</span>
-                  </div>
-                </div>
-                <div className="ark-m-spacer" />
-                <span className="ark-m-pill ark-m-pill-ghost" style={{ textAlign: 'center' }}>
-                  오답노트에 저장됨
-                </span>
-              </div>
-            </div>
-            <p className="ark-phone-cap">
-              <strong>AI 3단 해설</strong>
-              구조 · 근거 · 오답을 나눠서
-            </p>
-          </div>
+          ))}
         </div>
       </section>
 
@@ -456,15 +416,16 @@ export default function ArkeLandingPage() {
               π
             </span>
             <p className="ark-subject-eyebrow">Σ 수학 · 오늘의 처방</p>
-            <h3 className="ark-subject-title">취약 개념 데일리 5문제</h3>
+            <h3 className="ark-subject-title">이유가 붙는 오늘의 처방</h3>
             <p className="ark-subject-desc">
-              푼 문항의 오답을 개념 단위로 진단하고, 개념맵에서 약한 노드를 찾아 오늘 풀 다섯 문제를 처방합니다.
+              푼 문항의 오답을 개념 단위로 진단하고, 취약 보강 · 오답 재출제 · 간격 반복 · 현행 진도
+              네 갈래에서 오늘 풀 문항을 고릅니다. 문항마다 왜 골랐는지가 함께 적힙니다.
             </p>
             <div className="ark-chips">
               <span className="ark-chip">오답 진단</span>
               <span className="ark-chip">개념맵</span>
-              <span className="ark-chip">데일리 처방</span>
-              <span className="ark-chip">재출제</span>
+              <span className="ark-chip">처방 이유 표시</span>
+              <span className="ark-chip">단계 힌트</span>
             </div>
           </div>
 
@@ -475,10 +436,10 @@ export default function ArkeLandingPage() {
             <p className="ark-subject-eyebrow">✦ 영어 · 오늘의 훈련</p>
             <h3 className="ark-subject-title">약점 유형 3문항 세트</h3>
             <p className="ark-subject-desc">
-              유형별 정답률을 보고 가장 약한 유형에서 세 문항을 뽑습니다. 풀고 나면 3단 해설과 오답노트가 따라옵니다.
+              유형별 정답률을 보고 가장 약한 유형에서 세 문항을 뽑습니다. 수능 독해 12개 유형을 다루고, 풀고 나면 3단 해설과 오답노트가 따라옵니다.
             </p>
             <div className="ark-chips">
-              <span className="ark-chip">유형 진단</span>
+              <span className="ark-chip">유형별 정답률</span>
               <span className="ark-chip">3문항 세트</span>
               <span className="ark-chip">AI 3단 해설</span>
               <span className="ark-chip">간격 반복</span>
@@ -601,8 +562,9 @@ export default function ArkeLandingPage() {
         </div>
 
         <p className="ark-plan-note">
-          표시 가격은 VAT 포함가입니다. 결제 기능은 앱 출시 시점에 앱 내에서 안내하며, 청약철회·환불은{' '}
-          <Link href="/arke/terms">이용약관</Link> 제9조를 따릅니다.
+          표시 가격은 VAT 포함가입니다. 구독은 App Store 인앱결제로 자동 갱신되며, 기간이 끝나기 24시간 전까지
+          해지하지 않으면 같은 금액으로 갱신됩니다. 관리·해지는 iPhone 설정 → Apple 계정 → 구독에서 언제든지 할 수
+          있고, 청약철회·환불은 <Link href="/arke/terms">이용약관</Link> 제9조를 따릅니다.
         </p>
       </section>
 
