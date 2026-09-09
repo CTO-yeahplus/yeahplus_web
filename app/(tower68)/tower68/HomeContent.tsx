@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { Clapperboard, PlaneLanding, Radio, Spline, Trophy, Wind } from 'lucide-react';
+import { Clapperboard, PlaneLanding, Radio, Shapes, Spline, Trophy, Wind } from 'lucide-react';
 import { useI18n } from './i18n';
 
 /** TOWER 68 App Store 페이지 — 히어로와 하단 배너가 같은 주소를 쓴다. */
@@ -14,6 +14,7 @@ const HASH_ROUTES = ['support', 'privacy', 'terms', 'contact'];
 
 // 이모지 대신 SF Symbols 계열의 얇은 라인 아이콘(lucide)을 사용한다.
 const FEATURE_ICONS = {
+  accessibility: Shapes,
   route: Spline,
   landing: PlaneLanding,
   wind: Wind,

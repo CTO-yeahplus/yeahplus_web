@@ -21,7 +21,9 @@ export const COMPANY = {
   email: 'contact@yeahplus.co.kr',
 } as const;
 
-export const EFFECTIVE = '2026-08-01';
+export const EFFECTIVE = '2026-09-16';
+/** 직전 판(광고·분석 도입 전). 개정 이력 표기에 쓴다. */
+export const EFFECTIVE_PREV = '2026-08-01';
 
 type Pair = readonly [string, string];
 
@@ -59,6 +61,7 @@ export const DICT = {
         { icon: 'trophy', title: '랭킹과 도전', desc: '글로벌 랭킹·일일 챌린지·콤보·스킨·업적으로 계속 도전.' },
         { icon: 'clip', title: '순간을 공유', desc: '버터 랜딩의 순간을 짧은 영상으로 저장해 친구에게 공유.' },
         { icon: 'radio', title: '명절엔 한국어 인사', desc: '설·추석·크리스마스엔 조종사와 무전 너머 한국어 안부를.' },
+        { icon: 'accessibility', title: '색각 보조', desc: '기종을 색뿐 아니라 기호(●▲■)로도 구분합니다. 설정에서 언제든 켜고 끌 수 있습니다.' },
       ],
       howKicker: '플레이 방법',
       howTitle: '세 번의 손짓이면 충분합니다.',
@@ -78,20 +81,23 @@ export const DICT = {
     },
     privacy: {
       title: '개인정보 처리방침',
-      effective: `시행일: ${EFFECTIVE}`,
+      effective: `시행일: ${EFFECTIVE} · 직전 판 시행일: ${EFFECTIVE_PREV}`,
       intro:
-        '주식회사 예아플러스(이하 "회사")는 「개인정보 보호법」 등 관련 법령을 준수하며, 앱 TOWER 68(이하 "서비스") 이용자의 개인정보를 소중히 다룹니다. 본 방침은 회사가 어떤 정보를 어떻게 처리하는지 설명합니다.',
+        '주식회사 예아플러스(이하 "회사")는 「개인정보 보호법」 등 관련 법령을 준수하며, 앱 TOWER 68(이하 "서비스") 이용자의 개인정보를 소중히 다룹니다. 본 방침은 회사가 어떤 정보를 어떻게 처리하는지 설명합니다. 이번 개정은 앱 내 광고(Google AdMob)와 익명 사용 통계(PostHog) 도입을 반영한 것입니다.',
       s: [
         ['1. 회원가입 및 로그인', '서비스는 회원가입이나 로그인이 필요하지 않습니다. 회사는 이름, 이메일, 전화번호 등 개인을 식별할 수 있는 정보를 서비스 이용 과정에서 직접 수집하지 않습니다.'],
         ['2. 기기 내 저장 정보', '최고 점수, 코인, 설정값(사운드·진동 등), 진행 상황 등은 이용자의 기기 내부에만 저장되며 회사 서버로 전송되지 않습니다. 앱을 삭제하면 해당 데이터도 함께 삭제됩니다.'],
         ['3. Game Center(랭킹)', '이용자가 글로벌 랭킹 기능을 사용할 경우, 점수는 Apple의 Game Center를 통해 처리·표시됩니다. 이 경우 해당 데이터의 처리는 Apple의 개인정보 처리방침을 따릅니다.'],
-        ['4. 광고 및 자동 수집 정보', '본 버전의 서비스는 광고나 분석을 위한 개인정보를 수집하지 않습니다. 향후 앱 내 광고가 도입될 경우, 광고 파트너가 광고 제공 및 성과 측정을 위해 광고 식별자·기기 정보 등을 수집·처리할 수 있으며, 그 시점에 본 방침을 갱신하고 이용자에게 고지합니다.'],
-        ['5. 제3자 제공', '회사는 이용자의 개인정보를 제3자에게 제공하지 않습니다. 랭킹 기능에 사용되는 Game Center는 Apple이 제공하는 서비스입니다.'],
-        ['6. 아동의 개인정보', '서비스는 만 14세 미만 아동을 주 대상으로 하지 않으며, 아동의 개인정보를 고의로 수집하지 않습니다.'],
-        ['7. 이용자의 권리 및 데이터 파기', '기기 내 데이터는 이용자가 앱을 삭제하거나 기기 설정에서 초기화함으로써 언제든지 삭제할 수 있습니다.'],
-        ['9. 고지의 의무', '본 방침의 내용 추가·삭제·수정이 있을 경우 시행일 전에 서비스 내 공지 또는 본 페이지를 통해 고지합니다.'],
+        ['4. 광고 및 광고 식별자', '서비스는 Google AdMob을 통해 광고를 제공합니다. 광고는 게임 오버 후 "광고 보고 이어하기"(보상형)와 재시작 사이(전면)에 노출됩니다. 이 과정에서 Google 및 광고 파트너가 광고 제공·빈도 제한·성과 측정을 위해 광고 식별자(iOS의 IDFA), 기기·네트워크 정보, 광고 상호작용 기록을 수집·처리할 수 있습니다. 자세한 내용은 Google의 정책(https://policies.google.com/technologies/partner-sites)을 참고하시기 바랍니다.'],
+        ['5. 추적 동의와 동의 관리', 'iOS에서는 앱 최초 실행 시 「추적 허용」(App Tracking Transparency) 요청이 표시되며, 이용자가 거부하면 IDFA를 이용한 추적 없이 비개인화 광고가 제공됩니다. 유럽경제지역·영국 및 미국 일부 주의 이용자에게는 Google의 동의 관리 플랫폼(UMP)을 통한 동의 폼이 표시되며, 해당 지역 이용자는 앱 설정의 「개인정보 옵션」에서 동의 내용을 언제든지 다시 선택할 수 있습니다. 추적 허용 여부는 기기 설정 → 개인정보 보호 및 보안 → 추적에서 언제든 변경할 수 있습니다.'],
+        ['6. 앱 사용 통계(분석)', '회사는 이탈 지점과 오류를 파악해 서비스를 개선하기 위해 PostHog를 통해 익명의 앱 사용 통계를 수집합니다. 수집 항목은 앱 실행, 게임 시작·종료(점수·라운드·착륙 수), 재시작, 이어하기 사용, 공유, 설정 변경, 처리되지 않은 오류 기록이며, 이름·이메일 등 개인을 식별할 수 있는 정보는 포함하지 않습니다. 이 통계는 광고 추적 목적으로 사용되지 않습니다.'],
+        ['7. 처리위탁 및 제3자 제공', '회사는 이용자의 개인정보를 제3자에게 판매하거나 제공하지 않습니다. 다만 위 기능의 제공을 위해 다음 사업자가 관련 정보를 처리합니다 — Google LLC(광고 제공 및 동의 관리), Apple Inc.(Game Center 랭킹, App Tracking Transparency), PostHog Inc.(익명 사용 통계). 각 사업자의 처리는 해당 사업자의 개인정보 처리방침을 따릅니다.'],
+        ['8. 개인정보의 국외 이전', '위 사업자의 서버는 미국 등 국외에 소재하므로, 해당 정보는 국외로 이전되어 처리됩니다. 이전되는 항목은 제4조·제6조에 기재한 광고 식별자·기기 정보·익명 사용 통계이며, 이전 목적은 광고 제공과 서비스 개선, 보유 기간은 각 사업자의 정책에 따릅니다. 이전받는 자는 Google LLC(미국), Apple Inc.(미국), PostHog Inc.(미국)입니다. 이용자는 위 5항의 방법으로 광고 추적을 거부할 수 있습니다.'],
+        ['9. 아동의 개인정보', '서비스는 만 14세 미만 아동을 주 대상으로 하지 않으며, 아동의 개인정보를 고의로 수집하지 않습니다.'],
+        ['10. 이용자의 권리 및 데이터 파기', '기기 내 데이터는 이용자가 앱을 삭제하거나 기기 설정에서 초기화함으로써 언제든지 삭제할 수 있습니다. 광고 추적은 5항의 방법으로 거부할 수 있으며, 열람·정정·삭제 등 그 밖의 권리 행사는 아래 문의처로 요청하실 수 있습니다.'],
+        ['11. 고지의 의무', '본 방침의 내용 추가·삭제·수정이 있을 경우 시행일 전에 서비스 내 공지 또는 본 페이지를 통해 고지합니다.'],
       ] as Pair[],
-      contactTitle: '8. 개인정보 보호책임자 및 문의',
+      contactTitle: '12. 개인정보 보호책임자 및 문의',
     },
     terms: {
       title: '이용약관',
@@ -103,9 +109,10 @@ export const DICT = {
         ['제4조 (서비스의 제공 및 변경)', '회사는 서비스의 내용, 기능, 구성 등을 운영상·기술상의 필요에 따라 변경할 수 있습니다. 회사는 서비스의 품질 향상을 위해 노력하나, 무중단·무결점을 보증하지는 않습니다.'],
         ['제5조 (이용자의 의무)', '이용자는 서비스의 정상적 운영을 방해하는 행위, 타인의 권리·명예를 침해하는 행위, 관련 법령 또는 공서양속에 위배되는 행위, 회사의 지식재산권을 침해하는 행위를 하여서는 안 됩니다.'],
         ['제6조 (지식재산권)', '서비스 및 서비스에 포함된 콘텐츠(디자인, 로고, 그래픽, 코드 등)에 대한 저작권 및 기타 지식재산권은 회사에 귀속됩니다. 이용자는 회사의 사전 동의 없이 이를 복제·배포·변형·상업적 이용할 수 없습니다.'],
-        ['제7조 (유료 서비스 및 환불)', '서비스에 유료 항목(인앱결제 등)이 도입될 경우, 결제 및 환불은 Apple App Store의 정책과 관련 법령을 따릅니다. 본 버전에는 유료 항목이 포함되어 있지 않습니다.'],
-        ['제8조 (면책)', '회사는 천재지변, 이용자의 귀책, 제3자 서비스(App Store, Game Center 등)의 장애 등 회사의 합리적 통제를 벗어난 사유로 인한 손해에 대해 책임을 지지 않습니다. 서비스는 오락 목적으로 제공되며, "실화에서 영감을 받은 픽션"입니다.'],
-        ['제9조 (준거법 및 관할)', '본 약관은 대한민국 법령에 따라 규율되며, 서비스 이용과 관련한 분쟁에 대해서는 회사의 주소지를 관할하는 법원을 관할 법원으로 합니다.'],
+        ['제7조 (광고)', '서비스는 무료로 제공되며, 운영을 위해 앱 내 광고가 표시됩니다. 광고는 게임 오버 후 보상형(광고를 보고 이어하기)과 재시작 사이 전면 형태로 노출되며, 보상형 광고의 시청 여부는 이용자가 선택합니다. 광고는 Google AdMob을 통해 제공되고 광고 콘텐츠 자체는 회사가 작성하지 않으므로, 회사는 광고주가 제공하는 상품·서비스의 내용이나 이용자와 광고주 간 거래에 대해 책임을 지지 않습니다. 광고 과정에서 처리되는 정보와 추적 거부 방법은 개인정보 처리방침에 안내되어 있습니다.'],
+        ['제8조 (유료 서비스 및 환불)', '서비스에 유료 항목(인앱결제 등)이 도입될 경우, 결제 및 환불은 Apple App Store의 정책과 관련 법령을 따릅니다. 본 버전에는 유료 항목이 포함되어 있지 않습니다.'],
+        ['제9조 (면책)', '회사는 천재지변, 이용자의 귀책, 제3자 서비스(App Store, Game Center, 광고 네트워크 등)의 장애 등 회사의 합리적 통제를 벗어난 사유로 인한 손해에 대해 책임을 지지 않습니다. 서비스는 오락 목적으로 제공되며, "실화에서 영감을 받은 픽션"입니다.'],
+        ['제10조 (준거법 및 관할)', '본 약관은 대한민국 법령에 따라 규율되며, 서비스 이용과 관련한 분쟁에 대해서는 회사의 주소지를 관할하는 법원을 관할 법원으로 합니다.'],
       ] as Pair[],
       addendumTitle: '부칙',
       addendum: `본 약관은 ${EFFECTIVE}부터 시행합니다.`,
@@ -118,7 +125,9 @@ export const DICT = {
         ['글로벌 랭킹이 보이지 않아요.', '글로벌 랭킹은 Apple Game Center를 사용합니다. 기기 설정 → Game Center에서 로그인되어 있는지 확인해 주세요. 로그인 후 게임을 한 판 하면 점수가 랭킹에 반영됩니다.'],
         ['기기를 바꾸니 기록이 사라졌어요.', '최고 점수·코인·설정은 기기 내부에 저장됩니다. 앱을 삭제하거나 기기를 변경하면 로컬 기록은 초기화됩니다. 단, Game Center에 올린 랭킹 점수는 Apple 계정에 유지됩니다.'],
         ['소리가 나지 않아요 / 화면이 너무 흔들려요.', '게임 내 설정에서 사운드, 진동, 모션 줄이기, 배터리 절약을 조절할 수 있습니다. 발열이 느껴지면 배터리 절약(30fps)을 켜보세요.'],
-        ['광고나 결제가 있나요?', '현재 버전에는 광고와 인앱결제가 포함되어 있지 않습니다. 추후 업데이트로 도입될 수 있으며, 그 경우 별도로 안내드립니다.'],
+        ['광고나 결제가 있나요?', '게임은 무료이고 인앱결제는 없습니다. 대신 운영을 위해 광고가 표시됩니다 — 게임 오버 후 "광고 보고 이어하기"(원할 때만 시청)와 재시작 사이의 전면 광고입니다.'],
+        ['광고 추적을 끄고 싶어요.', 'iOS 기기 설정 → 개인정보 보호 및 보안 → 추적에서 TOWER 68의 추적 허용을 끄면 됩니다. 끄더라도 게임은 그대로 동작하며, 개인화되지 않은 광고가 표시됩니다. 유럽·영국 등에 계신 분은 게임 설정의 "개인정보 옵션"에서 동의 내용을 다시 선택할 수 있습니다.'],
+        ['어떤 정보를 수집하나요?', '점수·코인·설정은 기기에만 저장됩니다. 그 밖에는 광고 제공을 위한 광고 식별자와, 서비스 개선을 위한 익명 사용 통계(앱 실행, 게임 시작·종료, 오류 기록 등)를 수집합니다. 이름·이메일 같은 개인 식별정보는 수집하지 않습니다. 자세한 내용은 개인정보 처리방침을 확인해 주세요.'],
       ] as Pair[],
       channelTitle: '문의 채널 및 응답 시간',
       channels: [
@@ -177,6 +186,7 @@ export const DICT = {
         { icon: 'trophy', title: 'Ranking & challenge', desc: 'Global leaderboard, daily challenge, combos, skins and achievements.' },
         { icon: 'clip', title: 'Share the moment', desc: 'Save the butter-landing moment as a short clip and share it.' },
         { icon: 'radio', title: 'Holiday greetings', desc: 'On holidays, exchange greetings with pilots over the radio in Korean.' },
+        { icon: 'accessibility', title: 'Colorblind assist', desc: 'Aircraft types are marked by shape (●▲■) as well as color. Toggle it any time in settings.' },
       ],
       howKicker: 'How to play',
       howTitle: 'Three gestures. That is all.',
@@ -196,20 +206,23 @@ export const DICT = {
     },
     privacy: {
       title: 'Privacy Policy',
-      effective: `Effective date: ${EFFECTIVE}`,
+      effective: `Effective date: ${EFFECTIVE} · Previous version: ${EFFECTIVE_PREV}`,
       intro:
-        'Yeahplus Inc. ("Company") complies with applicable laws including the Personal Information Protection Act and respects the privacy of users of the app TOWER 68 ("Service"). This policy explains what information the Company processes and how.',
+        'Yeahplus Inc. ("Company") complies with applicable laws including the Personal Information Protection Act and respects the privacy of users of the app TOWER 68 ("Service"). This policy explains what information the Company processes and how. This revision reflects the introduction of in-app advertising (Google AdMob) and anonymous usage analytics (PostHog).',
       s: [
         ['1. Sign-up and login', 'The Service does not require sign-up or login. The Company does not directly collect personally identifiable information such as name, email, or phone number during use of the Service.'],
         ['2. On-device data', 'High scores, coins, settings (sound, haptics, etc.) and progress are stored only on the user’s device and are not transmitted to the Company’s servers. Deleting the app also deletes this data.'],
         ['3. Game Center (ranking)', 'When a user uses the global ranking feature, scores are processed and displayed through Apple Game Center. In that case, such data is handled under Apple’s privacy policy.'],
-        ['4. Advertising and automatically collected data', 'This version of the Service does not collect personal data for advertising or analytics. If in-app advertising is introduced in the future, advertising partners may collect and process advertising identifiers and device information to deliver and measure ads; at that time this policy will be updated and users notified.'],
-        ['5. Third-party sharing', 'The Company does not provide users’ personal data to third parties. Game Center, used for ranking, is a service provided by Apple.'],
-        ['6. Children’s privacy', 'The Service is not primarily directed to children under 14 and does not knowingly collect children’s personal data.'],
-        ['7. User rights and data deletion', 'On-device data can be deleted at any time by deleting the app or resetting it in device settings.'],
-        ['9. Duty of notice', 'Any additions, deletions, or changes to this policy will be announced within the Service or on this page before the effective date.'],
+        ['4. Advertising and advertising identifiers', 'The Service serves ads through Google AdMob — a rewarded ad for “continue by watching an ad” after a game over, and an interstitial between restarts. In this process Google and its advertising partners may collect and process the advertising identifier (IDFA on iOS), device and network information, and ad interaction records in order to deliver ads, cap frequency, and measure performance. See Google’s policies for details: https://policies.google.com/technologies/partner-sites'],
+        ['5. Tracking consent and consent management', 'On iOS, an App Tracking Transparency prompt is shown on first launch. If you decline, non-personalized ads are served without IDFA-based tracking. Users in the European Economic Area, the United Kingdom, and certain U.S. states are shown a consent form through Google’s User Messaging Platform (UMP), and those users can revisit their choice at any time via “Privacy options” in the app settings. Tracking permission can also be changed at any time under Settings → Privacy & Security → Tracking.'],
+        ['6. Usage analytics', 'To understand where users drop off and where errors occur, the Company collects anonymous usage statistics through PostHog. The events collected are app launch, game start and end (score, round, planes landed), restart, continue used, share, settings changed, and unhandled error reports. They contain no personally identifiable information such as name or email, and are not used for advertising tracking.'],
+        ['7. Processors and third-party sharing', 'The Company does not sell or otherwise provide users’ personal data to third parties. To provide the features above, the following processors handle the relevant data — Google LLC (ad serving and consent management), Apple Inc. (Game Center ranking, App Tracking Transparency), and PostHog Inc. (anonymous usage analytics). Each processor handles data under its own privacy policy.'],
+        ['8. International transfer', 'The servers of the processors above are located outside the Republic of Korea, including in the United States, so the data described is transferred abroad for processing. The items transferred are the advertising identifiers, device information, and anonymous usage statistics described in sections 4 and 6; the purpose is ad delivery and service improvement; and retention follows each processor’s policy. The recipients are Google LLC (United States), Apple Inc. (United States), and PostHog Inc. (United States). Users may refuse advertising tracking by the means described in section 5.'],
+        ['9. Children’s privacy', 'The Service is not primarily directed to children under 14 and does not knowingly collect children’s personal data.'],
+        ['10. User rights and data deletion', 'On-device data can be deleted at any time by deleting the app or resetting it in device settings. Advertising tracking can be refused as described in section 5, and other rights such as access, correction, and deletion may be exercised through the contact below.'],
+        ['11. Duty of notice', 'Any additions, deletions, or changes to this policy will be announced within the Service or on this page before the effective date.'],
       ] as Pair[],
-      contactTitle: '8. Privacy officer and contact',
+      contactTitle: '12. Privacy officer and contact',
     },
     terms: {
       title: 'Terms of Use',
@@ -221,9 +234,10 @@ export const DICT = {
         ['Article 4 (Provision and change of the Service)', 'The Company may change the content, features and composition of the Service as operationally or technically necessary. The Company strives to improve quality but does not guarantee uninterrupted or error-free operation.'],
         ['Article 5 (User obligations)', 'Users must not interfere with the normal operation of the Service, infringe others’ rights or reputation, violate applicable laws or public order and morals, or infringe the Company’s intellectual property.'],
         ['Article 6 (Intellectual property)', 'Copyright and other intellectual property rights in the Service and its content (design, logo, graphics, code, etc.) belong to the Company. Users may not reproduce, distribute, modify, or commercially use them without prior consent.'],
-        ['Article 7 (Paid services and refunds)', 'If paid items (such as in-app purchases) are introduced, payment and refunds follow Apple App Store policies and applicable laws. This version contains no paid items.'],
-        ['Article 8 (Disclaimer)', 'The Company is not liable for damages arising from causes beyond its reasonable control, such as force majeure, user fault, or failures of third-party services (App Store, Game Center, etc.). The Service is provided for entertainment and is "fiction inspired by a true story."'],
-        ['Article 9 (Governing law and jurisdiction)', 'These Terms are governed by the laws of the Republic of Korea, and disputes shall be subject to the court having jurisdiction over the Company’s address.'],
+        ['Article 7 (Advertising)', 'The Service is provided free of charge and shows in-app advertising to support its operation. Ads appear as a rewarded ad after a game over (watching it to continue is the user’s choice) and as an interstitial between restarts. Ads are delivered through Google AdMob and their content is not created by the Company; accordingly, the Company is not responsible for the goods or services offered by advertisers or for any transaction between a user and an advertiser. Information processed for advertising, and how to opt out of tracking, are described in the Privacy Policy.'],
+        ['Article 8 (Paid services and refunds)', 'If paid items (such as in-app purchases) are introduced, payment and refunds follow Apple App Store policies and applicable laws. This version contains no paid items.'],
+        ['Article 9 (Disclaimer)', 'The Company is not liable for damages arising from causes beyond its reasonable control, such as force majeure, user fault, or failures of third-party services (App Store, Game Center, ad networks, etc.). The Service is provided for entertainment and is "fiction inspired by a true story."'],
+        ['Article 10 (Governing law and jurisdiction)', 'These Terms are governed by the laws of the Republic of Korea, and disputes shall be subject to the court having jurisdiction over the Company’s address.'],
       ] as Pair[],
       addendumTitle: 'Addendum',
       addendum: `These Terms take effect on ${EFFECTIVE}.`,
@@ -236,7 +250,9 @@ export const DICT = {
         ['I can’t see the global ranking.', 'The global ranking uses Apple Game Center. Make sure you are signed in under Settings → Game Center. After signing in, play a round and your score will appear on the leaderboard.'],
         ['My records disappeared after changing devices.', 'High scores, coins and settings are stored on the device. Deleting the app or changing devices resets local records. However, scores submitted to Game Center stay with your Apple account.'],
         ['No sound / the screen shakes too much.', 'In the in-game settings you can adjust sound, haptics, Reduce Motion, and Battery Saver. If the device gets warm, try Battery Saver (30fps).'],
-        ['Are there ads or purchases?', 'This version contains no ads or in-app purchases. They may be introduced in a future update, in which case we will provide separate notice.'],
+        ['Are there ads or purchases?', 'The game is free and there are no in-app purchases. It does show ads to support operation — a rewarded ad after a game over (watch it only if you want to continue) and an interstitial between restarts.'],
+        ['I want to turn off ad tracking.', 'On iOS, go to Settings → Privacy & Security → Tracking and turn off tracking for TOWER 68. The game still works exactly the same; you will simply see non-personalized ads. If you are in the EEA or the UK, you can also revisit your choice under “Privacy options” in the game settings.'],
+        ['What information do you collect?', 'Scores, coins and settings stay on your device. Beyond that we collect an advertising identifier for ad delivery, and anonymous usage statistics for improving the game (app launch, game start and end, error reports, and similar). We do not collect personally identifiable information such as your name or email. See the Privacy Policy for details.'],
       ] as Pair[],
       channelTitle: 'Contact channels and response time',
       channels: [
