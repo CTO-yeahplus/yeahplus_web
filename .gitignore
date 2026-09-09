@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 정리 대기 폴더 — 빌드 대상이 아니고 저장소에도 올리지 않는다.
+_to_delete/
