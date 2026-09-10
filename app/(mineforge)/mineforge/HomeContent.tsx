@@ -2,6 +2,7 @@
 
 import { CalendarDays, Eye, Flag, Gem, Palette, Pickaxe, Sparkles } from 'lucide-react';
 import { useLang } from './i18n';
+import LoopPipeline from './LoopPipeline';
 
 // 출시됨 — 이 값이 비면 버튼이 자동으로 비활성 상태가 된다(시리즈 나머지 게임이 그 상태).
 const APP_STORE_URL = 'https://apps.apple.com/kr/app/id6802883164';
@@ -91,25 +92,9 @@ export default function HomeContent() {
       </header>
 
       <div className="mf-wrap">
-        <section className="mf-section">
-          <div className="mf-loop">
-            {ko ? (
-              <>
-                칸을 파면 숫자가 주변 지뢰를 알려준다 → 직전 발굴 옆을 이어 파면 <b>광맥 +1</b>, 같은 숫자는{' '}
-                <b>공명 +2</b> — 레벨만큼 배율 → 지뢰는 <b>버팀목</b>이 대신 받고, 막히면 <b>카나리아</b>가
-                안전한 칸을 노래한다 → 라운드 사이 <b>발파 공방</b>에서 광석을 심고 뇌관을 해체한다 → 8개
-                챕터의 쿼터를 돌파한다.
-              </>
-            ) : (
-              <>
-                Dig a tile and the numbers count nearby mines → chain adjacent digs to grow the{' '}
-                <b>seam +1</b>, same number strikes <b>resonance +2</b> — each level is +1 mult →{' '}
-                <b>pit props</b> absorb your mine strikes, and the <b>canary</b> sings over a provably safe tile
-                → between rounds, bury stones and defuse mines at the <b>Blast Works</b> → beat the quota across
-                8 chapters.
-              </>
-            )}
-          </div>
+        <section className="mf-section" id="loop">
+          <h2 className="mf-h2">{ko ? '한 판의 흐름' : 'One run, five steps'}</h2>
+          <LoopPipeline />
         </section>
 
         <section className="mf-section" id="features">
