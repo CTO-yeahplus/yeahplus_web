@@ -151,7 +151,7 @@ export default function HomeContent() {
             </a>
             <a href="/mineforge">
               <b>MINEFORGE</b>
-              <span>{ko ? '지뢰찾기 로그라이크' : 'A minesweeper roguelike'}</span>
+              <span>{ko ? '지뢰찾기 로그라이크 · App Store 출시' : 'A minesweeper roguelike · on the App Store'}</span>
             </a>
             <a href="/jadeforge">
               <b>JADEFORGE</b>

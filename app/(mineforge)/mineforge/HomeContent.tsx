@@ -3,8 +3,8 @@
 import { CalendarDays, Eye, Flag, Gem, Palette, Pickaxe, Sparkles } from 'lucide-react';
 import { useLang } from './i18n';
 
-// 출시 후 아래에 실제 App Store URL 을 넣으면 버튼이 자동으로 활성화됩니다.
-const APP_STORE_URL = '';
+// 출시됨 — 이 값이 비면 버튼이 자동으로 비활성 상태가 된다(시리즈 나머지 게임이 그 상태).
+const APP_STORE_URL = 'https://apps.apple.com/kr/app/id6802883164';
 
 const FEATURES: { Icon: typeof CalendarDays; ko: [string, string]; en: [string, string] }[] = [
   {

@@ -152,7 +152,7 @@ export function Ecosystem() {
       accent: "#e8a33d", hover: "rgba(232,163,61,0.14)", desc: t.ecosystem.aceforge.desc, badges: t.ecosystem.aceforge.badges, status: "soon" },
     { name: "MINEFORGE", Icon: Pickaxe, logo: null, logoBg: "#16130f", image: null,
       href: "/mineforge", domain: "yeahplus.co.kr/mineforge",
-      accent: "#ffc86e", hover: "rgba(255,200,110,0.14)", desc: t.ecosystem.mineforge.desc, badges: t.ecosystem.mineforge.badges, status: "soon" },
+      accent: "#ffc86e", hover: "rgba(255,200,110,0.14)", desc: t.ecosystem.mineforge.desc, badges: t.ecosystem.mineforge.badges },
     { name: "JADEFORGE", Icon: Gem, logo: null, logoBg: "#0f1a14", image: null,
       href: "/jadeforge", domain: "yeahplus.co.kr/jadeforge",
       accent: "#7fd8a8", hover: "rgba(127,216,168,0.14)", desc: t.ecosystem.jadeforge.desc, badges: t.ecosystem.jadeforge.badges, status: "soon" },
