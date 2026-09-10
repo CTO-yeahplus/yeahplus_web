@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useLang } from './i18n';
+import LoopPipeline from './LoopPipeline';
 
 // 이전 정적 배포에서 HashRouter 로 안내된 주소 호환: /wordforge/#/privacy → /wordforge/privacy
 const HASH_ROUTES = ['privacy', 'terms', 'support'];
@@ -164,6 +165,12 @@ export default function HomeContent() {
           <p className="wf-hero-note">{t.note}</p>
         </div>
         <div className="wf-rule" />
+      </section>
+
+      <section className="wf-section wf-wrap-wide" id="loop">
+        <p className="wf-kicker">{lang === 'ko' ? '한 판의 흐름' : 'The loop'}</p>
+        <h2 className="wf-section-title">{lang === 'ko' ? '네 걸음이면 한 판입니다.' : 'Four steps make a run.'}</h2>
+        <LoopPipeline />
       </section>
 
       <section className="wf-section wf-wrap-wide">

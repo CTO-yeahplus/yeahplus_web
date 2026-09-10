@@ -3,23 +3,20 @@
 import { useLang } from './i18n';
 
 /* ─────────────────────────────────────────────────────────────
-   한 판의 흐름을 5단계 파이프라인으로 보여준다.
+   한 판의 흐름 — 5단계 파이프라인.
 
-   애니메이션은 전부 CSS 키프레임이다 — 10초를 한 바퀴로 잡고 각 단계가
+   애니메이션은 전부 CSS 키프레임이다. 10초를 한 바퀴로 잡고 각 단계가
    2초씩 순서대로 밝아지며, 연결선의 불꽃이 그 사이를 건너간다. JS 타이머를
    쓰지 않으므로 탭이 백그라운드로 가면 브라우저가 알아서 멈춘다.
-   `prefers-reduced-motion` 에서는 전부 정지하고 모든 단계를 밝은 상태로 둔다.
+   `prefers-reduced-motion` 에서는 전부 정지하고 모든 단계를 완료 상태로 둔다.
+
+   ⚠️ 이 파일은 scripts/gen_pipeline.py 로 다섯 게임에 같이 찍어낸 것이다.
+   한 게임만 손보면 나머지와 어긋난다 — 문구가 아니라 구조를 바꿀 때는
+   생성기를 고치고 전부 다시 찍는 편이 낫다.
    ───────────────────────────────────────────────────────────── */
 
-type Stage = {
-  no: string;
-  ko: [string, string];
-  en: [string, string];
-  art: React.ReactNode;
-};
-
-/** 1. 발굴 — 3×3 격자에서 가운데 칸이 열리며 숫자가 드러난다. */
-function ArtDig() {
+/** 3×3 격자에서 가운데 칸이 열리며 숫자가 드러난다. */
+function ArtGrid() {
   return (
     <div className="mf-pl-grid" aria-hidden>
       {Array.from({ length: 9 }, (_, i) => (
@@ -31,25 +28,28 @@ function ArtDig() {
   );
 }
 
-/** 2. 광맥 — 옆으로 이어 파면 타일이 순서대로 켜지고 배율이 오른다. */
+/** 광맥 — 옆으로 이어 파면 타일이 차례로 켜지고 배율이 오른다. */
 function ArtSeam() {
+  const values = ['×1', '×2', '×4'];
   return (
     <div className="mf-pl-seam" aria-hidden>
-      <div className="mf-pl-seam-row">
+      <div className="mf-pl-row">
         {[0, 1, 2, 3].map((i) => (
-          <span key={i} className="mf-pl-seam-tile" style={{ '--n': i } as React.CSSProperties} />
+          <span key={i} className="mf-pl-chip" style={{ '--n': i } as React.CSSProperties} />
         ))}
       </div>
       <div className="mf-pl-mult">
-        <span style={{ '--n': 0 } as React.CSSProperties}>×1</span>
-        <span style={{ '--n': 1 } as React.CSSProperties}>×2</span>
-        <span style={{ '--n': 2 } as React.CSSProperties}>×4</span>
+        {values.map((v, i) => (
+          <span key={v} style={{ '--n': i } as React.CSSProperties}>
+            {v}
+          </span>
+        ))}
       </div>
     </div>
   );
 }
 
-/** 3. 안전장치 — 지뢰는 버팀목이 받아내고, 카나리아가 안전한 칸을 노래한다. */
+/** 지뢰는 버팀목이 받아내고, 카나리아가 안전한 칸을 노래한다. */
 function ArtSafety() {
   return (
     <div className="mf-pl-safety" aria-hidden>
@@ -64,21 +64,21 @@ function ArtSafety() {
   );
 }
 
-/** 4. 발파 공방 — 광석을 심고, 뇌관의 도화선을 끊는다. */
-function ArtWorks() {
+/** 공방 — 하나를 심고, 하나의 날을 깎아낸다. */
+function ArtCarve() {
   return (
-    <div className="mf-pl-works" aria-hidden>
+    <div className="mf-pl-carve" aria-hidden>
       <span className="mf-pl-slot">
-        <b className="mf-pl-ore" />
+        <b className="mf-pl-seed" />
       </span>
       <span className="mf-pl-slot">
-        <b className="mf-pl-fuse" />
+        <b className="mf-pl-edge" />
       </span>
     </div>
   );
 }
 
-/** 5. 돌파 — 쿼터 게이지가 차고 8개 챕터가 하나씩 점등된다. */
+/** 쿼터 게이지가 차고 챕터가 하나씩 점등된다. */
 function ArtQuota() {
   return (
     <div className="mf-pl-quota" aria-hidden>
@@ -94,10 +94,12 @@ function ArtQuota() {
   );
 }
 
+type Stage = { no: string; art: React.ReactNode; ko: [string, string]; en: [string, string] };
+
 const STAGES: Stage[] = [
   {
     no: '01',
-    art: <ArtDig />,
+    art: <ArtGrid />,
     ko: ['판다', '칸을 열면 숫자가 주변 지뢰 수를 알려준다.'],
     en: ['Dig', 'Open a tile and its number counts the mines around it.'],
   },
@@ -105,17 +107,17 @@ const STAGES: Stage[] = [
     no: '02',
     art: <ArtSeam />,
     ko: ['잇는다', '직전 발굴 옆을 이어 파면 광맥 +1, 같은 숫자는 공명 +2. 레벨만큼 배율이 붙는다.'],
-    en: ['Chain', 'Chain an adjacent dig for seam +1, or strike the same number for resonance +2 — each level is +1 mult.'],
+    en: ['Chain', 'Chain an adjacent dig for seam +1, same number for resonance +2 — each level is +1 mult.'],
   },
   {
     no: '03',
     art: <ArtSafety />,
     ko: ['버틴다', '지뢰는 버팀목이 대신 받고, 막히면 카나리아가 안전한 칸을 노래한다.'],
-    en: ['Hold', 'Pit props absorb your mine strikes, and when you are stuck the canary sings over a provably safe tile.'],
+    en: ['Hold', 'Pit props absorb your mine strikes; when you are stuck the canary sings over a safe tile.'],
   },
   {
     no: '04',
-    art: <ArtWorks />,
+    art: <ArtCarve />,
     ko: ['세공한다', '라운드 사이 발파 공방에서 광석을 심고 뇌관을 해체한다.'],
     en: ['Forge', 'Between rounds, bury stones and defuse mines at the Blast Works.'],
   },
@@ -153,9 +155,7 @@ export default function LoopPipeline() {
           );
         })}
       </ol>
-      <p className="mf-pl-cycle">
-        {ko ? '한 판은 이 다섯 걸음을 계속 돈다.' : 'A run keeps circling these five steps.'}
-      </p>
+      <p className="mf-pl-cycle">{ko ? '한 판은 이 다섯 걸음을 계속 돈다.' : 'A run keeps circling these five steps.'}</p>
     </div>
   );
 }

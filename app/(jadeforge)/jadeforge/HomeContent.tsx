@@ -2,6 +2,7 @@
 
 import { CalendarDays, Eye, Hammer, Palette, Pickaxe, Sparkles } from 'lucide-react';
 import { useLang } from './i18n';
+import LoopPipeline from './LoopPipeline';
 
 // 출시 후 아래에 실제 App Store URL 을 넣으면 버튼이 자동으로 활성화됩니다.
 const APP_STORE_URL = '';
@@ -87,23 +88,9 @@ export default function HomeContent() {
       </header>
 
       <div className="jf-wrap">
-        <section className="jf-section">
-          <div className="jf-loop">
-            {ko ? (
-              <>
-                위가 비고 옆이 열린 <b>자유 타일</b> 두 장을 짝지어 캔다 → 같은 문양은 <b>맥 +1</b>, 같은
-                숫자는 <b>공명 +2</b> — 맥 레벨만큼 배율 → 라운드 사이 <b>옥공방</b>에서 타일을 세공한다 → 8개
-                챕터의 쿼터를 돌파한다. 막히면 <b>재련</b> — 산은 언제나 풀 수 있게 다시 쌓인다.
-              </>
-            ) : (
-              <>
-                Match two identical <b>free tiles</b> to dig → same suit grows the <b>vein +1</b>, same number
-                strikes <b>resonance +2</b> — each level is +1 mult → between rounds, <b>carve</b> your tiles at
-                the Jade Works → beat the quota across 8 chapters. Stuck? <b>Reforge</b> — the mountain always
-                restacks solvable.
-              </>
-            )}
-          </div>
+        <section className="jf-section" id="loop">
+          <h2 className="jf-h2">{ko ? '한 판의 흐름' : 'One run, step by step'}</h2>
+          <LoopPipeline />
         </section>
 
         <section className="jf-section" id="features">

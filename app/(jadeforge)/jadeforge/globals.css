@@ -179,3 +179,270 @@ a:hover { text-decoration: underline; }
 .jf-series-grid a:hover { border-color: var(--jf-accent); text-decoration: none; transform: translateY(-2px); }
 .jf-series-grid b { display: block; color: var(--jf-brand); letter-spacing: 1px; margin-bottom: 4px; }
 .jf-series-grid span { display: block; font-size: 13px; color: var(--jf-dim); }
+
+/* ═══════════════════════════════════════════════════════════════
+   한 판의 흐름 — 4단계 파이프라인 (LoopPipeline.tsx · gen_pipeline.py 생성)
+
+   8초가 한 바퀴. 단계 i 는 (i × 2초)에 깨어나 2초 동안 밝다.
+   아래 퍼센트는 전부 '한 단계 = 25%' 를 기준으로 계산돼 있다.
+   ═══════════════════════════════════════════════════════════════ */
+.jf-pl {
+  --pl-cycle: 8s;
+  --pl-step: 2s;
+  /* 게임마다 다른 변수 이름을 여기서 한 번만 맞춘다 */
+  --pl-bg: var(--jf-bg);
+  --pl-panel: var(--jf-panel);
+  --pl-panel2: var(--jf-panel2);
+  --pl-line: var(--jf-line);
+  --pl-ink: var(--jf-ink);
+  --pl-dim: var(--jf-dim);
+  --pl-gold: var(--jf-gold);
+  --pl-amber: var(--jf-amber);
+  --pl-accent: var(--jf-accent);
+  --pl-red: var(--jf-red);
+  /* 4열이 들어가려면 본문보다 넓어야 한다. 부모를 건드리지 않고
+     가운데를 기준으로만 넓힌다 — 화면이 좁으면 자동으로 줄어든다. */
+  width: min(980px, calc(100vw - 44px));
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.jf-pl-track { list-style: none; display: grid; gap: 18px; grid-template-columns: repeat(4, 1fr); }
+.jf-pl-step { position: relative; display: flex; }
+
+.jf-pl-card {
+  position: relative; flex: 1; display: flex; flex-direction: column;
+  background: var(--pl-panel); border: 1px solid var(--pl-line); border-radius: 14px;
+  padding: 16px 14px 15px; text-align: left; overflow: hidden;
+  animation: jf-pl-wake var(--pl-cycle) linear infinite;
+  animation-delay: calc(var(--i) * var(--pl-step));
+}
+.jf-pl-card::before {
+  content: ''; position: absolute; inset: -1px; border-radius: 14px; pointer-events: none;
+  background: radial-gradient(120px 60px at 50% -10%, color-mix(in srgb, var(--pl-accent) 22%, transparent), transparent 70%);
+  opacity: 0;
+  animation: jf-pl-glow var(--pl-cycle) linear infinite;
+  animation-delay: calc(var(--i) * var(--pl-step));
+}
+@keyframes jf-pl-wake {
+  0%, 100%      { border-color: var(--pl-line); transform: translateY(0); }
+  2.5%      { border-color: var(--pl-accent); transform: translateY(-3px); }
+  22.5%      { border-color: var(--pl-accent); transform: translateY(-3px); }
+  30%     { border-color: var(--pl-line); transform: translateY(0); }
+}
+@keyframes jf-pl-glow {
+  0%, 100%             { opacity: 0; }
+  3.75%, 22.5%   { opacity: 1; }
+  30%            { opacity: 0; }
+}
+
+.jf-pl-no {
+  font-family: Georgia, 'Times New Roman', serif; font-size: 12px; letter-spacing: 2px;
+  color: var(--pl-dim);
+  animation: jf-pl-no var(--pl-cycle) linear infinite;
+  animation-delay: calc(var(--i) * var(--pl-step));
+}
+@keyframes jf-pl-no {
+  0%, 100%             { color: var(--pl-dim); }
+  3.75%, 22.5%   { color: var(--pl-accent); }
+  30%            { color: var(--pl-dim); }
+}
+
+.jf-pl-art { height: 62px; margin: 10px 0 12px; display: flex; align-items: center; justify-content: center; }
+.jf-pl-title { font-size: 15px; color: var(--pl-ink); margin-bottom: 4px; }
+.jf-pl-desc { font-size: 12.5px; line-height: 1.65; color: var(--pl-dim); }
+
+/* ── 단계 사이 연결선 + 건너가는 불꽃 ── */
+.jf-pl-link {
+  position: absolute; top: 48px; right: -18px; width: 18px; height: 2px;
+  background: var(--pl-panel2); z-index: 1;
+}
+.jf-pl-link::after {
+  content: ''; position: absolute; right: -1px; top: -3px;
+  border-left: 5px solid var(--pl-panel2);
+  border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+}
+.jf-pl-link i {
+  position: absolute; inset: 0; border-radius: 2px; background: var(--pl-accent);
+  transform-origin: left center; transform: scaleX(0);
+  animation: jf-pl-spark var(--pl-cycle) linear infinite;
+  animation-delay: calc(var(--i) * var(--pl-step) + 1.6s);
+}
+@keyframes jf-pl-spark {
+  0%                   { transform: scaleX(0); opacity: 1; }
+  5%             { transform: scaleX(1); opacity: 1; }
+  12.5%             { transform: scaleX(1); opacity: 0; }
+  13.75%, 100%       { transform: scaleX(0); opacity: 0; }
+}
+
+/* ── 도해: 이어 붙이기 ── */
+.jf-pl-row { display: flex; align-items: center; gap: 4px; }
+.jf-pl-chip {
+  min-width: 15px; height: 17px; padding: 0 3px; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--pl-dim);
+  background: var(--pl-panel2); border: 1px solid var(--pl-line);
+  animation: jf-pl-lit var(--pl-cycle) linear infinite;
+  animation-delay: calc(0 * var(--pl-step) + var(--n) * 0.18s);
+}
+@keyframes jf-pl-lit {
+  0%, 100%           { background: var(--pl-panel2); border-color: var(--pl-line); color: var(--pl-dim); box-shadow: none; }
+  3.75%, 20% { background: var(--pl-amber); border-color: var(--pl-accent); color: var(--pl-bg);
+                        box-shadow: 0 0 8px color-mix(in srgb, var(--pl-accent) 50%, transparent); }
+  27.5%          { background: var(--pl-panel2); border-color: var(--pl-line); color: var(--pl-dim); box-shadow: none; }
+}
+.jf-pl-seam { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.jf-pl-arrow {
+  width: 0; height: 0; margin: 0 1px;
+  border-left: 5px solid var(--pl-line);
+  border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+}
+.jf-pl-result {
+  padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 700;
+  color: var(--pl-gold); border: 1px solid var(--pl-line); background: var(--pl-bg);
+  opacity: 0; animation: jf-pl-result var(--pl-cycle) linear infinite;
+  animation-delay: calc(0 * var(--pl-step));
+}
+@keyframes jf-pl-result {
+  0%, 13.75%       { opacity: 0; transform: scale(0.8); }
+  17.5%, 22.5% { opacity: 1; transform: scale(1); }
+  28.75%, 100%    { opacity: 0; transform: scale(0.8); }
+}
+
+/* ── 도해: 배율 ── */
+.jf-pl-mult { position: relative; height: 20px; width: 46px; }
+.jf-pl-mult span {
+  position: absolute; inset: 0; text-align: center;
+  font-family: Georgia, 'Times New Roman', serif; font-size: 16px; color: var(--pl-gold);
+  opacity: 0; animation: jf-pl-mult var(--pl-cycle) linear infinite;
+  animation-delay: calc(1 * var(--pl-step) + var(--n) * 0.45s);
+}
+/* 세 배율이 겹쳐 보이면 없는 숫자로 읽힌다 — 노출 구간(0.3s)을 간격(0.45s)보다 짧게. */
+@keyframes jf-pl-mult {
+  0%, 1.25%       { opacity: 0; }
+  2.5%, 6.25% { opacity: 1; }
+  7.5%, 100%     { opacity: 0; }
+}
+/* 마지막 배율은 단계가 끝날 때까지 남는다 — 도달한 결과이기 때문이다. */
+.jf-pl-mult span:last-child { animation-name: jf-pl-mult-hold; }
+@keyframes jf-pl-mult-hold {
+  0%, 1.25%       { opacity: 0; }
+  2.5%, 20% { opacity: 1; }
+  25%, 100%    { opacity: 0; }
+}
+
+/* ── 도해: 공방 ── */
+.jf-pl-carve { display: flex; gap: 12px; }
+.jf-pl-slot {
+  position: relative; width: 32px; height: 32px; border-radius: 7px;
+  background: var(--pl-panel2); border: 1px solid var(--pl-line);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.jf-pl-seed {
+  width: 12px; height: 12px; border-radius: 3px; background: var(--pl-gold);
+  transform: translateY(-26px); opacity: 0;
+  animation: jf-pl-plant var(--pl-cycle) linear infinite;
+  animation-delay: calc(2 * var(--pl-step));
+}
+@keyframes jf-pl-plant {
+  0%, 2.5%       { transform: translateY(-26px); opacity: 0; }
+  5%           { transform: translateY(-26px); opacity: 1; }
+  12.5%           { transform: translateY(0); opacity: 1; }
+  15%           { transform: translateY(0) scale(1.3); }
+  17.5%, 22.5% { transform: translateY(0) scale(1); opacity: 1; }
+  27.5%, 100%    { opacity: 0; }
+}
+.jf-pl-edge {
+  width: 18px; height: 3px; border-radius: 2px; background: var(--pl-red);
+  transform-origin: right center;
+  animation: jf-pl-shave var(--pl-cycle) linear infinite;
+  animation-delay: calc(2 * var(--pl-step));
+}
+@keyframes jf-pl-shave {
+  0%, 5%       { transform: scaleX(1); background: var(--pl-red); }
+  20%           { transform: scaleX(0.05); background: var(--pl-red); }
+  21.25%, 27.5% { transform: scaleX(0.05); background: var(--pl-line); }
+  28.75%, 100%    { transform: scaleX(1); background: var(--pl-red); }
+}
+
+/* ── 도해: 쿼터와 챕터 ── */
+.jf-pl-quota { display: flex; flex-direction: column; align-items: center; gap: 9px; }
+.jf-pl-bar {
+  display: block; width: 76px; height: 7px; border-radius: 4px;
+  background: var(--pl-panel2); border: 1px solid var(--pl-line); overflow: hidden;
+}
+.jf-pl-bar i {
+  display: block; height: 100%; width: 100%;
+  background: linear-gradient(90deg, var(--pl-amber), var(--pl-gold));
+  transform-origin: left center; transform: scaleX(0);
+  animation: jf-pl-fill var(--pl-cycle) linear infinite;
+  animation-delay: calc(3 * var(--pl-step));
+}
+@keyframes jf-pl-fill {
+  0%, 2.5%       { transform: scaleX(0); }
+  21.25%, 27.5% { transform: scaleX(1); }
+  28.75%, 100%    { transform: scaleX(0); }
+}
+.jf-pl-pips { display: flex; gap: 4px; }
+.jf-pl-pips i {
+  width: 5px; height: 5px; border-radius: 50%; background: var(--pl-line);
+  animation: jf-pl-pip var(--pl-cycle) linear infinite;
+  animation-delay: calc(3 * var(--pl-step) + var(--n) * 0.16s);
+}
+@keyframes jf-pl-pip {
+  0%, 2.5%       { background: var(--pl-line); }
+  6.25%, 27.5% { background: var(--pl-gold); }
+  28.75%, 100%    { background: var(--pl-line); }
+}
+
+.jf-pl-cycle { margin-top: 14px; text-align: center; font-size: 13px; color: var(--pl-dim); }
+
+/* ── 좁은 화면 ── */
+@media (max-width: 900px) {
+  .jf-pl-track { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  /* 2열에서는 연결선이 줄바꿈을 가로질러 거짓말을 하게 된다 — 숨긴다. */
+  .jf-pl-link { display: none; }
+}
+@media (max-width: 520px) {
+  .jf-pl-track { grid-template-columns: 1fr; gap: 20px; }
+  .jf-pl-art { height: 54px; }
+  .jf-pl-link {
+    display: block; top: auto; right: auto; left: 30px; bottom: -20px;
+    width: 2px; height: 20px;
+  }
+  .jf-pl-link::after {
+    right: auto; top: auto; left: -3px; bottom: -1px;
+    border-left: 4px solid transparent; border-right: 4px solid transparent;
+    border-top: 5px solid var(--pl-panel2); border-bottom: 0;
+  }
+  .jf-pl-link i { transform-origin: center top; }
+  @keyframes jf-pl-spark {
+    0%             { transform: scaleY(0); opacity: 1; }
+    5%       { transform: scaleY(1); opacity: 1; }
+    12.5%       { transform: scaleY(1); opacity: 0; }
+    13.75%, 100% { transform: scaleY(0); opacity: 0; }
+  }
+}
+
+/* ── 모션 최소화: 전부 멈추고 모든 단계를 완료 상태로 고정한다 ── */
+@media (prefers-reduced-motion: reduce) {
+  .jf-pl *, .jf-pl *::before { animation: none !important; transition: none !important; }
+  .jf-pl-card { border-color: var(--pl-accent); }
+  .jf-pl-card::before { opacity: 1; }
+  .jf-pl-no { color: var(--pl-accent); }
+  .jf-pl-cell-open { background: var(--pl-bg); border-color: var(--pl-accent); }
+  .jf-pl-cell-open b { opacity: 1; }
+  .jf-pl-chip { background: var(--pl-amber); border-color: var(--pl-accent); color: var(--pl-bg); }
+  .jf-pl-result { opacity: 1; transform: scale(1); }
+  .jf-pl-mult span { opacity: 0; }
+  .jf-pl-mult span:last-child { opacity: 1; }
+  .jf-pl-die { border-color: var(--pl-accent); }
+  .jf-pl-die:last-child i { background: var(--pl-gold); }
+  .jf-pl-mine { opacity: 1; transform: translateY(16px); }
+  .jf-pl-canary i:first-child { opacity: 0.9; }
+  .jf-pl-seed { opacity: 1; transform: translateY(0); }
+  .jf-pl-edge { transform: scaleX(0.05); background: var(--pl-line); }
+  .jf-pl-bar i { transform: scaleX(1); }
+  .jf-pl-pips i { background: var(--pl-gold); }
+  .jf-pl-link i { transform: scaleX(1); opacity: 1; }
+}

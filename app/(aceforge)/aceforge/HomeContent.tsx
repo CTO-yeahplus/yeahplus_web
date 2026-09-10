@@ -2,6 +2,7 @@
 
 import { CalendarDays, Eye, Hammer, Link2, Palette, Sparkles } from 'lucide-react';
 import { useLang } from './i18n';
+import LoopPipeline from './LoopPipeline';
 
 // 출시 후 아래에 실제 App Store URL 을 넣으면 버튼이 자동으로 활성화됩니다.
 const APP_STORE_URL = '';
@@ -87,22 +88,9 @@ export default function HomeContent() {
       </header>
 
       <div className="af-wrap">
-        <section className="af-section">
-          <div className="af-loop">
-            {ko ? (
-              <>
-                <b>모루</b>보다 1 높거나 낮은 카드를 이어 <b>체인</b>을 만든다 → 체인 n번째 카드는{' '}
-                <b>+(n−1) 배율</b> → 라운드 사이 <b>대장간</b>에서 카드를 세공한다 → 8개 챕터의 쿼터를
-                돌파한다. A와 K는 이어진다.
-              </>
-            ) : (
-              <>
-                Play cards one rank above or below the <b>anvil</b> to build a <b>chain</b> → the n-th link
-                scores at <b>+(n−1) mult</b> → between rounds, <b>forge</b> your cards → beat the quota across 8
-                chapters. A and K connect.
-              </>
-            )}
-          </div>
+        <section className="af-section" id="loop">
+          <h2 className="af-h2">{ko ? '한 판의 흐름' : 'One run, step by step'}</h2>
+          <LoopPipeline />
         </section>
 
         <section className="af-section" id="features">

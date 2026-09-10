@@ -5,12 +5,15 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Flame, Globe, Hammer, ScrollText, Snowflake, Sparkles } from 'lucide-react';
 import { useLang } from './i18n';
+import LoopPipeline from './LoopPipeline';
 
 // App Store Connect 에 제출된 HashRouter 주소 호환: /pipforge/#/privacy → /pipforge/privacy
 const HASH_ROUTES = ['privacy', 'support', 'terms'];
 
 // 앱이 App Store 에 라이브되면 아래 주소를 실제 링크로 교체하세요(ASC 앱 페이지에서 복사).
-const APP_STORE_URL = 'https://apps.apple.com/app/pipforge';
+// 출시 전이다. 값이 비면 버튼이 자동으로 비활성 상태가 된다 —
+// 예전에 넣어 둔 apps.apple.com/app/pipforge 는 실재하지 않는 주소라 404 였다.
+const APP_STORE_URL = '';
 
 const ICONS = [Hammer, Sparkles, ScrollText, Snowflake, Flame, Globe];
 
@@ -85,11 +88,22 @@ export default function HomeContent() {
           {t.hero2}
         </h1>
         <p className="pf-hero-sub">{t.sub}</p>
-        <a className="pf-cta" href={APP_STORE_URL} target="_blank" rel="noreferrer">
+        <a
+          className="pf-cta"
+          href={APP_STORE_URL || '#'}
+          aria-disabled={APP_STORE_URL ? undefined : true}
+          target={APP_STORE_URL ? '_blank' : undefined}
+          rel={APP_STORE_URL ? 'noreferrer' : undefined}
+        >
           {t.cta}
         </a>
         <div className="pf-cta-sub">{t.ctaSub}</div>
         <div className="pf-badge-line">{t.noAds}</div>
+      </section>
+
+      <section className="pf-section" id="loop">
+        <h2 className="pf-h2">{lang === 'ko' ? '한 판의 흐름' : 'One run, step by step'}</h2>
+        <LoopPipeline />
       </section>
 
       <section className="pf-features">
