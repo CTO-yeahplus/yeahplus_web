@@ -6,8 +6,8 @@ import { createContext, useContext, useEffect, useState } from 'react';
 export type Lang = 'ko' | 'en';
 
 export const NAV = {
-  ko: { home: '홈', features: '특징', support: '지원', privacy: '개인정보', terms: '이용약관' },
-  en: { home: 'Home', features: 'Features', support: 'Support', privacy: 'Privacy', terms: 'Terms' },
+  ko: { home: '홈', features: '특징', press: '프레스', support: '지원', privacy: '개인정보', terms: '이용약관' },
+  en: { home: 'Home', features: 'Features', press: 'Press', support: 'Support', privacy: 'Privacy', terms: 'Terms' },
 } as const;
 
 export const EMAIL = 'contact@yeahplus.co.kr';

@@ -11,7 +11,7 @@ const PRODUCTS: { base: string; sub: string[] }[] = [
   { base: "wordforge", sub: ["privacy", "support", "terms"] },
   { base: "pipforge", sub: ["privacy", "support", "terms"] },
   { base: "aceforge", sub: ["privacy", "support", "terms"] },
-  { base: "mineforge", sub: ["privacy", "support", "terms"] },
+  { base: "mineforge", sub: ["press", "privacy", "support", "terms"] },
   { base: "jadeforge", sub: ["privacy", "support", "terms"] },
 ];
 

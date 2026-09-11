@@ -19,6 +19,9 @@ function Nav() {
         </Link>
         <span className="mf-links">
           <Link href="/mineforge#features">{n.features}</Link>
+          <Link href="/mineforge/press" className={on('/mineforge/press')}>
+            {n.press}
+          </Link>
           <Link href="/mineforge/support" className={on('/mineforge/support')}>
             {n.support}
           </Link>
@@ -48,6 +51,7 @@ function Footer({ year }: { year: number }) {
         <div className="mf-footer-links">
           <Link href="/mineforge/privacy">{ko ? '개인정보 처리방침' : 'Privacy Policy'}</Link>
           <Link href="/mineforge/support">{ko ? '지원 / FAQ' : 'Support / FAQ'}</Link>
+          <Link href="/mineforge/press">{ko ? '프레스킷' : 'Press kit'}</Link>
           <Link href="/mineforge/terms">{n.terms}</Link>
           <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
           <Link href="/">{ko ? 'yeahplus 홈' : 'yeahplus home'}</Link>
