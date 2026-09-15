@@ -11,7 +11,7 @@ export const APP_STORE_URL = 'https://apps.apple.com/kr/app/id6802883164';
 export const ZIP_URL = '/mineforge/press/mineforge-presskit.zip';
 export const ZIP_SIZE = '11.8 MB';
 export const ICON_URL = '/mineforge/press/icon-1024.png';
-export const CONTACT = 'cto@yeahplus.co.kr';
+export const CONTACT = 'contact@yeahplus.co.kr';
 
 /** 스크린샷 — 언어별 5장. zip 안에는 1290×2796 PNG 원본이 들어 있다. */
 export const SHOTS = ['01', '02', '03', '04', '05'] as const;

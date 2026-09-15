@@ -173,14 +173,14 @@ export default function PrivacyContent() {
           <h2>9. 개인정보 보호책임자 및 문의처</h2>
           <div className="sl-contact">
             <div style={{ fontSize: "14px", color: "var(--ink-3)" }}>주식회사 예아플러스(yeahplus) · 개인정보 보호책임자</div>
-            <a className="sl-mail" href="mailto:cto@yeahplus.co.kr">cto@yeahplus.co.kr</a>
+            <a className="sl-mail" href="mailto:contact@yeahplus.co.kr">contact@yeahplus.co.kr</a>
             <div className="sl-note">보통 영업일 기준 2~3일 안에 답변드립니다.<br />{' '}We usually reply within two to three business days.</div>
           </div>
           <p style={{ marginTop: "16px" }}>개인정보 침해에 관한 상담이 필요하시면 개인정보침해신고센터(privacy.kisa.or.kr, 국번없이 118), 개인정보 분쟁조정위원회(kopico.go.kr) 등에 문의하실 수 있습니다.</p>
 
           <div className="sl-en-block">
             <h3>9. Contact</h3>
-            <p>yeahplus, Privacy Officer —{' '}<a href="mailto:cto@yeahplus.co.kr">cto@yeahplus.co.kr</a>. Korean users may also contact the Korea Internet &amp; Security Agency privacy report centre (privacy.kisa.or.kr, dial 118) or the Personal Information Dispute Mediation Committee (kopico.go.kr).</p>
+            <p>yeahplus, Privacy Officer —{' '}<a href="mailto:contact@yeahplus.co.kr">contact@yeahplus.co.kr</a>. Korean users may also contact the Korea Internet &amp; Security Agency privacy report centre (privacy.kisa.or.kr, dial 118) or the Personal Information Dispute Mediation Committee (kopico.go.kr).</p>
           </div>
         </section>
 

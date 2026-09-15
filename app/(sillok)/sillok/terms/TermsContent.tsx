@@ -127,7 +127,7 @@ export default function TermsContent() {
           <h2>11. 문의 · Contact</h2>
           <div className="sl-contact">
             <div style={{ fontSize: "14px", color: "var(--ink-3)" }}>주식회사 예아플러스(yeahplus)</div>
-            <a className="sl-mail" href="mailto:cto@yeahplus.co.kr">cto@yeahplus.co.kr</a>
+            <a className="sl-mail" href="mailto:contact@yeahplus.co.kr">contact@yeahplus.co.kr</a>
             <div className="sl-note">약관과 관련한 문의를 보내 주십시오.<br />Questions about these terms are welcome.</div>
           </div>
         </section>

@@ -16,7 +16,7 @@ export default function SupportContent() {
 
         <div className="sl-contact">
           <div style={{ fontSize: "14px", color: "var(--ink-3)" }}>문의 · Contact</div>
-          <a className="sl-mail" href="mailto:cto@yeahplus.co.kr">cto@yeahplus.co.kr</a>
+          <a className="sl-mail" href="mailto:contact@yeahplus.co.kr">contact@yeahplus.co.kr</a>
           <div className="sl-note">{' '}한국어와 영어로 문의하실 수 있습니다. 보통 영업일 기준 2~3일 안에 답변드립니다.<br />{' '}Write in Korean or English. We usually reply within two to three business days.{' '}</div>
         </div>
 
@@ -180,10 +180,10 @@ export default function SupportContent() {
           <details>
             <summary>역사 서술이 잘못된 것 같습니다.</summary>
             <div className="sl-ans">
-              <p>알려 주시면 감사하겠습니다. 어느 왕의 어느 사건인지와, 어디가 어떻게 잘못되었다고 보시는지를{' '}<a href="mailto:cto@yeahplus.co.kr">cto@yeahplus.co.kr</a>{' '}로 보내 주십시오. 확인 후 사실관계가 어긋난 것이 맞다면 다음 업데이트에서 고치겠습니다.</p>
+              <p>알려 주시면 감사하겠습니다. 어느 왕의 어느 사건인지와, 어디가 어떻게 잘못되었다고 보시는지를{' '}<a href="mailto:contact@yeahplus.co.kr">contact@yeahplus.co.kr</a>{' '}로 보내 주십시오. 확인 후 사실관계가 어긋난 것이 맞다면 다음 업데이트에서 고치겠습니다.</p>
               <p>참고로 이 게임의 모든 문장은 사실을 확인한 뒤 새로 쓴 것이며, 국역본 문장을 옮기지 않았습니다. 출처는 실록의 재위 연도와 날짜로만 표기합니다. 학계 통설을 따르고 야사는 넣지 않았습니다.</p>
               <div className="sl-en">
-                <p><b>I think something in the history is wrong.</b><br />{' '}Please tell us. Send the king, the event and what you believe is inaccurate to{' '}<a href="mailto:cto@yeahplus.co.kr">cto@yeahplus.co.kr</a>; if the fact is indeed wrong we will correct it in the next update. All prose in the game was written fresh after verifying the facts — no published translation is reproduced — and sources are cited by reign year and date only.</p>
+                <p><b>I think something in the history is wrong.</b><br />{' '}Please tell us. Send the king, the event and what you believe is inaccurate to{' '}<a href="mailto:contact@yeahplus.co.kr">contact@yeahplus.co.kr</a>; if the fact is indeed wrong we will correct it in the next update. All prose in the game was written fresh after verifying the facts — no published translation is reproduced — and sources are cited by reign year and date only.</p>
               </div>
             </div>
           </details>
@@ -211,9 +211,9 @@ export default function SupportContent() {
           <details>
             <summary>앱이 멈추거나 화면이 이상합니다.</summary>
             <div className="sl-ans">
-              <p>앱을 완전히 종료했다가 다시 실행해 주세요. 진행 상황은 자동 저장되어 있습니다. 그래도 같은 문제가 반복되면 기기 모델, iOS 버전, 문제가 일어난 화면(어느 왕, 어느 사건인지)을 적어{' '}<a href="mailto:cto@yeahplus.co.kr">cto@yeahplus.co.kr</a>{' '}로 보내 주십시오. 앱이 아무 정보도 수집하지 않기 때문에, 알려 주시는 내용이 저희가 확인할 수 있는 단서의 전부입니다.</p>
+              <p>앱을 완전히 종료했다가 다시 실행해 주세요. 진행 상황은 자동 저장되어 있습니다. 그래도 같은 문제가 반복되면 기기 모델, iOS 버전, 문제가 일어난 화면(어느 왕, 어느 사건인지)을 적어{' '}<a href="mailto:contact@yeahplus.co.kr">contact@yeahplus.co.kr</a>{' '}로 보내 주십시오. 앱이 아무 정보도 수집하지 않기 때문에, 알려 주시는 내용이 저희가 확인할 수 있는 단서의 전부입니다.</p>
               <div className="sl-en">
-                <p><b>The app froze or looks wrong.</b><br />{' '}Quit the app fully and reopen it; progress is saved automatically. If it recurs, send your device model, iOS version and where it happened (which king, which event) to{' '}<a href="mailto:cto@yeahplus.co.kr">cto@yeahplus.co.kr</a>. Because the app collects nothing, your description is all we have to work from.</p>
+                <p><b>The app froze or looks wrong.</b><br />{' '}Quit the app fully and reopen it; progress is saved automatically. If it recurs, send your device model, iOS version and where it happened (which king, which event) to{' '}<a href="mailto:contact@yeahplus.co.kr">contact@yeahplus.co.kr</a>. Because the app collects nothing, your description is all we have to work from.</p>
               </div>
             </div>
           </details>

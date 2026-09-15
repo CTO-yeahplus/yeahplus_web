@@ -220,6 +220,8 @@ def indent(block: str, spaces: int) -> str:
 # 약관은 계약 당사자를 적는 문서라 이름이 틀리면 그 자체가 문제다.
 COMPANY_FIX = [
     ("예스플러스(yeahplus)", "주식회사 예아플러스(yeahplus)"),
+    # 공개 문의 창구는 contact@ 다. cto@ 는 개인 주소라 문서에 싣지 않는다.
+    ("cto@yeahplus.co.kr", "contact@yeahplus.co.kr"),
     ("예스플러스", "예아플러스"),
 ]
 

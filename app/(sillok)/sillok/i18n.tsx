@@ -17,7 +17,7 @@ export const NAV = {
   en: { home: 'Home', why: 'Why', parents: 'For Parents', support: 'Support', privacy: 'Privacy', terms: 'Terms' },
 } as const;
 
-export const EMAIL = 'cto@yeahplus.co.kr';
+export const EMAIL = 'contact@yeahplus.co.kr';
 
 /** 푸터 사업자 정보 — yeahplus 다른 제품 페이지와 같은 표기. */
 export const COMPANY = {
