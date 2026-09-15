@@ -307,6 +307,11 @@ summary{
   list-style:none;display:flex;gap:10px;align-items:flex-start;color:var(--sl-ink);
 }
 summary::-webkit-details-marker{display:none}
+/* 질문은 한글 + 영어를 나란히 적는다. 화살표(::before)가 첫 번째 플렉스
+   아이템이므로 두 언어는 .sl-q 안에 함께 묶어 한 덩어리로 흐르게 한다. */
+summary .sl-q{flex:1;min-width:0}
+summary .sl-q-en{font-weight:600;font-size:14px;color:var(--sl-ink-3)}
+summary .sl-q-en::before{content:"·";margin:0 .45em;color:var(--sl-line-2)}
 summary::before{
   content:"";flex:0 0 9px;width:9px;height:9px;margin-top:9px;
   border-right:2px solid var(--sl-red);border-bottom:2px solid var(--sl-red);
