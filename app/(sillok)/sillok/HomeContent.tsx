@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 /* 원본 sillok/site/index.html 의 본문을 기계 변환한 것.
    scripts/conv_sillok.py 로 찍어낸 파일이다 — 문구를 고칠 일이 생기면
    sillok/site 쪽 HTML 을 먼저 고치고 생성기를 다시 돌리는 편이 안전하다. */
@@ -10,7 +12,15 @@ export default function HomeContent() {
       {/* ══════════════════ 히어로 ══════════════════ */}
       <header className="sl-hero">
         <div className="sl-wrap">
-          <div className="sl-seal" aria-hidden="true">史</div>
+          <Image
+        className="sl-seal"
+        src="/sillok/icon-256.webp"
+        alt=""
+        width={256}
+        height={256}
+        priority
+        aria-hidden="true"
+      />
 
           <div className="sl-hero-sub">
             <span data-l="ko">조선 500년 · 27명의 왕</span>

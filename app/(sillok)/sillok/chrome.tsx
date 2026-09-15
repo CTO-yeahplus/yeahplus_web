@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { COMPANY, EMAIL, LangProvider, NAV, useLang } from './i18n';
@@ -14,9 +15,14 @@ function Nav() {
     <div className="sl-wrap">
       <nav>
         <Link className="sl-brand sl-plain" href="/sillok">
-          <span className="sl-seal-sm" aria-hidden="true">
-            史
-          </span>
+          <Image
+            className="sl-seal-sm"
+            src="/sillok/icon-96.webp"
+            alt=""
+            width={96}
+            height={96}
+            aria-hidden="true"
+          />
           <span data-l="ko">조선왕조실록</span>
           <span data-l="en">Joseon Annals</span>
         </Link>

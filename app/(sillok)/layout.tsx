@@ -18,8 +18,10 @@ export const metadata: Metadata = {
     title: '조선왕조실록 — 왕의 선택',
     description: '정답을 묻지 않고 권한을 줍니다. 아이가 고른 다음에 사관이 실제 역사를 보여줍니다.',
     type: 'website',
+    images: ['/sillok/icon-1024.png'],
   },
   twitter: { card: 'summary_large_image' },
+  icons: { icon: '/sillok/icon-1024.png', apple: '/sillok/icon-1024.png' },
 };
 
 export const viewport: Viewport = { themeColor: '#f2e8d2' };

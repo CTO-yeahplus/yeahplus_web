@@ -32,20 +32,43 @@ def convert_css(css: str) -> str:
     css = re.sub(r"\.(?!sl-)([a-zA-Z][\w-]*)", r".sl-\1", css)
 
     css = re.sub(r"\x00C(\d+)\x00", lambda m: comments[int(m.group(1))], css)
+
+    # 3) 원본의 언어 전환 세 줄을 걷어내고 아래 LANG_FIX 로 갈음한다.
+    css = re.sub(
+        r'\[data-l\]\{display:none\}\s*'
+        r'html\[data-lang="ko"\] \[data-l="ko"\]\{display:revert\}\s*'
+        r'html\[data-lang="en"\] \[data-l="en"\]\{display:revert\}',
+        "/* 규칙은 파일 맨 아래 「이식 시 보정」 블록으로 옮겼다. */",
+        css,
+        count=1,
+    )
     return css + LANG_FIX
 
 
-# 원본 사이트에 남아 있던 버그 하나를 이식하면서 고친다.
+# 원본 사이트의 언어 전환 규칙을 한 줄로 바꾼다.
 #
-# `[data-l]{display:none}` 은 특정도가 (0,1,0) 이라 `.store-btn small{display:block}`
-# 같은 (0,1,1) 규칙에 진다. 그래서 App Store 버튼 안의 영문 <small> 이 한국어
-# 모드에서도 같이 보였다("iPhone · iPad" 가 두 줄). 숨김 쪽 특정도를 (0,2,1) 로
-# 올려 어떤 요소 규칙에도 지지 않게 한다.
+# 원본은 숨기고(`[data-l]{display:none}`) 다시 보이는(`display:revert`) 두
+# 단계였는데, 양쪽 다 App Store 버튼에서 어긋났다. 숨김은 (0,1,0) 이라
+# `.store-btn small{display:block}` (0,1,1) 에 져서 반대 언어가 같이 보였고,
+# 표시는 (0,2,1) 로 그 block 을 이겨 <small> 을 UA 기본값 inline 으로 되돌려
+# "iPhone · iPad" 가 윗줄로 안 올라갔다.
+#
+# 반대 언어만 (0,2,1) 로 숨기면 둘 다 해결된다 — 보이는 쪽 display 는
+# 원래 규칙이 정한다.
 LANG_FIX = """
 
-/* ── 이식 시 보정 ──────────────────────────────────────────────
-   원본의 [data-l]{display:none} 은 .store-btn small 같은 (0,1,1) 규칙에
-   져서 반대 언어가 함께 보이는 자리가 있었다. 숨김 규칙의 특정도를 올린다. */
+/* ── 이식 시 보정: 언어 전환 ────────────────────────────────────
+   원본은 세 줄이었다.
+     [data-l]{display:none}
+     html[data-lang="ko"] [data-l="ko"]{display:revert}   (영어도 같은 꼴)
+   둘 다 문제가 있었다. 숨김 규칙은 특정도가 (0,1,0) 이라
+   `.store-btn small{display:block}` 같은 (0,1,1) 규칙에 져서 반대 언어가
+   함께 보였고, 표시 규칙은 (0,2,1) 로 그 block 을 이겨 display 를 UA 기본값
+   (small → inline) 으로 되돌렸다. 그래서 App Store 버튼의 "iPhone · iPad" 가
+   윗줄로 안 올라가고 옆에 붙었다.
+
+   한 줄이면 충분하다 — 반대 언어만 숨기고, 보이는 쪽 display 는 원래
+   규칙이 정하게 둔다. */
 html:not([data-lang="ko"]) [data-l="ko"],
 html:not([data-lang="en"]) [data-l="en"]{display:none}
 """
@@ -251,6 +274,11 @@ def main():
         name = f.replace(".html", "")
         open(os.path.join(OUT, f"{name}.jsx.txt"), "w", encoding="utf-8").write(jsx)
         print(f"{f:14s} → {len(jsx):6d} chars")
+
+    print()
+    print("주의: globals.css 의 .sl-seal / .sl-brand .sl-seal-sm 두 규칙은")
+    print("      포팅 후 손으로 고친 자리다(원본의 史 글자 대신 실제 로고")
+    print("      이미지를 쓴다). 덮어쓰기 전에 그 부분은 남겨둘 것.")
 
 
 if __name__ == "__main__":

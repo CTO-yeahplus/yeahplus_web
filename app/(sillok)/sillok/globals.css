@@ -63,9 +63,12 @@ a.sl-plain{border-bottom:none}
 .sl-wrap{width:100%;max-width:var(--sl-wrap);margin:0 auto;padding:0 22px}
 
 /* ─────────── 언어 전환 (index 전용) ─────────── */
-[data-l]{display:none}
-html[data-lang="ko"] [data-l="ko"]{display:revert}
-html[data-lang="en"] [data-l="en"]{display:revert}
+/* 규칙은 파일 맨 아래 「이식 시 보정」 블록으로 옮겼다. */
+
+/* 이 파일은 scripts/conv_sillok.py 가 원본 site/style.css 에서 생성한다.
+   단, 아래 .seal / .seal-sm 두 규칙만은 손으로 고쳤다 — 원본은 글자 史 를
+   CSS 그라디언트 위에 올렸지만 여기서는 실제 로고 이미지를 쓴다.
+   다시 생성할 일이 있으면 그 두 곳은 되살릴 것. */
 
 /* ─────────── 상단 바 ─────────── */
 nav{
@@ -75,11 +78,9 @@ nav{
 }
 .sl-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;letter-spacing:-.3px;
   color:var(--sl-ink);border-bottom:none}
+/* 실제 로고 이미지(public/sillok/icon-96.webp)가 채운다 — 위 주석 참고. */
 .sl-brand .sl-seal-sm{
   width:30px;height:30px;flex:0 0 30px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;font-weight:800;color:#fff5ea;
-  background:linear-gradient(150deg,#b8382d,#8d2117);
   border-radius:6px;transform:rotate(-4deg);
   box-shadow:0 3px 10px rgba(140,40,28,.32);
 }
@@ -97,17 +98,13 @@ nav{
 
 /* ─────────── 히어로 ─────────── */
 header.sl-hero{text-align:center;padding:34px 0 44px}
+/* 실제 로고 이미지(public/sillok/icon-256.webp)가 채운다 — 위 주석 참고. */
 .sl-seal{
   width:92px;height:92px;margin:0 auto 22px;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(150deg,#b8382d,#8d2117);
   border-radius:11px;
   box-shadow:0 8px 26px rgba(140,40,28,.36);
   transform:rotate(-4deg);
-  font-size:48px;font-weight:800;color:#fff5ea;line-height:1;
-  letter-spacing:0;user-select:none;
 }
-.sl-seal svg{width:56px;height:56px}
 h1{
   font-size:clamp(28px,7.2vw,42px);
   font-weight:800;letter-spacing:-1px;line-height:1.28;
@@ -412,8 +409,17 @@ footer .sl-biz{color:var(--sl-ink-3)}
 }
 
 
-/* ── 이식 시 보정 ──────────────────────────────────────────────
-   원본의 [data-l]{display:none} 은 .store-btn small 같은 (0,1,1) 규칙에
-   져서 반대 언어가 함께 보이는 자리가 있었다. 숨김 규칙의 특정도를 올린다. */
+/* ── 이식 시 보정: 언어 전환 ────────────────────────────────────
+   원본은 세 줄이었다.
+     [data-l]{display:none}
+     html[data-lang="ko"] [data-l="ko"]{display:revert}   (영어도 같은 꼴)
+   둘 다 문제가 있었다. 숨김 규칙은 특정도가 (0,1,0) 이라
+   `.store-btn small{display:block}` 같은 (0,1,1) 규칙에 져서 반대 언어가
+   함께 보였고, 표시 규칙은 (0,2,1) 로 그 block 을 이겨 display 를 UA 기본값
+   (small → inline) 으로 되돌렸다. 그래서 App Store 버튼의 "iPhone · iPad" 가
+   윗줄로 안 올라가고 옆에 붙었다.
+
+   한 줄이면 충분하다 — 반대 언어만 숨기고, 보이는 쪽 display 는 원래
+   규칙이 정하게 둔다. */
 html:not([data-lang="ko"]) [data-l="ko"],
 html:not([data-lang="en"]) [data-l="en"]{display:none}
