@@ -42,7 +42,10 @@ const YEAR = new Date().getFullYear();
 
 export default function SillokLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" data-lang="ko">
+    // suppressHydrationWarning — 아래 부트스트랩 스크립트가 하이드레이션 전에
+    // lang/data-lang 을 바꾸므로 React 가 본 서버 HTML 과 달라진다. 이 한 요소의
+    // 속성 차이만 무시하게 한다(자식 트리에는 영향이 없다).
+    <html lang="ko" data-lang="ko" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: LANG_BOOTSTRAP }} />
       </head>
