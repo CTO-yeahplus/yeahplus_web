@@ -1,0 +1,312 @@
+/* SteelStorm Arena — 제품 페이지 전용 스타일.
+   (site) 와 달리 Tailwind 를 쓰지 않는다. 모든 클래스·커스텀 프로퍼티에
+   ss- / --ss- 프리픽스를 붙여 다른 라우트 그룹과 섞이지 않게 한다.
+
+   색은 게임 화면에서 그대로 뽑았다 — 배경 #070b14, 시안 #35f0ff,
+   마젠타 #eb39b8, 오렌지 #ff8a1e (코어 컬러 3종). */
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+
+:root{
+  --ss-bg:#070b14;
+  --ss-bg-2:#0b1120;
+  --ss-panel:rgba(20,30,52,.56);
+  --ss-panel-2:rgba(28,40,66,.72);
+  --ss-line:rgba(88,126,168,.26);
+  --ss-line-2:rgba(110,160,210,.44);
+
+  --ss-ink:#eaf2ff;
+  --ss-ink-2:#b4c6e0;
+  --ss-ink-3:#7e91ae;
+
+  --ss-cyan:#35f0ff;
+  --ss-magenta:#eb39b8;
+  --ss-orange:#ff8a1e;
+
+  --ss-wrap:1060px;
+}
+
+html{
+  background:var(--ss-bg);
+  -webkit-text-size-adjust:100%;
+}
+
+body{
+  background:var(--ss-bg);
+  color:var(--ss-ink);
+  font:16px/1.75 -apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo",
+       "Segoe UI","Noto Sans KR","Malgun Gothic",sans-serif;
+  letter-spacing:-.1px;
+  overflow-x:hidden;
+}
+
+/* 아레나 격자 — 게임 배경과 같은 무늬를 아주 옅게 깐다 */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    linear-gradient(rgba(53,240,255,.055) 1px,transparent 1px) 0 0/54px 54px,
+    linear-gradient(90deg,rgba(53,240,255,.055) 1px,transparent 1px) 0 0/54px 54px,
+    radial-gradient(1200px 620px at 50% -8%,rgba(53,240,255,.13),transparent 62%),
+    radial-gradient(900px 520px at 88% 12%,rgba(235,57,184,.10),transparent 60%);
+  mask-image:linear-gradient(#000 0,#000 58%,transparent 100%);
+  -webkit-mask-image:linear-gradient(#000 0,#000 58%,transparent 100%);
+}
+.ss-page{position:relative;z-index:1;min-height:100dvh;display:flex;flex-direction:column}
+.ss-page > main{flex:1}
+
+img{max-width:100%;height:auto}
+
+a{color:var(--ss-cyan);text-decoration:none;border-bottom:1px solid rgba(53,240,255,.32)}
+a:hover{border-bottom-color:var(--ss-cyan)}
+a.ss-plain{border-bottom:none}
+
+h1,h2,h3{margin:0;line-height:1.3;letter-spacing:-.6px}
+p{margin:0 0 12px}
+p:last-child{margin-bottom:0}
+
+.ss-wrap{width:100%;max-width:var(--ss-wrap);margin:0 auto;padding:0 22px}
+
+/* ─────────── 언어 전환 ───────────
+   본문에 두 언어를 모두 두고 반대쪽만 숨긴다. 숨김 규칙의 특정도를 (0,2,1)
+   로 두어 요소 선택자를 낀 display 규칙에 지지 않게 한다. 보이는 쪽의
+   display 는 원래 규칙이 정한다. */
+html:not([data-lang="ko"]) [data-l="ko"],
+html:not([data-lang="en"]) [data-l="en"]{display:none}
+
+/* ─────────── 상단 바 ─────────── */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;flex-wrap:wrap;padding:14px 0 12px;
+}
+.ss-brand{
+  display:flex;align-items:center;gap:10px;
+  font-weight:800;font-size:15.5px;letter-spacing:.2px;color:var(--ss-ink);
+  border-bottom:none;
+}
+.ss-brand .ss-mark{
+  width:30px;height:30px;flex:0 0 30px;border-radius:8px;
+  box-shadow:0 0 0 1px rgba(53,240,255,.28),0 4px 16px rgba(53,240,255,.20);
+}
+.ss-nav-links{display:flex;align-items:center;gap:15px;font-size:13.5px;flex-wrap:wrap}
+.ss-nav-links a{color:var(--ss-ink-3);border-bottom:none;font-weight:700}
+.ss-nav-links a:hover{color:var(--ss-cyan)}
+.ss-lang-btn{
+  padding:5px 13px;font:inherit;font-size:12px;font-weight:800;letter-spacing:.7px;
+  color:var(--ss-ink-2);background:rgba(53,240,255,.07);
+  border:1px solid var(--ss-line);border-radius:20px;cursor:pointer;line-height:1.6;
+}
+.ss-lang-btn:hover{border-color:var(--ss-cyan);color:var(--ss-cyan)}
+
+/* ─────────── 히어로 ─────────── */
+header.ss-hero{text-align:center;padding:30px 0 46px}
+.ss-emblem{
+  width:132px;height:132px;margin:0 auto 20px;display:block;
+  filter:drop-shadow(0 10px 34px rgba(53,240,255,.32));
+  border-radius:18px;
+}
+.ss-kicker{
+  font-size:12px;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  color:var(--ss-cyan);margin-bottom:14px;
+}
+header.ss-hero h1{
+  font-size:clamp(30px,7.6vw,50px);font-weight:900;letter-spacing:-1.4px;
+  margin-bottom:12px;
+}
+.ss-hero-pitch{
+  max-width:620px;margin:0 auto;
+  font-size:clamp(15.5px,4vw,17.5px);line-height:1.8;color:var(--ss-ink-2);
+}
+.ss-hero-pitch b{color:var(--ss-ink);font-weight:800}
+
+.ss-store-row{margin-top:28px;display:flex;gap:13px;justify-content:center;align-items:center;flex-wrap:wrap}
+.ss-store-btn{
+  display:inline-flex;align-items:center;gap:11px;padding:12px 24px;border-radius:13px;
+  background:linear-gradient(180deg,#16233c,#0c1424);
+  color:var(--ss-ink);border:1px solid var(--ss-line-2);
+  box-shadow:0 6px 22px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06);
+  font-weight:800;font-size:15px;line-height:1.25;cursor:default;border-bottom-width:1px;
+}
+.ss-store-btn small{display:block;font-size:10.5px;font-weight:600;color:var(--ss-ink-3);letter-spacing:.5px}
+.ss-store-btn[href]:not([aria-disabled="true"]){cursor:pointer}
+.ss-store-btn[href]:not([aria-disabled="true"]):hover{border-color:var(--ss-cyan)}
+.ss-price-note{color:var(--ss-ink-3);font-size:13px}
+
+.ss-badges{margin-top:22px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.ss-badge{
+  padding:6px 13px;border-radius:20px;font-size:12.5px;font-weight:700;
+  color:var(--ss-ink-2);background:rgba(20,30,52,.6);border:1px solid var(--ss-line);
+}
+
+/* ─────────── 섹션 ─────────── */
+section{padding:34px 0}
+section > h2{
+  font-size:clamp(20px,5vw,26px);font-weight:900;margin-bottom:8px;
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+}
+section > h2::before{
+  content:"";width:9px;height:9px;flex:0 0 9px;border-radius:2px;
+  background:var(--ss-cyan);box-shadow:0 0 12px var(--ss-cyan);
+  transform:translateY(-2px);
+}
+.ss-lead{color:var(--ss-ink-2);font-size:15px;margin-bottom:22px;max-width:660px}
+
+/* 카드 격자 */
+.ss-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(248px,1fr))}
+.ss-card{
+  padding:19px 20px;border-radius:14px;
+  background:var(--ss-panel);border:1px solid var(--ss-line);
+}
+.ss-card h3{font-size:16px;font-weight:800;margin-bottom:7px}
+.ss-card p{font-size:14px;line-height:1.75;color:var(--ss-ink-2)}
+.ss-card .ss-tag{
+  display:inline-block;margin-bottom:9px;padding:3px 9px;border-radius:6px;
+  font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+}
+.ss-t-cyan{color:var(--ss-cyan);background:rgba(53,240,255,.12)}
+.ss-t-magenta{color:var(--ss-magenta);background:rgba(235,57,184,.14)}
+.ss-t-orange{color:var(--ss-orange);background:rgba(255,138,30,.14)}
+
+/* 코어 컬러 3구 */
+.ss-cores{display:flex;gap:9px;margin-top:12px}
+.ss-core{width:22px;height:22px;border-radius:50%;border:2px solid currentColor}
+.ss-core.ss-c1{color:var(--ss-cyan);box-shadow:0 0 12px rgba(53,240,255,.6)}
+.ss-core.ss-c2{color:var(--ss-magenta);box-shadow:0 0 12px rgba(235,57,184,.6)}
+.ss-core.ss-c3{color:var(--ss-orange);box-shadow:0 0 12px rgba(255,138,30,.6)}
+
+/* 오버드라이브 3단 */
+.ss-stages{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.ss-stage{
+  padding:8px 14px;border-radius:10px;font-size:13px;font-weight:800;
+  border:1px solid currentColor;
+}
+.ss-stage.ss-s1{color:var(--ss-magenta);background:rgba(235,57,184,.1)}
+.ss-stage.ss-s2{color:var(--ss-orange);background:rgba(255,138,30,.1)}
+.ss-stage.ss-s3{color:#fff;background:rgba(255,255,255,.1);box-shadow:0 0 18px rgba(255,255,255,.22)}
+.ss-arrow{color:var(--ss-ink-3);font-weight:800}
+
+/* 스크린샷 */
+.ss-shots{
+  display:grid;gap:14px;margin-top:4px;
+  grid-template-columns:repeat(auto-fit,minmax(178px,1fr));
+}
+.ss-shot{margin:0}
+.ss-shot img{
+  width:100%;height:auto;display:block;border-radius:14px;
+  border:1px solid var(--ss-line);background:#05080e;
+}
+.ss-shot figcaption{
+  margin-top:9px;font-size:13px;line-height:1.6;color:var(--ss-ink-3);text-align:center;
+}
+
+/* 사양표 */
+.ss-table-wrap{overflow-x:auto}
+table.ss-spec{border-collapse:collapse;width:100%;font-size:14px}
+table.ss-spec th,table.ss-spec td{
+  padding:11px 14px;border-bottom:1px solid var(--ss-line);text-align:left;vertical-align:top;
+}
+table.ss-spec th{width:34%;color:var(--ss-ink-3);font-weight:700;white-space:nowrap}
+table.ss-spec td{color:var(--ss-ink-2)}
+table.ss-spec tr:last-child th,table.ss-spec tr:last-child td{border-bottom:none}
+
+/* 목록 */
+ul.ss-bullets{list-style:none;margin:0 0 12px;padding:0}
+ul.ss-bullets li{position:relative;padding-left:16px;margin-bottom:7px;color:var(--ss-ink-2)}
+ul.ss-bullets li::before{
+  content:"";position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:1px;
+  background:var(--ss-cyan);opacity:.8;
+}
+ul.ss-bullets li:last-child{margin-bottom:0}
+
+/* ─────────── FAQ ─────────── */
+details{
+  background:var(--ss-panel);border:1px solid var(--ss-line);border-radius:12px;
+  padding:14px 18px;margin-bottom:9px;
+}
+details[open]{border-color:var(--ss-line-2);background:var(--ss-panel-2)}
+summary{
+  cursor:pointer;font-weight:800;font-size:15px;line-height:1.6;
+  list-style:none;display:flex;gap:10px;align-items:flex-start;color:var(--ss-ink);
+}
+summary::-webkit-details-marker{display:none}
+summary::before{
+  content:"";flex:0 0 8px;width:8px;height:8px;margin-top:9px;
+  border-right:2px solid var(--ss-cyan);border-bottom:2px solid var(--ss-cyan);
+  transform:rotate(-45deg);transition:transform .18s ease;
+}
+details[open] summary::before{transform:rotate(45deg)}
+/* 질문은 한글·영어를 나란히 적는다 (sillok/support 와 같은 규칙). */
+summary .ss-q{flex:1;min-width:0}
+summary .ss-q-en{font-weight:600;font-size:13.5px;color:var(--ss-ink-3)}
+summary .ss-q-en::before{content:"·";margin:0 .45em;color:var(--ss-line-2)}
+details .ss-ans{margin-top:10px;font-size:14px;line-height:1.8;color:var(--ss-ink-2)}
+details .ss-ans .ss-en{
+  margin-top:10px;padding-top:10px;border-top:1px dashed var(--ss-line);
+  color:var(--ss-ink-3);font-size:13.5px;
+}
+
+/* ─────────── 문서 페이지 (개인정보·약관·지원) ─────────── */
+.ss-doc{padding:26px 22px 20px;max-width:820px}
+.ss-doc-head{padding-bottom:18px;border-bottom:1px solid var(--ss-line);margin-bottom:26px}
+.ss-doc-head h1{font-size:clamp(24px,6vw,33px);font-weight:900;line-height:1.28}
+.ss-doc-head .ss-sub{margin-top:8px;color:var(--ss-ink-2);font-size:15px}
+.ss-doc-head .ss-rev{margin-top:5px;color:var(--ss-ink-3);font-size:13px}
+
+.ss-doc section{padding:0 0 26px}
+.ss-doc section > h2{font-size:18.5px;margin-bottom:10px}
+.ss-doc section > h2::before{width:7px;height:7px;flex-basis:7px}
+.ss-doc p{font-size:14.5px;line-height:1.85;color:var(--ss-ink-2)}
+.ss-doc strong{color:var(--ss-ink);font-weight:800}
+
+.ss-callout{
+  padding:16px 18px;border-radius:12px;margin-bottom:26px;
+  background:rgba(53,240,255,.07);border:1px solid rgba(53,240,255,.24);
+}
+.ss-callout p{color:var(--ss-ink-2);font-size:14.5px}
+
+.ss-en-block{
+  margin-top:13px;padding-top:13px;border-top:1px dashed var(--ss-line);
+}
+.ss-en-block p,.ss-en-block li{font-size:14px;line-height:1.78;color:var(--ss-ink-3)}
+.ss-en-block strong{color:var(--ss-ink-2)}
+.ss-en-block h3{font-size:15px;font-weight:800;color:var(--ss-ink-2);margin:0 0 7px}
+.ss-en-block ul.ss-bullets li{color:var(--ss-ink-3)}
+.ss-en-block ul.ss-bullets li::before{background:var(--ss-ink-3);opacity:.6}
+
+.ss-contact{
+  padding:18px;border-radius:12px;text-align:center;
+  background:var(--ss-panel);border:1px solid var(--ss-line);
+}
+.ss-mail{display:inline-block;margin:7px 0 6px;font-size:17px;font-weight:800}
+.ss-contact .ss-note{color:var(--ss-ink-3);font-size:13px;line-height:1.7}
+
+.ss-hint{
+  margin-top:12px;padding:11px 13px;border-radius:9px;font-size:13px;line-height:1.75;
+  color:var(--ss-ink-3);background:rgba(255,138,30,.08);border:1px solid rgba(255,138,30,.22);
+}
+
+/* ─────────── 푸터 ─────────── */
+footer{
+  margin-top:34px;padding:26px 0 40px;border-top:1px solid var(--ss-line);
+  color:var(--ss-ink-3);font-size:13px;
+}
+.ss-flinks{display:flex;gap:15px;flex-wrap:wrap;margin-bottom:14px}
+.ss-flinks a{color:var(--ss-ink-3);border-bottom:none;font-weight:600}
+.ss-flinks a:hover{color:var(--ss-cyan)}
+.ss-biz{line-height:1.75;color:var(--ss-ink-3);font-size:12.5px;margin-bottom:6px}
+.ss-biz:last-child{margin-bottom:0}
+
+@media (max-width:560px){
+  .ss-shots{grid-template-columns:repeat(2,1fr)}
+  table.ss-spec th{width:40%;white-space:normal}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+
+@media print{
+  body::before{display:none}
+  body{background:#fff;color:#000}
+  nav,.ss-lang-btn,.ss-store-row{display:none}
+}
