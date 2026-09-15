@@ -78,10 +78,11 @@ nav{
 }
 .sl-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;letter-spacing:-.3px;
   color:var(--sl-ink);border-bottom:none}
-/* 실제 로고 이미지(public/sillok/icon-96.webp)가 채운다 — 위 주석 참고. */
+/* 실제 로고 이미지(public/sillok/icon-96.webp)가 채운다 — 위 주석 참고.
+   원본 CSS 인장은 -4deg 기울어 있었지만, 로고는 받은 그대로 똑바로 세운다. */
 .sl-brand .sl-seal-sm{
   width:30px;height:30px;flex:0 0 30px;
-  border-radius:6px;transform:rotate(-4deg);
+  border-radius:6px;
   box-shadow:0 3px 10px rgba(140,40,28,.32);
 }
 .sl-nav-links{display:flex;align-items:center;gap:16px;font-size:14px;flex-wrap:wrap}
@@ -98,12 +99,12 @@ nav{
 
 /* ─────────── 히어로 ─────────── */
 header.sl-hero{text-align:center;padding:34px 0 44px}
-/* 실제 로고 이미지(public/sillok/icon-256.webp)가 채운다 — 위 주석 참고. */
+/* 실제 로고 이미지(public/sillok/icon-256.webp)가 채운다 — 위 주석 참고.
+   여기도 기울이지 않는다. */
 .sl-seal{
   width:92px;height:92px;margin:0 auto 22px;
   border-radius:11px;
   box-shadow:0 8px 26px rgba(140,40,28,.36);
-  transform:rotate(-4deg);
 }
 h1{
   font-size:clamp(28px,7.2vw,42px);
