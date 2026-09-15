@@ -41,7 +41,7 @@ export default function SupportContent() {
             질문은 한글·영어를 summary 에 나란히 적는다. 원본 support.html 은
             영어 질문을 답변 안에 <b> 로 두어 펼쳐야만 보였는데, 그 <b> 는
             여기로 옮겨 왔으므로 답변 쪽에는 남겨두지 않는다.
-            scripts/conv_sillok.py 로 다시 생성하면 되돌아간다 — 주의. */
+            scripts/conv_sillok.py 로 다시 생성하면 되돌아간다 — 주의. */}
         <section>
           <h2>자주 묻는 질문 · Frequently asked questions</h2>
 
