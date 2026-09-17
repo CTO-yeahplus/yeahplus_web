@@ -1,0 +1,215 @@
+/* CineLook — NEXTGEN_CINEMATIC/site/src/styles.css 를 그대로 옮긴 것.
+   다른 라우트 그룹과 섞이지 않도록 클래스와 커스텀 프로퍼티에 cl- / --cl-
+   프리픽스만 기계적으로 붙였다. 값은 한 줄도 고치지 않았다.
+   (site) 와 달리 Tailwind 를 쓰지 않는다. */
+
+/* ===== CineLook 웹 — 앱 디자인 시스템 =====
+   배경 #0b0b0e · 패널 #1b1b22 · 텍스트 #f2f0ea · 골드 #d8b36a / #b8934a
+   다크 전용 사이트(앱과 동일). 한국어는 어절 단위 줄바꿈(keep-all). */
+
+:root {
+  --cl-bg: #0b0b0e;
+  --cl-bg-2: #121217;
+  --cl-panel: #1b1b22;
+  --cl-panel-2: #23232c;
+  --cl-line: #2c2b35;
+  --cl-text: #f2f0ea;
+  --cl-muted: #9a97a3;
+  --cl-gold: #d8b36a;
+  --cl-gold-deep: #b8934a;
+  --cl-gold-soft: rgba(216, 179, 106, 0.12);
+  --cl-radius: 20px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--cl-bg);
+  color: var(--cl-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard",
+    "Noto Sans KR", "Segoe UI", Roboto, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+a { color: var(--cl-gold); text-underline-offset: 3px; }
+a:hover { color: #e8c886; }
+img { max-width: 100%; height: auto; }
+
+.cl-wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+.cl-narrow { max-width: 760px; }
+
+/* ---------- 헤더 ---------- */
+.cl-hdr {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(11, 11, 14, 0.82);
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  border-bottom: 1px solid var(--cl-line);
+}
+.cl-hdr-in { display: flex; align-items: center; gap: 12px; height: 60px; }
+.cl-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 18px;
+  color: var(--cl-text); text-decoration: none; letter-spacing: 0.04em; white-space: nowrap; flex-shrink: 0; }
+.cl-brand:hover { color: var(--cl-text); }
+.cl-brand img { width: 30px; height: 30px; border-radius: 8px; }
+.cl-hdr nav { margin-left: auto; display: flex; align-items: center; gap: 2px; }
+.cl-hdr nav a { padding: 8px 11px; border-radius: 10px; font-size: 15px; font-weight: 600;
+  color: var(--cl-muted); text-decoration: none; white-space: nowrap; }
+.cl-hdr nav a:hover, .cl-hdr nav a.cl-on { color: var(--cl-text); background: var(--cl-panel); }
+.cl-langbtn { margin-left: 6px; border: 1px solid var(--cl-line); background: transparent;
+  border-radius: 999px; padding: 6px 13px; font: inherit; font-size: 14px; font-weight: 700;
+  color: var(--cl-muted); cursor: pointer; white-space: nowrap; }
+.cl-langbtn:hover { border-color: var(--cl-gold); color: var(--cl-gold); }
+
+/* ---------- 히어로 ---------- */
+.cl-hero {
+  padding: 60px 0 30px;
+  background:
+    radial-gradient(900px 500px at 85% 20%, rgba(216, 179, 106, 0.10), transparent 60%),
+    radial-gradient(700px 500px at 0% 90%, rgba(70, 120, 160, 0.10), transparent 60%);
+}
+.cl-hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
+.cl-eyebrow { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--cl-gold); border: 1px solid rgba(216, 179, 106, 0.35);
+  padding: 5px 12px; border-radius: 999px; }
+.cl-hero h1 { margin: 20px 0 0; font-size: clamp(34px, 5.4vw, 56px); line-height: 1.18;
+  letter-spacing: -0.03em; font-weight: 800; }
+.cl-hero h1 em { font-style: normal; color: var(--cl-gold); }
+.cl-lead { margin: 20px 0 0; font-size: 19px; color: #c9c6cf; }
+.cl-lead b { color: var(--cl-text); }
+
+.cl-cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 28px; }
+.cl-btn { display: inline-flex; align-items: center; gap: 8px; border: 0; cursor: pointer;
+  font: inherit; font-weight: 800; font-size: 16px; text-decoration: none;
+  padding: 14px 24px; border-radius: 14px; color: #1a1408;
+  background: linear-gradient(180deg, #e2c07b, var(--cl-gold-deep));
+  box-shadow: 0 6px 24px rgba(216, 179, 106, 0.22); }
+.cl-btn:hover { color: #1a1408; filter: brightness(1.06); }
+.cl-btn.cl-ghost { background: var(--cl-panel); color: var(--cl-text); border: 1px solid var(--cl-line); box-shadow: none; }
+.cl-btn.cl-ghost:hover { color: var(--cl-text); border-color: var(--cl-gold); }
+.cl-btn-note { display: inline-block; padding: 13px 20px; border-radius: 14px; font-weight: 700;
+  font-size: 15px; color: var(--cl-gold); border: 1px dashed rgba(216, 179, 106, 0.5); }
+
+.cl-pills { list-style: none; padding: 0; margin: 26px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.cl-pills li { font-size: 13.5px; color: var(--cl-muted); background: var(--cl-panel);
+  border: 1px solid var(--cl-line); border-radius: 999px; padding: 4px 12px; }
+
+.cl-phone { justify-self: center; width: min(330px, 80vw); }
+.cl-phone img, .cl-shot img { display: block; width: 100%; aspect-ratio: 600 / 1304;
+  border-radius: 34px; border: 8px solid #26242e; background: #000;
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.6); }
+
+/* ---------- 섹션 ---------- */
+section { padding: 70px 0; }
+section.cl-tight { padding-top: 10px; }
+.cl-sec-head { max-width: 680px; margin-bottom: 34px; }
+.cl-sec-head h2 { margin: 0; font-size: clamp(26px, 3.6vw, 36px); line-height: 1.3; letter-spacing: -0.02em; }
+.cl-sec-head p { margin: 12px 0 0; color: var(--cl-muted); font-size: 17.5px; }
+
+.cl-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.cl-card { background: var(--cl-panel); border: 1px solid var(--cl-line); border-radius: var(--cl-radius); padding: 24px; }
+.cl-card .cl-num { font-size: 13px; font-weight: 800; letter-spacing: 0.1em; color: var(--cl-gold); }
+.cl-card h3 { margin: 8px 0 8px; font-size: 20px; }
+.cl-card p { margin: 0; color: #b9b6c0; font-size: 15.5px; line-height: 1.65; }
+
+.cl-shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+.cl-shot { margin: 0; }
+.cl-shot img { border-radius: 28px; border-width: 6px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5); }
+.cl-shot figcaption { margin-top: 14px; text-align: center; color: var(--cl-muted); font-size: 16px; }
+.cl-shot figcaption b { color: var(--cl-text); }
+
+.cl-plans { display: grid; grid-template-columns: 1fr 1.15fr; gap: 16px; max-width: 860px; }
+.cl-plan { position: relative; background: var(--cl-panel); border: 1px solid var(--cl-line);
+  border-radius: var(--cl-radius); padding: 28px; }
+.cl-plan.cl-pro { border-color: rgba(216, 179, 106, 0.55);
+  background: linear-gradient(160deg, rgba(216, 179, 106, 0.12), var(--cl-panel) 55%); }
+.cl-plan h3 { margin: 0 0 14px; font-size: 22px; }
+.cl-plan.cl-pro h3 { color: var(--cl-gold); }
+.cl-plan ul { margin: 0; padding: 0; list-style: none; }
+.cl-plan li { position: relative; padding: 6px 0 6px 24px; color: #cfccd5; font-size: 15.5px; }
+.cl-plan li::before { content: "✓"; position: absolute; left: 0; color: var(--cl-gold); font-weight: 800; }
+.cl-plan .cl-tag { position: absolute; top: 24px; right: 22px; font-size: 12px; font-weight: 800;
+  color: #1a1408; background: var(--cl-gold); border-radius: 999px; padding: 3px 10px; }
+.cl-price-note { margin: 16px 0 0; font-size: 14px; color: var(--cl-muted); }
+
+.cl-promise { background: var(--cl-bg-2); border: 1px solid var(--cl-line); border-radius: 26px;
+  padding: 36px; max-width: 860px; }
+.cl-promise h2 { margin: 0 0 16px; font-size: clamp(24px, 3.2vw, 32px); }
+.cl-promise ul { margin: 0; padding: 0; list-style: none; }
+.cl-promise li { position: relative; padding: 7px 0 7px 26px; color: #cfccd5; }
+.cl-promise li::before { content: "●"; position: absolute; left: 2px; top: 8px; font-size: 10px; color: var(--cl-gold); }
+
+/* ---------- 문서 페이지 ---------- */
+.cl-doc { padding-top: 48px; padding-bottom: 80px; }
+.cl-doc h1 { margin: 0; font-size: clamp(30px, 4.6vw, 42px); letter-spacing: -0.02em; }
+.cl-doc h2 { margin: 40px 0 10px; font-size: 21px; }
+.cl-doc p, .cl-doc li { color: #cfccd5; }
+.cl-doc ul { padding-left: 20px; }
+.cl-doc li { margin: 6px 0; }
+.cl-meta { color: var(--cl-muted); font-size: 15px; margin: 8px 0 26px; }
+.cl-callout { background: var(--cl-panel); border: 1px solid var(--cl-line); border-left: 3px solid var(--cl-gold);
+  border-radius: 14px; padding: 16px 20px; }
+.cl-callout p { margin: 6px 0; }
+.cl-mailto { font-weight: 700; }
+
+.cl-faq { display: grid; gap: 10px; }
+.cl-qa { background: var(--cl-panel); border: 1px solid var(--cl-line); border-radius: 14px; padding: 0 18px; }
+.cl-qa summary { cursor: pointer; list-style: none; padding: 16px 28px 16px 0; font-weight: 700;
+  position: relative; color: var(--cl-text); }
+.cl-qa summary::-webkit-details-marker { display: none; }
+.cl-qa summary::after { content: "+"; position: absolute; right: 0; top: 13px; font-size: 22px;
+  color: var(--cl-gold); font-weight: 400; }
+.cl-qa[open] summary::after { content: "–"; }
+.cl-qa .cl-a { padding-bottom: 14px; }
+.cl-qa .cl-a p { margin: 0; }
+
+.cl-nf { text-align: center; padding: 110px 20px; }
+.cl-nf h1 { font-size: 80px; margin: 0; color: var(--cl-gold); }
+
+/* ---------- 푸터 ---------- */
+footer { border-top: 1px solid var(--cl-line); padding: 34px 0 46px; background: var(--cl-bg-2); }
+.cl-foot-in { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px; align-items: center; }
+footer nav { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+footer nav a { color: var(--cl-muted); text-decoration: none; font-size: 14.5px; }
+footer nav a:hover { color: var(--cl-text); }
+.cl-copy { color: var(--cl-muted); font-size: 14px; }
+.cl-biz { margin-top: 20px; font-style: normal; font-size: 12.5px; color: #75727e; line-height: 1.8; }
+.cl-biz .cl-row { display: flex; flex-wrap: wrap; gap: 0 16px; }
+.cl-biz b { font-weight: 600; color: #8d8a96; margin-right: 4px; }
+
+/* ---------- 반응형 ---------- */
+@media (max-width: 860px) {
+  .cl-hero { padding-top: 40px; }
+  .cl-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .cl-cards { grid-template-columns: 1fr 1fr; }
+  .cl-plans { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .cl-langbtn { padding: 5px 10px; margin-left: 2px; }
+  body { font-size: 16.5px; }
+  .cl-wrap { padding: 0 16px; }
+  .cl-cards { grid-template-columns: 1fr; }
+  .cl-shots { grid-template-columns: 1fr; max-width: 300px; margin: 0 auto; gap: 34px; }
+  section { padding: 54px 0; }
+  .cl-promise { padding: 26px 20px; }
+  .cl-hdr nav a { padding: 8px 6px; font-size: 14px; }
+  .cl-hdr-in { gap: 8px; }
+  .cl-hero h1 { font-size: 31px; }
+}
+@media (max-width: 359px) {
+  .cl-brand span { display: none; }
+}
+
+
+/* ── 이식 시 보탠 것 ──────────────────────────────────────────
+   원본은 Vite SPA 라 html/body 가 index.html 에 있었다. 여기서는 라우트
+   그룹이 자기 <html> 을 그리므로 배경을 html 에도 깔아 준다(스크롤 바운스
+   구간이 흰색으로 보이는 것을 막는다). */
+html{ background: var(--cl-bg); }
+.cl-page{ min-height:100dvh; display:flex; flex-direction:column; }
+.cl-page > main{ flex:1; }

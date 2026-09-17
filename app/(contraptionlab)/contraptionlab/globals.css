@@ -1,0 +1,289 @@
+/* 뚝딱 실험실 / Contraption Lab — 제품 페이지 전용 스타일.
+   (site) 와 달리 Tailwind 를 쓰지 않는다. 모든 클래스·커스텀 프로퍼티에
+   cp- / --cp- 프리픽스를 붙여 다른 라우트 그룹과 섞이지 않게 한다.
+
+   색은 앱과 docs/privacy.html 에서 그대로 가져왔다 —
+   종이 #f7eedd · 잉크 #3d3226 · 강조 #bf5a13. */
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+
+:root{
+  --cp-paper:#f7eedd;
+  --cp-paper-2:#fff8ea;
+  --cp-line:#e2d3b3;
+  --cp-line-2:#d3bf99;
+  --cp-shadow:#e0d0b0;
+
+  --cp-ink:#3d3226;
+  --cp-ink-2:#6d5c48;
+  --cp-ink-3:#8d7c66;
+
+  --cp-accent:#bf5a13;      /* 주황 — 부품·강조 */
+  --cp-wood:#b4813f;        /* 나무 비탈 */
+  --cp-go:#57a86b;          /* 출발 버튼 */
+  --cp-star:#e8a92b;        /* 별 */
+
+  --cp-wrap:1020px;
+}
+
+html{background:var(--cp-paper);-webkit-text-size-adjust:100%}
+
+body{
+  background:var(--cp-paper);
+  color:var(--cp-ink);
+  font:16.5px/1.78 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",
+       "Noto Sans KR","Segoe UI",Roboto,sans-serif;
+  word-break:keep-all;
+  overflow-wrap:anywhere;
+  overflow-x:hidden;
+}
+
+/* 모눈 — 앱의 작업판과 같은 결을 아주 옅게 깐다 */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    linear-gradient(rgba(160,132,92,.09) 1px,transparent 1px) 0 0/26px 26px,
+    linear-gradient(90deg,rgba(160,132,92,.09) 1px,transparent 1px) 0 0/26px 26px;
+  mask-image:linear-gradient(#000 0,#000 62%,transparent 100%);
+  -webkit-mask-image:linear-gradient(#000 0,#000 62%,transparent 100%);
+}
+.cp-page{position:relative;z-index:1;min-height:100dvh;display:flex;flex-direction:column}
+.cp-page > main{flex:1}
+
+img{max-width:100%;height:auto}
+
+a{color:var(--cp-accent);text-decoration:none;border-bottom:1px solid rgba(191,90,19,.3)}
+a:hover{border-bottom-color:var(--cp-accent)}
+a.cp-plain{border-bottom:none}
+
+h1,h2,h3{margin:0;line-height:1.32;letter-spacing:-.4px}
+p{margin:0 0 12px}
+p:last-child{margin-bottom:0}
+
+.cp-wrap{width:100%;max-width:var(--cp-wrap);margin:0 auto;padding:0 22px}
+
+/* ─────────── 언어 전환 ───────────
+   본문에 두 언어를 모두 두고 반대쪽만 숨긴다. 숨김 규칙의 특정도를 (0,2,1) 로
+   두어 요소 선택자를 낀 display 규칙에 지지 않게 한다. */
+html:not([data-lang="ko"]) [data-l="ko"],
+html:not([data-lang="en"]) [data-l="en"]{display:none}
+
+/* ─────────── 상단 바 ─────────── */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;flex-wrap:wrap;padding:15px 0 13px;
+}
+.cp-brand{
+  display:flex;align-items:center;gap:10px;
+  font-weight:800;font-size:16.5px;color:var(--cp-ink);border-bottom:none;
+}
+.cp-brand .cp-mark{
+  width:32px;height:32px;flex:0 0 32px;border-radius:9px;
+  box-shadow:0 2px 0 var(--cp-shadow);
+}
+.cp-nav-links{display:flex;align-items:center;gap:15px;font-size:14px;flex-wrap:wrap}
+.cp-nav-links a{color:var(--cp-ink-2);border-bottom:none;font-weight:700}
+.cp-nav-links a:hover{color:var(--cp-accent)}
+.cp-lang-btn{
+  padding:6px 14px;font:inherit;font-size:12.5px;font-weight:800;letter-spacing:.5px;
+  color:var(--cp-ink-2);background:var(--cp-paper-2);
+  border:1px solid var(--cp-line-2);border-radius:20px;cursor:pointer;line-height:1.55;
+  box-shadow:0 2px 0 var(--cp-shadow);
+}
+.cp-lang-btn:hover{color:var(--cp-accent);border-color:var(--cp-accent)}
+
+/* ─────────── 히어로 ─────────── */
+header.cp-hero{text-align:center;padding:26px 0 44px}
+.cp-icon{
+  width:112px;height:112px;margin:0 auto 20px;display:block;
+  border-radius:26px;box-shadow:0 5px 0 var(--cp-shadow);
+}
+.cp-kicker{
+  display:inline-block;padding:5px 14px;margin-bottom:16px;border-radius:20px;
+  font-size:12.5px;font-weight:800;letter-spacing:.4px;
+  color:var(--cp-accent);background:rgba(191,90,19,.09);
+  border:1px solid rgba(191,90,19,.28);
+}
+header.cp-hero h1{
+  font-size:clamp(29px,7.2vw,46px);font-weight:900;letter-spacing:-1.1px;margin-bottom:14px;
+}
+.cp-hero-pitch{
+  max-width:610px;margin:0 auto;
+  font-size:clamp(15.5px,4vw,17.5px);line-height:1.85;color:var(--cp-ink-2);
+}
+.cp-hero-pitch b{color:var(--cp-ink);font-weight:800}
+
+.cp-store-row{margin-top:28px;display:flex;gap:13px;justify-content:center;align-items:center;flex-wrap:wrap}
+.cp-store-btn{
+  display:inline-flex;align-items:center;gap:11px;padding:13px 24px;border-radius:15px;
+  background:var(--cp-paper-2);color:var(--cp-ink);
+  border:1px solid var(--cp-line-2);box-shadow:0 3px 0 var(--cp-shadow);
+  font-weight:800;font-size:15px;line-height:1.25;cursor:default;
+}
+.cp-store-btn small{display:block;font-size:10.5px;font-weight:600;color:var(--cp-ink-3);letter-spacing:.4px}
+.cp-price-note{color:var(--cp-ink-3);font-size:13px}
+
+.cp-badges{margin-top:22px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.cp-badge{
+  padding:6px 13px;border-radius:20px;font-size:12.5px;font-weight:700;
+  color:var(--cp-ink-2);background:var(--cp-paper-2);border:1px solid var(--cp-line);
+}
+
+/* ─────────── 섹션 ─────────── */
+section{padding:34px 0}
+section > h2{
+  font-size:clamp(20px,5vw,26px);font-weight:900;margin-bottom:8px;
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+}
+section > h2::before{
+  content:"";width:10px;height:10px;flex:0 0 10px;border-radius:50%;
+  background:var(--cp-accent);transform:translateY(-2px);
+}
+.cp-lead{color:var(--cp-ink-2);font-size:15px;margin-bottom:22px;max-width:650px}
+
+/* 카드 */
+.cp-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(246px,1fr))}
+.cp-card{
+  padding:20px 21px;border-radius:16px;
+  background:var(--cp-paper-2);border:1px solid var(--cp-line);
+  box-shadow:0 3px 0 var(--cp-shadow);
+}
+.cp-card h3{font-size:16.5px;font-weight:800;margin-bottom:7px}
+.cp-card p{font-size:14.5px;line-height:1.78;color:var(--cp-ink-2)}
+
+/* 챕터 목록 — 번호를 부품처럼 */
+.cp-chapters{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(288px,1fr))}
+.cp-chapter{
+  display:flex;gap:13px;align-items:flex-start;
+  padding:14px 16px;border-radius:14px;
+  background:var(--cp-paper-2);border:1px solid var(--cp-line);
+}
+.cp-chapter .cp-no{
+  flex:0 0 30px;width:30px;height:30px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:900;color:#fff;background:var(--cp-wood);
+}
+.cp-chapter h3{font-size:15.5px;font-weight:800;margin-bottom:3px}
+.cp-chapter p{font-size:13.5px;line-height:1.7;color:var(--cp-ink-2)}
+
+/* 스크린샷 */
+.cp-shots{display:grid;gap:16px;margin-top:4px;grid-template-columns:repeat(auto-fit,minmax(176px,1fr))}
+.cp-shot{margin:0}
+.cp-shot img{
+  width:100%;height:auto;display:block;border-radius:16px;
+  border:1px solid var(--cp-line-2);box-shadow:0 4px 0 var(--cp-shadow);
+}
+.cp-shot figcaption{margin-top:11px;font-size:13px;line-height:1.6;color:var(--cp-ink-3);text-align:center}
+
+/* 사양표 */
+.cp-table-wrap{overflow-x:auto}
+table.cp-spec{border-collapse:collapse;width:100%;font-size:14.5px}
+table.cp-spec th,table.cp-spec td{
+  padding:11px 14px;border-bottom:1px solid var(--cp-line);text-align:left;vertical-align:top;
+}
+table.cp-spec th{width:34%;color:var(--cp-ink-3);font-weight:700;white-space:nowrap}
+table.cp-spec td{color:var(--cp-ink-2)}
+table.cp-spec tr:last-child th,table.cp-spec tr:last-child td{border-bottom:none}
+
+/* 목록 */
+ul.cp-bullets{list-style:none;margin:0 0 12px;padding:0}
+ul.cp-bullets li{position:relative;padding-left:17px;margin-bottom:7px;color:var(--cp-ink-2)}
+ul.cp-bullets li::before{
+  content:"";position:absolute;left:0;top:11px;width:7px;height:7px;border-radius:50%;
+  background:var(--cp-accent);opacity:.65;
+}
+ul.cp-bullets li:last-child{margin-bottom:0}
+
+/* ─────────── FAQ ─────────── */
+details{
+  background:var(--cp-paper-2);border:1px solid var(--cp-line);border-radius:14px;
+  padding:14px 18px;margin-bottom:9px;
+}
+details[open]{border-color:var(--cp-line-2);box-shadow:0 3px 0 var(--cp-shadow)}
+summary{
+  cursor:pointer;font-weight:800;font-size:15px;line-height:1.6;
+  list-style:none;display:flex;gap:10px;align-items:flex-start;color:var(--cp-ink);
+}
+summary::-webkit-details-marker{display:none}
+summary::before{
+  content:"";flex:0 0 8px;width:8px;height:8px;margin-top:9px;
+  border-right:2px solid var(--cp-accent);border-bottom:2px solid var(--cp-accent);
+  transform:rotate(-45deg);transition:transform .18s ease;
+}
+details[open] summary::before{transform:rotate(45deg)}
+/* 질문은 한글·영어를 나란히 적는다 (sillok/support 와 같은 규칙). */
+summary .cp-q{flex:1;min-width:0}
+summary .cp-q-en{font-weight:600;font-size:13.5px;color:var(--cp-ink-3)}
+summary .cp-q-en::before{content:"·";margin:0 .45em;color:var(--cp-line-2)}
+details .cp-ans{margin-top:10px;font-size:14.5px;line-height:1.8;color:var(--cp-ink-2)}
+details .cp-ans .cp-en{
+  margin-top:10px;padding-top:10px;border-top:1px dashed var(--cp-line-2);
+  color:var(--cp-ink-3);font-size:13.5px;
+}
+
+/* ─────────── 문서 페이지 ─────────── */
+.cp-doc{padding:26px 22px 20px;max-width:790px}
+.cp-doc-head{padding-bottom:18px;border-bottom:1px solid var(--cp-line);margin-bottom:26px}
+.cp-doc-head h1{font-size:clamp(24px,6vw,33px);font-weight:900;line-height:1.28}
+.cp-doc-head .cp-sub{margin-top:8px;color:var(--cp-ink-2);font-size:15px}
+.cp-doc-head .cp-rev{margin-top:5px;color:var(--cp-ink-3);font-size:13px}
+
+.cp-doc section{padding:0 0 26px}
+.cp-doc section > h2{font-size:18.5px;margin-bottom:10px}
+.cp-doc section > h2::before{width:8px;height:8px;flex-basis:8px}
+.cp-doc p{font-size:14.5px;line-height:1.85;color:var(--cp-ink-2)}
+.cp-doc strong{color:var(--cp-ink);font-weight:800}
+
+.cp-callout{
+  padding:18px 20px;border-radius:16px;margin-bottom:26px;font-weight:700;
+  background:var(--cp-paper-2);border:1px solid var(--cp-line-2);
+  box-shadow:0 3px 0 var(--cp-shadow);
+}
+.cp-callout p{color:var(--cp-ink);font-size:15px}
+
+.cp-en-block{margin-top:13px;padding-top:13px;border-top:1px dashed var(--cp-line-2)}
+.cp-en-block p,.cp-en-block li{font-size:14px;line-height:1.78;color:var(--cp-ink-3)}
+.cp-en-block strong{color:var(--cp-ink-2)}
+.cp-en-block h3{font-size:15px;font-weight:800;color:var(--cp-ink-2);margin:0 0 7px}
+.cp-en-block ul.cp-bullets li{color:var(--cp-ink-3)}
+.cp-en-block ul.cp-bullets li::before{background:var(--cp-ink-3);opacity:.5}
+
+.cp-contact{
+  padding:18px;border-radius:16px;text-align:center;
+  background:var(--cp-paper-2);border:1px solid var(--cp-line);
+  box-shadow:0 3px 0 var(--cp-shadow);
+}
+.cp-mail{display:inline-block;margin:7px 0 6px;font-size:17px;font-weight:800}
+.cp-contact .cp-note{color:var(--cp-ink-3);font-size:13px;line-height:1.7}
+
+.cp-hint{
+  margin-top:12px;padding:12px 14px;border-radius:11px;font-size:13px;line-height:1.75;
+  color:var(--cp-ink-2);background:rgba(232,169,43,.13);border:1px solid rgba(232,169,43,.4);
+}
+
+/* ─────────── 푸터 ─────────── */
+footer{
+  margin-top:34px;padding:26px 0 40px;border-top:1px solid var(--cp-line);
+  color:var(--cp-ink-3);font-size:13px;
+}
+.cp-flinks{display:flex;gap:15px;flex-wrap:wrap;margin-bottom:14px}
+.cp-flinks a{color:var(--cp-ink-2);border-bottom:none;font-weight:600}
+.cp-flinks a:hover{color:var(--cp-accent)}
+.cp-biz{line-height:1.75;color:var(--cp-ink-3);font-size:12.5px;margin-bottom:6px}
+.cp-biz:last-child{margin-bottom:0}
+
+@media (max-width:560px){
+  .cp-shots{grid-template-columns:repeat(2,1fr)}
+  table.cp-spec th{width:40%;white-space:normal}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+
+@media print{
+  body::before{display:none}
+  body{background:#fff;color:#000}
+  nav,.cp-lang-btn,.cp-store-row{display:none}
+}
