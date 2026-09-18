@@ -7,6 +7,7 @@ import {
   Dog, PlaneLanding, GraduationCap, Type, Dices, Moon, // 신규 앱
   Spade, Pickaxe, Gem, // Forge 3종
   Scroll, Bot, Smile, // 조선왕조실록 · 스틸스톰 · FaceRoutine
+  Aperture, Wrench, // CineLook · 뚝딱 실험실
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -114,59 +115,68 @@ export function Ecosystem() {
 
   // yeahplus 자체 제작 앱 (AI × Content). status: "soon" 이면 카드에 「준비 중」 배지,
   // 없으면 「Live」. 앱이 스토어에 올라가면 그 줄의 status 만 지우면 된다.
+  // 카드 비주얼은 앱 아이콘(1:1) 하나로 통일한다. logo 가 없는 앱은 lucide 아이콘이
+  // 같은 크기의 타일을 대신 채운다 — 그래야 격자의 리듬이 흐트러지지 않는다.
+  // logoBg 는 투명 PNG 아이콘이 배경 없이 떠 보이지 않게 깔아 주는 색이다.
   const apps: {
-    name: string; Icon: typeof Brain; logo: string | null; logoBg: string; image: string | null;
+    name: string; Icon: typeof Brain; logo: string | null; logoBg: string;
     href: string; domain: string; accent: string; hover: string; desc: string; badges: readonly string[];
-    status?: "live" | "soon"; fit?: "cover" | "contain";
+    status?: "live" | "soon";
   }[] = [
-    { name: "묘해 (MYOHAE)", Icon: Cat, logo: "/meow/myohae_logo.png", logoBg: "#ffffff", image: "/img/meow.webp",
+    { name: "묘해 (MYOHAE)", Icon: Cat, logo: "/meow/myohae_logo.png", logoBg: "#ffffff",
       href: "/meow", domain: "yeahplus.co.kr/meow",
       accent: "#a78bfa", hover: "rgba(124,77,255,0.12)", desc: t.ecosystem.meow.desc, badges: t.ecosystem.meow.badges },
-    { name: "24STILLS", Icon: Camera, logo: "/24stills/24_logo.png", logoBg: "#0A0A0A", image: "/img/24stills.webp",
+    { name: "24STILLS", Icon: Camera, logo: "/24stills/24_logo.png", logoBg: "#0A0A0A",
       href: "/24stills", domain: "yeahplus.co.kr/24stills",
       accent: "#e0b84e", hover: "rgba(212,175,70,0.12)", desc: t.ecosystem.stills.desc, badges: t.ecosystem.stills.badges },
-    { name: "AURA", Icon: Shirt, logo: "/img/aura_logo_1k.png", logoBg: "#000000", image: "/img/aura.webp",
+    { name: "AURA", Icon: Shirt, logo: "/img/aura_logo_1k.png", logoBg: "#000000",
       href: "https://auraootd.com", domain: "auraootd.com",
       accent: "#f0a6c0", hover: "rgba(233,166,182,0.14)", desc: t.ecosystem.aura.desc, badges: t.ecosystem.aura.badges },
-    { name: "뇌새김 (NeuroVoca)", Icon: Brain, logo: null, logoBg: "#ffffff", image: null,
+    { name: "뇌새김 (NeuroVoca)", Icon: Brain, logo: null, logoBg: "#ffffff",
       href: "https://neurovoca.co.kr", domain: "neurovoca.co.kr",
       accent: "#818cf8", hover: "rgba(79,70,229,0.14)", desc: t.ecosystem.neuro.desc, badges: t.ecosystem.neuro.badges },
-    { name: "월덕 (WOLDEOK)", Icon: Moon, logo: "/img/woldeok_logo.png", logoBg: "#0f1424", image: "/img/woldeok_wide.webp",
+    { name: "월덕 (WOLDEOK)", Icon: Moon, logo: "/img/woldeok_logo.png", logoBg: "#0f1424",
       href: "https://woldeok.app", domain: "woldeok.app",
       accent: "#f6c86b", hover: "rgba(246,200,107,0.12)", desc: t.ecosystem.woldeok.desc, badges: t.ecosystem.woldeok.badges },
-    { name: "FaceRoutine", Icon: Smile, logo: null, logoBg: "#0f1115", image: null,
+    { name: "FaceRoutine", Icon: Smile, logo: null, logoBg: "#0f1115",
       href: "https://faceroutine.app", domain: "faceroutine.app",
       accent: "#7dd3c0", hover: "rgba(125,211,192,0.14)", desc: t.ecosystem.faceroutine.desc, badges: t.ecosystem.faceroutine.badges },
-    { name: "멍해 (MUNGHAE)", Icon: Dog, logo: "/munghae/munghae_logo.png", logoBg: "#0e1330", image: "/munghae/ss.webp",
+    { name: "멍해 (MUNGHAE)", Icon: Dog, logo: "/munghae/munghae_logo.png", logoBg: "#0e1330",
       href: "/munghae", domain: "yeahplus.co.kr/munghae",
       accent: "#f4c77b", hover: "rgba(244,199,123,0.12)", desc: t.ecosystem.munghae.desc, badges: t.ecosystem.munghae.badges, status: "soon" },
-    { name: "TOWER 68", Icon: PlaneLanding, logo: "/tower68/tower68_logo.png", logoBg: "#0b1020", image: "/tower68/ss.webp",
+    { name: "TOWER 68", Icon: PlaneLanding, logo: "/tower68/tower68_logo.png", logoBg: "#0b1020",
       href: "/tower68", domain: "yeahplus.co.kr/tower68",
       accent: "#ffc93c", hover: "rgba(255,201,60,0.12)", desc: t.ecosystem.tower68.desc, badges: t.ecosystem.tower68.badges },
-    { name: "ARKE", Icon: GraduationCap, logo: "/arke/arke_logo.png", logoBg: "#f3f2f2", image: "/arke/ss.webp",
+    { name: "ARKE", Icon: GraduationCap, logo: "/arke/arke_logo.png", logoBg: "#f3f2f2",
       href: "/arke", domain: "yeahplus.co.kr/arke",
       accent: "#c28d41", hover: "rgba(182,130,53,0.14)", desc: t.ecosystem.arke.desc, badges: t.ecosystem.arke.badges },
-    { name: "조선왕조실록", Icon: Scroll, logo: "/sillok/icon-256.webp", logoBg: "#f2e8d2", image: "/sillok/icon-1024.png",
-      href: "/sillok", domain: "yeahplus.co.kr/sillok", fit: "contain",
+    { name: "조선왕조실록", Icon: Scroll, logo: "/sillok/icon-256.webp", logoBg: "#f2e8d2",
+      href: "/sillok", domain: "yeahplus.co.kr/sillok",
       accent: "#b8382d", hover: "rgba(184,56,45,0.14)", desc: t.ecosystem.sillok.desc, badges: t.ecosystem.sillok.badges },
-    { name: "WORDFORGE", Icon: Type, logo: "/wordforge/wordforge_logo.png", logoBg: "#16130f", image: "/wordforge/ss.webp",
+    { name: "WORDFORGE", Icon: Type, logo: "/wordforge/wordforge_logo.png", logoBg: "#16130f",
       href: "/wordforge", domain: "yeahplus.co.kr/wordforge",
       accent: "#ffd27a", hover: "rgba(255,210,122,0.12)", desc: t.ecosystem.wordforge.desc, badges: t.ecosystem.wordforge.badges, status: "soon" },
-    { name: "PIPFORGE", Icon: Dices, logo: "/pipforge/pipforge_icon.png", logoBg: "#16130f", image: "/pipforge/ss.webp",
+    { name: "PIPFORGE", Icon: Dices, logo: "/pipforge/pipforge_icon.png", logoBg: "#16130f",
       href: "/pipforge", domain: "yeahplus.co.kr/pipforge",
       accent: "#e8a33d", hover: "rgba(232,163,61,0.14)", desc: t.ecosystem.pipforge.desc, badges: t.ecosystem.pipforge.badges, status: "soon" },
-    { name: "ACEFORGE", Icon: Spade, logo: null, logoBg: "#16130f", image: null,
+    { name: "ACEFORGE", Icon: Spade, logo: null, logoBg: "#16130f",
       href: "/aceforge", domain: "yeahplus.co.kr/aceforge",
       accent: "#e8a33d", hover: "rgba(232,163,61,0.14)", desc: t.ecosystem.aceforge.desc, badges: t.ecosystem.aceforge.badges, status: "soon" },
-    { name: "MINEFORGE", Icon: Pickaxe, logo: null, logoBg: "#16130f", image: null,
+    { name: "MINEFORGE", Icon: Pickaxe, logo: "/mineforge/press/icon-256.webp", logoBg: "#16130f",
       href: "/mineforge", domain: "yeahplus.co.kr/mineforge",
       accent: "#ffc86e", hover: "rgba(255,200,110,0.14)", desc: t.ecosystem.mineforge.desc, badges: t.ecosystem.mineforge.badges },
-    { name: "JADEFORGE", Icon: Gem, logo: null, logoBg: "#0f1a14", image: null,
+    { name: "JADEFORGE", Icon: Gem, logo: null, logoBg: "#0f1a14",
       href: "/jadeforge", domain: "yeahplus.co.kr/jadeforge",
       accent: "#7fd8a8", hover: "rgba(127,216,168,0.14)", desc: t.ecosystem.jadeforge.desc, badges: t.ecosystem.jadeforge.badges, status: "soon" },
-    { name: "스틸스톰 아레나", Icon: Bot, logo: "/steelstorm/emblem-512.webp", logoBg: "#070b14", image: "/steelstorm/og.jpg",
+    { name: "스틸스톰 아레나", Icon: Bot, logo: "/steelstorm/emblem-512.webp", logoBg: "#070b14",
       href: "/steelstorm", domain: "yeahplus.co.kr/steelstorm",
       accent: "#35f0ff", hover: "rgba(53,240,255,0.14)", desc: t.ecosystem.steelstorm.desc, badges: t.ecosystem.steelstorm.badges },
+    { name: "CineLook", Icon: Aperture, logo: "/cinelook/icon-256.webp", logoBg: "#0b0b0e",
+      href: "/cinelook", domain: "yeahplus.co.kr/cinelook",
+      accent: "#d8b36a", hover: "rgba(216,179,106,0.14)", desc: t.ecosystem.cinelook.desc, badges: t.ecosystem.cinelook.badges, status: "soon" },
+    { name: "뚝딱 실험실", Icon: Wrench, logo: "/contraptionlab/icon-320.webp", logoBg: "#f7eedd",
+      href: "/contraptionlab", domain: "yeahplus.co.kr/contraptionlab",
+      accent: "#bf5a13", hover: "rgba(191,90,19,0.14)", desc: t.ecosystem.contraptionlab.desc, badges: t.ecosystem.contraptionlab.badges, status: "soon" },
   ];
 
   return (
@@ -176,59 +186,48 @@ export function Ecosystem() {
           <PremiumSpotlightCard hoverColor={app.hover}>
             <div className="flex flex-col h-full">
 
-              {/* Visual — 큰 이미지로 그리드 채우기 */}
+              {/* Visual — 앱 아이콘(1:1) 하나를 카드 가운데에 세운다.
+                  화면 스크린샷을 쓰면 앱마다 비율·색이 달라 격자가 들쭉날쭉했다.
+                  아이콘은 전부 정사각이라 어떤 앱을 넣어도 줄이 맞는다. */}
               <div
                 className="h-64 mb-8 rounded-2xl border border-white/10 flex items-center justify-center relative overflow-hidden"
-                style={{ background: `linear-gradient(135deg, ${app.accent}22, transparent)` }}
+                style={{
+                  background: `radial-gradient(120% 110% at 50% 0%, ${app.accent}26, transparent 62%)`,
+                }}
               >
-                {app.image ? (
-                  <>
-                    {/* 세로 스크린샷·로고 아트는 흐린 배경 위에 전체를 보여준다 */}
-                    {app.fit === "contain" && (
-                      <Image
-                        src={app.image}
-                        alt=""
-                        aria-hidden
-                        fill
-                        sizes="(max-width: 768px) 100vw, 560px"
-                        className="object-cover scale-125 blur-2xl opacity-40"
-                      />
-                    )}
+                {/* 아이콘 뒤에서 번지는 브랜드 컬러 */}
+                <div
+                  className="absolute w-40 h-40 rounded-full blur-3xl"
+                  style={{ background: `${app.accent}4d` }}
+                  aria-hidden
+                />
+                {app.logo ? (
+                  <span
+                    className="relative z-10 w-36 h-36 rounded-[30px] overflow-hidden ring-1 ring-white/12 shadow-[0_20px_44px_rgba(0,0,0,0.6)] transition-transform duration-500 group-hover:scale-[1.04]"
+                    style={{ background: app.logoBg }}
+                  >
                     <Image
-                      src={app.image}
-                      alt={`${app.name} 미리보기`}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 560px"
-                      className={
-                        app.fit === "contain"
-                          ? "object-contain p-3 drop-shadow-[0_12px_32px_rgba(0,0,0,0.65)]"
-                          : "object-cover"
-                      }
+                      src={app.logo}
+                      alt={`${app.name} 앱 아이콘`}
+                      width={256}
+                      height={256}
+                      className="w-full h-full object-cover"
                     />
-                    {app.fit !== "contain" && (
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                    )}
-                  </>
+                  </span>
                 ) : (
-                  <>
-                    <div className="absolute w-32 h-32 rounded-full blur-2xl" style={{ background: `${app.accent}33` }} />
-                    <app.Icon className="w-14 h-14 z-10" style={{ color: app.accent }} strokeWidth={1.5} />
-                  </>
+                  /* 아직 아이콘이 없는 앱 — 같은 크기의 타일로 자리를 지킨다 */
+                  <span
+                    className="relative z-10 w-36 h-36 rounded-[30px] flex items-center justify-center border transition-transform duration-500 group-hover:scale-[1.04]"
+                    style={{ background: `${app.accent}14`, borderColor: `${app.accent}38` }}
+                  >
+                    <app.Icon className="w-16 h-16" style={{ color: app.accent }} strokeWidth={1.4} />
+                  </span>
                 )}
               </div>
 
               <div className="mb-6">
+                {/* 이름 앞의 작은 아이콘은 뺐다 — 바로 위에 같은 아이콘이 크게 있다. */}
                 <div className="flex items-center gap-3 mb-4">
-                  {/* 앱 아이콘 — 타이틀 앞으로 */}
-                  {app.logo ? (
-                    <span className="w-9 h-9 rounded-[10px] overflow-hidden shrink-0 border border-white/10 shadow-md" style={{ background: app.logoBg }}>
-                      <Image src={app.logo} alt={`${app.name} 로고`} width={72} height={72} className="w-full h-full object-cover" />
-                    </span>
-                  ) : (
-                    <span className="w-9 h-9 rounded-[10px] shrink-0 flex items-center justify-center border" style={{ background: `${app.accent}1a`, borderColor: `${app.accent}33` }}>
-                      <app.Icon className="w-5 h-5" style={{ color: app.accent }} strokeWidth={1.7} />
-                    </span>
-                  )}
                   <h3 className="text-3xl font-bold text-white transition-colors">{app.name}</h3>
                   <span
                     className="px-2 py-0.5 rounded-full text-[10px] font-bold tracking-widest uppercase border whitespace-nowrap"
