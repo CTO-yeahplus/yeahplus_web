@@ -76,6 +76,13 @@ export default function PrivacyContent() {
         )}
       </p>
 
+      <p>
+        {L(
+          '공유 카드를 공유할 때 캡션(룩 이름 · 레시피 코드 · 해시태그)을 기기 클립보드에 복사합니다. 레시피 코드는 선택한 필터·카메라·프레임 번호일 뿐, 사진이나 개인정보를 담지 않습니다.',
+          'When you share a card, a caption (look name, recipe code, hashtags) is copied to your device clipboard. A recipe code only encodes the chosen filter, camera and frame — it contains no photo or personal data.'
+        )}
+      </p>
+
       <h2>{L('4. 앱 내 구매', '4. In-app purchase')}</h2>
       <p>
         {L(

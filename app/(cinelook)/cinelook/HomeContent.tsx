@@ -91,14 +91,29 @@ export default function HomeContent() {
       ),
     },
     {
-      n: 4,
-      alt: L('영화 필터 목록과 틸 & 오렌지 적용 화면', 'Movie filters with Teal & Orange applied'),
+      n: 7,
+      alt: L(
+        '카툰 테마의 공유 카드와 레시피 코드',
+        'A share card in the Cartoonic theme with its recipe code'
+      ),
       cap: L(
         <>
-          영화 필터 <b>30종</b>
+          공유 카드 + <b>레시피 코드</b>
         </>,
         <>
-          <b>Thirty</b> movie filters
+          Share cards with a <b>recipe code</b>
+        </>
+      ),
+    },
+    {
+      n: 6,
+      alt: L('레트로 테마가 적용된 홈 화면', 'Home screen in the Retro theme'),
+      cap: L(
+        <>
+          UI 테마 <b>4종</b>
+        </>,
+        <>
+          <b>Four</b> UI themes
         </>
       ),
     },
@@ -205,7 +220,7 @@ export default function HomeContent() {
                   height={1304}
                   alt={s.alt}
                   loading="lazy"
-                  sizes="(max-width: 600px) 300px, (max-width: 860px) 30vw, 330px"
+                  sizes="(max-width: 600px) 300px, (max-width: 860px) 46vw, 250px"
                 />
                 <figcaption>{s.cap}</figcaption>
               </figure>
@@ -234,6 +249,9 @@ export default function HomeContent() {
                 <li>{L('프레임 5종 · 4컷 스트립', '5 frames · booth strip')}</li>
                 <li>{L('촬영 · 불러오기 · 저장 무제한', 'Unlimited shooting, importing, saving')}</li>
                 <li>{L('워터마크 없음', 'No watermark')}</li>
+                <li>
+                  {L('스토리·피드 공유 카드 + 레시피 코드', 'Story & feed share cards + recipe codes')}
+                </li>
               </ul>
             </div>
             <div className="cl-plan cl-pro">
@@ -242,6 +260,15 @@ export default function HomeContent() {
               <ul>
                 <li>{L('필름카메라 8종 · 필터 30종 전부', 'All 8 cameras and 30 filters')}</li>
                 <li>{L('프레임 20종 · 레이아웃 4종 전부', 'All 20 frames and 4 layouts')}</li>
+                <li>
+                  {L(
+                    'UI 테마 3종 — 레트로 · 카툰 · 그래피티',
+                    '3 UI themes — Retro, Cartoonic, Graffiti'
+                  )}
+                </li>
+                <li>
+                  {L('테마별 공유 카드 · 배지 끄기', 'Matching share cards, badge optional')}
+                </li>
                 <li>{L('AI 입체 조명 · 역광', 'AI depth light and backlight')}</li>
                 <li>
                   {L(

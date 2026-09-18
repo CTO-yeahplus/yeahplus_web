@@ -46,6 +46,30 @@ export default function SupportContent() {
       ),
     },
     {
+      q: L('공유 카드와 레시피 코드는 뭔가요?', 'What are share cards and recipe codes?'),
+      a: L(
+        '편집 화면 위의 [공유]를 누르면 사진이 스토리(9:16)·피드(4:5) 카드로 만들어집니다. 카드에 적힌 CL- 로 시작하는 레시피 코드를 친구가 홈 화면의 "# 레시피 코드"에 입력하면 같은 카메라·필터·프레임이 적용돼요. 공유할 때 코드와 해시태그가 클립보드에 복사되니 캡션에 붙여 넣기만 하면 됩니다.',
+        'Tap Share at the top of the editor to turn your photo into a story (9:16) or feed (4:5) card. Friends can enter the CL- recipe code on the card under “# Recipe Code” on the home screen to get the same camera, filter and frame. When you share, the code and hashtags are copied to your clipboard, ready to paste into your caption.'
+      ),
+    },
+    {
+      q: L(
+        '카드의 "Made with CineLook" 배지를 없앨 수 있나요?',
+        'Can I remove the “Made with CineLook” badge?'
+      ),
+      a: L(
+        '무료 버전의 공유 카드에는 작은 배지가 들어갑니다. CineLook Pro 에서는 공유 시트의 배지 버튼으로 끌 수 있어요. 앨범에 저장하는 사진에는 무료·Pro 모두 워터마크가 없습니다.',
+        'Share cards in the free version include a small badge; with CineLook Pro you can turn it off in the share sheet. Photos you save to your library never carry a watermark, free or Pro.'
+      ),
+    },
+    {
+      q: L('테마는 어떻게 바꾸나요?', 'How do I change the theme?'),
+      a: L(
+        '홈의 "🎨 테마" 또는 설정 › 테마에서 고릅니다. 스탠다드는 무료이고, 레트로·카툰·그래피티는 Pro 테마예요. Pro 테마도 시트 안에서 미리 입어볼 수 있습니다.',
+        'Use “🎨 Theme” on the home screen or Settings › Theme. Standard is free; Retro, Cartoonic and Graffiti are Pro themes you can try on right in the sheet.'
+      ),
+    },
+    {
       q: L('제 사진이 어딘가로 전송되나요?', 'Are my photos uploaded anywhere?'),
       a: L(
         '아니요. 필터·조명·프레임 처리는 전부 아이폰 안에서 이루어지고, 앱에는 네트워크 기능 자체가 없습니다. 저희를 포함해 누구도 사진에 접근할 수 없습니다.',

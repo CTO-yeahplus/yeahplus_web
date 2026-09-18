@@ -117,7 +117,7 @@ section.cl-tight { padding-top: 10px; }
 .cl-card h3 { margin: 8px 0 8px; font-size: 20px; }
 .cl-card p { margin: 0; color: #b9b6c0; font-size: 15.5px; line-height: 1.65; }
 
-.cl-shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+.cl-shots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .cl-shot { margin: 0; }
 .cl-shot img { border-radius: 28px; border-width: 6px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5); }
 .cl-shot figcaption { margin-top: 14px; text-align: center; color: var(--cl-muted); font-size: 16px; }
@@ -187,6 +187,7 @@ footer nav a:hover { color: var(--cl-text); }
   .cl-hero { padding-top: 40px; }
   .cl-hero-grid { grid-template-columns: 1fr; gap: 40px; }
   .cl-cards { grid-template-columns: 1fr 1fr; }
+  .cl-shots { grid-template-columns: 1fr 1fr; gap: 28px; }
   .cl-plans { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {

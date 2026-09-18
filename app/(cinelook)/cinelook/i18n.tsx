@@ -27,6 +27,9 @@ export const BIZ = {
  * App Store — 출시 후 ASC 'App Apple ID'(숫자)를 넣는다.
  * 비어 있으면 버튼이 '출시 준비 중' 안내로 바뀐다.
  * ⚠️ 국가 코드 없는 링크는 출시 직후 404 가 잦다 — 항상 kr/us 를 붙인다.
+ *
+ * 앱 레코드는 이미 만들어져 있고 ID 는 6813313386 이다. 다만 아직 심사 중이라
+ * 링크를 열어 두지 않는다 — 출시되면 아래 빈 문자열을 '6813313386' 으로 바꾸면 된다.
  */
 export const APP_ID = '';
 export const appStoreUrl = (lang: Lang) =>

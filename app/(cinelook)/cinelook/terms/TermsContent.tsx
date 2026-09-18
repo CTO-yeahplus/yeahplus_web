@@ -70,8 +70,8 @@ export default function TermsContent() {
         </li>
         <li>
           {L(
-            'Pro 에는 구매 시점의 유료 기능과, 이후 추가되는 템플릿이 포함됩니다.',
-            'Pro includes the paid features available at purchase and templates added afterwards.'
+            'Pro 에는 구매 시점의 유료 기능(필터·카메라·프레임·레이아웃 전부, UI 테마와 테마별 공유 카드, AI 조명, 세부 조정)과 이후 추가되는 템플릿이 포함됩니다.',
+            'Pro includes the paid features available at purchase — every filter, camera, frame and layout, the UI themes and their share-card styles, AI lighting and the fine-tune sliders — plus templates added afterwards.'
           )}
         </li>
         <li>
