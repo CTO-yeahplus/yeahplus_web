@@ -6,6 +6,7 @@ import {
   Cat, Camera, Shirt, // 라이브 앱
   Dog, PlaneLanding, GraduationCap, Type, Dices, Moon, // 신규 앱
   Spade, Pickaxe, Gem, // Forge 3종
+  Scroll, Bot, Smile, // 조선왕조실록 · 스틸스톰 · FaceRoutine
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -111,7 +112,8 @@ function AppCardLink({ href, children }: { href: string; children: React.ReactNo
 export function Ecosystem() {
   const { t } = useLanguage(); // 💡 언어 데이터 불러오기
 
-  // yeahplus 자체 제작 앱 — 라이브 4종 + 출시 준비 중 5종 (AI × Content)
+  // yeahplus 자체 제작 앱 (AI × Content). status: "soon" 이면 카드에 「준비 중」 배지,
+  // 없으면 「Live」. 앱이 스토어에 올라가면 그 줄의 status 만 지우면 된다.
   const apps: {
     name: string; Icon: typeof Brain; logo: string | null; logoBg: string; image: string | null;
     href: string; domain: string; accent: string; hover: string; desc: string; badges: readonly string[];
@@ -132,6 +134,9 @@ export function Ecosystem() {
     { name: "월덕 (WOLDEOK)", Icon: Moon, logo: "/img/woldeok_logo.png", logoBg: "#0f1424", image: "/img/woldeok_wide.webp",
       href: "https://woldeok.app", domain: "woldeok.app",
       accent: "#f6c86b", hover: "rgba(246,200,107,0.12)", desc: t.ecosystem.woldeok.desc, badges: t.ecosystem.woldeok.badges },
+    { name: "FaceRoutine", Icon: Smile, logo: null, logoBg: "#0f1115", image: null,
+      href: "https://faceroutine.app", domain: "faceroutine.app",
+      accent: "#7dd3c0", hover: "rgba(125,211,192,0.14)", desc: t.ecosystem.faceroutine.desc, badges: t.ecosystem.faceroutine.badges },
     { name: "멍해 (MUNGHAE)", Icon: Dog, logo: "/munghae/munghae_logo.png", logoBg: "#0e1330", image: "/munghae/ss.webp",
       href: "/munghae", domain: "yeahplus.co.kr/munghae",
       accent: "#f4c77b", hover: "rgba(244,199,123,0.12)", desc: t.ecosystem.munghae.desc, badges: t.ecosystem.munghae.badges, status: "soon" },
@@ -140,7 +145,10 @@ export function Ecosystem() {
       accent: "#ffc93c", hover: "rgba(255,201,60,0.12)", desc: t.ecosystem.tower68.desc, badges: t.ecosystem.tower68.badges },
     { name: "ARKE", Icon: GraduationCap, logo: "/arke/arke_logo.png", logoBg: "#f3f2f2", image: "/arke/ss.webp",
       href: "/arke", domain: "yeahplus.co.kr/arke",
-      accent: "#c28d41", hover: "rgba(182,130,53,0.14)", desc: t.ecosystem.arke.desc, badges: t.ecosystem.arke.badges, status: "soon" },
+      accent: "#c28d41", hover: "rgba(182,130,53,0.14)", desc: t.ecosystem.arke.desc, badges: t.ecosystem.arke.badges },
+    { name: "조선왕조실록", Icon: Scroll, logo: "/sillok/icon-256.webp", logoBg: "#f2e8d2", image: "/sillok/icon-1024.png",
+      href: "/sillok", domain: "yeahplus.co.kr/sillok", fit: "contain",
+      accent: "#b8382d", hover: "rgba(184,56,45,0.14)", desc: t.ecosystem.sillok.desc, badges: t.ecosystem.sillok.badges },
     { name: "WORDFORGE", Icon: Type, logo: "/wordforge/wordforge_logo.png", logoBg: "#16130f", image: "/wordforge/ss.webp",
       href: "/wordforge", domain: "yeahplus.co.kr/wordforge",
       accent: "#ffd27a", hover: "rgba(255,210,122,0.12)", desc: t.ecosystem.wordforge.desc, badges: t.ecosystem.wordforge.badges, status: "soon" },
@@ -156,6 +164,9 @@ export function Ecosystem() {
     { name: "JADEFORGE", Icon: Gem, logo: null, logoBg: "#0f1a14", image: null,
       href: "/jadeforge", domain: "yeahplus.co.kr/jadeforge",
       accent: "#7fd8a8", hover: "rgba(127,216,168,0.14)", desc: t.ecosystem.jadeforge.desc, badges: t.ecosystem.jadeforge.badges, status: "soon" },
+    { name: "스틸스톰 아레나", Icon: Bot, logo: "/steelstorm/emblem-512.webp", logoBg: "#070b14", image: "/steelstorm/og.jpg",
+      href: "/steelstorm", domain: "yeahplus.co.kr/steelstorm",
+      accent: "#35f0ff", hover: "rgba(53,240,255,0.14)", desc: t.ecosystem.steelstorm.desc, badges: t.ecosystem.steelstorm.badges },
   ];
 
   return (

@@ -132,6 +132,9 @@ h1{
   cursor:default;
 }
 .sl-store-btn small{display:block;font-size:10.5px;font-weight:500;color:#c8bba6;letter-spacing:.4px}
+/* 출시 후 살아 있는 링크 — 비활성 안내일 때는 위의 cursor:default 를 그대로 둔다 */
+.sl-store-btn[href]:not([aria-disabled="true"]){cursor:pointer}
+.sl-store-btn[href]:not([aria-disabled="true"]):hover{filter:brightness(1.12)}
 .sl-store-btn svg{width:24px;height:24px;flex:0 0 24px}
 .sl-price-note{color:var(--sl-ink-3);font-size:13.5px}
 

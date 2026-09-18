@@ -4,7 +4,11 @@ import Image from 'next/image';
 
 /* 원본 sillok/site/index.html 의 본문을 기계 변환한 것.
    scripts/conv_sillok.py 로 찍어낸 파일이다 — 문구를 고칠 일이 생기면
-   sillok/site 쪽 HTML 을 먼저 고치고 생성기를 다시 돌리는 편이 안전하다. */
+   sillok/site 쪽 HTML 을 먼저 고치고 생성기를 다시 돌리는 편이 안전하다.
+   단, 아래 App Store 버튼은 출시 후 손으로 고친 자리다(원본에는 링크가 없다). */
+
+/** 출시됨(2026-09). 이 값이 비면 버튼이 자동으로 「곧 출시」 안내로 돌아간다. */
+const APP_STORE_URL = 'https://apps.apple.com/kr/app/id6810510913';
 
 export default function HomeContent() {
   return (
@@ -38,12 +42,28 @@ export default function HomeContent() {
           </p>
 
           <div className="sl-store-row">
-            <a href="#" id="appstore" className="sl-store-btn sl-plain" aria-disabled="true">
+            <a
+              id="appstore"
+              className="sl-store-btn sl-plain"
+              href={APP_STORE_URL || '#'}
+              aria-disabled={APP_STORE_URL ? undefined : true}
+              target={APP_STORE_URL ? '_blank' : undefined}
+              rel={APP_STORE_URL ? 'noreferrer' : undefined}
+            >
               <span>
                 <small data-l="ko">iPhone · iPad</small>
                 <small data-l="en">iPhone · iPad</small>
-                <span data-l="ko">App Store 곧 출시</span>
-                <span data-l="en">Coming soon to the App Store</span>
+                {APP_STORE_URL ? (
+                  <>
+                    <span data-l="ko">App Store에서 받기</span>
+                    <span data-l="en">Download on the App Store</span>
+                  </>
+                ) : (
+                  <>
+                    <span data-l="ko">App Store 곧 출시</span>
+                    <span data-l="en">Coming soon to the App Store</span>
+                  </>
+                )}
               </span>
             </a>
             <span className="sl-price-note">

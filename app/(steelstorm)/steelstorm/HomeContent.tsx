@@ -7,7 +7,10 @@ import { EMAIL } from './i18n';
 /* 문안 근거: steelstorm/docs/METADATA.md(제출 설명문·스크린샷 캡션),
    docs/REVIEW_SUBMISSION.md(개인정보 라벨), docs/GAME_CENTER.md(리더보드·도전 과제),
    app/ios/App/App/Info.plist(화면 방향)·Podfile(iOS 15.0), src/game.js(언어 4종·기체 4종).
-   출시 전이라 App Store 링크와 가격은 적지 않는다. */
+   가격은 적지 않는다 — 변동 여지가 있어 App Store 표기를 따른다. */
+
+/** 출시됨(2026-09). 이 값이 비면 버튼이 자동으로 「곧 출시」 안내로 돌아간다. */
+const APP_STORE_URL = 'https://apps.apple.com/kr/app/id6810026354';
 
 /** 스크린샷 — store/screenshots/raw/ko/iphone-6.9 (배너 문구를 얹기 전 원본). */
 const SHOTS = [
@@ -59,13 +62,27 @@ export default function HomeContent() {
         </div>
 
         <div className="ss-store-row">
-          {/* 아직 심사 제출 전이다. 링크가 생기면 href 와 문구만 바꾸면 된다. */}
-          <a href="#" className="ss-store-btn ss-plain" aria-disabled="true">
+          <a
+            className="ss-store-btn ss-plain"
+            href={APP_STORE_URL || '#'}
+            aria-disabled={APP_STORE_URL ? undefined : true}
+            target={APP_STORE_URL ? '_blank' : undefined}
+            rel={APP_STORE_URL ? 'noreferrer' : undefined}
+          >
             <span>
               <small data-l="ko">iPhone · iPad</small>
               <small data-l="en">iPhone · iPad</small>
-              <span data-l="ko">App Store 곧 출시</span>
-              <span data-l="en">Coming soon to the App Store</span>
+              {APP_STORE_URL ? (
+                <>
+                  <span data-l="ko">App Store에서 받기</span>
+                  <span data-l="en">Download on the App Store</span>
+                </>
+              ) : (
+                <>
+                  <span data-l="ko">App Store 곧 출시</span>
+                  <span data-l="en">Coming soon to the App Store</span>
+                </>
+              )}
             </span>
           </a>
           <span className="ss-price-note">

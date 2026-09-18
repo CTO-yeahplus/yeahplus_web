@@ -7,6 +7,9 @@ import { CONTACT_EMAIL } from './legal';
 // 화면 목업·도해는 실제 앱 UI를 HTML/CSS/SVG로 재현한 것(스크린샷 이미지 아님).
 export const dynamic = 'force-static';
 
+/** 출시됨(2026-09). 이 값이 비면 버튼이 자동으로 「심사 중」 안내로 돌아간다. */
+const APP_STORE_URL = 'https://apps.apple.com/kr/app/id6800566496';
+
 const STATS = [
   { v: '2', l: '과목 통합 (수학·영어)' },
   { v: '12', l: '수능 영어 독해 유형' },
@@ -319,8 +322,8 @@ const FAQ: [string, string][] = [
     '앱에 실린 영어 지문 139개는 전부 자체 제작물입니다. 기출 원문은 출제 원리를 분석하는 단계에만 참고하고 앱에 싣지 않습니다. 수학 문항도 자체 제작입니다.',
   ],
   [
-    '앱은 언제 나오나요?',
-    'iOS 앱이 App Store 심사를 받고 있습니다. 승인되면 이 페이지의 버튼이 실제 다운로드 링크로 바뀝니다.',
+    '어디서 받나요?',
+    'App Store 에서 내려받으실 수 있습니다. iPhone 용이며, 이 페이지 위아래의 「App Store에서 받기」 버튼이 바로 연결됩니다.',
   ],
   [
     '문의는 어디로 하나요?',
@@ -346,15 +349,20 @@ export default function ArkeLandingPage() {
             충분한 수능 훈련 루프.
           </p>
           <div className="ark-cta-row">
-            {/* 앱이 App Store 에 라이브되면 아래 href 를 실제 링크로 교체하세요. */}
-            <a className="ark-btn ark-btn-primary" href="#" aria-disabled="true">
-              App Store (심사 중)
+            <a
+              className="ark-btn ark-btn-primary"
+              href={APP_STORE_URL || '#'}
+              aria-disabled={APP_STORE_URL ? undefined : true}
+              target={APP_STORE_URL ? '_blank' : undefined}
+              rel={APP_STORE_URL ? 'noreferrer' : undefined}
+            >
+              {APP_STORE_URL ? 'App Store에서 받기' : 'App Store (심사 중)'}
             </a>
             <a className="ark-btn ark-btn-ghost" href="#features">
               기능 살펴보기
             </a>
           </div>
-          <p className="ark-hero-note">수학 · 영어 통합 · iPhone 앱 심사 중</p>
+          <p className="ark-hero-note">수학 · 영어 통합 · iPhone 앱</p>
         </div>
         <div className="ark-rule" />
       </section>
@@ -591,8 +599,14 @@ export default function ArkeLandingPage() {
         <section className="ark-cta-band">
           <h2>고2에게 부족한 건 시간이 아니라 순서입니다.</h2>
           <p>오늘 풀 다섯 문제와 세 문항, ARKE가 골라 두겠습니다.</p>
-          <a className="ark-btn ark-btn-gold" href="#" aria-disabled="true">
-            App Store (준비 중)
+          <a
+            className="ark-btn ark-btn-gold"
+            href={APP_STORE_URL || '#'}
+            aria-disabled={APP_STORE_URL ? undefined : true}
+            target={APP_STORE_URL ? '_blank' : undefined}
+            rel={APP_STORE_URL ? 'noreferrer' : undefined}
+          >
+            {APP_STORE_URL ? 'App Store에서 받기' : 'App Store (준비 중)'}
           </a>
         </section>
       </div>
