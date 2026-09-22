@@ -29,7 +29,7 @@ const css = (o: Record<string, string | number>) => o as CSSProperties;
 
 const LOOKS = [
   { id: 'warmgold', name: 'Warm Gold', mood: ['필름', 'Film'] },
-  { id: 'neonrain', name: 'Neon Rain', mood: ['네온 밤', 'Neon Night'] },
+  { id: 'toylens', name: 'Toy Lens', mood: ['필름카메라', 'Film camera'] },
   { id: 'tealorange', name: 'Teal & Orange', mood: ['시네마', 'Cinema'] },
   { id: 'pastelsym', name: 'Pastel Symmetry', mood: ['파스텔', 'Pastel'] },
   { id: 'goldenhour', name: 'Golden Hour', mood: ['무드', 'Mood'] },
