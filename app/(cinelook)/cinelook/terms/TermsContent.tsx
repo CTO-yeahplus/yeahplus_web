@@ -35,8 +35,10 @@ export default function TermsContent() {
                'Payment is charged to your Apple ID when you confirm. The price is shown on the purchase screen and in the App Store and may vary by country and over time.')}</li>
         <li>{L('같은 Apple ID 를 쓰는 기기에서 "구매 복원"으로 다시 사용할 수 있습니다.',
                'You can restore it with “Restore Purchase” on any device using the same Apple ID.')}</li>
-        <li>{L('Pro 에는 구매 시점의 유료 기능(필터·카메라·프레임·레이아웃 전부, UI 테마와 테마별 공유 카드, 공유 카드 배지 끄기, AI 조명, 세부 조정)과 이후 추가되는 템플릿이 포함됩니다.',
-               'Pro includes the paid features available at purchase — every filter, camera, frame and layout, the UI themes and their share-card styles, the option to hide the share-card badge, AI lighting and the fine-tune sliders — plus templates added afterwards.')}</li>
+        <li>{L('Pro 에는 구매 시점의 유료 기능(필터·카메라·프레임·레이아웃 전부, UI 테마와 테마별 공유 카드, 공유 카드 배지 끄기, AI 조명, 세부 조정)과 이후 추가되는 CineLook 오리지널 템플릿(회사가 자체 제작한 필터·카메라·프레임·레이아웃·테마)이 포함됩니다.',
+               'Pro includes the paid features available at purchase — every filter, camera, frame and layout, the UI themes and their share-card styles, the option to hide the share-card badge, AI lighting and the fine-tune sliders — plus CineLook original templates added afterwards (filters, cameras, frames, layouts and themes we create ourselves).')}</li>
+        <li>{L('캐릭터·브랜드 등 제3자와 제휴해 만드는 콘텐츠(제휴 프레임 등)는 Pro 에 포함되지 않으며, 기간 한정 무료 이벤트 또는 별도의 앱 내 구매로 제공될 수 있습니다. 제휴 콘텐츠를 별도로 구매한 경우, 구매 후에도 계속 사용할 수 있도록 제공합니다.',
+               'Content made in collaboration with third parties, such as characters or brands (for example collaboration frames), is not part of Pro. It may be offered as a limited-time free event or as a separate in-app purchase. Collaboration content you buy separately remains available to you after purchase.')}</li>
         <li>{L('환불은 Apple 의 정책을 따릅니다 — reportaproblem.apple.com 에서 신청하세요.',
                'Refunds are handled by Apple — request one at reportaproblem.apple.com.')}</li>
       </ul>
@@ -49,8 +51,8 @@ export default function TermsContent() {
       <ul>
         <li>{L('공유 카드는 사용자가 iOS 공유 시트나 사진 저장을 선택할 때만 기기 밖으로 나갑니다. 무엇을 어디에 올릴지는 사용자가 정하며, 게시한 콘텐츠의 책임도 사용자에게 있습니다.',
                'A share card leaves your device only when you choose the iOS share sheet or save it. You decide what to post and where, and you are responsible for what you post.')}</li>
-        <li>{L('무료 버전의 공유 카드에는 작은 "Made with CineLook" 배지가 들어갑니다. CineLook Pro 에서는 끌 수 있습니다. 사진 앱에 저장하는 사진에는 워터마크가 없습니다.',
-               'Share cards made with the free version carry a small “Made with CineLook” badge, which CineLook Pro can turn off. Photos saved to your library carry no watermark.')}</li>
+        <li>{L('무료 버전의 공유 카드와 부스 영상에는 작은 "Made with CineLook" 배지가 들어갑니다. CineLook Pro 에서는 빠집니다. 사진 앱에 저장하는 사진에는 워터마크가 없습니다.',
+               'Share cards and booth videos made with the free version carry a small “Made with CineLook” badge, which CineLook Pro removes. Photos saved to your library carry no watermark.')}</li>
         <li>{L('레시피 코드는 카메라·필터·프레임·강도 설정을 다섯 글자로 줄인 것입니다. 잠긴 템플릿의 코드를 입력하면 미리보기는 되지만, 저장하려면 Pro 가 필요합니다.',
                'A recipe code is a five-character summary of the camera, filter, frame and intensity. Entering a code for a locked template lets you preview it; saving requires Pro.')}</li>
       </ul>

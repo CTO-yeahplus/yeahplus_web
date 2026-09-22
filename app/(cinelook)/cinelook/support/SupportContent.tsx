@@ -18,8 +18,13 @@ export default function SupportContent() {
     },
     {
       q: L('4컷 부스는 어떻게 쓰나요?', 'How does the photo booth work?'),
-      a: L('홈에서 "4컷 부스"를 누르고 셔터를 한 번 누르면, 컷마다 3·2·1 카운트다운 후 네 장을 연속으로 찍어 스트립으로 만들어 줍니다. 편집 화면의 프레임 › 레이아웃에서 블랙 스트립 · 2×2 그리드 · 듀오로 바꿀 수 있어요(스트립은 무료, 나머지는 Pro).',
-           'Tap “Photo Booth” on the home screen and press the shutter once: after a 3-2-1 countdown before each shot, it takes four photos in a row and lays them out as a strip. In the editor, Frames › Layouts switches to the black strip, 2×2 grid or duo (the strip is free; the others are Pro).'),
+      a: L('홈에서 "4컷 부스"를 누르고 셔터를 한 번 누르면, 컷마다 5초 카운트다운 후 네 장을 연속으로 찍어 스트립으로 만들어 줍니다. 편집 화면의 프레임 › 레이아웃에서 블랙 스트립 · 2×2 그리드 · 듀오로 바꿀 수 있어요(스트립은 무료, 나머지는 Pro).',
+           'Tap “Photo Booth” on the home screen and press the shutter once: after a five-second countdown before each shot, it takes four photos in a row and lays them out as a strip. In the editor, Frames › Layouts switches to the black strip, 2×2 grid or duo (the strip is free; the others are Pro).'),
+    },
+    {
+      q: L('부스 영상은 어떻게 저장하나요?', 'How do I save the booth video?'),
+      a: L('4컷 부스로 찍고 나면 사진 왼쪽 아래에 "🎬 영상 저장" 버튼이 나타납니다. 컷마다 5초 카운트다운 동안의 모습이 레이아웃 안에서 네 칸 동시에, 2배속 타임랩스로 움직이고 마지막에 찍힌 사진으로 멈추는 세로 영상(9:16)이 사진 앱에 저장됩니다. 무료 버전 영상에는 작은 "Made with CineLook" 배지가 들어가고 Pro 에서는 빠집니다. 앨범 사진으로 만든 4컷에는 녹화된 장면이 없어 영상 저장이 나타나지 않아요.',
+           'After shooting in Photo Booth, a “🎬 Save video” button appears at the bottom left of the photo. It saves a vertical (9:16) video to Photos: the five-second countdown before each shot plays in every frame of the layout at once, as a 2× time-lapse, then freezes on the photos you took. Free videos carry a small “Made with CineLook” badge; Pro removes it. Layouts built from library photos have no recorded footage, so the button doesn’t appear for them.'),
     },
     {
       q: L('앨범에 있는 사진으로 4컷을 만들 수 있나요?', 'Can I make a four-shot layout from photos in my library?'),
@@ -33,8 +38,8 @@ export default function SupportContent() {
     },
     {
       q: L('CineLook Pro 는 구독인가요?', 'Is CineLook Pro a subscription?'),
-      a: L('아니요. 한 번 결제하면 평생 쓰는 앱 내 구매(비소모성)입니다. 자동 갱신도, 추가 요금도 없습니다. 앞으로 추가되는 템플릿도 포함됩니다.',
-           'No. It is a one-time, non-consumable in-app purchase. It never renews and there are no extra charges. Templates added later are included.'),
+      a: L('아니요. 한 번 결제하면 평생 쓰는 앱 내 구매(비소모성)입니다. 자동 갱신도 없습니다. 앞으로 추가되는 CineLook 오리지널 템플릿도 포함됩니다. 캐릭터·브랜드와 함께 만드는 제휴 프레임은 기간 한정 무료 이벤트나 별도 상품으로 제공될 수 있어요.',
+           'No. It is a one-time, non-consumable in-app purchase that never renews. CineLook original templates added later are included. Collaboration frames made with characters or brands may be offered as limited-time free events or as separate items.'),
     },
     {
       q: L('구매를 복원하고 싶어요 / 기기를 바꿨어요.', 'How do I restore my purchase on a new phone?'),

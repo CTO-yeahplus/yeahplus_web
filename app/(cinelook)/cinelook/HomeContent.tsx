@@ -86,13 +86,13 @@ function Hero() {
         <Reveal as="p" className="lx-lead" delay={160}>
           {L(
             <>
-              셔터 한 번에 네 컷, 프레임 20종, 영화 필터 35종.
+              셔터 한 번에 네 컷, 찍는 모습은 2배속 영상으로. 프레임 20종, 영화 필터 35종,
               <br />앱 전체가 바뀌는 테마와 자랑하고 싶은 공유 카드까지.
             </>,
             <>
-              Four shots from one tap, twenty frames, thirty-five movie looks —
+              Four shots from one tap — and a 2× video of the moment. Twenty frames, thirty-five movie looks,
               <br />
-              plus themes that restyle the whole app and share cards worth posting.
+              themes that restyle the whole app and share cards worth posting.
             </>
           )}
         </Reveal>
@@ -159,15 +159,18 @@ function Booth() {
   const steps = [
     [L('셔터 한 번이면.', 'One tap.'), L('4컷 부스 모드에서 셔터를 누르세요.', 'Press the shutter in Photo Booth mode.')],
     [
-      L('3 · 2 · 1, 네 번 찰칵.', 'Three, two, one — four times.'),
+      L('5초 카운트다운, 네 번 찰칵.', 'Five-second countdown, four times.'),
       L(
-        '컷마다 카운트다운이 있어 포즈를 바꿀 틈이 있어요.',
-        'A countdown before every shot gives you time to change your pose.'
+        '컷마다 5초씩 포즈를 바꿀 틈이 있어요. 그 5초는 영상으로도 남습니다.',
+        'Five seconds before every shot to change your pose — and those seconds are kept as video.'
       ),
     ],
     [
-      L('사진관 스트립으로 인화.', 'Developed into a booth strip.'),
-      L('날짜와 로고까지 찍힌 스트립이 바로 나옵니다.', 'Out comes a strip, date and logo printed in.'),
+      L('스트립 인화 + 움직이는 영상.', 'A strip — and a moving one.'),
+      L(
+        '날짜와 로고까지 찍힌 스트립, 그리고 네 칸이 동시에 움직이는 2배속 영상까지 저장할 수 있어요.',
+        'Out comes a strip with the date and logo — plus a 2× video where all four frames move at once.'
+      ),
     ],
     [
       L('레이아웃 4종 · 프레임 20종.', 'Four layouts. Twenty frames.'),
@@ -763,7 +766,7 @@ function Pricing() {
           <Reveal className="cl-plan">
             <h3>{L('무료', 'Free')}</h3>
             <ul>
-              <li>{L('4컷 부스 · 스트립 레이아웃', 'Photo booth with the strip layout')}</li>
+              <li>{L('4컷 부스 · 스트립 레이아웃 · 부스 영상', 'Photo booth, strip layout and booth video')}</li>
               <li>{L('필름카메라 3종 · 영화 필터 9종 · 프레임 5종', '3 film cameras, 9 movie looks, 5 frames')}</li>
               <li>{L('촬영 · 불러오기 · 저장 무제한, 워터마크 없음', 'Unlimited shooting and saving, no watermark')}</li>
               <li>{L('스토리 · 피드 공유 카드 + 레시피 코드', 'Story and feed share cards + recipe codes')}</li>
@@ -777,12 +780,15 @@ function Pricing() {
               <li>{L('레이아웃 4종 · 프레임 20종 전부', 'All 4 layouts and 20 frames')}</li>
               <li>{L('필름카메라 8종 · 영화 필터 35종 전부', 'All 8 cameras and 35 movie looks')}</li>
               <li>{L('UI 테마 3종 — 두들 · 카툰 · 그래피티', '3 UI themes — Doodle, Cartoonic, Graffiti')}</li>
-              <li>{L('테마별 공유 카드 · 배지 끄기', 'Themed share cards, badge optional')}</li>
+              <li>{L('테마별 공유 카드 · 카드·영상 배지 끄기', 'Themed share cards, no badge on cards or videos')}</li>
               <li>{L('AI 입체 조명 · 역광 · 세부 조정', 'AI depth light, backlight and fine-tune')}</li>
-              <li>{L('앞으로 추가되는 템플릿 포함', 'Future templates included')}</li>
+              <li>{L('앞으로 추가되는 오리지널 템플릿 포함', 'Future original templates included')}</li>
             </ul>
             <p className="cl-price-note">
-              {L('앱 내 구매 1회 · 가격은 App Store에 표시됩니다', 'One in-app purchase · price shown in the App Store')}
+              {L(
+                '앱 내 구매 1회 · 가격은 App Store에 표시됩니다 · 제휴(IP) 프레임은 별도로 제공될 수 있어요',
+                'One in-app purchase · price shown in the App Store · collaboration frames may be offered separately'
+              )}
             </p>
           </Reveal>
         </div>

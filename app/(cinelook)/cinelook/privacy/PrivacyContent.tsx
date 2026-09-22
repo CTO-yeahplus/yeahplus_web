@@ -33,8 +33,8 @@ export default function PrivacyContent() {
                'Importing uses the iOS system photo picker, so the app can only see the photos you choose.')}</li>
         <li>{L('카메라 권한은 앱 안에서 촬영할 때만 사용됩니다. 거절해도 불러오기로 모든 기능을 쓸 수 있습니다.',
                'Camera access is used only when you shoot inside the app. If you decline, every feature still works with imported photos.')}</li>
-        <li>{L('사진 권한은 "추가 전용"입니다. 저장 버튼을 누르면 결과물이 사진 앱에 새 사진으로 추가될 뿐, 기존 사진을 읽거나 수정하지 않습니다.',
-               'Photo access is add-only. Saving adds the result to Photos as a new picture; existing photos are never read or modified.')}</li>
+        <li>{L('사진 권한은 "추가 전용"입니다. 저장 버튼을 누르면 결과물(사진 또는 부스 영상)이 사진 앱에 새 항목으로 추가될 뿐, 기존 사진을 읽거나 수정하지 않습니다.',
+               'Photo access is add-only. Saving adds the result (a photo or a booth video) to Photos as a new item; existing photos are never read or modified.')}</li>
       </ul>
 
       <h2>{L('2. 온디바이스 AI', '2. On-device AI')}</h2>
@@ -44,6 +44,8 @@ export default function PrivacyContent() {
       <h2>{L('3. 앱 안에 저장되는 것', '3. What the app keeps on your device')}</h2>
       <p>{L('언어 · UI 테마 · 레터박스 · 날짜 스탬프 · 플래시 같은 설정값, Pro 구매 여부, 공유 카드를 만든 횟수(기기 안의 숫자 하나)만 기기에 저장됩니다. 이 정보는 기기 밖으로 나가지 않으며, 앱을 삭제하면 함께 지워집니다.',
             'Only settings such as language, UI theme, letterbox, date stamp and flash, whether Pro has been purchased, and a count of share cards you have made (a single number on your device) are stored. They never leave your device and are deleted with the app.')}</p>
+      <p>{L('4컷 부스로 찍는 동안에는 카운트다운 화면을 영상 재료로 잠시 메모리에 담아 둡니다. "영상 저장"을 누르면 기기 안에서 영상으로 만들어 사진 앱에 추가하고, 만드는 과정의 임시 파일은 다음 영상을 만들 때 지워집니다. 영상 역시 기기 밖으로 전송되지 않습니다.',
+            'While you shoot in Photo Booth, the countdown footage is held briefly in memory as material for the booth video. Tapping “Save video” turns it into a video on the device and adds it to Photos; the temporary working file is deleted the next time you make a video. Videos never leave your device either.')}</p>
       <p>{L('테마 배경 · 공유 카드 · 스티커 그림은 모두 앱에 포함되어 있어 따로 내려받지 않습니다.',
             'Theme backgrounds, share-card artwork and stickers are bundled with the app — nothing is downloaded.')}</p>
       <p>{L('공유 카드를 공유할 때 캡션(룩 이름 · 레시피 코드 · 해시태그)을 기기 클립보드에 복사합니다. 레시피 코드는 선택한 필터·카메라·프레임 번호일 뿐, 사진이나 개인정보를 담지 않습니다.',
