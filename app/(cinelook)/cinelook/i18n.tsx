@@ -87,3 +87,22 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
 
   return <LangContext.Provider value={value}>{children}</LangContext.Provider>;
 }
+
+/**
+ * 원본 useSeoMeta 의 제목 부분 — 서버 렌더는 한국어 제목, 영어 사용자는 마운트 후 바꾼다.
+ * Next 의 메타데이터가 하이드레이션 뒤에 <title> 을 한 번 더 그리므로, 그때 되돌려지지
+ * 않도록 <head> 를 지켜보다가 다르면 다시 맞춘다(같으면 아무것도 하지 않아 루프가 없다).
+ */
+export function useDocTitle(ko: string, en: string) {
+  const { lang } = useLang();
+  useEffect(() => {
+    const want = lang === 'ko' ? ko : en;
+    const apply = () => {
+      if (document.title !== want) document.title = want;
+    };
+    apply();
+    const mo = new MutationObserver(apply);
+    mo.observe(document.head, { subtree: true, childList: true, characterData: true });
+    return () => mo.disconnect();
+  }, [lang, ko, en]);
+}
