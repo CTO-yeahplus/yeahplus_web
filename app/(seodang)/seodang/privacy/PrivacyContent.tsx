@@ -29,8 +29,8 @@ export default function PrivacyContent() {
         </p>
         <p>
           {L(
-            '성어서당은 어떤 개인정보도 수집·저장·전송하지 않습니다. 계정이 없고, 앱에는 네트워크 기능, 분석 도구, 광고 SDK 가 들어 있지 않습니다.',
-            'Seodang does not collect, store or transmit any personal data. There are no accounts, and the app contains no networking, no analytics and no advertising SDKs.'
+            '성어서당은 어떤 개인정보도 수집하지 않습니다. 계정이 없고, 분석 도구와 광고 SDK 가 들어 있지 않으며, 개발자에게 보내는 통신이 없습니다. 개발자 서버 자체가 없습니다.',
+            'Seodang collects no personal data. There are no accounts, no analytics and no advertising SDKs, and the app makes no network requests to the developer — we do not run a server at all.'
           )}
         </p>
       </div>
@@ -51,29 +51,57 @@ export default function PrivacyContent() {
         </li>
         <li>
           {L(
-            '사용 기록이나 학습 기록을 외부로 보내지 않습니다. 분석 도구가 들어 있지 않습니다.',
-            'Usage and learning records are never sent anywhere; no analytics tools are bundled.'
+            '사용 기록이나 학습 기록을 개발자에게 보내지 않습니다. 분석 도구가 들어 있지 않습니다.',
+            'Usage and learning records are never sent to the developer; no analytics tools are bundled.'
           )}
         </li>
       </ul>
 
-      <h2>{L('2. 기기 안에 저장되는 것', '2. What stays on the device')}</h2>
+      <h2>{L('2. 기기에 저장되는 것', '2. What is stored on the device')}</h2>
       <p>
         {L(
-          '어디까지 읽었는지, 어떤 성어 카드를 모았는지, 소리·글자 크기 같은 설정값은 기기 안에만 저장됩니다. 이 정보는 기기 밖으로 나가지 않으며, 앱을 삭제하면 함께 지워집니다.',
-          'How far the child has read, which idiom cards they have collected, and settings such as sound and text size are stored only on the device. They never leave it and are deleted with the app.'
+          '학습 진행 상황(모은 성어, 엽전, 놀이마당 최고 기록, 책장 꾸미기·읽어 주기 설정)은 앱이 설치된 기기 안에 저장됩니다. 개발자에게는 전송되지 않으며, 앱을 삭제하면 기기에서 지워집니다.',
+          'Learning progress and settings — idioms collected, coins, the best Play Yard score, the shelf theme and read-aloud — are stored on the device where the app is installed. They are never sent to the developer, and they are removed when the app is deleted.'
         )}
       </p>
 
-      <h2>{L('3. 인터넷 연결', '3. Network access')}</h2>
+      <h2>{L('3. iCloud 동기화와 백업 파일', '3. iCloud sync and backup files')}</h2>
       <p>
         {L(
-          '이야기 60편, 삽화 242장, 획순 시범 자료가 모두 앱 안에 들어 있어 인터넷 연결이 필요하지 않습니다. 비행기 모드에서도 똑같이 동작합니다.',
-          'All 60 stories, 242 illustrations and the stroke-order demonstrations are bundled inside the app, so no internet connection is needed. It works the same in airplane mode.'
+          '같은 Apple 계정을 쓰는 기기끼리 진행 상황을 이어서 볼 수 있도록, Apple 의 iCloud 키-값 저장소에 같은 정보를 함께 보관합니다. 이 정보는 이용자 본인의 iCloud 계정에 저장되며 개발자는 접근할 수 없습니다. 개발자 서버는 존재하지 않습니다.',
+          'So that progress carries over between devices signed in to the same Apple Account, the same information is also kept in Apple’s iCloud key-value store. It lives in the user’s own iCloud account, the developer cannot access it, and there is no developer server.'
+        )}
+      </p>
+      <p>
+        {L(
+          '원하지 않으시면 기기의 설정 → Apple 계정 → iCloud 에서 이 앱의 iCloud 사용을 끄시면 됩니다. 끄더라도 앱은 그대로 동작하고, 진행 상황은 기기 안에만 남습니다.',
+          'If you would rather not use it, turn iCloud off for this app in Settings → Apple Account → iCloud. The app keeps working, and progress simply stays on that device.'
+        )}
+      </p>
+      <p>
+        {L(
+          '책장 화면의 "진행 상황 지키기"에서 진행 상황을 파일 하나로 내보내 다른 기기에서 불러올 수도 있습니다. 이 파일은 이용자가 고른 곳(파일 앱 등)에만 저장되며 개발자에게 전송되지 않습니다.',
+          'From “Keep my progress” on the shelf screen you can also export everything to a single file and import it on another device. That file is saved only where you choose (the Files app, for example) and is never sent to the developer.'
         )}
       </p>
 
-      <h2>{L('4. 어린이 이용자', '4. Children')}</h2>
+      <h2>{L('4. 읽어 주기와 카드로 보내기', '4. Read-aloud and share cards')}</h2>
+      <p>
+        {L(
+          '읽어 주기는 기기에 내장된 한국어 음성을 사용합니다. 목소리를 녹음하거나 전송하지 않습니다. "카드로 보내기"는 기기 안에서 그림 한 장을 만들어 iOS 공유 시트를 열 뿐이며, 어디로 보낼지는 이용자가 고릅니다. 앱이 직접 올리는 곳은 없습니다.',
+          'Read-aloud uses the Korean voice built into the device; nothing is recorded or transmitted. “Send as a card” draws a picture on the device and opens the iOS share sheet — you choose where it goes, and the app itself uploads nothing.'
+        )}
+      </p>
+
+      <h2>{L('5. 인터넷 연결', '5. Network access')}</h2>
+      <p>
+        {L(
+          '성어서당은 자체 서버를 두지 않으며, 개발자에게 보내는 네트워크 통신이 없습니다(위의 iCloud 동기화는 Apple 이 제공하는 기능입니다). 이야기 60편, 삽화 242장, 획순 시범 자료와 글꼴까지 모두 앱 안에 들어 있어 비행기 모드에서도 똑같이 동작합니다.',
+          'Seodang has no server of its own and makes no network requests to the developer (the iCloud sync above is a feature provided by Apple). All 60 stories, 242 illustrations, the stroke-order data and the fonts are bundled in the app, so it works the same in airplane mode.'
+        )}
+      </p>
+
+      <h2>{L('6. 어린이 이용자', '6. Children')}</h2>
       <p>
         {L(
           '이 앱은 초등학생이 주로 사용합니다. 앱은 연령과 무관하게 어떤 정보도 수집하지 않으며, 어린이에게 광고를 보여 주거나 앱 안에서 외부 사이트로 유도하지 않습니다. 앱 밖으로 나가는 링크는 부모님이 사용하는 문의 메일뿐입니다.',
@@ -81,7 +109,7 @@ export default function PrivacyContent() {
         )}
       </p>
 
-      <h2>{L('5. 결제', '5. Purchases')}</h2>
+      <h2>{L('7. 결제', '7. Purchases')}</h2>
       <p>
         {L(
           '구매와 복원은 Apple 의 App Store 가 처리합니다. 결제 정보는 Apple 이 관리하며 앱과 개발자는 이에 접근하지 않습니다. 앞으로 제휴 콘텐츠가 별도 상품으로 제공되더라도 결제는 마찬가지로 Apple 이 처리합니다.',
@@ -89,7 +117,7 @@ export default function PrivacyContent() {
         )}
       </p>
 
-      <h2>{L('6. 제3자 제공', '6. Third parties')}</h2>
+      <h2>{L('8. 제3자 제공', '8. Third parties')}</h2>
       <p>
         {L(
           '수집하는 정보가 없으므로 제3자에게 제공하거나 위탁하는 정보도 없습니다.',
@@ -97,7 +125,7 @@ export default function PrivacyContent() {
         )}
       </p>
 
-      <h2>{L('7. 변경', '7. Changes')}</h2>
+      <h2>{L('9. 변경', '9. Changes')}</h2>
       <p>
         {L(
           '이 방침이 바뀌면 이 페이지에 새 시행일과 함께 게시합니다. 데이터를 수집하게 되는 변경이라면 앱 업데이트 전에 먼저 알려 드립니다.',
@@ -105,7 +133,7 @@ export default function PrivacyContent() {
         )}
       </p>
 
-      <h2>{L('8. 문의', '8. Contact')}</h2>
+      <h2>{L('10. 문의', '10. Contact')}</h2>
       <p>
         {L('개인정보 보호 책임자', 'Privacy contact')} · {COMPANY} ·{' '}
         <a className="sd-mailto" href={`mailto:${MAIL}`}>

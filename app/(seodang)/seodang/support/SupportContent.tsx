@@ -43,22 +43,29 @@ export default function SupportContent() {
     {
       q: L('인터넷이 없어도 되나요?', 'Does it need an internet connection?'),
       a: L(
-        '필요 없습니다. 비행기 모드에서도 똑같이 동작합니다. 차 안이나 비행기에서도 그대로 쓸 수 있어요.',
-        'It does not. Everything works the same in airplane mode — in the car or on a plane.'
+        '필요 없습니다. 이야기·삽화·획순 자료·글꼴이 모두 앱 안에 들어 있어 비행기 모드에서도 똑같이 동작합니다. 앱이 개발자에게 보내는 통신은 없고, 인터넷을 쓰는 것은 켜 두셨을 때의 iCloud 동기화뿐입니다.',
+        'It does not. The stories, illustrations, stroke data and fonts are all bundled, so it works the same in airplane mode. The app makes no network requests to the developer; the only thing that uses the internet is iCloud sync, when you leave it on.'
       ),
     },
     {
       q: L('아이의 기록이 어딘가로 전송되나요?', 'Is my child’s activity sent anywhere?'),
       a: L(
-        '아니요. 계정이 없고, 어떤 정보도 모으지 않습니다. 읽은 곳과 모은 성어 카드는 기기 안에만 남습니다.',
-        'No. There are no accounts and nothing is collected. Reading progress and collected cards stay on the device.'
+        '개발자에게는 아무것도 전송되지 않습니다. 계정이 없고, 분석 도구도 광고도 없으며 개발자 서버 자체가 없습니다. 진행 상황은 기기에 저장되고, 같은 Apple 계정 기기끼리 이어 보도록 이용자 본인의 iCloud 에도 함께 보관됩니다. 이 정보에는 개발자가 접근할 수 없습니다.',
+        'Nothing is sent to the developer. There are no accounts, no analytics, no ads — and no developer server at all. Progress is stored on the device and, so it can carry over between devices on the same Apple Account, also in the user’s own iCloud, which the developer cannot access.'
       ),
     },
     {
       q: L('기기를 바꾸면 기록이 옮겨지나요?', 'Does progress move to a new device?'),
       a: L(
-        '기록은 기기 안에만 저장되므로 자동으로 옮겨지지 않습니다. 구매는 같은 Apple ID 라면 App Store 에서 다시 내려받아 그대로 쓸 수 있습니다. 기기 사이로 기록을 옮기는 방법(백업 파일 내보내기·불러오기 등)은 검토하고 있습니다.',
-        'Progress is stored on the device only, so it does not transfer automatically. The purchase itself follows your Apple ID — download the app again from the App Store and it is yours. We are looking into ways to carry progress across devices, such as exporting and importing a backup file.'
+        '같은 Apple 계정을 쓰는 기기끼리는 iCloud 로 자동으로 맞춰집니다(모은 성어·엽전·최고 기록·책장 꾸미기). 계정이 다르거나 iCloud 를 끄고 쓰신다면, 책장 화면의 "진행 상황 지키기"에서 백업 파일을 만들어 새 기기에서 불러오시면 됩니다. 구매 자체는 같은 Apple 계정이라면 App Store 에서 다시 내려받아 그대로 쓸 수 있습니다.',
+        'Devices signed in to the same Apple Account are kept in step through iCloud — idioms, coins, best score and shelf theme. For a different account, or with iCloud turned off, use “Keep my progress” on the shelf screen to export a backup file and import it on the new device. The purchase itself follows your Apple Account: download the app again from the App Store and it is yours.'
+      ),
+    },
+    {
+      q: L('iCloud 동기화를 끄고 싶어요.', 'Can I turn iCloud sync off?'),
+      a: L(
+        '기기의 설정 → Apple 계정 → iCloud 에서 성어서당의 iCloud 사용을 끄시면 됩니다. 끄더라도 앱은 그대로 동작하고, 진행 상황은 그 기기 안에만 남습니다. iCloud 에 저장되는 내용은 모은 성어·엽전·설정값뿐이고, 개발자는 이 정보에 접근할 수 없습니다.',
+        'Turn iCloud off for Seodang in Settings → Apple Account → iCloud. The app keeps working and progress simply stays on that device. What iCloud holds is only the idioms, coins and settings — and the developer cannot access any of it.'
       ),
     },
     {
@@ -80,6 +87,13 @@ export default function SupportContent() {
       a: L(
         '틀린 선택은 없습니다. 무엇을 고르든 붓선생이 생각을 이어 주고, 그다음에 옛 책이 실제로 어떻게 되었는지 알려 줍니다.',
         'There is no wrong answer. Whatever the child picks, Master Brush carries the thought forward, and then the classic tells what actually happened.'
+      ),
+    },
+    {
+      q: L('이야기를 읽어 줄 수도 있나요?', 'Can the app read the story aloud?'),
+      a: L(
+        '네. 이야기 화면의 "읽어 주기"를 누르면 기기에 내장된 한국어 음성이 읽어 줍니다. 늘 읽어 주도록 켜 둘 수도 있어요. 목소리를 녹음하거나 어딘가로 보내지 않습니다.',
+        'Yes. Tap “Read aloud” on the story screen and the Korean voice built into your device reads it. You can leave it on for every story. Nothing is recorded or sent anywhere.'
       ),
     },
     {

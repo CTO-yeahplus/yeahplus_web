@@ -125,8 +125,8 @@ export default function TermsContent() {
       <h2>{L('6. 책임 제한', '6. Limitation of liability')}</h2>
       <p>
         {L(
-          '법이 허용하는 범위에서 앱은 "있는 그대로" 제공됩니다. 학습 기록은 기기 안에만 저장되므로, 기기를 초기화하거나 앱을 삭제하면 복구할 수 없습니다. 회사는 앱 이용으로 발생한 간접적·부수적 손해에 대해 책임지지 않습니다. 소비자로서 법률상 보장되는 권리는 이 조항으로 제한되지 않습니다.',
-          'To the extent permitted by law, the app is provided “as is”. Progress is stored on the device only, so resetting the device or deleting the app removes it for good. We are not liable for indirect or incidental damages arising from use of the app. Nothing here limits your statutory rights as a consumer.'
+          '법이 허용하는 범위에서 앱은 "있는 그대로" 제공됩니다. 학습 기록은 기기와 이용자 본인의 iCloud 에 저장되며, 개발자는 이를 보관하지 않습니다. 기기와 iCloud 에서 모두 지워지면 복구해 드릴 수 없으니, 오래 모은 기록은 책장의 "진행 상황 지키기"로 백업 파일을 만들어 두시길 권합니다. 회사는 앱 이용으로 발생한 간접적·부수적 손해에 대해 책임지지 않습니다. 소비자로서 법률상 보장되는 권리는 이 조항으로 제한되지 않습니다.',
+          'To the extent permitted by law, the app is provided “as is”. Progress is stored on your device and in your own iCloud; we keep no copy. Once it is gone from both, we cannot restore it — so for a long-collected shelf, make a backup file with “Keep my progress”. We are not liable for indirect or incidental damages arising from use of the app. Nothing here limits your statutory rights as a consumer.'
         )}
       </p>
 

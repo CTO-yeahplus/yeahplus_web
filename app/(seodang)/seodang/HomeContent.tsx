@@ -620,8 +620,8 @@ function More() {
       alt: L('모은 성어 카드가 꽂힌 내 성어 책장', 'The shelf of collected idiom cards'),
       h: L('내 성어 책장', 'My idiom shelf'),
       p: L(
-        '완성한 성어가 카드로 꽂힙니다. 카드를 누르면 유래와 예문을 다시 볼 수 있고, 오늘 다시 볼 성어도 하루 한 장씩 올라옵니다.',
-        'Every finished idiom becomes a card. Tap one to read its origin and example again, and one card a day comes back for review.'
+        '완성한 성어가 카드로 꽂힙니다. 카드를 누르면 유래와 예문을 다시 볼 수 있고, 오늘 다시 볼 성어도 하루 한 장씩 올라옵니다. 같은 Apple 계정 기기끼리는 iCloud 로 이어지고, 백업 파일로 옮길 수도 있어요.',
+        'Every finished idiom becomes a card. Tap one to read its origin and example again, and one card a day comes back for review. Devices on the same Apple Account stay in step through iCloud, and a backup file can carry it anywhere.'
       ),
     },
     {
@@ -722,8 +722,8 @@ function Safe() {
       ic: '🔒',
       h: L('수집 없음', 'No data collected'),
       p: L(
-        '계정이 없고, 어떤 정보도 모으지 않습니다.',
-        'There are no accounts, and nothing is collected.'
+        '계정이 없고, 개발자에게 보내는 통신도 개발자 서버도 없습니다.',
+        'No accounts, no requests to the developer, and no developer server.'
       ),
     },
   ];
