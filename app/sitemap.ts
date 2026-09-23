@@ -17,6 +17,7 @@ const PRODUCTS: { base: string; sub: string[] }[] = [
   { base: "steelstorm", sub: ["privacy", "support", "terms"] },
   { base: "cinelook", sub: ["privacy", "support", "terms"] },
   { base: "contraptionlab", sub: ["privacy", "support", "terms"] },
+  { base: "seodang", sub: ["privacy", "support"] },
 ];
 
 /** public/ 아래 정적 HTML 로 서비스되는 24STILLS. */
