@@ -205,6 +205,10 @@ footer a{color:var(--sd-ink2)}
    자기 <html> 을 그리므로 배경을 html 에도 깔고, 언어 버튼·문서 페이지처럼
    원본에 없던 요소의 스타일만 덧붙인다. */
 html{background:var(--sd-paper)}
+/* 원본 <img> 에는 width/height 속성이 없었다. 이식하면서 레이아웃 흔들림을 줄이려고
+   속성을 넣었는데, 원본 CSS 에 height:auto 가 없어 높이가 속성값(예: 900px)에 고정돼
+   히어로의 붓선생이 세로로 늘어났다. 비율을 되돌린다. */
+img{height:auto}
 .sd-page{min-height:100dvh;display:flex;flex-direction:column}
 .sd-page>main{flex:1}
 .sd-langbtn{font:inherit;font-size:14px;font-weight:700;color:var(--sd-ink2);background:none;border:0;cursor:pointer;padding:0}

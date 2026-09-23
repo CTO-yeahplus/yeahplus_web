@@ -59,6 +59,7 @@ function Footer({ year }: { year: number }) {
           <Link href={BASE}>{L('홈', 'Home')}</Link>
           <Link href={`${BASE}/support`}>{L('지원 · Support', 'Support')}</Link>
           <Link href={`${BASE}/privacy`}>{L('개인정보 처리방침', 'Privacy Policy')}</Link>
+          <Link href={`${BASE}/terms`}>{L('이용 약관', 'Terms of Use')}</Link>
           <a href={`mailto:${MAIL}`}>{MAIL}</a>
           <Link href="/">{L('yeahplus 홈', 'yeahplus home')}</Link>
         </div>

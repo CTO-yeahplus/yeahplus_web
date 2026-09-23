@@ -585,7 +585,10 @@ function Safe() {
     {
       ic: '💳',
       h: L('추가 결제 없음', 'No extra purchases'),
-      p: L('한 번 구매하면 60편 전부입니다.', 'Buy once and all 60 stories are yours.'),
+      p: L(
+        '한 번 구매하면 60편 전부입니다. 앞으로 더해지는 오리지널 이야기도 추가 결제 없이 열립니다. 캐릭터·브랜드 제휴 콘텐츠는 별도 상품이 될 수 있어요.',
+        'Buy once and all 60 stories are yours — original stories added later unlock at no extra cost. Content made with outside characters or brands may be offered separately.'
+      ),
     },
     {
       ic: '✈️',

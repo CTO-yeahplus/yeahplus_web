@@ -84,8 +84,8 @@ export default function PrivacyContent() {
       <h2>{L('5. 결제', '5. Purchases')}</h2>
       <p>
         {L(
-          '구매와 복원은 Apple 의 App Store 가 처리합니다. 결제 정보는 Apple 이 관리하며 앱과 개발자는 이에 접근하지 않습니다. 앱 안에 추가 결제는 없습니다.',
-          'Purchases and restores are handled by Apple’s App Store. Payment details are managed by Apple and are never accessible to the app or to us. There are no additional in-app purchases.'
+          '구매와 복원은 Apple 의 App Store 가 처리합니다. 결제 정보는 Apple 이 관리하며 앱과 개발자는 이에 접근하지 않습니다. 앞으로 제휴 콘텐츠가 별도 상품으로 제공되더라도 결제는 마찬가지로 Apple 이 처리합니다.',
+          'Purchases and restores are handled by Apple’s App Store. Payment details are managed by Apple and are never accessible to the app or to us. If collaboration content is ever offered as a separate item, Apple handles that payment in the same way.'
         )}
       </p>
 
@@ -115,6 +115,8 @@ export default function PrivacyContent() {
 
       <p className="sd-meta" style={{ marginTop: 30 }}>
         <Link href="/seodang/support">{L('고객 지원', 'Support')}</Link>
+        {' · '}
+        <Link href="/seodang/terms">{L('이용 약관', 'Terms of Use')}</Link>
         {' · '}
         <Link href="/seodang">{L('성어서당 홈', 'Seodang home')}</Link>
       </p>

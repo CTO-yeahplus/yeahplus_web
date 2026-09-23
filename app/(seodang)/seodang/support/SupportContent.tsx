@@ -29,8 +29,8 @@ export default function SupportContent() {
     {
       q: L('광고나 추가 결제가 있나요?', 'Are there ads or extra purchases?'),
       a: L(
-        '없습니다. 배너도 영상 광고도 없고, 한 번 구매하면 60편 전부를 쓸 수 있습니다. 앱 안에서 무언가를 더 사라고 하지 않습니다.',
-        'No. There are no banners and no video ads, and one purchase unlocks all 60 stories. The app never asks the child to buy anything.'
+        '없습니다. 배너도 영상 광고도 없고, 한 번 구매하면 60편 전부를 쓸 수 있습니다. 앞으로 저희가 만들어 더하는 오리지널 이야기도 추가 결제 없이 그대로 열립니다. 다만 캐릭터·브랜드와 함께 만드는 제휴 콘텐츠는 기간 한정 무료 이벤트나 별도 상품으로 제공될 수 있습니다. 어느 쪽이든 앱 안에서 아이에게 무언가를 사라고 하지 않습니다.',
+        'No. There are no banners and no video ads, and one purchase unlocks all 60 stories. Original stories we add later unlock at no extra cost. Content made with outside characters or brands may come as a limited-time free event or as a separate item. Either way, the app never asks a child to buy anything.'
       ),
     },
     {
@@ -123,6 +123,8 @@ export default function SupportContent() {
 
       <p className="sd-meta" style={{ marginTop: 30 }}>
         <Link href="/seodang/privacy">{L('개인정보 처리방침', 'Privacy Policy')}</Link>
+        {' · '}
+        <Link href="/seodang/terms">{L('이용 약관', 'Terms of Use')}</Link>
         {' · '}
         <Link href="/seodang">{L('성어서당 홈', 'Seodang home')}</Link>
       </p>
