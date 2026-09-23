@@ -257,3 +257,37 @@ nav .sd-sp a.sd-on{color:var(--sd-ju)}
 .sd-family h3{font-size:18px}
 .sd-family p{margin:8px 0 0;color:var(--sd-ink2);font-size:15px}
 
+/* 배우는 순서 — 앱 화면(세로)을 담는 칸 */
+.sd-panel-shot{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:center;padding:18px 22px 18px 18px;
+  flex-basis:min(82vw,640px)}
+.sd-panel-shot img{aspect-ratio:auto;width:200px;height:auto;border-radius:18px;border:2.5px solid var(--sd-line);object-fit:contain}
+.sd-panel-shot .sd-t{padding:0}
+
+/* 이야기 밖의 마당 — 앱 화면 다섯 장 */
+.sd-screens{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}
+.sd-screen{margin:0;background:var(--sd-card);border:3px solid var(--sd-line);border-radius:22px;overflow:hidden;
+  box-shadow:0 8px 0 var(--sd-shadow);display:flex;flex-direction:column}
+.sd-screen img{width:100%;height:auto;border-bottom:3px solid var(--sd-line)}
+.sd-screen figcaption{padding:14px 15px 18px;display:grid;gap:6px}
+.sd-screen b{font-size:16px;line-height:1.35}
+.sd-screen span{font-size:14px;color:var(--sd-ink2);line-height:1.6}
+
+/* 감수 */
+.sd-review{display:flex;gap:16px;align-items:flex-start;margin-top:16px;background:var(--sd-card);
+  border:3px solid var(--sd-line);border-radius:22px;padding:22px 20px;box-shadow:0 8px 0 var(--sd-shadow)}
+.sd-review .sd-ic{font-size:30px;line-height:1;flex:none}
+.sd-review h3{font-size:18px}
+.sd-review p{margin:8px 0 0;color:var(--sd-ink2);font-size:15px}
+
+@media (max-width:900px){
+  .sd-panel-shot{grid-template-columns:150px 1fr;gap:14px;flex-basis:min(86vw,560px)}
+  .sd-panel-shot img{width:150px}
+  .sd-screens{grid-template-columns:repeat(2,1fr);gap:14px}
+}
+@media (max-width:600px){
+  .sd-panel-shot{grid-template-columns:130px 1fr}
+  .sd-panel-shot img{width:130px}
+  .sd-panel-shot h3{font-size:19px}
+  .sd-panel-shot p{font-size:14.5px}
+}
+

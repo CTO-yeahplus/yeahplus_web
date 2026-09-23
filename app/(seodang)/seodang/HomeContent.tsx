@@ -12,30 +12,38 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { ElementType, ReactNode } from 'react';
+import type { CSSProperties, ElementType, ReactNode } from 'react';
 import { useCountUp, useInView, useReducedMotion, useScrollProgress } from './hooks';
 import { useDocTitle, useLang } from './i18n';
 import { StoreButton } from './chrome';
 import { STROKE_SVG } from './strokeSvg';
 
 const IMG = (f: string) => `/seodang/img/${f}`;
+const SHOT = (f: string) => `/seodang/shot/${f}`;
 const ANSWER = ['刻', '舟', '求', '劍'];
 
 /* 화면에 들어오면 부드럽게 나타나는 껍데기 */
 function Reveal({
   as: Tag = 'div',
   className = '',
+  delay = 0,
   children,
   ...rest
 }: {
   as?: ElementType;
   className?: string;
+  delay?: number;
   children?: ReactNode;
   [k: string]: unknown;
 }) {
   const [ref, seen] = useInView<HTMLElement>();
   return (
-    <Tag ref={ref} className={`sd-reveal ${seen ? 'sd-in' : ''} ${className}`} {...rest}>
+    <Tag
+      ref={ref}
+      className={`sd-reveal ${seen ? 'sd-in' : ''} ${className}`}
+      style={delay ? ({ transitionDelay: `${delay}ms` } as CSSProperties) : undefined}
+      {...rest}
+    >
       {children}
     </Tag>
   );
@@ -163,55 +171,49 @@ function StoryScroll() {
     return () => removeEventListener('resize', measure);
   }, []);
 
-  // 네 칸을 화룡점정 한 편의 흐름으로 맞췄다 (앱의 hwa 편 장면 1·2·3·마무리).
+  // 네 칸을 화룡점정 한 편을 따라가는 앱 화면으로 — 삽화 · 보기 · 옛 책 · 획순 시범
   const panels = [
     {
       tag: L('하나', 'One'),
-      img: IMG('hwa_1.jpg'),
+      img: SHOT('step1.webp'),
       alt: L(
-        '절의 벽에 용 네 마리를 그린 화가 — 눈동자만 비어 있다',
-        'A painter before four dragons on a temple wall, every eye left blank'
+        '이야기 화면 — 벽에 그린 용 네 마리 삽화와 이야기 글',
+        'Story screen — the four painted dragons with the story text'
       ),
       h: L('이야기 속으로 들어갑니다', 'Step inside the story'),
       p: L(
-        '양나라의 화가 장승요가 절 벽에 용 네 마리를 그립니다. 그런데 눈동자만은 그리지 않아요. 아이는 구경꾼이 아니라 이야기 속 인물이 됩니다.',
-        'In the kingdom of Liang, the painter Zhang Sengyou covers a temple wall with four dragons — but leaves every eye blank. The child is not a spectator but a character in the tale.'
+        '양나라의 화가 장승요가 절 벽에 용 네 마리를 그립니다. 장면마다 그림이 함께 넘어가고, 읽어 주기로 들을 수도 있어요.',
+        'In the kingdom of Liang, the painter Zhang Sengyou covers a temple wall with four dragons. The picture turns with every scene, and it can read itself aloud.'
       ),
     },
     {
       tag: L('둘', 'Two'),
-      img: IMG('hwa_2.jpg'),
-      alt: L(
-        '눈동자를 그려 보라고 조르는 사람들',
-        'Onlookers urging the painter to add the eyes'
-      ),
+      img: SHOT('step2.webp'),
+      alt: L('보기 세 개가 뜬 선택 화면', 'The choice screen with three options'),
       h: L('내가 먼저 골라 봅니다', 'Make the choice yourself'),
       p: L(
-        '"눈동자를 그리면 용이 날아가 버리오." 아무도 믿지 않습니다. 너라면 뭐라고 할래? 무엇을 고르든 붓선생이 생각을 이어 줍니다.',
-        '“If I paint the eyes, the dragons will fly away.” Nobody believes him. What would you say? Whatever the child picks, Master Brush carries the thought forward.'
+        '"눈동자를 그리면 용이 날아가 버리오." 너라면 뭐라고 할래? 틀린 선택은 없고, 무엇을 고르든 붓선생이 생각을 이어 줍니다.',
+        '“If I paint the eyes, the dragons will fly away.” What would you say? There is no wrong answer — whatever the child picks, Master Brush carries the thought forward.'
       ),
     },
     {
       tag: L('셋', 'Three'),
-      img: IMG('hwa_3.jpg'),
-      alt: L(
-        '천둥이 치고 벽이 갈라지며 용 두 마리가 날아오른다',
-        'Thunder splits the wall as two dragons rise into the sky'
-      ),
+      img: SHOT('step3.webp'),
+      alt: L('붓선생이 옛 책을 펼친 유래 화면', 'The screen where Master Brush opens the classic'),
       h: L('옛 책이 진짜 이야기를 들려줍니다', 'The classics tell what really happened'),
       p: L(
-        '붓이 눈동자에 닿자 천둥이 치고, 눈동자를 얻은 두 마리가 하늘로 날아오릅니다. 출전이 「역대명화기」라는 것까지 읽습니다.',
-        'The brush touches an eye, thunder cracks, and the two dragons that got their eyes rise into the sky. Children also read where it comes from — the Record of Famous Painters.'
+        '붓이 눈동자에 닿자 두 마리가 하늘로 날아오릅니다. 뜻과 함께 출전이 「역대명화기」라는 것까지 밝힙니다.',
+        'The brush touches an eye and two dragons rise into the sky. Along with the meaning, the app names the source — the Record of Famous Painters.'
       ),
     },
     {
       tag: L('넷', 'Four'),
-      img: IMG('hwa_r.jpg'),
-      alt: L('붓으로 용의 눈동자를 찍는 화가', 'The painter dotting a dragon’s eye with his brush'),
+      img: SHOT('step4.webp'),
+      alt: L('한 획씩 그어지는 획순 시범 화면', 'The stroke-order demonstration, drawn one stroke at a time'),
       h: L('한자 네 글자를 손으로 씁니다', 'Write the four characters by hand'),
       p: L(
-        '畫 龍 點 睛 — 마지막 한 획이 전체를 살립니다. 획순 시범을 보고 붓으로 따라 쓰면 성어 카드가 책장에 꽂힙니다.',
-        '畫 龍 點 睛 — the last stroke brings the whole thing to life. Watch the stroke order, trace it with a brush, and the idiom card goes onto the shelf.'
+        '畫 龍 點 睛 — 붓선생이 한 획씩 먼저 그어 보입니다. 연한 글자 위를 따라 쓰면 성어 카드가 책장에 꽂힙니다.',
+        '畫 龍 點 睛 — Master Brush draws each stroke first. Trace over the pale guide and the idiom card goes onto the shelf.'
       ),
     },
   ];
@@ -221,8 +223,8 @@ function StoryScroll() {
       <div className="sd-stickyWrap">
         <div className="sd-track" ref={track} style={{ transform: `translateX(${-p * dist}px)` }}>
           {panels.map((x) => (
-            <article className="sd-panel" key={x.img}>
-              <img src={x.img} width={720} height={542} alt={x.alt} loading="lazy" />
+            <article className="sd-panel sd-panel-shot" key={x.img}>
+              <img src={x.img} width={560} height={1211} alt={x.alt} loading="lazy" />
               <div className="sd-t">
                 <span className="sd-tag">{x.tag}</span>
                 <h3>{x.h}</h3>
@@ -562,6 +564,14 @@ function Gallery() {
     { src: IMG('dada_1.jpg'), alt: L('다다익선 장면', 'A scene from “the more the better”') },
     { src: IMG('jeong_1.jpg'), alt: L('정저지와 장면', 'A scene from “the frog in the well”') },
     { src: IMG('yongdu_r.jpg'), alt: L('용두사미 장면', 'A scene from “dragon head, snake tail”') },
+    { src: IMG('woo_3.jpg'), alt: L('우공이산 장면', 'A scene from “the old man who moved mountains”') },
+    { src: IMG('jo_1.jpg'), alt: L('조삼모사 장면', 'A scene from “three in the morning, four at night”') },
+    { src: IMG('eo_1.jpg'), alt: L('어부지리 장면', 'A scene from “the fisherman’s gain”') },
+    { src: IMG('hyeong_1.jpg'), alt: L('형설지공 장면', 'A scene from “study by fireflies and snow”') },
+    { src: IMG('mabu_1.jpg'), alt: L('마부작침 장면', 'A scene from “grinding an iron rod into a needle”') },
+    { src: IMG('samgo_1.jpg'), alt: L('삼고초려 장면', 'A scene from “three visits to the thatched hut”') },
+    { src: IMG('jukma_1.jpg'), alt: L('죽마고우 장면', 'A scene from “friends since bamboo-horse days”') },
+    { src: IMG('sa_1.jpg'), alt: L('사면초가 장면', 'A scene from “surrounded by songs of Chu”') },
   ];
   return (
     <section style={{ paddingTop: 0 }}>
@@ -579,6 +589,109 @@ function Gallery() {
           ))}
         </div>
       </Reveal>
+    </section>
+  );
+}
+
+/* ============================== 이야기 밖의 마당 ============================== */
+function More() {
+  const { L } = useLang();
+  const items = [
+    {
+      img: SHOT('grade.webp'),
+      alt: L('3·4학년과 5·6학년으로 나뉜 이야기 목록', 'The story list, split into two grade bands'),
+      h: L('3·4학년 30편 · 5·6학년 30편', '30 stories for ages 9–10, 30 for 11–12'),
+      p: L(
+        '학년에 맞춰 나뉘어 있어 처음 여는 아이도 어렵지 않습니다. 다 읽으면 다른 쪽으로 넘어가면 돼요.',
+        'The stories are split by grade band, so a child starting out is never out of their depth — and can move up when ready.'
+      ),
+    },
+    {
+      img: SHOT('play.webp'),
+      alt: L('놀이마당의 성어 대결 문제 화면', 'A question in the Play Yard idiom match'),
+      h: L('놀이마당 — 성어 대결', 'Play Yard — idiom match'),
+      p: L(
+        '생활 속 상황을 읽고 알맞은 성어를 고릅니다. 배운 성어가 실제로 언제 쓰이는지 여기서 확인해요.',
+        'Read an everyday situation and pick the idiom that fits — the place where what they learned gets used.'
+      ),
+    },
+    {
+      img: SHOT('shelf.webp'),
+      alt: L('모은 성어 카드가 꽂힌 내 성어 책장', 'The shelf of collected idiom cards'),
+      h: L('내 성어 책장', 'My idiom shelf'),
+      p: L(
+        '완성한 성어가 카드로 꽂힙니다. 카드를 누르면 유래와 예문을 다시 볼 수 있고, 오늘 다시 볼 성어도 하루 한 장씩 올라옵니다.',
+        'Every finished idiom becomes a card. Tap one to read its origin and example again, and one card a day comes back for review.'
+      ),
+    },
+    {
+      img: SHOT('decorate.webp'),
+      alt: L('엽전으로 책장 배경을 고르는 화면', 'Choosing a shelf background with coins'),
+      h: L('엽전으로 책장 꾸미기', 'Decorate the shelf with coins'),
+      p: L(
+        '이야기를 풀면 엽전이 쌓입니다. 한지·대나무 숲·달밤 서재처럼 책장 배경을 바꾸고, 문하생에서 꼬마 훈장님까지 칭호도 올라갑니다.',
+        'Finishing stories earns coins. Spend them on shelf backgrounds — mulberry paper, a bamboo grove, a moonlit study — and climb from pupil to little master.'
+      ),
+    },
+    {
+      img: SHOT('card.webp'),
+      alt: L('성어 카드 자세히 보기와 카드로 보내기 버튼', 'An idiom card with the share button'),
+      h: L('공유 카드', 'Share cards'),
+      p: L(
+        '모은 성어를 그림 한 장으로 만들어 보낼 수 있습니다. 오늘 무엇을 배웠는지 가족에게 보여 주기 좋아요.',
+        'Turn a collected idiom into a single picture to send — an easy way to show the family what was learned today.'
+      ),
+    },
+  ];
+  return (
+    <section style={{ paddingTop: 0 }}>
+      <div className="sd-wrap">
+        <Reveal>
+          <h2 className="sd-sec-h">{L('이야기 밖에도 마당이 있어요', 'There is more than the stories')}</h2>
+          <p className="sd-sec-p">
+            {L(
+              '읽고 끝나지 않습니다. 겨루고, 모으고, 꾸미고, 자랑하는 자리까지 앱 안에 있습니다.',
+              'Reading is only the start: there is a place to compete, collect, decorate and show off.'
+            )}
+          </p>
+        </Reveal>
+        <div className="sd-screens">
+          {items.map((x, k) => (
+            <Reveal as="figure" className="sd-screen" key={x.img} delay={k * 80}>
+              <img src={x.img} width={560} height={1211} alt={x.alt} loading="lazy" />
+              <figcaption>
+                <b>{x.h}</b>
+                <span>{x.p}</span>
+              </figcaption>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================== 감수 ============================== */
+function Review() {
+  const { L } = useLang();
+  return (
+    <section style={{ paddingTop: 0 }}>
+      <div className="sd-wrap">
+        <Reveal className="sd-review">
+          <div className="sd-ic" aria-hidden="true">
+            🖋️
+          </div>
+          <div>
+            <h3>{L('한문 전공자와 초등 교사가 감수합니다', 'Checked by a classical-Chinese scholar and a primary teacher')}</h3>
+            <p>
+              {L(
+                '성어 60편의 뜻풀이와 유래, 출전, 한자 획순 186자, 삽화 242장을 한문 전공자와 초등 교사가 나누어 살펴봅니다. 아이에게 그대로 전해질 내용이라, 옛 책에 적힌 대로인지·초등 눈높이에 맞는지를 각각 확인합니다.',
+                'The meanings, origins and sources of all 60 idioms, the stroke order of 186 characters and 242 illustrations are reviewed by a scholar of classical Chinese and by a primary-school teacher — one checking it against the classics, the other against what a child can follow.'
+              )}
+            </p>
+          </div>
+        </Reveal>
+      </div>
     </section>
   );
 }
@@ -680,8 +793,10 @@ export default function HomeContent() {
       <TileGame />
       <StrokeDemo />
       <Numbers />
+      <More />
       <Gallery />
       <Safe />
+      <Review />
       <EndCta />
     </>
   );
