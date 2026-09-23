@@ -34,6 +34,13 @@ export default function SupportContent() {
       ),
     },
     {
+      q: L('형제가 같이 쓸 수 있나요?', 'Can my other children use it too?'),
+      a: L(
+        'App Store 가족 공유를 켜 두었습니다. 한 번 구매하면 같은 가족 그룹(본인 포함 최대 6명)의 기기에서 함께 쓸 수 있어, 아이마다 따로 살 필요가 없습니다. 설정 → 가족에서 가족 공유를 켜 두시면 됩니다. 학습 기록은 기기마다 따로 쌓이므로, 형제가 각자의 속도로 읽어 나갈 수 있습니다.',
+        'Family Sharing is switched on. One purchase covers the devices in your family group — up to six people including you — so you do not need a copy per child. Turn Family Sharing on under Settings → Family. Progress is kept per device, so each child reads at their own pace.'
+      ),
+    },
+    {
       q: L('인터넷이 없어도 되나요?', 'Does it need an internet connection?'),
       a: L(
         '필요 없습니다. 비행기 모드에서도 똑같이 동작합니다. 차 안이나 비행기에서도 그대로 쓸 수 있어요.',
@@ -50,8 +57,8 @@ export default function SupportContent() {
     {
       q: L('기기를 바꾸면 기록이 옮겨지나요?', 'Does progress move to a new device?'),
       a: L(
-        '기록은 기기 안에만 저장되므로 자동으로 옮겨지지 않습니다. 구매는 같은 Apple ID 라면 App Store 에서 다시 내려받아 그대로 쓸 수 있습니다.',
-        'Progress is stored on the device only, so it does not transfer automatically. The purchase itself follows your Apple ID — download the app again from the App Store and it is yours.'
+        '기록은 기기 안에만 저장되므로 자동으로 옮겨지지 않습니다. 구매는 같은 Apple ID 라면 App Store 에서 다시 내려받아 그대로 쓸 수 있습니다. 기기 사이로 기록을 옮기는 방법(백업 파일 내보내기·불러오기 등)은 검토하고 있습니다.',
+        'Progress is stored on the device only, so it does not transfer automatically. The purchase itself follows your Apple ID — download the app again from the App Store and it is yours. We are looking into ways to carry progress across devices, such as exporting and importing a backup file.'
       ),
     },
     {

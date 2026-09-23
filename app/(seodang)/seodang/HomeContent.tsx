@@ -617,6 +617,20 @@ function Safe() {
             </div>
           ))}
         </div>
+        <div className="sd-family">
+          <div className="sd-ic" aria-hidden="true">
+            👨‍👩‍👧‍👦
+          </div>
+          <div>
+            <h3>{L('가족 공유 — 한 번 사서 형제까지', 'Family Sharing — buy once for the whole family')}</h3>
+            <p>
+              {L(
+                'App Store 가족 공유를 켜 두었습니다. 한 번 구매하면 같은 가족 그룹(본인 포함 최대 6명)이 함께 쓸 수 있어, 형제가 있어도 아이마다 따로 살 필요가 없습니다.',
+                'Family Sharing is switched on. One purchase covers your family group — up to six people including you — so brothers and sisters do not need a copy each.'
+              )}
+            </p>
+          </div>
+        </div>
       </Reveal>
     </section>
   );

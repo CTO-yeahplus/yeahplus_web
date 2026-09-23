@@ -80,6 +80,12 @@ export default function TermsContent() {
         </li>
         <li>
           {L(
+            '가족 공유를 사용할 수 있습니다. 같은 가족 그룹의 구성원은 한 번의 구매로 각자의 기기에서 앱을 쓸 수 있으며, 가족 공유의 조건과 인원은 Apple 의 정책을 따릅니다.',
+            'Family Sharing is supported: members of the same family group can use the app on their own devices from a single purchase. The terms and size of a family group follow Apple’s policy.'
+          )}
+        </li>
+        <li>
+          {L(
             '결제는 구매 확정 시 Apple ID 로 청구됩니다. 가격은 App Store 에 표시되며 국가와 시기에 따라 달라질 수 있습니다. 같은 Apple ID 를 쓰는 기기에서는 App Store 에서 다시 내려받아 그대로 쓸 수 있습니다.',
             'Payment is charged to your Apple ID when you confirm. The price is shown in the App Store and may vary by country and over time. On any device using the same Apple ID you can download the app again and keep what you bought.'
           )}

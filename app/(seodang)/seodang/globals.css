@@ -250,3 +250,10 @@ nav .sd-sp a.sd-on{color:var(--sd-ju)}
   .sd-bubble{flex:none}
 }
 
+/* 가족 공유 띠 — 안심 카드 4장 아래에 한 줄로 */
+.sd-family{display:flex;gap:16px;align-items:flex-start;margin-top:16px;background:var(--sd-card);
+  border:3px solid var(--sd-line);border-radius:22px;padding:22px 20px;box-shadow:0 8px 0 var(--sd-shadow)}
+.sd-family .sd-ic{font-size:30px;line-height:1;flex:none}
+.sd-family h3{font-size:18px}
+.sd-family p{margin:8px 0 0;color:var(--sd-ink2);font-size:15px}
+
