@@ -163,45 +163,55 @@ function StoryScroll() {
     return () => removeEventListener('resize', measure);
   }, []);
 
+  // 네 칸을 화룡점정 한 편의 흐름으로 맞췄다 (앱의 hwa 편 장면 1·2·3·마무리).
   const panels = [
     {
       tag: L('하나', 'One'),
-      img: IMG('gak_1.jpg'),
-      alt: L('강에서 칼을 떨어뜨리는 사람', 'A man dropping his sword into the river'),
+      img: IMG('hwa_1.jpg'),
+      alt: L(
+        '절의 벽에 용 네 마리를 그린 화가 — 눈동자만 비어 있다',
+        'A painter before four dragons on a temple wall, every eye left blank'
+      ),
       h: L('이야기 속으로 들어갑니다', 'Step inside the story'),
       p: L(
-        '옛날 초나라, 배 위에서 칼이 강물에 빠집니다. 아이는 구경꾼이 아니라 이야기 속 인물이 됩니다.',
-        'In old Chu, a sword slips off a boat into the river. The child is not a spectator but a character in the tale.'
+        '양나라의 화가 장승요가 절 벽에 용 네 마리를 그립니다. 그런데 눈동자만은 그리지 않아요. 아이는 구경꾼이 아니라 이야기 속 인물이 됩니다.',
+        'In the kingdom of Liang, the painter Zhang Sengyou covers a temple wall with four dragons — but leaves every eye blank. The child is not a spectator but a character in the tale.'
       ),
     },
     {
       tag: L('둘', 'Two'),
-      img: IMG('sa_1.jpg'),
-      alt: L('고민하는 장수', 'A general deep in thought'),
+      img: IMG('hwa_2.jpg'),
+      alt: L(
+        '눈동자를 그려 보라고 조르는 사람들',
+        'Onlookers urging the painter to add the eyes'
+      ),
       h: L('내가 먼저 골라 봅니다', 'Make the choice yourself'),
       p: L(
-        '"너라면 어떻게 할래?" 정답은 없습니다. 무엇을 고르든 붓선생이 생각을 이어 줍니다.',
-        '“What would you do?” There is no wrong answer — whatever they pick, Master Brush carries the thought forward.'
+        '"눈동자를 그리면 용이 날아가 버리오." 아무도 믿지 않습니다. 너라면 뭐라고 할래? 무엇을 고르든 붓선생이 생각을 이어 줍니다.',
+        '“If I paint the eyes, the dragons will fly away.” Nobody believes him. What would you say? Whatever the child picks, Master Brush carries the thought forward.'
       ),
     },
     {
       tag: L('셋', 'Three'),
-      img: IMG('woo_3.jpg'),
-      alt: L('산을 옮기는 우공', 'The old man who moved the mountains'),
+      img: IMG('hwa_3.jpg'),
+      alt: L(
+        '천둥이 치고 벽이 갈라지며 용 두 마리가 날아오른다',
+        'Thunder splits the wall as two dragons rise into the sky'
+      ),
       h: L('옛 책이 진짜 이야기를 들려줍니다', 'The classics tell what really happened'),
       p: L(
-        '실제로 어떻게 되었는지, 출전은 어느 책인지까지 읽습니다. 「열자」, 「사기」처럼 근거를 밝힙니다.',
-        'Children read how it actually ended and which book it comes from — the Liezi, the Records of the Grand Historian, and so on.'
+        '붓이 눈동자에 닿자 천둥이 치고, 눈동자를 얻은 두 마리가 하늘로 날아오릅니다. 출전이 「역대명화기」라는 것까지 읽습니다.',
+        'The brush touches an eye, thunder cracks, and the two dragons that got their eyes rise into the sky. Children also read where it comes from — the Record of Famous Painters.'
       ),
     },
     {
       tag: L('넷', 'Four'),
       img: IMG('hwa_r.jpg'),
-      alt: L('용을 그리는 화가', 'A painter finishing a dragon'),
+      alt: L('붓으로 용의 눈동자를 찍는 화가', 'The painter dotting a dragon’s eye with his brush'),
       h: L('한자 네 글자를 손으로 씁니다', 'Write the four characters by hand'),
       p: L(
-        '획순 시범을 보고 붓으로 따라 씁니다. 다 쓰면 성어 카드가 책장에 꽂힙니다.',
-        'They watch the stroke order, then trace it with a brush. Finish it and the idiom card goes onto the shelf.'
+        '畫 龍 點 睛 — 마지막 한 획이 전체를 살립니다. 획순 시범을 보고 붓으로 따라 쓰면 성어 카드가 책장에 꽂힙니다.',
+        '畫 龍 點 睛 — the last stroke brings the whole thing to life. Watch the stroke order, trace it with a brush, and the idiom card goes onto the shelf.'
       ),
     },
   ];
