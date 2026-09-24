@@ -34,10 +34,10 @@ export default function SupportContent() {
       ),
     },
     {
-      q: L('형제가 같이 쓸 수 있나요?', 'Can my other children use it too?'),
+      q: L('형제자매가 같이 쓰려면 또 사야 하나요?', 'Do I need to buy it again for a brother or sister?'),
       a: L(
-        'App Store 가족 공유를 켜 두었습니다. 한 번 구매하면 같은 가족 그룹(본인 포함 최대 6명)의 기기에서 함께 쓸 수 있어, 아이마다 따로 살 필요가 없습니다. 설정 → 가족에서 가족 공유를 켜 두시면 됩니다. 학습 기록은 기기마다 따로 쌓이므로, 형제가 각자의 속도로 읽어 나갈 수 있습니다.',
-        'Family Sharing is switched on. One purchase covers the devices in your family group — up to six people including you — so you do not need a copy per child. Turn Family Sharing on under Settings → Family. Progress is kept per device, so each child reads at their own pace.'
+        '아니요. 가족 공유를 지원합니다. 가족 공유 그룹에서 "구입 항목 공유"를 켜 두셨다면, 한 번 구매로 가족 구성원이 각자의 기기에서 내려받아 쓸 수 있습니다. 설정 › 가족 › 구입 항목 공유에서 확인하실 수 있습니다. 진행 상황은 기기마다 따로 쌓이므로 아이마다 자기 속도로 진행합니다.',
+        'No — the app supports Family Sharing. With “Purchase Sharing” switched on for your family group, one purchase lets every member download it on their own device. You can check it under Settings › Family › Purchase Sharing. Progress is kept per device, so each child goes at their own pace.'
       ),
     },
     {

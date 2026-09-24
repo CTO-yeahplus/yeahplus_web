@@ -748,8 +748,8 @@ function Safe() {
             <h3>{L('가족 공유 — 한 번 사서 형제까지', 'Family Sharing — buy once for the whole family')}</h3>
             <p>
               {L(
-                'App Store 가족 공유를 켜 두었습니다. 한 번 구매하면 같은 가족 그룹(본인 포함 최대 6명)이 함께 쓸 수 있어, 형제가 있어도 아이마다 따로 살 필요가 없습니다.',
-                'Family Sharing is switched on. One purchase covers your family group — up to six people including you — so brothers and sisters do not need a copy each.'
+                '가족 공유를 지원합니다. 가족 공유 그룹에서 "구입 항목 공유"(설정 › 가족 › 구입 항목 공유)를 켜 두시면, 한 번 구매로 가족 구성원이 각자의 기기에서 내려받아 씁니다. 형제자매가 있어도 아이마다 따로 살 필요가 없고, 진행 상황은 기기마다 따로 쌓여 각자 자기 속도로 해요.',
+                'The app supports Family Sharing. With “Purchase Sharing” on for your family group (Settings › Family › Purchase Sharing), one purchase lets every member download it on their own device — no second copy for a brother or sister — and progress is kept per device, so each child goes at their own pace.'
               )}
             </p>
           </div>
