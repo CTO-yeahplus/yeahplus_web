@@ -86,11 +86,11 @@ function Hero() {
         <Reveal as="p" className="lx-lead" delay={160}>
           {L(
             <>
-              셔터 한 번에 네 컷, 찍는 모습은 2배속 영상으로. 프레임 20종, 영화 필터 35종,
+              셔터 한 번에 네 컷, 찍는 모습은 2배속 영상으로. 프레임 19종, 영화 필터 35종,
               <br />앱 전체가 바뀌는 테마와 자랑하고 싶은 공유 카드까지.
             </>,
             <>
-              Four shots from one tap — and a 2× video of the moment. Twenty frames, thirty-five movie looks,
+              Four shots from one tap — and a 2× video of the moment. Nineteen frames, thirty-five movie looks,
               <br />
               themes that restyle the whole app and share cards worth posting.
             </>
@@ -173,10 +173,10 @@ function Booth() {
       ),
     ],
     [
-      L('레이아웃 4종 · 프레임 20종.', 'Four layouts. Twenty frames.'),
+      L('레이아웃 4종 · 프레임 19종.', 'Four layouts. Nineteen frames.'),
       L(
-        '스트립 · 블랙 스트립 · 2×2 그리드 · 듀오. 앨범에서 여러 장을 골라 만들 수도 있어요.',
-        'Strip, black strip, 2×2 grid and duo. You can also build one from photos in your library.'
+        '스트립 · 블랙 스트립 · 2×2 그리드 · 듀오. 한 번 찍은 네 컷을 레이아웃마다 바꿔 볼 수 있어요.',
+        'Strip, black strip, 2×2 grid and duo — switch your four shots between layouts as you like.'
       ),
     ],
   ];
@@ -281,7 +281,7 @@ function Frames() {
     <section id="frames" className="lx-frames">
       <div className="cl-wrap">
         <Reveal className="lx-head center">
-          <p className="lx-kicker">{L('프레임 20종', 'Twenty frames')}</p>
+          <p className="lx-kicker">{L('프레임 19종', 'Nineteen frames')}</p>
           <h2>
             {L(
               <>
@@ -646,8 +646,8 @@ function Share() {
           </h2>
           <p>
             {L(
-              '스토리 9:16 · 피드 4:5 카드가 테마마다 다르게 만들어져요. 카드에 적힌 코드를 친구가 입력하면 카메라·필터·프레임이 그대로 적용됩니다.',
-              'Story (9:16) and feed (4:5) cards, styled by your theme. When a friend types the code printed on the card, they get the same camera, look and frame.'
+              '스토리 9:16 · 피드 4:5 카드를 만들 수 있어요. 테마마다 카드 디자인이 달라지고, Pro 테마에는 전용 스티커가 붙습니다. 카드에 적힌 코드를 친구가 입력하면 카메라·필터·프레임이 그대로 적용됩니다.',
+              'Story (9:16) and feed (4:5) cards. The card design changes with your theme, and Pro themes add their own stickers. When a friend types the code printed on the card, they get the same camera, look and frame.'
             )}
           </p>
         </div>
@@ -767,7 +767,7 @@ function Pricing() {
             <h3>{L('무료', 'Free')}</h3>
             <ul>
               <li>{L('4컷 부스 · 스트립 레이아웃 · 부스 영상', 'Photo booth, strip layout and booth video')}</li>
-              <li>{L('필름카메라 3종 · 영화 필터 9종 · 프레임 5종', '3 film cameras, 9 movie looks, 5 frames')}</li>
+              <li>{L('필름카메라 3종 · 영화 필터 9종 · 프레임 4종', '3 film cameras, 9 movie looks, 4 frames')}</li>
               <li>{L('촬영 · 불러오기 · 저장 무제한, 워터마크 없음', 'Unlimited shooting and saving, no watermark')}</li>
               <li>{L('스토리 · 피드 공유 카드 + 레시피 코드', 'Story and feed share cards + recipe codes')}</li>
               <li>{L('스탠다드 테마', 'Standard theme')}</li>
@@ -777,7 +777,7 @@ function Pricing() {
             <span className="cl-tag">{L('평생 소장', 'Lifetime')}</span>
             <h3>CineLook Pro</h3>
             <ul>
-              <li>{L('레이아웃 4종 · 프레임 20종 전부', 'All 4 layouts and 20 frames')}</li>
+              <li>{L('레이아웃 4종 · 프레임 19종 전부', 'All 4 layouts and 19 frames')}</li>
               <li>{L('필름카메라 8종 · 영화 필터 35종 전부', 'All 8 cameras and 35 movie looks')}</li>
               <li>{L('UI 테마 3종 — 두들 · 카툰 · 그래피티', '3 UI themes — Doodle, Cartoonic, Graffiti')}</li>
               <li>{L('테마별 공유 카드 · 카드·영상 배지 끄기', 'Themed share cards, no badge on cards or videos')}</li>

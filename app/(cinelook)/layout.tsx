@@ -11,7 +11,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 export const metadata: Metadata = {
   title: 'CineLook — 주머니 속 네컷 사진관',
   description:
-    '셔터 한 번에 4컷, 프레임 20종, 영화 필터 35종, 필름카메라 8종. 앱 전체가 바뀌는 테마와 테마별 공유 카드까지. 구독 없이 한 번 사면 평생, 사진은 기기를 떠나지 않습니다.',
+    '셔터 한 번에 4컷, 프레임 19종, 영화 필터 35종, 필름카메라 8종. 앱 전체가 바뀌는 테마와 테마별 공유 카드까지. 구독 없이 한 번 사면 평생, 사진은 기기를 떠나지 않습니다.',
   metadataBase: new URL('https://yeahplus.co.kr'),
   alternates: { canonical: '/cinelook' },
   openGraph: {
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     url: '/cinelook',
     title: 'CineLook — 주머니 속 네컷 사진관',
-    description: '4컷 부스 · 프레임 20종 · 영화 필터 35종 · 테마 공유 카드. 구독 없음 · 광고 없음 · 수집 없음.',
+    description: '4컷 부스 · 프레임 19종 · 영화 필터 35종 · 테마 공유 카드. 구독 없음 · 광고 없음 · 수집 없음.',
     type: 'website',
     images: [{ url: '/cinelook/og.jpg', width: 1200, height: 630 }],
   },

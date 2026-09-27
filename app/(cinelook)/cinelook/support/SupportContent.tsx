@@ -13,28 +13,28 @@ export default function SupportContent() {
   const qa = [
     {
       q: L('무료로는 어디까지 쓸 수 있나요?', 'What can I do for free?'),
-      a: L('필름카메라 3종, 영화 필터 9종, 프레임 5종, 4컷 스트립을 기간 제한 없이, 워터마크 없이 쓸 수 있습니다. 잠긴 템플릿도 미리보기는 자유이며, 저장할 때만 Pro 가 필요합니다.',
-           'Three film cameras, nine movie filters, five frames and the booth strip — with no time limit and no watermark. Locked templates can be previewed freely; Pro is only needed when you save them.'),
+      a: L('필름카메라 3종, 영화 필터 9종, 프레임 4종, 4컷 스트립을 기간 제한 없이, 워터마크 없이 쓸 수 있습니다. 잠긴 템플릿도 미리보기는 자유이며, 저장할 때만 Pro 가 필요합니다.',
+           'Three film cameras, nine movie filters, four frames and the booth strip — with no time limit and no watermark. Locked templates can be previewed freely; Pro is only needed when you save them.'),
     },
     {
       q: L('4컷 부스는 어떻게 쓰나요?', 'How does the photo booth work?'),
-      a: L('홈에서 "4컷 부스"를 누르고 셔터를 한 번 누르면, 컷마다 5초 카운트다운 후 네 장을 연속으로 찍어 스트립으로 만들어 줍니다. 편집 화면의 프레임 › 레이아웃에서 블랙 스트립 · 2×2 그리드 · 듀오로 바꿀 수 있어요(스트립은 무료, 나머지는 Pro).',
-           'Tap “Photo Booth” on the home screen and press the shutter once: after a five-second countdown before each shot, it takes four photos in a row and lays them out as a strip. In the editor, Frames › Layouts switches to the black strip, 2×2 grid or duo (the strip is free; the others are Pro).'),
+      a: L('홈에서 "4컷 부스"를 누르고 셔터를 한 번 누르면, 컷마다 5초 카운트다운 후 네 장을 연속으로 찍어 스트립으로 만들어 줍니다. 찍고 난 뒤 편집 화면의 프레임 › 레이아웃에서 블랙 스트립 · 2×2 그리드 · 듀오로 바꿀 수 있고, 프레임(한 장짜리)으로 가면 "컷 고르기" 줄에서 네 컷 중 하나를 골라 쓸 수 있어요(스트립은 무료, 나머지 레이아웃은 Pro).',
+           'Tap “Photo Booth” on the home screen and press the shutter once: after a five-second countdown before each shot, it takes four photos in a row and lays them out as a strip. Afterwards, Frames › Layouts switches to the black strip, 2×2 grid or duo, and picking a single-photo frame shows a “Choose a shot” row so you can use one of the four (the strip is free; the other layouts are Pro).'),
     },
     {
       q: L('부스 영상은 어떻게 저장하나요?', 'How do I save the booth video?'),
-      a: L('4컷 부스로 찍고 나면 사진 왼쪽 아래에 "🎬 영상 저장" 버튼이 나타납니다. 컷마다 5초 카운트다운 동안의 모습이 레이아웃 안에서 네 칸 동시에, 2배속 타임랩스로 움직이고 마지막에 찍힌 사진으로 멈추는 세로 영상(9:16)이 사진 앱에 저장됩니다. 무료 버전 영상에는 작은 "Made with CineLook" 배지가 들어가고 Pro 에서는 빠집니다. 앨범 사진으로 만든 4컷에는 녹화된 장면이 없어 영상 저장이 나타나지 않아요.',
-           'After shooting in Photo Booth, a “🎬 Save video” button appears at the bottom left of the photo. It saves a vertical (9:16) video to Photos: the five-second countdown before each shot plays in every frame of the layout at once, as a 2× time-lapse, then freezes on the photos you took. Free videos carry a small “Made with CineLook” badge; Pro removes it. Layouts built from library photos have no recorded footage, so the button doesn’t appear for them.'),
+      a: L('4컷 부스로 찍고 나면 사진 왼쪽 아래에 "🎬 영상 저장" 버튼이 나타납니다. 컷마다 5초 카운트다운 동안의 모습이 레이아웃 안에서 네 칸 동시에, 2배속 타임랩스로 움직이고 마지막에 찍힌 사진으로 멈추는 세로 영상(9:16)이 사진 앱에 저장됩니다. 무료 버전 영상에는 작은 "Made with CineLook" 배지가 들어가고 Pro 에서는 빠집니다.',
+           'After shooting in Photo Booth, a “🎬 Save video” button appears at the bottom left of the photo. It saves a vertical (9:16) video to Photos: the five-second countdown before each shot plays in every frame of the layout at once, as a 2× time-lapse, then freezes on the photos you took. Free videos carry a small “Made with CineLook” badge; Pro removes it.'),
     },
     {
-      q: L('앨범에 있는 사진으로 4컷을 만들 수 있나요?', 'Can I make a four-shot layout from photos in my library?'),
-      a: L('네. 사진을 불러온 뒤 프레임 › 레이아웃에서 원하는 레이아웃을 고르면 사진 선택 화면이 열립니다. 필요한 장수만큼 골라 주세요.',
-           'Yes. Import a photo, then choose a layout under Frames › Layouts — the photo picker opens so you can pick the rest of the shots.'),
+      q: L('찍은 네 컷을 다른 레이아웃에도 쓸 수 있나요?', 'Can I reuse my four shots in another layout?'),
+      a: L('네. 한 번 찍어 두면 프레임 › 레이아웃에서 스트립 · 블랙 스트립 · 2×2 그리드 · 듀오로 자유롭게 바꿔 볼 수 있어요. 레이아웃은 4컷 부스로 찍은 컷으로만 채워지기 때문에, 아직 찍은 컷이 없으면 "4컷 부스에서 찍은 사진이 필요해요" 안내가 나옵니다.',
+           'Yes. Once you have shot them, Frames › Layouts lets you switch between the strip, black strip, 2×2 grid and duo. Layouts are filled only with shots taken in Photo Booth, so before you shoot you will see a note asking you to use Photo Booth first.'),
     },
     {
       q: L('레이아웃을 쓰다가 프레임을 고르면 한 장짜리로 바뀌어요.', 'Choosing a frame turns my layout back into a single photo.'),
-      a: L('프레임(인스턴트 · 티켓 · 매거진 커버 등)은 사진 한 장을 꾸미는 기능이라, 프레임을 고르면 4컷 레이아웃이 해제됩니다. 4컷을 유지하려면 레이아웃 탭에서 골라 주세요.',
-           'Frames (instant, ticket, magazine cover and so on) dress up a single photo, so picking one turns the four-shot layout off. To keep four shots, choose from the Layouts tab instead.'),
+      a: L('프레임(인스턴트 · 티켓 · 매거진 커버 등)은 사진 한 장을 꾸미는 기능이라, 프레임을 고르면 레이아웃이 해제됩니다. 대신 찍은 컷은 그대로 남아서, 사진 아래 "컷 고르기" 줄에서 마음에 드는 컷을 골라 프레임에 넣을 수 있어요. 다시 여러 컷으로 돌아가려면 레이아웃 탭에서 고르면 됩니다.',
+           'Frames (instant, ticket, magazine cover and so on) dress up a single photo, so picking one turns the layout off. Your shots stay, though: the “Choose a shot” row under the photo lets you pick which one goes in the frame. Choose a layout again to go back to four shots.'),
     },
     {
       q: L('CineLook Pro 는 구독인가요?', 'Is CineLook Pro a subscription?'),
@@ -63,8 +63,8 @@ export default function SupportContent() {
     },
     {
       q: L('카드의 "Made with CineLook" 배지를 없앨 수 있나요?', 'Can I remove the “Made with CineLook” badge?'),
-      a: L('무료 버전의 공유 카드에는 작은 배지가 들어갑니다. CineLook Pro 에서는 공유 시트의 배지 버튼으로 끌 수 있어요. 앨범에 저장하는 사진에는 무료·Pro 모두 워터마크가 없습니다.',
-           'Share cards in the free version include a small badge; with CineLook Pro you can turn it off in the share sheet. Photos you save to your library never carry a watermark, free or Pro.'),
+      a: L('무료 버전의 공유 카드에는 작은 배지가 들어갑니다. CineLook Pro 에서는 공유 시트의 배지 버튼으로 끌 수 있어요. 카드 디자인은 테마마다 다르고, 전용 스티커가 붙는 카드는 Pro 테마의 카드입니다. 앨범에 저장하는 사진에는 무료·Pro 모두 워터마크가 없습니다.',
+           'Share cards in the free version include a small badge; with CineLook Pro you can turn it off in the share sheet. The card design changes with your theme, and the cards with their own stickers come from Pro themes. Photos you save to your library never carry a watermark, free or Pro.'),
     },
     {
       q: L('테마는 어떻게 바꾸나요?', 'How do I change the theme?'),
@@ -118,8 +118,8 @@ export default function SupportContent() {
           <strong>{L('문의', 'Contact')}</strong> ·{' '}
           <a className="cl-mailto" href={`mailto:${MAIL}?subject=${encodeURIComponent('[CineLook] ' + L('문의', 'Support'))}`}>{MAIL}</a>
         </p>
-        <p>{L('버그를 알려주실 때 아이폰 기종과 iOS 버전을 함께 적어 주시면 훨씬 빨리 고칠 수 있습니다.',
-              'When reporting a bug, including your iPhone model and iOS version helps us fix it much faster.')}</p>
+        <p>{L('앱 안에는 문의 창구가 따로 없습니다. 이 주소로 메일 주세요. 버그를 알려주실 때 아이폰 기종과 iOS 버전을 함께 적어 주시면 훨씬 빨리 고칠 수 있습니다.',
+              'The app itself has no contact form — email the address above. When reporting a bug, including your iPhone model and iOS version helps us fix it much faster.')}</p>
       </div>
 
       <h2>{L('자주 묻는 질문', 'Frequently asked questions')}</h2>

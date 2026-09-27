@@ -38,8 +38,8 @@ export default function PrivacyContent() {
       </ul>
 
       <h2>{L('2. 온디바이스 AI', '2. On-device AI')}</h2>
-      <p>{L('AI 조명 기능은 기기에 내장된 Apple Vision 프레임워크와 앱에 포함된 깊이 추정 모델로 인물 영역과 깊이를 계산합니다. 계산은 기기 안에서만 이루어지고 결과는 편집 중에만 메모리에 있다가 사라집니다. 얼굴을 식별하거나 생체 정보를 만들지 않습니다.',
-            'The AI light feature estimates the person area and scene depth using Apple’s built-in Vision framework and a depth model bundled with the app. This runs only on your device, and the results exist in memory only while you edit. It does not identify faces or create biometric data.')}</p>
+      <p>{L('AI 조명 기능은 기기에 내장된 Apple Vision 프레임워크와 앱에 포함된 깊이 추정 모델로 인물 영역과 깊이를 계산합니다. 빛을 어디에 어떻게 줄지 계산할 뿐, 이미지나 글을 새로 만들어 내지는 않습니다. 계산은 기기 안에서만 이루어지고 결과는 편집 중에만 메모리에 있다가 사라집니다. 얼굴을 식별하거나 생체 정보를 만들지 않습니다.',
+            'The AI light feature estimates the person area and scene depth using Apple’s built-in Vision framework and a depth model bundled with the app. It only works out where the light should fall — it does not generate images or text. This runs only on your device, and the results exist in memory only while you edit. It does not identify faces or create biometric data.')}</p>
 
       <h2>{L('3. 앱 안에 저장되는 것', '3. What the app keeps on your device')}</h2>
       <p>{L('언어 · UI 테마 · 레터박스 · 날짜 스탬프 · 플래시 같은 설정값, Pro 구매 여부, 공유 카드를 만든 횟수(기기 안의 숫자 하나)만 기기에 저장됩니다. 이 정보는 기기 밖으로 나가지 않으며, 앱을 삭제하면 함께 지워집니다.',

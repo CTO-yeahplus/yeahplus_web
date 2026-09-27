@@ -51,8 +51,8 @@ export default function TermsContent() {
       <ul>
         <li>{L('공유 카드는 사용자가 iOS 공유 시트나 사진 저장을 선택할 때만 기기 밖으로 나갑니다. 무엇을 어디에 올릴지는 사용자가 정하며, 게시한 콘텐츠의 책임도 사용자에게 있습니다.',
                'A share card leaves your device only when you choose the iOS share sheet or save it. You decide what to post and where, and you are responsible for what you post.')}</li>
-        <li>{L('무료 버전의 공유 카드와 부스 영상에는 작은 "Made with CineLook" 배지가 들어갑니다. CineLook Pro 에서는 빠집니다. 사진 앱에 저장하는 사진에는 워터마크가 없습니다.',
-               'Share cards and booth videos made with the free version carry a small “Made with CineLook” badge, which CineLook Pro removes. Photos saved to your library carry no watermark.')}</li>
+        <li>{L('무료 버전의 공유 카드와 부스 영상에는 작은 "Made with CineLook" 배지가 들어갑니다. CineLook Pro 에서는 빠집니다. 카드 디자인은 테마마다 다르며, 전용 스티커가 붙는 카드는 Pro 테마의 카드입니다. 사진 앱에 저장하는 사진에는 워터마크가 없습니다.',
+               'Share cards and booth videos made with the free version carry a small “Made with CineLook” badge, which CineLook Pro removes. Card designs differ by theme, and the cards with their own stickers come from Pro themes. Photos saved to your library carry no watermark.')}</li>
         <li>{L('레시피 코드는 카메라·필터·프레임·강도 설정을 다섯 글자로 줄인 것입니다. 잠긴 템플릿의 코드를 입력하면 미리보기는 되지만, 저장하려면 Pro 가 필요합니다.',
                'A recipe code is a five-character summary of the camera, filter, frame and intensity. Entering a code for a locked template lets you preview it; saving requires Pro.')}</li>
       </ul>
