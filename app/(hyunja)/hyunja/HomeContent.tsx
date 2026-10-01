@@ -242,6 +242,10 @@ const SAGES = [
   },
 ];
 
+/* 고른 현자를 맨 위로 올리는 원탁 회전각. 공자는 이미 위, 맹자(왼쪽)는 +90°,
+   순자(오른쪽)는 +270°, 노자(아래)는 +180° — 차례대로 넘길 때 되돌아 감기지 않게 고른 값. */
+const ROT = [0, 90, 270, 180];
+
 function RoundTable() {
   const { L } = useLang();
   const [i, setI] = useState(0);
@@ -255,15 +259,39 @@ function RoundTable() {
     <section id="table" className="hj-table" ref={ref}>
       <div className="hj-sticky">
         <div className="hj-wrap hj-table-grid">
-          <div className="hj-round" aria-hidden="true">
-            {SAGES.map((s, k) => (
-              <span key={s.id} className={`hj-seat hj-seat-${k} ${k === i ? 'hj-on' : ''}`}>
-                <img src={ART(`${s.id}-face.webp`)} width={220} height={220} alt="" loading="lazy" />
-              </span>
-            ))}
+          {/* 원탁이 돌아 지금 답하는 현자가 늘 맨 위에 앉는다. 자리 배치는 앱과 같고
+              (공자 위 · 맹자 왼쪽 · 순자 오른쪽 · 노자 아래), 초상과 이름표는 거꾸로 돌려 늘 똑바로 선다. */}
+          <div className="hj-round" aria-hidden="true" style={css({ '--rot': `${ROT[i]}deg` })}>
+            <div className="hj-orbit">
+              {SAGES.map((s, k) => (
+                <span key={s.id} className={`hj-seatpos hj-seatpos-${k}`}>
+                  <span className="hj-seatup">
+                    <span className={`hj-seat ${k === i ? 'hj-on' : ''}`}>
+                      <img src={ART(`${s.id}-face.webp`)} width={220} height={220} alt="" loading="lazy" />
+                    </span>
+                    <span className={`hj-lab ${k === i ? 'hj-on' : ''}`}>
+                      <i>{s.hanja}</i>
+                      {L(s.ko, s.en)}
+                    </span>
+                  </span>
+                </span>
+              ))}
+            </div>
             <span className="hj-round-mid">
-              <b>{L(cur.ko, cur.en)}</b>
-              <span>{L('곁에 앉았습니다', 'You take the seat beside them')}</span>
+              <span>
+                {L(
+                  <>
+                    원탁이 돌면
+                    <br />
+                    다음 현자가 위에 앉습니다
+                  </>,
+                  <>
+                    The table turns,
+                    <br />
+                    and the next sage takes the top seat
+                  </>
+                )}
+              </span>
             </span>
           </div>
 
@@ -294,7 +322,7 @@ function RoundTable() {
                 <i key={s.id} className={k === i ? 'hj-on' : ''} />
               ))}
             </div>
-            <p style={{ marginTop: 22, color: 'var(--hj-ink-2)', fontSize: 15.5 }}>
+            <p className="hj-table-note">
               {L(
                 '네 사람의 답은 서로 다릅니다. 같은 고민에 곧게 맞서라는 말과 내려놓으라는 말이 함께 놓입니다. 어느 쪽이 지금 나에게 맞는지 고르면 됩니다.',
                 'The four answers disagree. “Stand straight” and “let it go” sit side by side on the same worry — you choose the one that fits you today.'
