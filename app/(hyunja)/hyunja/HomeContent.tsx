@@ -594,11 +594,11 @@ function Book() {
             <div className={`hj-book-slot ${i === 0 ? 'hj-on' : ''}`}>
               <Phone shots={['record.webp']} alt="" />
             </div>
-            <div className={`hj-book-slot hj-piece ${i === 1 ? 'hj-on' : ''}`}>
-              <img src="/hyunja/piece/book-spread.webp" width={760} height={922} alt="" loading="lazy" />
+            <div className={`hj-book-slot hj-piece hj-piece-spread ${i === 1 ? 'hj-on' : ''}`}>
+              <img src="/hyunja/piece/book-spread.webp" width={1120} height={537} alt="" loading="lazy" />
             </div>
             <div className={`hj-book-slot hj-piece hj-piece-cover ${i === 2 ? 'hj-on' : ''}`}>
-              <img src="/hyunja/piece/book-cover.webp" width={760} height={613} alt="" loading="lazy" />
+              <img src="/hyunja/piece/book-cover.webp" width={700} height={1100} alt="" loading="lazy" />
             </div>
           </div>
 
@@ -635,92 +635,83 @@ function Book() {
 }
 
 /* ============================== 오늘의 구절 · 카드 ============================== */
-/* 공유 카드가 주인공이라 카드를 폰 바깥으로 꺼내 크게 둔다.
-   등장은 스크롤 진행도에 묶여 있어 올리면 되감긴다. */
+/* 한 장면을 붙잡아 두고(sticky) 스크롤에 맞춰 세 박자로 움직인다.
+   ① 오늘의 구절 화면 → ② 거기서 카드 한 장이 떠올라 커지고 → ③ 보내기까지.
+   값은 전부 --p 에서 계산해 CSS 가 그리므로 다시 렌더하지 않고, 올리면 되감긴다. */
+const CARD_BEATS = [
+  {
+    kickerKo: '아침',
+    kickerEn: 'Morning',
+    hKo: '하루에 한 구절이 열립니다.',
+    hEn: 'One passage opens each day.',
+    pKo: '원하는 아침 시간을 고르면 그 시각에 알림이 옵니다. 서재를 열면 오늘 몫의 구절이 먼저 기다리고 있습니다.',
+    pEn: 'Pick a morning hour and the reminder arrives then. Open the library and the day’s passage is already waiting.',
+  },
+  {
+    kickerKo: '한 장',
+    kickerEn: 'A card',
+    hKo: '마음에 남으면 한 장으로 떼어 냅니다.',
+    hEn: 'If it stays with you, lift it out as a card.',
+    pKo: '구절과 출처, 그리고 나의 낙관이 함께 찍힌 4:5 한 장. 스토리에 올리기 좋은 비율로 기기 안에서 그려집니다.',
+    pEn: 'A 4:5 card carrying the passage, its source and your seal — drawn on the device, in a ratio made to post.',
+  },
+  {
+    kickerKo: '보내기',
+    kickerEn: 'Send',
+    hKo: '보낼 곳은 직접 고릅니다.',
+    hEn: 'Where it goes is up to you.',
+    pKo: '인사말 세 가지 가운데 하나를 고르고 보내기나 사진에 저장을 누릅니다. 따라 쓴 글씨도 낙관이 찍힌 채 그대로 카드가 됩니다.',
+    pEn: 'Choose one of three greetings, then send or save to Photos. Your traced handwriting becomes a card too, seal and all.',
+  },
+];
+
 function Cards() {
   const { L } = useLang();
-  const [ref, p] = useCrossProgress<HTMLElement>();
-  const show = reduceMotion() ? 1 : Math.max(0, Math.min(1, (p - 0.2) / 0.28));
-  const lift = (d: number) => {
-    if (reduceMotion()) return undefined;
-    const v = Math.max(0, Math.min(1, (show - d) / Math.max(0.001, 1 - d)));
-    return css({ opacity: v, transform: `translateY(${(1 - v) * 40}px)` });
-  };
+  const [i, setI] = useState(0);
+  const ref = useScrollProgress<HTMLElement>((p) => {
+    if (reduceMotion()) return;
+    const next = Math.min(CARD_BEATS.length - 1, Math.max(0, Math.floor((p - 0.06) / 0.3)));
+    setI((o) => (o === next ? o : next));
+  });
 
   return (
-    <section id="card" ref={ref}>
-      <div className="hj-wrap">
-        <div className="hj-head hj-center" style={lift(0)}>
-          <p className="hj-kicker">{L('오늘의 구절 · 카드', 'Daily passage and cards')}</p>
-          <h2>{L('아침에 한 구절, 나눌 땐 한 장.', 'A passage in the morning, a card to share.')}</h2>
-          <p>
-            {L(
-              '날마다 한 구절이 펼쳐집니다. 원하는 아침 시간에 알림으로 받을 수 있고, 마음에 남은 구절은 카드 한 장으로 만들어 보내거나 사진에 저장합니다.',
-              'A passage opens each day, at a morning hour you pick if you like. The one that stays with you becomes a single card to send or save.'
-            )}
-          </p>
-        </div>
-
-        <div className="hj-cardstage">
-          <div className="hj-cardlead" style={lift(0.2)}>
-            <Phone
-              shots={['library.webp']}
-              alt={L('오늘의 구절이 펼쳐진 서재 화면', 'The library screen with today’s passage')}
-              small
-            />
-            <p className="hj-cardnote">
-              {L(
-                '날마다 한 구절. 아침 알림은 기기 안에서만 울립니다.',
-                'One passage a day. The morning reminder is scheduled on the device alone.'
-              )}
-            </p>
+    <section id="card" className="hj-card" ref={ref}>
+      <div className="hj-sticky">
+        <div className="hj-wrap hj-card-grid">
+          <div className="hj-center">
+            <p className="hj-kicker">{L('오늘의 구절 · 카드', 'Daily passage and cards')}</p>
+            <h2 className="hj-card-h2">
+              {L('아침에 한 구절, 나눌 땐 한 장.', 'A passage in the morning, a card to share.')}
+            </h2>
           </div>
 
-          <figure className="hj-cardbig" style={lift(0.1)}>
-            <img
-              src="/hyunja/piece/card-morning.webp"
-              width={760}
-              height={952}
-              alt={L(
-                '순자의 구절과 출처, 홍길동의 낙관이 찍힌 아침 인사 카드',
-                'A morning card with a passage from Xunzi, its source and Hong Gil-dong’s seal'
-              )}
-              loading="lazy"
-            />
-            <figcaption>
-              {L(
-                '스토리에 올리기 좋은 4:5 — 구절과 출처, 나의 낙관이 함께 찍힙니다.',
-                'A 4:5 card made to post — the passage, its source and your seal.'
-              )}
-            </figcaption>
-          </figure>
-
-          <div className="hj-cardside">
-            <div style={lift(0.28)}>
-              <Phone
-                shots={['card.webp']}
-                alt={L('아침 인사 카드를 고르는 화면', 'Choosing a greeting for the morning card')}
-                small
-              />
-              <p className="hj-cardnote">
-                {L(
-                  '인사말 세 가지 가운데 고르고, 보내기 · 사진에 저장을 누릅니다. 카드는 기기 안에서 그려지고, 보낼 곳은 직접 고릅니다.',
-                  'Pick one of three greetings, then send or save. The card is drawn on the device; where it goes is up to you.'
-                )}
-              </p>
+          <div className="hj-cardstage" aria-hidden="true">
+            <div className="hj-cd hj-cd-phone">
+              <Phone shots={['library.webp']} alt="" />
             </div>
-            <div style={lift(0.42)}>
-              <Phone
-                shots={['stamp.webp']}
-                alt={L('필사를 마치고 낙관이 찍힌 화면', 'A finished tracing with the seal stamped on it')}
-                small
-              />
-              <p className="hj-cardnote">
-                {L(
-                  '따라 쓴 글씨도 카드가 됩니다. 필사 끝에 찍힌 낙관이 그대로 들어갑니다.',
-                  'Your handwriting becomes a card too, carrying the seal stamped at the end of the tracing.'
-                )}
-              </p>
+            <figure className="hj-cd hj-cd-card">
+              <img src="/hyunja/piece/card-morning.webp" width={760} height={952} alt="" loading="lazy" />
+            </figure>
+            <div className="hj-cd hj-cd-sides">
+              <Phone shots={['card.webp']} alt="" small />
+              <Phone shots={['stamp.webp']} alt="" small />
+            </div>
+          </div>
+
+          <div className="hj-card-copy hj-center">
+            <div className="hj-beats">
+              {CARD_BEATS.map((b, k) => (
+                <div key={b.kickerKo} className={`hj-beat ${k === i ? 'hj-on' : ''}`} aria-hidden={k !== i}>
+                  <span className="hj-beat-no">{L(b.kickerKo, b.kickerEn)}</span>
+                  <h3>{L(b.hKo, b.hEn)}</h3>
+                  <p>{L(b.pKo, b.pEn)}</p>
+                </div>
+              ))}
+            </div>
+            <div className="hj-dots" aria-hidden="true">
+              {CARD_BEATS.map((b, k) => (
+                <i key={b.kickerKo} className={k === i ? 'hj-on' : ''} />
+              ))}
             </div>
           </div>
         </div>

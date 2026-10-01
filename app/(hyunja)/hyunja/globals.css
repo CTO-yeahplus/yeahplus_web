@@ -280,7 +280,7 @@ footer { border-top: 1px solid var(--hj-line); padding: 44px 0 60px; color: var(
 /* ── 나의 어록 (sticky · 세 박자) ───────────────────────── */
 .hj .hj-book { padding: 0; height: 340vh; position: relative;
   background: linear-gradient(180deg, var(--hj-paper) 0%, var(--hj-paper-2) 40%, var(--hj-paper) 100%); }
-.hj-book-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: 48px; align-items: center; width: 100%; }
+.hj-book-grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: 48px; align-items: center; width: 100%; }
 .hj-book-stage { position: relative; height: min(66vh, 560px); display: grid; place-items: center; }
 .hj-book-slot { position: absolute; inset: 0; display: grid; place-items: center;
   opacity: 0; transform: translateY(26px) scale(.97); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); pointer-events: none; }
@@ -288,7 +288,11 @@ footer { border-top: 1px solid var(--hj-line); padding: 44px 0 60px; color: var(
 .hj-book-slot .hj-phone { width: min(260px, 62vw); }
 .hj-piece img { width: min(420px, 84vw); height: auto; border-radius: 14px;
   border: 1px solid var(--hj-line-2); box-shadow: 0 30px 70px rgba(34,32,28,.22); }
-.hj-piece-cover img { width: min(400px, 82vw); border-radius: 10px; transform: rotate(-2deg); }
+/* 펼침면·표지는 종이 두께와 그림자까지 그려 넣은 목업이라 테두리를 얹지 않는다 */
+.hj-piece-spread img { width: min(580px, 100%); border: 0; border-radius: 0; box-shadow: none; }
+/* 표지는 그림자까지 그려 넣은 입체 목업이라 테두리·그림자를 얹지 않는다 */
+.hj-piece-cover img { width: min(316px, 64vw); border: 0; border-radius: 0;
+  box-shadow: none; transform: rotate(0); }
 .hj-book-h2 { font-size: clamp(28px, 4.2vw, 50px); line-height: 1.16; margin-bottom: 26px; }
 .hj-beats { position: relative; min-height: 230px; }
 .hj-beat { position: absolute; inset: 0 0 auto 0; opacity: 0; transform: translateY(16px);
@@ -301,36 +305,81 @@ footer { border-top: 1px solid var(--hj-line); padding: 44px 0 60px; color: var(
 .hj-quote { margin-top: 26px; padding-left: 18px; border-left: 2px solid var(--hj-ju);
   font-family: "Noto Serif KR", serif; font-size: 17px; color: var(--hj-ink); }
 
-/* ── 공유 카드 ─────────────────────────────────────────── */
-.hj-cardstage { display: grid; grid-template-columns: .72fr 1.1fr .72fr; gap: 34px; align-items: center; margin-top: 48px; }
-.hj-cardlead { text-align: center; }
-.hj-cardlead .hj-phone { margin: 0 auto; }
-.hj-cardbig { margin: 0; justify-self: center; max-width: 440px; }
-.hj-cardbig img { width: 100%; border-radius: 20px; border: 1px solid var(--hj-line-2);
-  box-shadow: 0 40px 90px rgba(34,32,28,.26); transform: rotate(-1.6deg); }
-.hj-cardbig figcaption { margin-top: 18px; text-align: center; color: var(--hj-ink-2); font-size: 15px; }
-.hj-cardside { display: grid; gap: 34px; }
-.hj-cardside .hj-phone { margin: 0 auto; }
-.hj-cardnote { margin: 14px auto 0; max-width: 300px; text-align: center; color: var(--hj-ink-2); font-size: 14.5px; }
+/* ── 공유 카드 (sticky · 세 박자) ───────────────────────── */
+/* 폰 한 대에서 카드 한 장이 떠올라 커지고, 보내기 화면 두 장이 뒤따른다.
+   모든 값이 --p 의 함수라 스크롤을 올리면 그대로 되감긴다. */
+.hj .hj-card { padding: 0; height: 330vh; position: relative; }
+.hj-card-grid { display: grid; gap: 10px; justify-items: center; width: 100%; }
+.hj-card-h2 { font-size: clamp(25px, 3.4vw, 40px); line-height: 1.18; margin-top: 10px; }
+.hj-cardstage { position: relative; width: 100%; height: min(52vh, 450px);
+  /* ① 카드가 떠오른다 ② 폰이 비켜 준다 ③ 보내기 두 장이 붙는다 */
+  --a: clamp(0, calc((var(--p, 0) - .05) / .25), 1);
+  --b: clamp(0, calc((var(--p, 0) - .34) / .28), 1);
+  --c: clamp(0, calc((var(--p, 0) - .66) / .24), 1); }
+.hj-cd { position: absolute; left: 50%; top: 50%; will-change: transform, opacity; }
+.hj-cd-phone { z-index: 1;
+  transform: translate(-50%, -50%) translateX(calc(var(--b) * -292px)) scale(calc(1 - var(--b) * .1)); }
+.hj-cd-phone .hj-phone { width: min(200px, 48vw); }
+.hj-cd-card { z-index: 3; margin: 0; opacity: clamp(0, calc(var(--a) * 1.7), 1);
+  transform: translate(-50%, -50%) translateY(calc(var(--a) * -10px))
+    scale(calc(.30 + var(--a) * .40 + var(--b) * .30))
+    rotate(calc(-7deg + var(--a) * 4deg + var(--b) * 1.6deg)); }
+.hj-cd-card img { width: 262px; max-width: 62vw; height: auto; border-radius: 16px;
+  border: 1px solid var(--hj-line-2); box-shadow: 0 36px 80px rgba(34,32,28,.3); }
+.hj-cd-sides { z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  opacity: var(--c);
+  transform: translate(-50%, -50%) translateX(calc(290px + (1 - var(--c)) * 70px)); }
+.hj-cd-sides .hj-phone { width: 128px; }
+.hj-card-copy { max-width: 620px; }
+.hj-card-copy .hj-beats { min-height: 136px; }
+.hj-card-copy .hj-beat h3 { font-size: clamp(19px, 2.2vw, 25px); }
+.hj-card-copy .hj-beat p { font-size: 15.5px; }
+.hj-card-copy .hj-dots { justify-content: center; }
+
+@media (max-width: 1040px) {
+  .hj-cd-phone .hj-phone { width: min(176px, 44vw); }
+  .hj-cd-card img { width: 228px; }
+  .hj-cd-sides .hj-phone { width: 108px; }
+  .hj-cd-phone { transform: translate(-50%, -50%) translateX(calc(var(--b) * -240px)) scale(calc(1 - var(--b) * .1)); }
+  .hj-cd-sides { transform: translate(-50%, -50%) translateX(calc(234px + (1 - var(--c)) * 60px)); }
+}
 
 @media (max-width: 900px) {
   .hj-book-grid { grid-template-columns: 1fr; gap: 26px; }
-  .hj-book-stage { height: min(48vh, 400px); }
   .hj-piece img { width: min(320px, 76vw); }
-  .hj-beats { min-height: 260px; }
+  .hj-beats { min-height: 230px; }
   .hj .hj-book { height: 320vh; }
-  .hj-cardstage { grid-template-columns: 1fr; gap: 34px; }
-  .hj-cardlead { order: 2; }
-  .hj-cardside { grid-template-columns: 1fr 1fr; display: grid; order: 3; }
-}
-@media (max-width: 600px) {
-  .hj-cardside { grid-template-columns: 1fr; }
-  .hj-cardbig { max-width: 320px; }
+  .hj-piece-spread img { width: min(460px, 92vw); }
+  .hj-piece-cover img { width: min(224px, 50vw); }
+  .hj-book-stage { height: min(46vh, 350px); }
+  .hj-book-slot .hj-phone { width: min(158px, 42vw); }
+  .hj .hj-card { height: auto; }
+  .hj-card .hj-sticky { position: relative; top: 0; height: auto; padding: 40px 0 10px; overflow: visible; }
+  .hj-card-grid { grid-template-columns: 1fr; gap: 26px; }
+  .hj-card-copy { order: 1; }
+  .hj-cardstage { order: 2; position: static; height: auto;
+    display: grid; justify-items: center; gap: 28px; }
+  .hj-cd { position: static; transform: none !important; opacity: 1 !important; }
+  .hj-cd-sides { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .hj-cd-sides .hj-phone { width: min(150px, 38vw); }
+  .hj-cd-card img { width: min(300px, 70vw); }
+  .hj-card-copy .hj-beats { min-height: 0; }
+  .hj-card-copy .hj-beat { position: relative; opacity: 1; transform: none; padding-bottom: 18px; }
+  .hj-card-copy .hj-dots { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hj .hj-book { height: auto; }
-  .hj-book-slot { position: relative; opacity: 1; transform: none; transition: none; }
-  .hj-book-slot:not(.hj-on) { display: none; }
-  .hj-beat, .hj-cardbig img { transition: none; }
+  .hj .hj-book, .hj .hj-card { height: auto; }
+  .hj-book .hj-sticky, .hj-card .hj-sticky { position: relative; top: 0; height: auto; padding: 40px 0; overflow: visible; }
+  .hj-book-stage { height: auto; display: grid; gap: 30px; justify-items: center; }
+  .hj-book-slot { position: relative; inset: auto; opacity: 1; transform: none; transition: none; }
+  .hj-beats { min-height: 0; }
+  .hj-beat { position: relative; opacity: 1; transform: none; padding-bottom: 18px; }
+  .hj-dots { display: none; }
+  .hj-cardstage { position: static; height: auto; display: grid; justify-items: center; gap: 28px; }
+  .hj-cd { position: static; transform: none !important; opacity: 1 !important; }
+  .hj-cd-sides { grid-template-columns: 1fr 1fr; }
+  .hj-card-copy .hj-beat { position: relative; opacity: 1; transform: none; padding-bottom: 18px; }
+  .hj-card-copy .hj-dots { display: none; }
+  .hj-beat { transition: none; }
 }
 
