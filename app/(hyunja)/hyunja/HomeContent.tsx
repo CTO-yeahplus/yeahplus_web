@@ -17,7 +17,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties, ElementType, ReactNode } from 'react';
 import { StoreButton } from './chrome';
 import { useDocTitle, useLang } from './i18n';
-import { reduceMotion, useInView, useScrollProgress } from './motion';
+import { reduceMotion, useCrossProgress, useInView, useScrollProgress } from './motion';
 
 const SHOT = (f: string) => `/hyunja/shot/${f}`;
 const ART = (f: string) => `/hyunja/art/${f}`;
@@ -308,22 +308,14 @@ function RoundTable() {
 }
 
 /* ============================== 구절 한 장 ============================== */
-const LAYERS = ['eum', 'trans', 'note'] as const;
-
+/* 층층이 펼쳐지는 네 겹(원문·음독·번역·풀이)을 스크롤 진행도에 묶는다.
+   올라가면 되감기고, 눌러서 직접 열 수도 있다(누르면 그 뒤로는 손을 따른다). */
 function Passage() {
   const { L } = useLang();
-  const [open, setOpen] = useState<number>(0);
-  const [ref, inView] = useInView<HTMLElement>({ margin: '0px 0px -30% 0px' });
-  useEffect(() => {
-    if (!inView || reduceMotion()) return;
-    let k = 0;
-    const t = setInterval(() => {
-      k += 1;
-      setOpen(k);
-      if (k >= LAYERS.length) clearInterval(t);
-    }, 900);
-    return () => clearInterval(t);
-  }, [inView]);
+  const [pick, setPick] = useState<number | null>(null);
+  const [ref, p] = useCrossProgress<HTMLElement>();
+  const byScroll = Math.max(0, Math.min(3, Math.floor((p - 0.3) / 0.11)));
+  const open = pick ?? (reduceMotion() ? 3 : byScroll);
 
   return (
     <section id="passage" ref={ref}>
@@ -366,12 +358,15 @@ function Passage() {
                 role="tab"
                 aria-selected={open >= k}
                 className={open >= k ? 'hj-on' : ''}
-                onClick={() => setOpen(k)}
+                onClick={() => setPick(k)}
               >
                 {t}
               </button>
             ))}
           </div>
+          <p className="hj-meta">
+            {L('스크롤을 내리면 한 겹씩 펼쳐집니다.', 'Scroll on and it opens a layer at a time.')}
+          </p>
         </div>
 
         <Reveal className="hj-passage" delay={100}>
@@ -484,11 +479,21 @@ function Copying() {
 /* ============================== 낙관 ============================== */
 function Seal() {
   const { L } = useLang();
+  const [tab, setTab] = useState(0);
   return (
     <section id="seal">
       <div className="hj-wrap hj-split">
         <Reveal className="hj-cta-row hj-center">
-          <Phone shots={['seal.webp']} alt={L('이름으로 낙관을 새기는 화면', 'Carving a seal from your name')} />
+          <Phone
+            shots={['seal.webp', 'seal-hanja.webp']}
+            i={tab}
+            alt={L(
+              tab === 0 ? '한글 이름 홍길동을 백문으로 새긴 낙관' : '한자 이름 洪吉童을 주문으로 새긴 낙관',
+              tab === 0
+                ? 'A seal carved from the Korean name Hong Gil-dong, cut in white'
+                : 'A seal carved from the Chinese characters 洪吉童, left in red'
+            )}
+          />
         </Reveal>
         <Reveal delay={100}>
           <p className="hj-kicker">{L('나의 낙관', 'Your seal')}</p>
@@ -509,69 +514,120 @@ function Seal() {
             </h2>
             <p>
               {L(
-                '흰 글씨를 파낸 백문과 붉은 글씨를 남긴 주문 가운데 고를 수 있습니다. 두 자는 ‘之印’을, 세 자는 ‘印’을 더해 네 칸으로 새기고 오른쪽 줄부터 읽습니다. 필사와 어록 표지, 카드에 이 낙관이 찍힙니다.',
-                'Choose a baekmun seal, where the characters are cut away and print white, or a jumun seal, where they stay and print red. Two-character names add “之印” and three-character names add “印” to fill four squares, read from the right-hand column. The seal is stamped on your tracings, your book cover and your cards.'
+                '한글로 적어도, 한자로 적어도 됩니다. 흰 글씨를 파낸 백문과 붉은 글씨를 남긴 주문 가운데 고르세요. 두 자는 ‘之印’을, 세 자는 ‘印’을 더해 네 칸으로 새기고 오른쪽 줄부터 읽습니다.',
+                'Write it in Hangul or in Chinese characters. Choose a baekmun seal, where the characters are cut away and print white, or a jumun seal, where they stay and print red. Two-character names add “之印” and three-character names add “印” to fill four squares, read from the right-hand column.'
               )}
             </p>
           </div>
+          <div className="hj-tabs" role="tablist" aria-label={L('낙관 새김 방식', 'Seal style')}>
+            {[L('홍길동 · 백문', 'Hangul · baekmun'), L('洪吉童 · 주문', 'Hanja · jumun')].map((t, k) => (
+              <button
+                key={k}
+                type="button"
+                role="tab"
+                aria-selected={tab === k}
+                className={tab === k ? 'hj-on' : ''}
+                onClick={() => setTab(k)}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+          <p style={{ marginTop: 20, color: 'var(--hj-ink-2)', fontSize: 15.5 }}>
+            {L(
+              '이 낙관이 필사 끝에, 어록 표지에, 카드 귀퉁이에 찍힙니다.',
+              'This seal is stamped at the end of a tracing, on your book cover and in the corner of a card.'
+            )}
+          </p>
         </Reveal>
       </div>
     </section>
   );
 }
 
-/* ============================== 어록 ============================== */
+/* ============================== 어록 (sticky · 세 박자) ============================== */
+/* 이 앱의 셀링 포인트. 한 줄 → 펼침면 → 한 권으로 넘어가는 장면을 스크롤에 묶었다.
+   화면을 올리면 그대로 되감긴다. */
+const BEATS = [
+  {
+    img: 'record.webp',
+    kickerKo: '오늘',
+    kickerEn: 'Today',
+    hKo: '오늘은 한 줄이었습니다.',
+    hEn: 'Today it was one line.',
+    pKo: '고민 하나를 읽고, 마음이 가는 현자 곁에 앉고, 오늘의 질문에 한 줄로 답합니다. 쓰는 데 걸리는 시간은 일 분 남짓입니다.',
+    pEn: 'Read one worry, take the seat beside the sage who speaks to you, and answer the day’s question in a single line. It takes about a minute.',
+  },
+  {
+    img: 'book-spread.webp',
+    kickerKo: '한 달',
+    kickerEn: 'A month',
+    hKo: '왼쪽엔 현자의 말, 오른쪽엔 나의 말.',
+    hEn: 'The sage at left, you at right.',
+    pKo: '한 장을 펼치면 그날 읽은 구절과 그날의 내 문장이 마주 봅니다. 달마다 차례가 생기고 쪽 번호가 매겨집니다.',
+    pEn: 'Open a spread and the passage you read that day faces the sentence you wrote. Months become chapters, and the pages are numbered.',
+  },
+  {
+    img: 'book-cover.webp',
+    kickerKo: '한 해',
+    kickerEn: 'A year',
+    hKo: '그리고 내 이름의 책이 됩니다.',
+    hEn: 'And it becomes a book with your name on it.',
+    pKo: '표지에는 내 이름과 내 낙관이 찍힙니다. 올해 몇 편을 남겼는지, 어느 현자 곁에 자주 앉았는지도 여기에 적힙니다.',
+    pEn: 'Your name and your seal go on the cover, along with how many entries you left this year and whose seat you took most often.',
+  },
+];
+
 function Book() {
   const { L } = useLang();
-  const shots = [
-    {
-      f: 'record.webp',
-      h: L('하루 한 줄', 'One line a day'),
-      p: L(
-        '오늘의 질문에 한 줄로 답하면 그날의 기록이 됩니다.',
-        'Answer today’s question in one line and it becomes the day’s entry.'
-      ),
-    },
-    {
-      f: 'records.webp',
-      h: L('기록', 'The log'),
-      p: L(
-        '어느 고민에서 누구 곁에 앉았는지, 그날 무엇을 썼는지 한눈에 봅니다.',
-        'See which worry you opened, whose seat you took and what you wrote.'
-      ),
-    },
-    {
-      f: 'book.webp',
-      h: L('나의 어록', 'My book'),
-      p: L(
-        '달마다 차례가 생기고, 펼침면 왼쪽에는 현자의 말, 오른쪽에는 나의 말이 놓입니다.',
-        'A table of contents by month, and on each spread the sage’s words at left, yours at right.'
-      ),
-    },
-  ];
+  const [i, setI] = useState(0);
+  const ref = useScrollProgress<HTMLElement>((p) => {
+    if (reduceMotion()) return;
+    const next = Math.min(BEATS.length - 1, Math.max(0, Math.floor((p - 0.04) / 0.26)));
+    setI((o) => (o === next ? o : next));
+  });
   return (
-    <section id="book">
-      <div className="hj-wrap">
-        <Reveal className="hj-head hj-center">
-          <p className="hj-kicker">{L('나의 어록', 'Your own book')}</p>
-          <h2>{L('하루 한 줄이 쌓여 한 권이 됩니다.', 'A line a day becomes a book.')}</h2>
-          <p>
-            {L(
-              '쓰는 동안에는 기록이지만, 쌓이면 내 이름이 적힌 책이 됩니다. 어느 현자 곁에 자주 앉았는지도 볼 수 있습니다.',
-              'While you write it is a log; once it piles up it is a book with your name on the cover — and it shows whose seat you took most often.'
-            )}
-          </p>
-        </Reveal>
-        <div className="hj-screens">
-          {shots.map((s, k) => (
-            <Reveal as="figure" key={s.f} delay={k * 90}>
-              <Phone shots={[s.f]} alt={`${s.h}`} small />
-              <figcaption>
-                <b>{s.h}</b>
-                <span>{s.p}</span>
-              </figcaption>
-            </Reveal>
-          ))}
+    <section id="book" className="hj-book" ref={ref}>
+      <div className="hj-sticky">
+        <div className="hj-wrap hj-book-grid">
+          <div className="hj-book-stage" aria-hidden="true">
+            <div className={`hj-book-slot ${i === 0 ? 'hj-on' : ''}`}>
+              <Phone shots={['record.webp']} alt="" />
+            </div>
+            <div className={`hj-book-slot hj-piece ${i === 1 ? 'hj-on' : ''}`}>
+              <img src="/hyunja/piece/book-spread.webp" width={760} height={922} alt="" loading="lazy" />
+            </div>
+            <div className={`hj-book-slot hj-piece hj-piece-cover ${i === 2 ? 'hj-on' : ''}`}>
+              <img src="/hyunja/piece/book-cover.webp" width={760} height={613} alt="" loading="lazy" />
+            </div>
+          </div>
+
+          <div>
+            <p className="hj-kicker">{L('나의 어록', 'Your own book')}</p>
+            <h2 className="hj-book-h2">
+              {L('하루 한 줄이 쌓여 한 권이 됩니다.', 'A line a day becomes a book.')}
+            </h2>
+            <div className="hj-beats">
+              {BEATS.map((b, k) => (
+                <div key={b.img} className={`hj-beat ${k === i ? 'hj-on' : ''}`} aria-hidden={k !== i}>
+                  <span className="hj-beat-no">{L(b.kickerKo, b.kickerEn)}</span>
+                  <h3>{L(b.hKo, b.hEn)}</h3>
+                  <p>{L(b.pKo, b.pEn)}</p>
+                </div>
+              ))}
+            </div>
+            <div className="hj-dots" aria-hidden="true">
+              {BEATS.map((b, k) => (
+                <i key={b.img} className={k === i ? 'hj-on' : ''} />
+              ))}
+            </div>
+            <p className="hj-quote">
+              {L(
+                '현자의 말로 시작해, 나의 문장으로 끝나는 책.',
+                'A book that opens in the words of a sage and closes in your own.'
+              )}
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -579,51 +635,94 @@ function Book() {
 }
 
 /* ============================== 오늘의 구절 · 카드 ============================== */
+/* 공유 카드가 주인공이라 카드를 폰 바깥으로 꺼내 크게 둔다.
+   등장은 스크롤 진행도에 묶여 있어 올리면 되감긴다. */
 function Cards() {
   const { L } = useLang();
-  const shots = [
-    {
-      f: 'library.webp',
-      h: L('오늘의 구절', 'Today’s passage'),
-      p: L(
-        '날마다 한 구절을 펼칩니다. 원하는 아침 시간에 알림으로 받을 수 있고, 알림은 기기 안에서만 울립니다.',
-        'A passage opens each day. Have it arrive at a morning hour you pick — the reminder is scheduled on the device alone.'
-      ),
-    },
-    {
-      f: 'card.webp',
-      h: L('아침 인사 카드', 'Morning card'),
-      p: L(
-        '마음에 남은 구절은 카드로 만들어 보내거나 사진에 저장합니다. 출처와 나의 낙관이 함께 찍힙니다.',
-        'Turn a passage into a card to send or save. The source and your seal are printed on it.'
-      ),
-    },
-    {
-      f: 'stamp.webp',
-      h: L('필사 카드', 'Tracing card'),
-      p: L(
-        '따라 쓴 글씨도 카드가 됩니다. 카드는 기기 안에서 그려지고, 보낼 곳은 직접 고릅니다.',
-        'Your handwriting becomes a card too. Cards are drawn on the device; where they go is up to you.'
-      ),
-    },
-  ];
+  const [ref, p] = useCrossProgress<HTMLElement>();
+  const show = reduceMotion() ? 1 : Math.max(0, Math.min(1, (p - 0.2) / 0.28));
+  const lift = (d: number) => {
+    if (reduceMotion()) return undefined;
+    const v = Math.max(0, Math.min(1, (show - d) / Math.max(0.001, 1 - d)));
+    return css({ opacity: v, transform: `translateY(${(1 - v) * 40}px)` });
+  };
+
   return (
-    <section id="card">
+    <section id="card" ref={ref}>
       <div className="hj-wrap">
-        <Reveal className="hj-head hj-center">
+        <div className="hj-head hj-center" style={lift(0)}>
           <p className="hj-kicker">{L('오늘의 구절 · 카드', 'Daily passage and cards')}</p>
           <h2>{L('아침에 한 구절, 나눌 땐 한 장.', 'A passage in the morning, a card to share.')}</h2>
-        </Reveal>
-        <div className="hj-screens">
-          {shots.map((s, k) => (
-            <Reveal as="figure" key={s.f} delay={k * 90}>
-              <Phone shots={[s.f]} alt={`${s.h}`} small />
-              <figcaption>
-                <b>{s.h}</b>
-                <span>{s.p}</span>
-              </figcaption>
-            </Reveal>
-          ))}
+          <p>
+            {L(
+              '날마다 한 구절이 펼쳐집니다. 원하는 아침 시간에 알림으로 받을 수 있고, 마음에 남은 구절은 카드 한 장으로 만들어 보내거나 사진에 저장합니다.',
+              'A passage opens each day, at a morning hour you pick if you like. The one that stays with you becomes a single card to send or save.'
+            )}
+          </p>
+        </div>
+
+        <div className="hj-cardstage">
+          <div className="hj-cardlead" style={lift(0.2)}>
+            <Phone
+              shots={['library.webp']}
+              alt={L('오늘의 구절이 펼쳐진 서재 화면', 'The library screen with today’s passage')}
+              small
+            />
+            <p className="hj-cardnote">
+              {L(
+                '날마다 한 구절. 아침 알림은 기기 안에서만 울립니다.',
+                'One passage a day. The morning reminder is scheduled on the device alone.'
+              )}
+            </p>
+          </div>
+
+          <figure className="hj-cardbig" style={lift(0.1)}>
+            <img
+              src="/hyunja/piece/card-morning.webp"
+              width={760}
+              height={952}
+              alt={L(
+                '순자의 구절과 출처, 홍길동의 낙관이 찍힌 아침 인사 카드',
+                'A morning card with a passage from Xunzi, its source and Hong Gil-dong’s seal'
+              )}
+              loading="lazy"
+            />
+            <figcaption>
+              {L(
+                '스토리에 올리기 좋은 4:5 — 구절과 출처, 나의 낙관이 함께 찍힙니다.',
+                'A 4:5 card made to post — the passage, its source and your seal.'
+              )}
+            </figcaption>
+          </figure>
+
+          <div className="hj-cardside">
+            <div style={lift(0.28)}>
+              <Phone
+                shots={['card.webp']}
+                alt={L('아침 인사 카드를 고르는 화면', 'Choosing a greeting for the morning card')}
+                small
+              />
+              <p className="hj-cardnote">
+                {L(
+                  '인사말 세 가지 가운데 고르고, 보내기 · 사진에 저장을 누릅니다. 카드는 기기 안에서 그려지고, 보낼 곳은 직접 고릅니다.',
+                  'Pick one of three greetings, then send or save. The card is drawn on the device; where it goes is up to you.'
+                )}
+              </p>
+            </div>
+            <div style={lift(0.42)}>
+              <Phone
+                shots={['stamp.webp']}
+                alt={L('필사를 마치고 낙관이 찍힌 화면', 'A finished tracing with the seal stamped on it')}
+                small
+              />
+              <p className="hj-cardnote">
+                {L(
+                  '따라 쓴 글씨도 카드가 됩니다. 필사 끝에 찍힌 낙관이 그대로 들어갑니다.',
+                  'Your handwriting becomes a card too, carrying the seal stamped at the end of the tracing.'
+                )}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

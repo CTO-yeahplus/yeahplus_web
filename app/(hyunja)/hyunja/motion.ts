@@ -93,3 +93,44 @@ export function useCycle(n: number, ms: number, paused: boolean) {
   }, [n, ms, paused]);
   return [i, setI] as const;
 }
+
+/**
+ * 요소가 화면을 가로지르는 동안의 진행도 0..1.
+ * 아래에서 올라오기 시작할 때 0, 위로 빠져나갈 때 1 — 스크롤을 되감으면 값도 되감긴다.
+ * (useScrollProgress 는 화면보다 큰 sticky 구간용이라, 평범한 높이의 섹션에는 이쪽을 쓴다)
+ */
+export function useCrossProgress<T extends HTMLElement = HTMLElement>(onStep?: (p: number) => void) {
+  const ref = useRef<T | null>(null);
+  const [p, setP] = useState(0);
+  const cb = useRef(onStep);
+  useEffect(() => {
+    cb.current = onStep;
+  });
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let raf = 0;
+    const tick = () => {
+      raf = 0;
+      const r = el.getBoundingClientRect();
+      const span = r.height + window.innerHeight;
+      const v = span > 0 ? (window.innerHeight - r.top) / span : 0;
+      const next = Math.min(1, Math.max(0, v));
+      setP((o) => (Math.abs(o - next) < 0.004 ? o : next));
+      if (cb.current) cb.current(next);
+    };
+    const on = () => {
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+    tick();
+    window.addEventListener('scroll', on, { passive: true });
+    window.addEventListener('resize', on);
+    return () => {
+      window.removeEventListener('scroll', on);
+      window.removeEventListener('resize', on);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+  return [ref, p] as const;
+}
+
