@@ -586,13 +586,13 @@ const BEATS = [
     pEn: 'Open a spread and the passage you read that day faces the sentence you wrote. Months become chapters, and the pages are numbered.',
   },
   {
-    img: 'book-cover.webp',
+    img: 'book-shelf.webp',
     kickerKo: '한 해',
     kickerEn: 'A year',
-    hKo: '그리고 내 이름의 책이 됩니다.',
-    hEn: 'And it becomes a book with your name on it.',
-    pKo: '표지에는 내 이름과 내 낙관이 찍힙니다. 올해 몇 편을 남겼는지, 어느 현자 곁에 자주 앉았는지도 여기에 적힙니다.',
-    pEn: 'Your name and your seal go on the cover, along with how many entries you left this year and whose seat you took most often.',
+    hKo: '그리고 한 해가, 내 이름의 책 한 권.',
+    hEn: 'And a year becomes a book with your name on it.',
+    pKo: '책등에는 내 이름과 그해가 새겨지고, 표지에는 내 낙관이 찍힙니다. 몇 편을 남겼는지, 어느 현자 곁에 자주 앉았는지도 함께 적힙니다. 내년의 자리는 비워 둡니다.',
+    pEn: 'The spine carries your name and the year; the cover carries your seal, with how many entries you left and whose seat you took most often. Next year’s place stays open.',
   },
 ];
 
@@ -613,10 +613,10 @@ function Book() {
               <Phone shots={['record.webp']} alt="" />
             </div>
             <div className={`hj-book-slot hj-piece hj-piece-spread ${i === 1 ? 'hj-on' : ''}`}>
-              <img src="/hyunja/piece/book-spread.webp" width={1120} height={537} alt="" loading="lazy" />
+              <img src="/hyunja/piece/book-spread.webp" width={1200} height={853} alt="" loading="lazy" />
             </div>
-            <div className={`hj-book-slot hj-piece hj-piece-cover ${i === 2 ? 'hj-on' : ''}`}>
-              <img src="/hyunja/piece/book-cover.webp" width={700} height={1100} alt="" loading="lazy" />
+            <div className={`hj-book-slot hj-piece hj-piece-spread hj-piece-shelf ${i === 2 ? 'hj-on' : ''}`}>
+              <img src="/hyunja/piece/book-shelf.webp" width={1000} height={754} alt="" loading="lazy" />
             </div>
           </div>
 
@@ -676,10 +676,10 @@ const CARD_BEATS = [
   {
     kickerKo: '보내기',
     kickerEn: 'Send',
-    hKo: '보낼 곳은 직접 고릅니다.',
-    hEn: 'Where it goes is up to you.',
-    pKo: '인사말 세 가지 가운데 하나를 고르고 보내기나 사진에 저장을 누릅니다. 따라 쓴 글씨도 낙관이 찍힌 채 그대로 카드가 됩니다.',
-    pEn: 'Choose one of three greetings, then send or save to Photos. Your traced handwriting becomes a card too, seal and all.',
+    hKo: '한 장이 건너가고, 마음이 돌아옵니다.',
+    hEn: 'One card goes out; a reply comes back.',
+    pKo: '보내기를 누르면 메시지든 메일이든 보낼 곳은 직접 고릅니다. 사진에 저장해 두어도 되고, 따라 쓴 글씨도 카드가 됩니다.',
+    pEn: 'Tap send and choose where it goes — messages, mail, anywhere. Save it to Photos if you like; your tracing becomes a card too.',
   },
 ];
 
@@ -699,7 +699,18 @@ function Cards() {
           <div className="hj-center">
             <p className="hj-kicker">{L('오늘의 구절 · 카드', 'Daily passage and cards')}</p>
             <h2 className="hj-card-h2">
-              {L('아침에 한 구절, 나눌 땐 한 장.', 'A passage in the morning, a card to share.')}
+              {L(
+                <>
+                  말로 하기 어려운 마음은,
+                  <br />
+                  현자의 문장을 빌려서.
+                </>,
+                <>
+                  When it’s hard to say,
+                  <br />
+                  borrow a sage’s words.
+                </>
+              )}
             </h2>
           </div>
 
@@ -710,9 +721,8 @@ function Cards() {
             <figure className="hj-cd hj-cd-card">
               <img src="/hyunja/piece/card-morning.webp" width={760} height={952} alt="" loading="lazy" />
             </figure>
-            <div className="hj-cd hj-cd-sides">
-              <Phone shots={['card.webp']} alt="" small />
-              <Phone shots={['stamp.webp']} alt="" small />
+            <div className="hj-cd hj-cd-chat">
+              <Phone shots={['share-chat.webp']} alt="" />
             </div>
           </div>
 

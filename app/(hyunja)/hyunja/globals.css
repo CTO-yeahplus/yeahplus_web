@@ -303,9 +303,7 @@ footer { border-top: 1px solid var(--hj-line); padding: 44px 0 60px; color: var(
   border: 1px solid var(--hj-line-2); box-shadow: 0 30px 70px rgba(34,32,28,.22); }
 /* 펼침면·표지는 종이 두께와 그림자까지 그려 넣은 목업이라 테두리를 얹지 않는다 */
 .hj-piece-spread img { width: min(580px, 100%); border: 0; border-radius: 0; box-shadow: none; }
-/* 표지는 그림자까지 그려 넣은 입체 목업이라 테두리·그림자를 얹지 않는다 */
-.hj-piece-cover img { width: min(316px, 64vw); border: 0; border-radius: 0;
-  box-shadow: none; transform: rotate(0); }
+.hj-piece-shelf img { width: min(470px, 100%); }
 .hj-book-h2 { font-size: clamp(28px, 4.2vw, 50px); line-height: 1.16; margin-bottom: 26px; }
 .hj-beats { position: relative; min-height: 230px; }
 .hj-beat { position: absolute; inset: 0 0 auto 0; opacity: 0; transform: translateY(16px);
@@ -339,11 +337,11 @@ footer { border-top: 1px solid var(--hj-line); padding: 44px 0 60px; color: var(
     rotate(calc(-7deg + var(--a) * 4deg + var(--b) * 1.6deg)); }
 .hj-cd-card img { width: 262px; max-width: 62vw; height: auto; border-radius: 16px;
   border: 1px solid var(--hj-line-2); box-shadow: 0 36px 80px rgba(34,32,28,.3); }
-.hj-cd-sides { z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
-  opacity: var(--c);
-  transform: translate(-50%, -50%) translateX(calc(290px + (1 - var(--c)) * 70px)); }
-.hj-cd-sides .hj-phone { width: 128px; }
-.hj-card-copy { max-width: 620px; }
+/* ③ 받는 쪽 대화 — 카드가 건너가 답장이 온 화면이 오른쪽에서 들어온다 */
+.hj-cd-chat { z-index: 2; opacity: var(--c);
+  transform: translate(-50%, -50%) translateX(calc(300px + (1 - var(--c)) * 80px)) rotate(calc((1 - var(--c)) * 4deg)); }
+.hj-cd-chat .hj-phone { width: min(200px, 48vw); }
+.hj-card-copy { max-width: 700px; }
 .hj-card-copy .hj-beats { min-height: 136px; }
 .hj-card-copy .hj-beat h3 { font-size: clamp(19px, 2.2vw, 25px); }
 .hj-card-copy .hj-beat p { font-size: 15.5px; }
@@ -352,9 +350,9 @@ footer { border-top: 1px solid var(--hj-line); padding: 44px 0 60px; color: var(
 @media (max-width: 1040px) {
   .hj-cd-phone .hj-phone { width: min(176px, 44vw); }
   .hj-cd-card img { width: 228px; }
-  .hj-cd-sides .hj-phone { width: 108px; }
+  .hj-cd-chat .hj-phone { width: min(176px, 44vw); }
   .hj-cd-phone { transform: translate(-50%, -50%) translateX(calc(var(--b) * -240px)) scale(calc(1 - var(--b) * .1)); }
-  .hj-cd-sides { transform: translate(-50%, -50%) translateX(calc(234px + (1 - var(--c)) * 60px)); }
+  .hj-cd-chat { transform: translate(-50%, -50%) translateX(calc(250px + (1 - var(--c)) * 60px)); }
 }
 
 @media (max-width: 900px) {
@@ -363,7 +361,7 @@ footer { border-top: 1px solid var(--hj-line); padding: 44px 0 60px; color: var(
   .hj-beats { min-height: 230px; }
   .hj .hj-book { height: 320vh; }
   .hj-piece-spread img { width: min(460px, 92vw); }
-  .hj-piece-cover img { width: min(224px, 50vw); }
+  .hj-piece-shelf img { width: min(330px, 78vw); }
   .hj-book-stage { height: min(46vh, 350px); }
   .hj-book-slot .hj-phone { width: min(158px, 42vw); }
   .hj .hj-card { height: auto; }
@@ -373,8 +371,7 @@ footer { border-top: 1px solid var(--hj-line); padding: 44px 0 60px; color: var(
   .hj-cardstage { order: 2; position: static; height: auto;
     display: grid; justify-items: center; gap: 28px; }
   .hj-cd { position: static; transform: none !important; opacity: 1 !important; }
-  .hj-cd-sides { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .hj-cd-sides .hj-phone { width: min(150px, 38vw); }
+  .hj-cd-chat .hj-phone { width: min(230px, 62vw); }
   .hj-cd-card img { width: min(300px, 70vw); }
   .hj-card-copy .hj-beats { min-height: 0; }
   .hj-card-copy .hj-beat { position: relative; opacity: 1; transform: none; padding-bottom: 18px; }
@@ -390,7 +387,6 @@ footer { border-top: 1px solid var(--hj-line); padding: 44px 0 60px; color: var(
   .hj-dots { display: none; }
   .hj-cardstage { position: static; height: auto; display: grid; justify-items: center; gap: 28px; }
   .hj-cd { position: static; transform: none !important; opacity: 1 !important; }
-  .hj-cd-sides { grid-template-columns: 1fr 1fr; }
   .hj-card-copy .hj-beat { position: relative; opacity: 1; transform: none; padding-bottom: 18px; }
   .hj-card-copy .hj-dots { display: none; }
   .hj-beat { transition: none; }
