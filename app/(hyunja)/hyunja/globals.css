@@ -72,22 +72,22 @@ h1, h2, h3 { margin: 0; line-height: 1.25; letter-spacing: -0.03em; font-weight:
 .hj-cta-row.hj-center { justify-content: center; }
 
 /* ── 아이폰 목업 ── */
+/* 테두리·모서리·다이내믹 아일랜드를 모두 폭에 대한 비율로 잡는다.
+   고정 px 이면 작은 폰일수록 베젤이 두꺼워 보인다. (padding % 는 늘 폭 기준)
+   실제 iPhone 베젤은 폭의 2~2.5% 남짓이다. */
 .hj-phone {
   position: relative; width: min(290px, 72vw); aspect-ratio: 390 / 844; flex: none;
-  border-radius: 46px; padding: 10px; background: #1b1915;
-  border: 1px solid #3a352c;
-  box-shadow: 0 0 0 2px #0f0e0b, 0 40px 90px rgba(34, 32, 28, .3);
+  border-radius: 15.5% / 7.15%; padding: 2.3%; background: #1d1b17;
+  box-shadow: 0 0 0 1px #4a443a, inset 0 0 0 1px rgba(255,255,255,.06), 0 34px 80px rgba(34, 32, 28, .26);
 }
 .hj-phone::before {
-  content: ""; position: absolute; top: 18px; left: 50%; width: 30%; height: 24px;
-  transform: translateX(-50%); background: #000; border-radius: 20px; z-index: 3;
+  content: ""; position: absolute; top: 2.6%; left: 50%; width: 29%; height: 3.4%;
+  transform: translateX(-50%); background: #000; border-radius: 999px; z-index: 3;
 }
-.hj-screen { position: relative; width: 100%; height: 100%; border-radius: 37px; overflow: hidden; background: var(--hj-paper); }
+.hj-screen { position: relative; width: 100%; height: 100%; border-radius: 13.6% / 6.45%; overflow: hidden; background: var(--hj-paper); }
 .hj-screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: 0; transition: opacity .55s ease; }
 .hj-screen img.hj-show { opacity: 1; }
-.hj-phone-sm { width: min(220px, 60vw); border-radius: 36px; padding: 8px; }
-.hj-phone-sm .hj-screen { border-radius: 29px; }
-.hj-phone-sm::before { height: 18px; top: 14px; }
+.hj-phone-sm { width: min(220px, 60vw); }
 
 /* ── 섹션 공통 ── */
 .hj section { padding: clamp(72px, 9vw, 128px) 0; }
@@ -171,6 +171,13 @@ h1, h2, h3 { margin: 0; line-height: 1.25; letter-spacing: -0.03em; font-weight:
 .hj-dots i.hj-on { background: var(--hj-ju); }
 
 /* ── 구절 한 장 (펼치기) ── */
+/* 화면을 붙잡아 둔 채 스크롤만큼 한 겹씩 — 넓은 화면은 머리말까지 함께 붙잡고,
+   좁은 화면은 머리말을 먼저 지나 보낸 뒤 단추와 구절 카드만 붙잡는다. */
+.hj .hj-pass { padding: 0; height: 300vh; position: relative; }
+.hj-pass-intro-m { display: none; }
+/* 카드가 위에서 아래로만 자라도록 위쪽에 붙인다 — 가운데 정렬이면 겹이 열릴 때마다 카드가 들썩인다 */
+.hj-pass .hj-sticky { align-items: flex-start; padding-top: clamp(28px, 7vh, 80px); }
+.hj-pass .hj-split { align-items: start; }
 .hj-passage { background: var(--hj-card); border: 1px solid var(--hj-line-2); border-radius: 26px;
   padding: clamp(22px, 3vw, 34px); box-shadow: 0 16px 40px rgba(34,32,28,.07); }
 .hj-orig { font-family: "Noto Serif KR", serif; font-size: clamp(18px, 2.2vw, 23px); line-height: 2; letter-spacing: .02em; }
@@ -257,10 +264,16 @@ footer { border-top: 1px solid var(--hj-line); padding: 44px 0 60px; color: var(
   .hj-screens { grid-template-columns: repeat(2, 1fr); gap: 20px; }
   .hj-zeros { grid-template-columns: repeat(2, 1fr); row-gap: 30px; }
   .hj .hj-table { height: 460vh; }
+  .hj .hj-pass { height: 320vh; }
+  .hj-pass-intro-m { display: block; padding-top: 72px; }
+  .hj-pass-intro-d { display: none; }
+  .hj-pass .hj-split { gap: 18px; }
+  .hj-pass .hj-steps { margin-top: 0; }
+  .hj-pass .hj-meta { display: none; }
 }
 @media (max-width: 600px) {
   .hj-hero-stage { margin-top: 36px; height: 150vw; }
-  .hj-phone { width: min(250px, 66vw); border-radius: 40px; }
+  .hj-phone { width: min(250px, 66vw); }
   .hj-float { width: 28vw; top: 48px; }
   .hj-float-r { top: 118px; }
   .hj-screens { grid-template-columns: 1fr; }
@@ -272,7 +285,7 @@ footer { border-top: 1px solid var(--hj-line); padding: 44px 0 60px; color: var(
   .hj-float, .hj-hero-phone { transform: none !important; }
   .hj-float-l { transform: translateX(calc(-50% - min(250px, 36vw))) rotate(-7deg) !important; }
   .hj-float-r { transform: translateX(calc(-50% + min(255px, 37vw))) rotate(6deg) !important; }
-  .hj .hj-table { height: auto; }
+  .hj .hj-table, .hj .hj-pass { height: auto; }
   .hj-sticky { position: relative; top: 0; height: auto; padding: 56px 0; }
   .hj-screen img, .hj-seat, .hj-answer .hj-a, .hj-layer { transition: none; }
 }

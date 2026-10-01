@@ -17,7 +17,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties, ElementType, ReactNode } from 'react';
 import { StoreButton } from './chrome';
 import { useDocTitle, useLang } from './i18n';
-import { reduceMotion, useCrossProgress, useInView, useScrollProgress } from './motion';
+import { reduceMotion, useInView, useScrollProgress } from './motion';
 
 const SHOT = (f: string) => `/hyunja/shot/${f}`;
 const ART = (f: string) => `/hyunja/art/${f}`;
@@ -312,17 +312,25 @@ function RoundTable() {
    올라가면 되감기고, 눌러서 직접 열 수도 있다(누르면 그 뒤로는 손을 따른다). */
 function Passage() {
   const { L } = useLang();
+  /* 화면을 붙잡아 둔 채(sticky) 스크롤만큼 한 겹씩 펼친다. 올리면 접힌다.
+     단추를 누르면 그 단계로 가고, 다시 스크롤하면 스크롤이 이어받는다. */
   const [pick, setPick] = useState<number | null>(null);
-  const [ref, p] = useCrossProgress<HTMLElement>();
-  const byScroll = Math.max(0, Math.min(3, Math.floor((p - 0.3) / 0.11)));
-  const open = pick ?? (reduceMotion() ? 3 : byScroll);
+  const [step, setStep] = useState(0);
+  const last = useRef(-1);
+  const ref = useScrollProgress<HTMLElement>((p) => {
+    if (reduceMotion()) return;
+    const next = Math.max(0, Math.min(3, Math.floor((p - 0.1) / 0.2)));
+    if (next !== last.current) {
+      last.current = next;
+      setStep(next);
+      setPick(null);
+    }
+  });
+  const open = pick ?? (reduceMotion() ? 3 : step);
 
-  return (
-    <section id="passage" ref={ref}>
-      <div className="hj-wrap hj-split">
-        <div>
-          <Reveal>
-            <p className="hj-kicker">{L('구절 한 장', 'One passage')}</p>
+  const intro = (
+    <>
+          <p className="hj-kicker">{L('구절 한 장', 'One passage')}</p>
             <div className="hj-head">
               <h2>
                 {L(
@@ -344,8 +352,17 @@ function Passage() {
                 )}
               </p>
             </div>
-          </Reveal>
-          <div className="hj-steps" role="tablist" aria-label={L('구절 펼치기', 'Open the passage')}>
+    </>
+  );
+
+  return (
+    <section id="passage" className="hj-pass" ref={ref}>
+      <div className="hj-wrap hj-pass-intro-m">{intro}</div>
+      <div className="hj-sticky">
+        <div className="hj-wrap hj-split">
+          <div>
+            <div className="hj-pass-intro-d">{intro}</div>
+            <div className="hj-steps" role="tablist" aria-label={L('구절 펼치기', 'Open the passage')}>
             {[
               L('원문', 'Original'),
               L('음독', 'Reading'),
@@ -367,10 +384,10 @@ function Passage() {
           <p className="hj-meta">
             {L('스크롤을 내리면 한 겹씩 펼쳐집니다.', 'Scroll on and it opens a layer at a time.')}
           </p>
-        </div>
+          </div>
 
-        <Reveal className="hj-passage" delay={100}>
-          <p className="hj-orig">或曰：「以德報怨，何如？」子曰：「何以報德？以直報怨，以德報德。」</p>
+          <div className="hj-passage">
+            <p className="hj-orig">或曰：「以德報怨，何如？」子曰：「何以報德？以直報怨，以德報德。」</p>
           <div className={`hj-layer ${open >= 1 ? 'hj-open' : ''}`}>
             <div className="hj-layer-in">
               <p className="hj-eum" style={{ margin: 0 }}>
@@ -401,7 +418,8 @@ function Passage() {
               </p>
             </div>
           </div>
-        </Reveal>
+          </div>
+        </div>
       </div>
     </section>
   );
