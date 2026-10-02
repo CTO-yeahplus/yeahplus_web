@@ -103,11 +103,11 @@ function Header() {
 /* ─────────────────────────── 히어로 ─────────────────────────── */
 
 const HERO_SHOTS: { f: string; ko: string; en: string }[] = [
-  { f: 'mineforge', ko: 'MINEFORGE 게임 화면', en: 'MINEFORGE game screen' },
+  { f: 'myohae', ko: '묘해 — 고양이 사진 꾸미기 결과', en: 'MYOHAE: decorated cat photos' },
   { f: 'cinelook', ko: 'CineLook 촬영 화면', en: 'CineLook camera screen' },
   { f: 'seodang', ko: '성어서당 이야기 삽화 화면', en: 'Seodang story screen' },
   { f: 'hyunja', ko: '현자의 서재 원탁 화면', en: 'The Sages’ Study round table' },
-  { f: 'contraption', ko: '뚝딱 실험실 퍼즐 화면', en: 'Contraption Lab puzzle screen' },
+  { f: 'kkorong', ko: '꼬롱을 찾아라 시장 장면', en: 'Find Kkorong market scene' },
 ];
 
 function Hero() {

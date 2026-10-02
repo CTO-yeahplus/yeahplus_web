@@ -5,7 +5,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const TITLE = "YeahPlus — 매일 손에 쥐는 앱을 처음부터 끝까지";
 const DESCRIPTION =
-  "예아플러스는 사진과 배움, 놀이에 기술을 더하는 작은 스튜디오입니다. CineLook, 성어서당, 현자의 서재, 조선왕조실록, MINEFORGE를 비롯한 스무 개의 제품을 기획부터 출시까지 직접 만듭니다.";
+  "예아플러스는 사진과 배움, 놀이에 기술을 더하는 작은 스튜디오입니다. CineLook, 성어서당, 현자의 서재, 조선왕조실록, 꼬롱을 찾아라를 비롯한 스물한 개의 제품을 기획부터 출시까지 직접 만듭니다.";
 
 /** JS 가 있을 때만 등장 연출을 켠다 — 없으면 처음부터 모두 보인다. */
 const JS_FLAG = "document.documentElement.classList.add('js')";
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   description: DESCRIPTION,
   applicationName: "YeahPlus",
-  keywords: ["YeahPlus", "예아플러스", "앱 스튜디오", "CineLook", "성어서당", "현자의 서재", "조선왕조실록", "뚝딱 실험실", "MINEFORGE", "묘해", "24STILLS"],
+  keywords: ["YeahPlus", "예아플러스", "앱 스튜디오", "CineLook", "성어서당", "현자의 서재", "조선왕조실록", "뚝딱 실험실", "MINEFORGE", "꼬롱을 찾아라", "묘해", "24STILLS"],
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",

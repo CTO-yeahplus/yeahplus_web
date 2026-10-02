@@ -98,6 +98,12 @@ export const PRODUCTS: Product[] = [
     descEn: 'Minesweeper where chaining neighbouring digs grows a scoring seam.',
   },
   {
+    id: 'kkorong', cat: 'game', ko: '꼬롱을 찾아라', en: 'Find Kkorong', href: 'https://kkorong.com', status: 'soon',
+    icon: I('kkorong'), accent: '#1f9a8a', promise: true,
+    descKo: '움직이는 군중 속에서 꼬마 여행자 꼬롱을 찾는 관찰 퍼즐. 매일 새로운 오늘의 장면.',
+    descEn: 'Spot a tiny traveler in a moving crowd. An observation puzzle with a new Daily Scene every day.',
+  },
+  {
     id: 'steelstorm', cat: 'game', ko: '스틸스톰 아레나', en: 'SteelStorm Arena', href: '/steelstorm', status: 'live',
     icon: I('steelstorm'), accent: '#1aa6c4', promise: true,
     descKo: '조준은 기체가, 판단은 당신이. 코어 컬러와 3단 변신의 아레나 슈터.',
