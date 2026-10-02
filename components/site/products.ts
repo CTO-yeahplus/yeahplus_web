@@ -85,7 +85,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'neurovoca', cat: 'learn', ko: '뇌새김', en: 'NeuroVoca', href: 'https://neurovoca.co.kr', status: 'live',
-    mark: '腦', accent: '#4f46e5',
+    icon: I('neurovoca'), accent: '#4f46e5',
     descKo: '잊기 직전에 다시 꺼내 주는 영어 단어 암기 엔진.',
     descEn: 'An English vocabulary engine that brings each word back just before you forget it.',
   },
