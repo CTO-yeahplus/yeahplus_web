@@ -36,9 +36,13 @@ const COPY = {
     filmTitle: ['필터가 아니라,', '필름으로.'],
     filmBody: '색, 그레인, 빛번짐까지. 미리보기에서 본 그대로 현상돼요.',
     filmCount: ['필름 26+', '그레인 20+'],
-    togTitle: ['낯선 누군가와,', '한 롤.'],
-    togBody: '랜덤 롤은 세계 어딘가의 한 사람과 12장씩 나눠 한 롤을 채워요. 공동 롤은 친구들과 함께. 다 채우면 같이 현상돼요.',
-    me: '나', them: '상대',
+    randLabel: '랜덤 롤 · 1:1',
+    randTitle: ['낯선 누군가와,', '한 롤.'],
+    randBody: '세계 어딘가의 한 사람과 1:1로 매칭돼요. 서로 모르는 채로 12장씩, 한 롤을 채워요.',
+    sharedLabel: '공동 롤 · 최대 6명',
+    sharedTitle: ['친구들과,', '한 롤.'],
+    sharedBody: '초대 링크로 친구들을 불러 한 롤을 나눠 찍어요. 24장을 다 채우면 3일 뒤 함께 현상돼요.',
+    me: '나', them: '상대', friend: '친구',
     moreTitle: '찍지 않는 날에도',
     cards: [
       { t: '주간 챌린지', d: '매주 새 주제로 한 장. 좋아요를 많이 받으면 포인트를 받아요. 참가비는 없어요.' },
@@ -65,9 +69,13 @@ const COPY = {
     filmTitle: ['Not filtered.', 'Filmed.'],
     filmBody: 'Color, grain, and glow — developed exactly as you saw it in the preview.',
     filmCount: ['26+ films', '20+ grains'],
-    togTitle: ['One stranger.', 'One roll.'],
-    togBody: 'A Random Roll pairs you with someone, somewhere: 12 frames each, one roll. A Shared Roll is the same with friends. Fill it and it develops together.',
-    me: 'YOU', them: 'THEM',
+    randLabel: 'RANDOM ROLL · 1:1',
+    randTitle: ['One stranger.', 'One roll.'],
+    randBody: 'Get matched 1:1 with someone, somewhere in the world. You never meet — 12 frames each, one roll.',
+    sharedLabel: 'SHARED ROLL · UP TO 6',
+    sharedTitle: ['Your friends.', 'One roll.'],
+    sharedBody: 'Invite friends with a link and shoot one roll between you. Fill all 24 frames and it develops together 3 days later.',
+    me: 'YOU', them: 'THEM', friend: 'FRIEND',
     moreTitle: 'A reason to open it on days you don’t shoot',
     cards: [
       { t: 'Weekly Challenge', d: 'One photo on a new theme each week. Earn points for the most likes. Free to enter.' },
@@ -264,26 +272,37 @@ function Films({ p, c }: { p: MotionValue<number>; c: (typeof COPY)[keyof typeof
 
 // ── 5. 함께 채우는 롤 ───────────────────────────────────────────────────────
 function Together({ p, c }: { p: MotionValue<number>; c: (typeof COPY)[keyof typeof COPY] }) {
-  const n = useStep(p, v => Math.min(24, Math.floor(clamp01((v - 0.1) / 0.75) * 24.999)));
-  const mine = Math.ceil(n / 2), theirs = Math.floor(n / 2);
+  // 한 무대에서 두 장면: 앞 절반은 랜덤 롤(1:1, 두 사람), 뒤 절반은 공동 롤(친구 여럿).
+  const shared = useStep(p, v => (v >= 0.5 ? 1 : 0)) === 1;
+  const n = useStep(p, v => {
+    const t = v < 0.5 ? (v - 0.05) / 0.36 : (v - 0.56) / 0.36;
+    return Math.min(24, Math.floor(clamp01(t) * 24.999));
+  });
+  const people = shared ? 4 : 2;
+  const counts = Array.from({ length: people }, (_, k) => Math.floor((n + people - 1 - k) / people));
+  const names = shared ? [1, 2, 3, 4].map(i => `${c.friend} ${i}`) : [c.me, c.them];
   return (
     <div className="st-split">
-      <div className="st-copy">
-        <Lines lines={c.togTitle} />
-        <p className="st-body-text">{c.togBody}</p>
+      <div className="st-copy" key={shared ? 'shared' : 'random'}>
+        <p className="st-mono st-tog-label">{shared ? c.sharedLabel : c.randLabel}</p>
+        <Lines lines={shared ? c.sharedTitle : c.randTitle} />
+        <p className="st-body-text">{shared ? c.sharedBody : c.randBody}</p>
         <p className="st-mono st-counter st-tally">
-          <i className="st-dot" /> {c.me} <b>{String(mine).padStart(2, '0')}</b>
-          <i className="st-dot st-dot-red" /> {c.them} <b>{String(theirs).padStart(2, '0')}</b>
-          {n >= 24 && <span className="st-accent">12 + 12 = 24</span>}
+          {counts.map((cnt, k) => (
+            <span key={k} className="st-tally-item">
+              <i className={`st-dot st-c${k}`} /> {names[k]} <b>{String(cnt).padStart(2, '0')}</b>
+            </span>
+          ))}
+          {n >= 24 && <span className="st-accent">{shared ? '6 + 6 + 6 + 6 = 24' : '12 + 12 = 24'}</span>}
         </p>
       </div>
-      <div className="st-roll-grid st-roll-grid-duo" aria-hidden="true">
+      <div className="st-roll-grid" aria-hidden="true" key={shared ? 'g-shared' : 'g-random'}>
         {ROLL.map((id, i) => (
-          <div key={id} className={`st-cell ${i < n ? 'is-on' : ''} ${i % 2 ? 'is-them' : 'is-me'}`}>
+          <div key={id} className={`st-cell ${i < n ? 'is-on' : ''}`}>
             <span>{i + 1}</span>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`${IMG}/t${ROLL[(i * 7) % 24]}.jpg`} alt="" loading="lazy" decoding="async" />
-            <em />
+            <img src={`${IMG}/t${ROLL[(i * (shared ? 5 : 7) + (shared ? 3 : 0)) % 24]}.jpg`} alt="" loading="lazy" decoding="async" />
+            <em className={`st-c${i % people}`} />
           </div>
         ))}
       </div>
@@ -301,7 +320,7 @@ export default function Landing() {
       <Pin vh={300}>{p => <Roll p={p} c={c} />}</Pin>
       <Pin vh={300} className="st-dark">{p => <Develop p={p} c={c} />}</Pin>
       <Pin vh={340} className="st-bleed">{p => <Films p={p} c={c} />}</Pin>
-      <Pin vh={300}>{p => <Together p={p} c={c} />}</Pin>
+      <Pin vh={460}>{p => <Together p={p} c={c} />}</Pin>
 
       <section className="st-more">
         <motion.h2
