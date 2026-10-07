@@ -1,0 +1,246 @@
+/* 24STILLS — 랜딩 + 문서. 클래스는 전부 st- 접두어(다른 제품 섹션과 섞이지 않게). */
+
+:root {
+  --st-bg: #111111;
+  --st-ink: #f0f0eb;
+  --st-dim: #8a8a86;
+  --st-line: #262626;
+  --st-red: #be1e22;
+  --st-nav-h: 56px;
+}
+
+* { box-sizing: border-box; }
+html { background: var(--st-bg); -webkit-text-size-adjust: 100%; }
+
+.st-body {
+  margin: 0;
+  background: var(--st-bg);
+  color: var(--st-ink);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Apple SD Gothic Neo', 'Pretendard',
+    'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  word-break: keep-all;
+  overflow-x: clip;
+}
+.st-body a { color: inherit; }
+.st-accent { color: var(--st-red); }
+.st-mono {
+  font-family: ui-monospace, 'SF Mono', Menlo, 'Courier New', monospace;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--st-dim);
+}
+
+/* ── 내비게이션 ─────────────────────────────────────────────────────────── */
+.st-nav {
+  position: fixed; inset: 0 0 auto 0; z-index: 50; height: var(--st-nav-h);
+  background: rgba(17, 17, 17, 0.72);
+  -webkit-backdrop-filter: saturate(160%) blur(18px); backdrop-filter: saturate(160%) blur(18px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.st-nav-inner {
+  max-width: 1120px; height: 100%; margin: 0 auto; padding: 0 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.st-brand { display: flex; align-items: baseline; gap: 6px; text-decoration: none; }
+.st-brand-24 { font-size: 22px; font-weight: 900; letter-spacing: -0.04em; }
+.st-brand-stills { font-size: 11px; font-weight: 800; letter-spacing: 0.34em; color: var(--st-red); }
+.st-nav-links { display: flex; align-items: center; gap: 14px; }
+.st-nav-link { font-size: 13px; color: var(--st-dim); text-decoration: none; }
+.st-nav-link:hover { color: var(--st-ink); }
+.st-lang {
+  appearance: none; background: none; border: 1px solid var(--st-line); border-radius: 999px;
+  color: var(--st-dim); font: inherit; font-size: 11px; font-weight: 800; letter-spacing: 0.1em;
+  padding: 5px 10px; cursor: pointer;
+}
+.st-lang:hover { color: var(--st-ink); border-color: #444; }
+.st-nav-cta {
+  font-size: 12px; font-weight: 800; text-decoration: none;
+  background: var(--st-ink); color: #111 !important; border-radius: 999px; padding: 7px 14px;
+}
+
+/* ── 공통 타이포 ─────────────────────────────────────────────────────────── */
+.st-h1, .st-h2 { margin: 0; font-weight: 900; letter-spacing: -0.045em; line-height: 1.04; }
+.st-h1 span, .st-h2 span { display: block; }
+.st-h1 { font-size: clamp(52px, 11vw, 148px); }
+.st-h2 { font-size: clamp(40px, 6.4vw, 92px); }
+.st-h2-xl { font-size: clamp(48px, 9vw, 132px); }
+.st-h2-sm { font-size: clamp(30px, 4.4vw, 56px); letter-spacing: -0.035em; }
+.st-kicker {
+  margin: 0 0 18px; font-size: 12px; font-weight: 800; letter-spacing: 0.3em; color: var(--st-dim);
+}
+.st-body-text {
+  margin: 22px 0 0; max-width: 30em; font-size: clamp(16px, 1.5vw, 20px); line-height: 1.6; color: #b9b9b4;
+}
+
+/* ── 0. 히어로 ───────────────────────────────────────────────────────────── */
+.st-hero {
+  position: relative; min-height: 100svh; display: grid; place-items: center;
+  padding: calc(var(--st-nav-h) + 24px) 20px 96px; text-align: center;
+}
+.st-hero-inner { display: flex; flex-direction: column; align-items: center; will-change: transform, opacity; }
+.st-hero-logo { width: clamp(108px, 14vw, 168px); height: auto; border-radius: 22%; margin-bottom: 28px; }
+.st-hero-sub { margin: 26px 0 0; font-size: clamp(17px, 2vw, 24px); color: #b9b9b4; }
+.st-scrollcue {
+  position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.3em; text-transform: uppercase; color: var(--st-dim);
+}
+.st-scrollcue i { width: 1px; height: 34px; background: linear-gradient(var(--st-dim), transparent); }
+
+/* ── 고정 무대 ───────────────────────────────────────────────────────────── */
+.st-pin { position: relative; }
+.st-stage {
+  position: sticky; top: 0; height: 100svh; overflow: hidden;
+  display: grid; place-items: center; padding: calc(var(--st-nav-h) + 16px) 24px 24px;
+}
+.st-dark { background: #0a0606; }
+
+.st-split {
+  width: 100%; max-width: 1120px; display: grid; align-items: center; gap: clamp(28px, 6vw, 88px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+.st-copy { min-width: 0; }
+.st-counter { margin: 28px 0 0; font-size: 14px; color: var(--st-dim); }
+.st-counter b { color: var(--st-ink); font-size: 22px; letter-spacing: 0.02em; }
+
+/* ── 1. 카메라롤 홍수 ────────────────────────────────────────────────────── */
+.st-flood .st-stage { padding: 0; }
+.st-flood-grid {
+  position: absolute; inset: 0 0 auto 0; display: grid; gap: 4px;
+  grid-template-columns: repeat(8, 1fr); will-change: transform;
+}
+.st-flood-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+.st-flood-shade {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(17, 17, 17, 0.86) 0%, rgba(17, 17, 17, 0.6) 55%, rgba(17, 17, 17, 0.82) 100%);
+}
+.st-flood-num, .st-flood-q {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px; text-align: center; padding: 0 20px;
+}
+.st-bignum {
+  font-size: clamp(72px, 17vw, 240px); font-weight: 900; letter-spacing: -0.05em; line-height: 0.95;
+  font-variant-numeric: tabular-nums;
+}
+.st-flood-num .st-mono { color: #c9c9c4; }
+
+/* ── 2·5. 24칸 격자 ──────────────────────────────────────────────────────── */
+.st-roll-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.st-cell {
+  position: relative; aspect-ratio: 3 / 4; border-radius: 4px; overflow: hidden;
+  background: #181818; border: 1px solid var(--st-line);
+}
+.st-cell span {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-size: 11px; font-weight: 700; color: #3a3a3a;
+}
+.st-cell img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transform: scale(1.12); transition: opacity 0.28s ease, transform 0.5s ease;
+}
+.st-cell.is-on img { opacity: 1; transform: scale(1); }
+.st-cell.is-on { border-color: transparent; }
+.st-cell em {
+  position: absolute; top: 0; left: 0; width: 22%; aspect-ratio: 1; opacity: 0; transition: opacity 0.2s;
+}
+.st-cell.is-on em { opacity: 1; }
+.st-cell.is-me em { background: var(--st-ink); }
+.st-cell.is-them em { background: var(--st-red); }
+.st-tally { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.st-dot { width: 12px; height: 12px; background: var(--st-ink); display: inline-block; }
+.st-dot-red { background: var(--st-red); margin-left: 10px; }
+
+/* ── 3. 현상 ─────────────────────────────────────────────────────────────── */
+.st-frame {
+  position: relative; justify-self: center; height: min(72svh, 720px); aspect-ratio: 9 / 16;
+  border-radius: 10px; overflow: hidden; background: #1a0808; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+.st-frame img { width: 100%; height: 100%; object-fit: cover; display: block; will-change: filter; }
+.st-safelight { position: absolute; inset: 0; background: #8a1210; mix-blend-mode: multiply; }
+.st-frame-hud { position: absolute; left: 18px; right: 18px; bottom: 18px; display: grid; gap: 10px; }
+.st-frame-hud .st-mono { color: #f0f0eb; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7); }
+.st-bar { height: 4px; background: rgba(255, 255, 255, 0.18); border-radius: 2px; overflow: hidden; }
+.st-bar i { display: block; height: 100%; background: var(--st-red); }
+.st-bar i.is-done { background: var(--st-ink); }
+
+/* ── 4. 필름 스트립 ──────────────────────────────────────────────────────── */
+/* 스트립은 화면 끝에서 끝까지 흐른다 — 무대의 좌우 여백을 없애고 머리글만 안쪽으로 들인다 */
+.st-bleed .st-stage { padding-left: 0; padding-right: 0; }
+.st-films { width: 100%; align-self: center; display: grid; gap: clamp(20px, 4vh, 44px); }
+.st-films-head { padding: 0 max(24px, calc((100vw - 1120px) / 2)); }
+.st-films-head .st-h2 { font-size: clamp(34px, 5vw, 72px); }
+.st-films-head .st-body-text { margin-top: 12px; }
+.st-track {
+  display: flex; gap: 16px; width: max-content; will-change: transform;
+  padding: 0 max(24px, calc((100vw - 1120px) / 2));
+}
+.st-film { position: relative; margin: 0; height: min(52svh, 520px); aspect-ratio: 9 / 16; border-radius: 8px; overflow: hidden; background: #181818; flex: none; }
+.st-film img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.st-film figcaption {
+  position: absolute; left: 12px; bottom: 12px; background: rgba(0, 0, 0, 0.78); color: var(--st-ink);
+  padding: 6px 10px; font-size: 11px;
+}
+.st-film-end {
+  display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 0 28px;
+  aspect-ratio: auto; min-width: min(78vw, 420px); background: none;
+  font-size: clamp(36px, 5vw, 64px); font-weight: 900; letter-spacing: -0.04em; line-height: 1.05;
+}
+
+/* ── 6. 카드 ─────────────────────────────────────────────────────────────── */
+.st-more { max-width: 1120px; margin: 0 auto; padding: clamp(96px, 16vh, 180px) 24px; }
+.st-cards { margin-top: 44px; display: grid; gap: 14px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.st-card { background: #171717; border: 1px solid var(--st-line); border-radius: 16px; padding: 28px 26px 30px; }
+.st-card h3 { margin: 18px 0 10px; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+.st-card p { margin: 0; font-size: 15px; line-height: 1.6; color: #b9b9b4; }
+
+/* ── 7. CTA ──────────────────────────────────────────────────────────────── */
+.st-cta { min-height: 92svh; display: grid; place-items: center; text-align: center; padding: 96px 24px; }
+.st-btn {
+  display: inline-block; margin-top: 40px; background: var(--st-ink); color: #111 !important;
+  font-size: 17px; font-weight: 800; text-decoration: none; border-radius: 999px; padding: 17px 30px;
+  transition: transform 0.2s ease;
+}
+.st-btn:hover { transform: scale(1.04); }
+.st-cta-note { margin: 16px 0 0; font-size: 13px; color: var(--st-dim); }
+
+/* ── 푸터 ────────────────────────────────────────────────────────────────── */
+.st-footer { border-top: 1px solid var(--st-line); padding: 36px 24px 56px; text-align: center; }
+.st-footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px; margin-bottom: 16px; }
+.st-footer-links a { font-size: 13px; color: #b9b9b4; text-decoration: none; }
+.st-footer-links a:hover { color: var(--st-ink); }
+.st-footer-meta { margin: 4px 0 0; font-size: 12px; color: #6a6a66; }
+.st-footer-meta a { color: inherit; }
+
+/* ── 문서(개인정보·약관·지원) ────────────────────────────────────────────── */
+.st-legal {
+  max-width: 760px; margin: 0 auto; padding: calc(var(--st-nav-h) + 48px) 22px 96px;
+  font-size: 16px; line-height: 1.75; color: #d6d6d1;
+}
+.st-legal-jump { display: flex; gap: 10px; font-size: 13px; color: var(--st-dim); margin-bottom: 28px; }
+.st-legal-jump a { color: #b9b9b4; }
+.st-legal article { scroll-margin-top: calc(var(--st-nav-h) + 16px); }
+.st-legal h1 { margin: 0 0 6px; font-size: clamp(28px, 4vw, 40px); font-weight: 900; letter-spacing: -0.03em; color: var(--st-ink); }
+.st-legal h2 { margin: 2.2em 0 0.5em; font-size: 18px; font-weight: 800; color: var(--st-ink); }
+.st-legal-meta { margin: 0 0 24px; font-size: 13px; color: var(--st-dim); }
+.st-legal p { margin: 0.7em 0; }
+.st-legal ul { margin: 0.5em 0; padding-left: 1.25em; }
+.st-legal li { margin: 0.3em 0; }
+.st-legal b { color: var(--st-ink); }
+.st-legal a { color: #e8b4b5; text-underline-offset: 3px; }
+.st-legal hr { border: 0; border-top: 1px solid var(--st-line); margin: 64px 0; }
+
+/* ── 좁은 화면 ───────────────────────────────────────────────────────────── */
+@media (max-width: 820px) {
+  .st-nav-link { display: none; }
+  .st-split { grid-template-columns: 1fr; gap: 26px; align-content: center; }
+  .st-split-rev .st-frame { order: 2; }
+  .st-roll-grid { grid-template-columns: repeat(6, 1fr); gap: 4px; }
+  .st-cell { aspect-ratio: 1; }
+  .st-frame { height: min(46svh, 440px); }
+  .st-body-text { margin-top: 14px; font-size: 15px; }
+  .st-counter { margin-top: 16px; }
+  .st-flood-grid { grid-template-columns: repeat(4, 1fr); }
+  .st-film { height: min(44svh, 400px); }
+  .st-cards { grid-template-columns: 1fr; }
+}

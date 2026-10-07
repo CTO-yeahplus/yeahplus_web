@@ -21,7 +21,7 @@ const PRODUCTS: { base: string; sub: string[] }[] = [
   { base: "hyunja", sub: ["privacy", "support", "terms"] },
 ];
 
-/** public/ 아래 정적 HTML 로 서비스되는 24STILLS. */
+/** 24STILLS — app/(stills). 폴더 이름이 숫자로 시작할 뿐 다른 제품과 같은 Next 라우트다. */
 const STATIC_PAGES = ["24stills", "24stills/privacy", "24stills/terms", "24stills/support"];
 
 export default function sitemap(): MetadataRoute.Sitemap {

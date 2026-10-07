@@ -8,11 +8,13 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
   },
   async rewrites() {
-    // public/24stills 는 Next 라우트가 아니라 정적 HTML 묶음이라
-    // 확장자 없는 주소(/24stills, /24stills/privacy)가 그대로는 404 가 난다.
+    // 24STILLS 는 app/(stills) 의 Next 라우트다(예전엔 public/24stills 의 정적 HTML 묶음).
+    // 예전 주소(.html)가 App Store Connect 와 앱 안에 박혀 있어 그대로 열려야 한다.
     return [
-      { source: "/24stills", destination: "/24stills/index.html" },
-      { source: "/24stills/:page([a-z0-9_-]+)", destination: "/24stills/:page.html" },
+      { source: "/24stills/index.html", destination: "/24stills" },
+      { source: "/24stills/:page(privacy|terms|support).html", destination: "/24stills/:page" },
+      // 선물·그룹 초대 안내는 아직 정적 HTML — 확장자 없는 주소도 받는다.
+      { source: "/24stills/:page(gift|group)", destination: "/24stills/:page.html" },
     ];
   },
 };
