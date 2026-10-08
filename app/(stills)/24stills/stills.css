@@ -196,7 +196,7 @@ html { background: var(--st-bg); -webkit-text-size-adjust: 100%; }
 
 /* ── 6. 카드 ─────────────────────────────────────────────────────────────── */
 .st-more { max-width: 1120px; margin: 0 auto; padding: clamp(96px, 16vh, 180px) 24px; }
-.st-cards { margin-top: 44px; display: grid; gap: 14px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.st-cards { margin-top: 44px; display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .st-card { background: #171717; border: 1px solid var(--st-line); border-radius: 16px; padding: 28px 26px 30px; }
 .st-card h3 { margin: 18px 0 10px; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
 .st-card p { margin: 0; font-size: 15px; line-height: 1.6; color: #b9b9b4; }

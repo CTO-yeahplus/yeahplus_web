@@ -34,7 +34,7 @@ const COPY = {
     devBody: '찍은 사진은 바로 보이지 않아요. 암실에서 3일을 보낸 뒤에야 나타나요. 무엇이 찍혔을지 궁금해하는 시간까지가 필름이에요.',
     devWait: '현상 중', devDone: '현상 완료', day: 'DAY',
     filmTitle: ['필터가 아니라,', '필름으로.'],
-    filmBody: '색, 그레인, 빛번짐까지. 미리보기에서 본 그대로 현상돼요.',
+    filmBody: '색, 그레인, 빛번짐까지 필름마다 달라요. 카메라 화면을 길게 누르면, 지금 장면이 어떻게 현상될지 실제 색감으로 미리 볼 수 있어요.',
     filmCount: ['필름 26+', '그레인 20+'],
     randLabel: '랜덤 롤 · 1:1',
     randTitle: ['낯선 누군가와,', '한 롤.'],
@@ -46,6 +46,7 @@ const COPY = {
     moreTitle: '찍지 않는 날에도',
     cards: [
       { t: '주간 챌린지', d: '매주 새 주제로 한 장. 좋아요를 많이 받으면 포인트를 받아요. 참가비는 없어요.' },
+      { t: 'SHOT OF THE WEEK', d: '매주 챌린지에서 딱 한 장이 뽑혀요. 뽑힌 사람의 프로필에는 일주일 동안 금색 트로피가 걸리고, 다음 주에는 다음 사람에게 넘어가요.' },
       { t: '리워드 포인트', d: '찍고, 이어 찍고, 챌린지에 내면 쌓여요. 한정 필름과 그레인을 30일 동안 열 수 있어요.' },
       { t: '로그인 없이 둘러보기', d: '전 세계에서 현상된 필름 사진을 가입 전에 먼저 보세요.' },
     ],
@@ -67,7 +68,7 @@ const COPY = {
     devBody: "Your photo doesn't appear right away. It spends 3 days in the darkroom first. Wondering what you caught is part of film.",
     devWait: 'DEVELOPING', devDone: 'DEVELOPED', day: 'DAY',
     filmTitle: ['Not filtered.', 'Filmed.'],
-    filmBody: 'Color, grain, and glow — developed exactly as you saw it in the preview.',
+    filmBody: 'Each film has its own color, grain, and glow. Press and hold the viewfinder to see the true color your scene will develop into.',
     filmCount: ['26+ films', '20+ grains'],
     randLabel: 'RANDOM ROLL · 1:1',
     randTitle: ['One stranger.', 'One roll.'],
@@ -79,6 +80,7 @@ const COPY = {
     moreTitle: 'A reason to open it on days you don’t shoot',
     cards: [
       { t: 'Weekly Challenge', d: 'One photo on a new theme each week. Earn points for the most likes. Free to enter.' },
+      { t: 'Shot of the Week', d: 'One photo is picked from each week’s challenge. Its photographer wears a gold trophy on their profile for seven days. Then it passes to the next.' },
       { t: 'Reward points', d: 'Earn them by shooting, keeping streaks, and joining challenges. Unlock limited films and grains for 30 days.' },
       { t: 'Browse without signing up', d: 'See developed film photos from around the world before you create an account.' },
     ],
