@@ -58,9 +58,9 @@ function Footer({ year }: { year: number }) {
         ⓒ {year} {L(COMPANY_KO, COMPANY_EN)} · {L('가상의 병원과 인물을 다루는 이야기이며 의학적 조언이 아닙니다.', 'A work of fiction. Not medical advice.')}
       </p>
       <address className="nt-fine" style={{ fontStyle: 'normal', lineHeight: 1.8 }}>
-        <b>{L('상호', 'Company')}</b> {L(COMPANY_KO, COMPANY_EN)} · <b>{L('대표', 'CEO')}</b> {BIZ.ceo} · <b>{L('사업자등록번호', 'Business reg. no.')}</b> {BIZ.regNo}
+        {L('상호', 'Company')} {L(COMPANY_KO, COMPANY_EN)} · {L('대표', 'CEO')} {BIZ.ceo} · {L('사업자등록번호', 'Business reg. no.')} {BIZ.regNo}
         <br />
-        <b>{L('통신판매업신고', 'Mail-order reg. no.')}</b> {BIZ.mailOrder} · <b>{L('주소', 'Address')}</b> {BIZ.address}
+        {L('통신판매업신고', 'Mail-order reg. no.')} {BIZ.mailOrder} · {L('주소', 'Address')} {BIZ.address}
       </address>
     </footer>
   );
