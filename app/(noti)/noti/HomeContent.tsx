@@ -101,14 +101,15 @@ function Arrive() {
 
 // ── 2. 사람들 (가로로 흐른다)
 type Pair = { ko: string; en: string };
-const PEOPLE: [string, Pair, Pair, Pair][] = [
-  ['sunyoung', { ko: '박선영', en: 'Park Sun-young' }, { ko: '응급실 책임간호사', en: 'ER charge nurse' }, { ko: '모르면 물어보세요. 물어보는 인턴은 사고 안 쳐요.', en: 'If you don’t know, ask. Interns who ask don’t cause accidents.' }],
-  ['hyunseok', { ko: '오현석', en: 'Oh Hyun-seok' }, { ko: '응급의학과 2년차 · 사흘째 당직', en: 'EM resident · third day on call' }, { ko: '죽을 일 아니면 깨우지 마.', en: 'Unless someone’s dying, don’t wake me.' }],
-  ['minjae', { ko: '강민재', en: 'Kang Min-jae' }, { ko: '내과 치프', en: 'Chief resident, internal medicine' }, { ko: '결론. 좋아졌어, 나빠졌어. 그것부터.', en: 'Bottom line. Better or worse. Start there.' }],
-  ['gyeongran', { ko: '차경란', en: 'Cha Gyeong-ran' }, { ko: '외과 과장', en: 'Head of surgery' }, { ko: '거기. 더 당겨.', en: 'You there. Pull harder.' }],
-  ['jian', { ko: '서지안', en: 'Seo Ji-an' }, { ko: '동기 · 본교 수석', en: 'Fellow intern · top of the class' }, { ko: '알아서 하는 동안 환자는 기다려 주지 않아.', en: 'Patients don’t wait while you figure it out.' }],
-  ['doyun', { ko: '한도윤', en: 'Han Do-yun' }, { ko: '동기 · 서른넷 늦깎이', en: 'Fellow intern · started at thirty-four' }, { ko: '내일도 와. 그게 제일 어려운 건데.', en: 'Come back tomorrow. That’s the hard part.' }],
-  ['taehee', { ko: '문태희', en: 'Moon Tae-hee' }, { ko: '동기 · 수첩 세 권', en: 'Fellow intern · three notebooks' }, { ko: '우린 다 하나씩 들고 있어.', en: 'We’re all carrying one.' }],
+// 마지막 숫자: 얼굴이 그림의 가로 어디쯤에 있는가(%) — 카드가 좁아져 양옆이 잘릴 때 얼굴을 가운데에 둔다
+const PEOPLE: [string, Pair, Pair, Pair, number][] = [
+  ['sunyoung', { ko: '박선영', en: 'Park Sun-young' }, { ko: '응급실 책임간호사', en: 'ER charge nurse' }, { ko: '모르면 물어보세요. 물어보는 인턴은 사고 안 쳐요.', en: 'If you don’t know, ask. Interns who ask don’t cause accidents.' }, 40],
+  ['hyunseok', { ko: '오현석', en: 'Oh Hyun-seok' }, { ko: '응급의학과 2년차 · 사흘째 당직', en: 'EM resident · third day on call' }, { ko: '죽을 일 아니면 깨우지 마.', en: 'Unless someone’s dying, don’t wake me.' }, 50],
+  ['minjae', { ko: '강민재', en: 'Kang Min-jae' }, { ko: '내과 치프', en: 'Chief resident, internal medicine' }, { ko: '결론. 좋아졌어, 나빠졌어. 그것부터.', en: 'Bottom line. Better or worse. Start there.' }, 50],
+  ['gyeongran', { ko: '차경란', en: 'Cha Gyeong-ran' }, { ko: '외과 과장', en: 'Head of surgery' }, { ko: '거기. 더 당겨.', en: 'You there. Pull harder.' }, 48],
+  ['jian', { ko: '서지안', en: 'Seo Ji-an' }, { ko: '동기 · 본교 수석', en: 'Fellow intern · top of the class' }, { ko: '알아서 하는 동안 환자는 기다려 주지 않아.', en: 'Patients don’t wait while you figure it out.' }, 42],
+  ['doyun', { ko: '한도윤', en: 'Han Do-yun' }, { ko: '동기 · 서른넷 늦깎이', en: 'Fellow intern · started at thirty-four' }, { ko: '내일도 와. 그게 제일 어려운 건데.', en: 'Come back tomorrow. That’s the hard part.' }, 48],
+  ['taehee', { ko: '문태희', en: 'Moon Tae-hee' }, { ko: '동기 · 수첩 세 권', en: 'Fellow intern · three notebooks' }, { ko: '우린 다 하나씩 들고 있어.', en: 'We’re all carrying one.' }, 40],
 ];
 function People() {
   const [ref, p] = useScene(T(19, 0), T(21, 30));
@@ -119,11 +120,14 @@ function People() {
       <div className="nt-pin">
         <motion.h2 style={{ opacity: R(p, [0, 0.06, 0.9, 1], [0, 1, 1, 0]) }}><Tx ko="깨는 사람들, 버티게 하는 사람들" en="The ones who break you, the ones who keep you standing" /></motion.h2>
         <motion.div className="nt-track" style={{ transform }}>
-          {PEOPLE.map(([id, name, role, say]) => (
-            <article key={id} className="nt-card">
-              <img src={img('p_' + id)} alt="" loading="lazy" />
-              <Tb as="blockquote" ko={<>“{say.ko}”</>} en={<>“{say.en}”</>} />
-              <p className="nt-who"><b><Tx ko={name.ko} en={name.en} /></b><span><Tx ko={role.ko} en={role.en} /></span></p>
+          {PEOPLE.map(([id, name, role, say, x]) => (
+            <article key={id} className="nt-card nt-face">
+              {/* 얼굴이 카드의 바탕이다. 글은 그 아래쪽 어둠 위에 놓인다. 가로로 흐르는 줄이라 lazy 로 두면 휠을 빨리 굴릴 때 얼굴이 늦게 뜬다 → 미리, 낮은 순위로 받는다 */}
+              <img src={img('pl_' + id)} alt="" fetchPriority="low" decoding="async" style={{ objectPosition: `${x}% 0%` }} />
+              <div className="nt-card-txt">
+                <Tb as="blockquote" ko={<>“{say.ko}”</>} en={<>“{say.en}”</>} />
+                <p className="nt-who"><b><Tx ko={name.ko} en={name.en} /></b><span><Tx ko={role.ko} en={role.en} /></span></p>
+              </div>
             </article>
           ))}
           <article className="nt-card nt-end">

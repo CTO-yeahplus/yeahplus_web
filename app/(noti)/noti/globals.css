@@ -66,8 +66,16 @@ ol, ul { list-style: none; }
 .nt-people h2 { font: 600 clamp(22px, 3.2vw, 40px)/1.3 var(--nt-serif); padding: 0 clamp(20px, 6vw, 80px); }
 .nt-track { display: flex; gap: clamp(14px, 2vw, 26px); width: max-content; padding: 0 clamp(20px, 6vw, 80px); will-change: transform; }
 .nt-card { width: min(74vw, 380px); min-height: min(56vh, 460px); padding: 26px; display: flex; flex-direction: column; gap: 18px; background: linear-gradient(160deg, #1a2030, #121722); border: 1px solid var(--nt-line); border-radius: 22px; }
-.nt-card img { width: 92px; height: 92px; border-radius: 50%; object-fit: cover; object-position: 50% 22%; border: 1px solid var(--nt-line); }
+/* 인물 카드: 얼굴이 카드 가득, 대사와 이름은 아래쪽 어둠 위에 */
+.nt-card.nt-face { position: relative; overflow: hidden; padding: 0; height: min(58vh, 540px); min-height: 0; justify-content: flex-end; background: #0b0e16; }
+.nt-card.nt-face img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.04); transform-origin: 50% 20%; transition: transform .9s cubic-bezier(.2, .7, .2, 1); }
+.nt-card.nt-face:hover img { transform: scale(1.1); }
+.nt-card.nt-face::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11, 14, 22, 0) 38%, rgba(11, 14, 22, .78) 62%, rgba(11, 14, 22, .97) 84%); pointer-events: none; }
+.nt-card-txt { position: relative; z-index: 1; padding: 0 26px 26px; display: flex; flex-direction: column; gap: 14px; }
 .nt-card blockquote { font: 600 clamp(20px, 2.2vw, 27px)/1.45 var(--nt-serif); flex: 1; }
+.nt-card.nt-face blockquote { flex: none; text-shadow: 0 2px 18px rgba(0, 0, 0, .7); }
+.nt-card.nt-end { min-height: min(58vh, 540px); }
+.nt-people .nt-pin { padding-bottom: 8vh; }   /* 오른쪽 아래의 시계와 카드의 글이 겹치지 않게 */
 .nt-card .nt-who b { display: block; font: 700 16px/1.3 var(--nt-sans); color: var(--nt-gold); } .nt-card .nt-who > span { font-size: 13px; color: var(--nt-mut); }
 .nt-card.nt-end { justify-content: center; background: none; border-style: dashed; } .nt-card.nt-end p { font: 400 clamp(18px, 2vw, 24px)/1.7 var(--nt-serif); color: var(--nt-soft); }
 
