@@ -94,7 +94,7 @@ html[data-lang=en] .cs-gate h1 { font-size: clamp(44px, 7.2vw, 108px); }
 .cs-leaf.cs-first h2 { position: absolute; right: 16%; top: 9%; margin: 0; font: 400 9.4cqw/1.1 var(--cs-brush); letter-spacing: .02em; }
 .cs-leaf.cs-first h2 [data-l=ko] { writing-mode: vertical-rl; }
 .cs-leaf.cs-first h2 [data-l=en] { display: block; width: 6.2em; text-align: right; line-height: 1.15; letter-spacing: 0; }
-.cs-leaf.cs-first .cs-seal { position: absolute; left: 14%; top: 12%; display: grid; place-items: center; width: 4.4em; height: 4.4em; font: 700 4.6cqw/1 var(--cs-body); font-style: normal; color: #f6ecd6; background: var(--cs-accent); border-radius: 5px; transform: rotate(-6deg); }
+.cs-leaf.cs-first .cs-seal { position: absolute; left: 11%; top: 9.5%; width: 23cqw; height: auto; rotate: -5deg; mix-blend-mode: multiply; }   /* 인주는 종이에 스민다 — 곱하기로 얹어 종이의 결이 비친다 */
 .cs-leaf.cs-first p { position: absolute; left: 13%; right: 38%; bottom: 10%; margin: 0; text-align: left; font-size: 3.7cqw; line-height: 1.6; color: var(--cs-ink2); }
 .cs-bookscene .cs-side { position: absolute; left: 7vw; top: 50%; width: 29vw; transform: translateY(-50%); }
 .cs-bookscene .cs-side p { position: absolute; left: 0; right: 0; top: 0; transform: translateY(-50%); }

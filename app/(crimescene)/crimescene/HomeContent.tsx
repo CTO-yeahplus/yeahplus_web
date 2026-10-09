@@ -140,7 +140,8 @@ function Book() {
             <div className={c('block')} />
             <div className={c('leaf first')} style={{ backgroundImage: `url(${img('book_page.webp')})` }}>
               <motion.h2 style={{ opacity: R(p, [0.56, 0.68], [0, 1]) }}><L ko="원통한 이가 없게 하라" en="Let no one be wronged" /></motion.h2>
-              <motion.i className={c('seal')} style={{ opacity: R(p, [0.68, 0.74], [0, 1]), scale: R(p, [0.68, 0.76], [1.8, 1]) }}>無冤</motion.i>
+              {/* 낙관은 그림이다 (GAME/APLUS/crimescene/tools/make_seal.js) — CSS 로 그린 붉은 네모는 단추처럼 보였다. 종이에 눌러 찍듯 빠르게 나타난다 */}
+              <motion.img className={c('seal')} src={img('seal_muwon.webp')} alt="無冤" style={{ opacity: R(p, [0.68, 0.705], [0, 0.96]), scale: R(p, [0.68, 0.73], [1.22, 1]) }} />
               <motion.p style={{ opacity: R(p, [0.74, 0.82], [0, 1]) }}><L ko="없을 무, 원통할 원. 그 아이의 이름이다." en="Mu-won: “let no one be wronged.” It is the boy’s name." /></motion.p>
               <motion.div className={c('cast')} style={{ opacity: R(p, [0.16, 0.4, 0.66], [0, 0.6, 0]) }} />
             </div>
