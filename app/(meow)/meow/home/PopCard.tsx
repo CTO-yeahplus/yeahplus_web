@@ -7,20 +7,11 @@
  * pop(0..1) 이 0 이면 사진이 창에 꼭 맞게 끼워져 있고, 1 이면 popFill 규칙대로
  * 고양이 머리가 창 높이의 22% 만큼 창 위로 나가고 발은 창 92% 지점에 남는다.
  * explode(0..1) 는 네 층을 3D 로 띄워 속을 보여 준다.
+ * 액자 배치는 applyTemplate.ts(placeFrame)와 같다 — 보이는 테두리(bbox)의 긴 변이 캔버스의 size 배.
  */
 import type { CSSProperties } from 'react';
+import { FRAMES } from './assets';
 
-export type FrameKey = 'cream' | 'blush' | 'mint' | 'noir';
-export type WallKey = 'plum' | 'candy';
-
-/** 액자 창 — MYOHAE/assets/frame_geometry.json (액자 이미지 기준 0~1) */
-const SLOTS: Record<FrameKey, { x: number; y: number; w: number; h: number }> = {
-  cream: { x: 0.0847, y: 0.0667, w: 0.8306, h: 0.7167 },
-  blush: { x: 0.0745, y: 0.064, w: 0.851, h: 0.7253 },
-  mint: { x: 0.08, y: 0.0713, w: 0.84, h: 0.7193 },
-  noir: { x: 0.0753, y: 0.0727, w: 0.8494, h: 0.7333 },
-};
-const FRAME_ASPECT = 1275 / 1500;
 const PHOTO_ASPECT = 2 / 3; // cat_photo.webp 900×1350
 /** 누끼가 사진 안에서 차지하는 영역 — cat_cut.webp 의 불투명 범위에서 잰 값 */
 const SUBJECT = { x: 0.3677, y: 0.217, w: 0.3641, h: 0.6281 };
@@ -34,11 +25,10 @@ const POP_MAX_ZOOM = 3;
 const V = (f: string) => `/meow/v2/${f}.webp`;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
+const pct = (v: number) => `${v * 100}%`;
 
 /** 창 안 사진 상자 — 창 폭·높이에 대한 % */
-function photoBox(frame: FrameKey, t: number) {
-  const s = SLOTS[frame];
-  const slotAspect = (s.w * FRAME_ASPECT) / s.h;
+function photoBox(slotAspect: number, t: number) {
   const sw = 1;
   const sh = 1 / slotAspect;
   const r = SUBJECT;
@@ -57,37 +47,51 @@ function photoBox(frame: FrameKey, t: number) {
   const left1 = Math.min(0, Math.max(sw - w1, sw / 2 - (r.x + r.w / 2) * w1));
   const h = lerp(h0, h1, t);
   return {
-    left: `${(lerp(left0, left1, t) / sw) * 100}%`,
-    top: `${(lerp(top0, top1, t) / sh) * 100}%`,
-    width: `${((h * a) / sw) * 100}%`,
-    height: `${(h / sh) * 100}%`,
+    left: pct(lerp(left0, left1, t) / sw),
+    top: pct(lerp(top0, top1, t) / sh),
+    width: pct((h * a) / sw),
+    height: pct(h / sh),
   } as CSSProperties;
 }
 
 export default function PopCard({
   pop,
   explode = 0,
-  frame = 'cream',
-  wall = 'plum',
+  frame = 'polaroid_cream_s4',
+  wall = 'spotty-petal_dusk_s5',
   tilt = -4,
+  size = 0.8,
+  cy = 0.54,
   stickers = false,
   smooth = false,
   label,
 }: {
   pop: number;
   explode?: number;
-  frame?: FrameKey;
-  wall?: WallKey;
+  /** assets.ts FRAMES 의 key */
+  frame?: string;
+  /** assets.ts WALLS 의 key */
+  wall?: string;
   tilt?: number;
+  size?: number;
+  cy?: number;
   stickers?: boolean;
   /** 섞기처럼 값이 한 번에 바뀌는 곳에서는 CSS 로 부드럽게 옮긴다 */
   smooth?: boolean;
   label?: string;
 }) {
-  const s = SLOTS[frame];
-  const box = photoBox(frame, pop);
+  const g = FRAMES[frame] ?? FRAMES.polaroid_cream_s4;
+  const bb = g.bbox;
+  const s = g.slot;
+  // placeFrame: 보이는 테두리의 긴 변 = 캔버스 × size, 테두리 가운데를 (0.5, cy) 에
+  const k = size / Math.max(bb.w * g.w, bb.h * g.h);
+  const bw = g.w * k;
+  const bh = g.h * k;
+  const cx = 0.5 - (bb.x + bb.w / 2 - 0.5) * bw;
+  const ccy = cy - (bb.y + bb.h / 2 - 0.5) * bh;
+  const box = photoBox((s.w * g.w) / (s.h * g.h), pop);
   const e = explode;
-  const slot: CSSProperties = { left: `${s.x * 100}%`, top: `${s.y * 100}%`, width: `${s.w * 100}%`, height: `${s.h * 100}%` };
+  const slot: CSSProperties = { left: pct(s.x), top: pct(s.y), width: pct(s.w), height: pct(s.h) };
   const z = (n: number) => ({ transform: `translateZ(${n * e}px)` });
 
   return (
@@ -96,20 +100,23 @@ export default function PopCard({
         className="pc-stage"
         style={{ transform: `rotateX(${52 * e}deg) rotateZ(${-24 * e}deg) scale(${1 - 0.18 * e})` }}
       >
-        <img className="pc-wall" src={V(`backwall_${wall}`)} alt="" draggable={false} />
-        <div className="pc-frame" style={{ transform: `translate(-50%, -50%) rotate(${tilt}deg)` }}>
+        <img className="pc-wall" src={V(`bw_${wall}`)} alt="" draggable={false} />
+        <div
+          className="pc-frame"
+          style={{ left: pct(cx), top: pct(ccy), width: pct(bw), height: pct(bh), transform: `translate(-50%, -50%) rotate(${tilt}deg)` }}
+        >
           <div className="pc-slot" style={{ ...slot, ...z(70) }}>
             <img className="pc-photo" src={V('cat_photo')} alt="" style={box} draggable={false} />
           </div>
-          <img className="pc-frameimg" src={V(`frame_${frame}`)} alt="" style={z(150)} draggable={false} />
+          <img className="pc-frameimg" src={V(`fr_${frame}`)} alt="" style={z(150)} draggable={false} />
           <div className="pc-cutwrap" style={{ ...slot, ...z(240) }}>
             <img className="pc-cut" src={V('cat_cut')} alt="" style={{ ...box, opacity: pop > 0.02 || e > 0 ? 1 : 0 }} draggable={false} />
           </div>
         </div>
         {stickers && (
           <>
-            <img className="pc-sticker pc-st-heart" src={V('st_heart')} alt="" draggable={false} />
-            <img className="pc-sticker pc-st-coffee" src={V('st_coffee')} alt="" draggable={false} />
+            <img className="pc-sticker pc-st-a" src={V('st_macaron')} alt="" draggable={false} />
+            <img className="pc-sticker pc-st-b" src={V('st_donut')} alt="" draggable={false} />
           </>
         )}
       </div>

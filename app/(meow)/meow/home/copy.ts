@@ -9,11 +9,11 @@ type Copy = {
   hero: { kicker: string; line1: string; line2: string; lead: string; hint: string; sok: string };
   explode: { kicker: string; title: string; body: string; layers: [string, string, string, string]; after: string };
   deck: { kicker: string; title: string; body: string; free: string; lock: string; count: (n: number, all: number) => string };
-  shuffle: { kicker: string; title: string; body: string; button: string; popOn: string; popOff: string; note: string };
+  shuffle: { kicker: string; title: string; body: string; button: string; popOn: string; popOff: string; note: string; wall: string; frame: string; tiers: Record<'free' | 'sub' | 'pack', string> };
   gallery: { kicker: string; title: string; body: string; honest: string };
-  remix: { kicker: string; title: string; body: string; feed: string; mine: string; done: string; chips: [string, string, string]; button: string };
-  more: { title: string; items: { t: string; d: string }[] };
-  honest: { title: string; items: string[] };
+  remix: { kicker: string; title: string; body: string; feed: string; mine: string; done: string; chips: [string, string, string, string]; button: string };
+  more: { title: string; items: { t: string; d: string }[]; draft: string; saved: string; churu: string };
+  honest: { title: string; sub: string; items: { b: string; d: string }[] };
   final: { title: string; body: string; store: string; feed: string };
 };
 
@@ -45,26 +45,27 @@ export const COPY: Record<Lang, Copy> = {
     shuffle: {
       kicker: '섞기',
       title: '마음에 안 들면, 섞기.',
-      body: '배경과 액자가 같은 계열 안에서 바뀌어요. 직접 올린 스티커는 그대로 남고요.',
+      body: '여기선 구독하면 열리는 배경·액자까지 한데 섞어 봤어요. 앱에서는 고른 템플릿과 같은 계열 안에서 바뀌고, 직접 올린 스티커는 그대로 남아요.',
       button: '섞기',
       popOn: '튀어나오기 켜짐',
       popOff: '튀어나오기 꺼짐',
-      note: '직접 눌러 보세요. 앱과 같은 재료로 그렸어요.',
+      note: '직접 눌러 보세요. 앱에 들어 있는 배경·액자 파일 그대로예요.',
+      wall: '배경', frame: '액자', tiers: { free: '무료', sub: '구독', pack: '팩' },
     },
     gallery: {
       kicker: '튀어나오기',
       title: '고양이마다 자리는 달라도, 쏙.',
-      body: '사진 속 고양이가 어디에 있든, 앱이 위치를 보고 크기와 자리를 맞춰요. 휠을 굴리면 일곱 마리가 차례로 나와요.',
+      body: '사진 속 고양이가 어디에 있든, 앱이 위치를 보고 크기와 자리를 맞춰요. 휠을 굴리면 여덟 마리가 차례로 나와요. 배경과 액자는 구독·팩 재료로 골랐어요.',
       honest: '솔직히 말하면, 머리가 사진 위에서 잘린 컷은 튀어나올 수 없어요. 그럴 땐 액자에 얌전히 끼워 드려요.',
     },
     remix: {
       kicker: '따라 하기',
       title: '피드에서 본 그 꾸미기, 내 사진으로.',
-      body: '마음에 든 게시물에서 ‘따라 하기’를 누르면 같은 배경·액자·스티커가 내 사진에 그대로 깔려요.',
+      body: '마음에 든 게시물에서 ‘따라 하기’를 누르면 같은 배경·액자·텍스처·스티커가 내 사진에 그대로 깔려요.',
       feed: '피드에서 본 꾸미기',
       mine: '내 사진',
       done: '따라 하기 완료',
-      chips: ['배경', '액자', '스티커 2'],
+      chips: ['배경', '액자', '텍스처', '스티커 2'],
       button: '따라 하기',
     },
     more: {
@@ -75,15 +76,17 @@ export const COPY: Record<Lang, Copy> = {
         { t: '초안 자동 저장', d: '꾸미다 나가도 괜찮아요. 나 › 초안에서 이어서 해요.' },
         { t: '에디터 안에서 바로', d: '팩과 츄르를 에디터에서 나가지 않고 살 수 있어요.' },
       ],
+      draft: '초안', saved: '자동 저장됨', churu: '츄르',
     },
     honest: {
       title: '솔직하게 정리하면',
+      sub: '좋은 말만 하면 재미없잖아요. 미리 아시면 좋은 것들.',
       items: [
-        '꾸미기와 무료 템플릿은 무료예요.',
-        '자물쇠가 붙은 템플릿은 구독자용 재료를 써요.',
-        'AI 아트는 츄르를 써요. 그림 한 장에 한 개.',
-        '튀어나오기는 iOS 17 이상에서, 앱이 고양이를 찾았을 때 돼요.',
-        '광고는 없어요. 1.1에서 광고 SDK를 아예 뺐어요.',
+        { b: '꾸미기는 무료', d: '기본 꾸미기와 무료 템플릿에는 돈이 들지 않아요.' },
+        { b: '자물쇠 = 구독', d: '자물쇠 템플릿과 구독 배경·액자는 구독하면 열려요.' },
+        { b: '츄르 1개 = 그림 1장', d: '츄르는 AI 아트에만 써요.' },
+        { b: 'iOS 17 이상', d: '튀어나오기는 앱이 사진 속 고양이를 찾았을 때 돼요.' },
+        { b: '광고 0', d: '1.1에서 광고 SDK를 아예 뺐어요.' },
       ],
     },
     final: {
@@ -121,26 +124,27 @@ export const COPY: Record<Lang, Copy> = {
     shuffle: {
       kicker: 'Shuffle',
       title: 'Not feeling it? Shuffle.',
-      body: 'The backdrop and frame swap within the same family. Stickers you placed yourself stay put.',
+      body: 'Here we threw the subscriber backdrops and frames into the mix too. In the app, shuffle stays within the family of the template you picked, and stickers you placed yourself stay put.',
       button: 'Shuffle',
       popOn: 'Pop-out on',
       popOff: 'Pop-out off',
-      note: 'Go ahead and tap. It’s drawn with the same pieces the app uses.',
+      note: 'Go ahead and tap. These are the exact backdrop and frame files from the app.',
+      wall: 'Backdrop', frame: 'Frame', tiers: { free: 'Free', sub: 'Subscriber', pack: 'Pack' },
     },
     gallery: {
       kicker: 'Pop-out',
       title: 'Every cat sits somewhere else. Every cat pops.',
-      body: 'Wherever your cat is in the photo, the app finds it and sets the size and position. Keep scrolling and seven cats lean out, one after another.',
+      body: 'Wherever your cat is in the photo, the app finds it and sets the size and position. Keep scrolling and eight cats lean out, one after another. Backdrops and frames here are subscriber and pack pieces.',
       honest: 'To be honest: if the head is cut off at the top of the photo, it can’t pop out. In that case we tuck it neatly into the frame.',
     },
     remix: {
       kicker: 'Remix',
       title: 'That look you saw in the feed, on your own photo.',
-      body: 'Tap “Remix” on a post you like and the same backdrop, frame and stickers land on your photo.',
+      body: 'Tap “Remix” on a post you like and the same backdrop, frame, texture and stickers land on your photo.',
       feed: 'Seen in the feed',
       mine: 'Your photo',
       done: 'Remixed',
-      chips: ['Backdrop', 'Frame', '2 stickers'],
+      chips: ['Backdrop', 'Frame', 'Texture', '2 stickers'],
       button: 'Remix',
     },
     more: {
@@ -151,15 +155,17 @@ export const COPY: Record<Lang, Copy> = {
         { t: 'Auto-saved drafts', d: 'Leave mid-edit and pick it up again under Me › Drafts.' },
         { t: 'Right inside the editor', d: 'Buy packs and Churu without leaving the editor.' },
       ],
+      draft: 'Draft', saved: 'Auto-saved', churu: 'Churu',
     },
     honest: {
       title: 'The straight answers',
+      sub: 'Only saying the nice parts would be boring. Here’s what’s good to know up front.',
       items: [
-        'Decorating and the free templates are free.',
-        'Templates with a lock use subscriber-only pieces.',
-        'AI art uses Churu, one per image.',
-        'Pop-out works on iOS 17 or later, when the app can find the cat.',
-        'No ads. Version 1.1 removed the ad SDKs completely.',
+        { b: 'Decorating is free', d: 'Basic decorating and the free templates cost nothing.' },
+        { b: 'Lock = subscription', d: 'Locked templates and subscriber backdrops and frames open up with a subscription.' },
+        { b: '1 Churu = 1 image', d: 'Churu is only for AI art.' },
+        { b: 'iOS 17 or later', d: 'Pop-out works when the app can find the cat in the photo.' },
+        { b: 'Zero ads', d: 'Version 1.1 removed the ad SDKs completely.' },
       ],
     },
     final: {
@@ -197,26 +203,27 @@ export const COPY: Record<Lang, Copy> = {
     shuffle: {
       kicker: 'シャッフル',
       title: 'しっくりこなければ、シャッフル。',
-      body: '背景とフレームが同じ系統の中で入れ替わります。自分で貼ったステッカーはそのまま。',
+      body: 'ここではサブスクで使える背景・フレームまで混ぜてみました。アプリでは選んだテンプレートと同じ系統の中で入れ替わり、自分で貼ったステッカーはそのまま残ります。',
       button: 'シャッフル',
       popOn: '飛び出す オン',
       popOff: '飛び出す オフ',
-      note: '押してみてください。アプリと同じ素材で描いています。',
+      note: '押してみてください。アプリに入っている背景・フレームのファイルそのままです。',
+      wall: '背景', frame: 'フレーム', tiers: { free: '無料', sub: 'サブスク', pack: 'パック' },
     },
     gallery: {
       kicker: '飛び出す',
       title: '猫の場所はそれぞれでも、ぴょこっ。',
-      body: '写真のどこに猫がいても、アプリが位置を見て大きさと場所を合わせます。スクロールすると七匹が順番に顔を出します。',
+      body: '写真のどこに猫がいても、アプリが位置を見て大きさと場所を合わせます。スクロールすると八匹が順番に顔を出します。背景とフレームはサブスク・パックの素材から選びました。',
       honest: '正直に言うと、頭が写真の上で切れているカットは飛び出せません。そのときはフレームにきちんと収めます。',
     },
     remix: {
       kicker: 'まねる',
       title: 'フィードで見たあのデコを、自分の写真に。',
-      body: '気に入った投稿で「まねる」をタップすると、同じ背景・フレーム・ステッカーが自分の写真にそのまま並びます。',
+      body: '気に入った投稿で「まねる」をタップすると、同じ背景・フレーム・テクスチャ・ステッカーが自分の写真にそのまま並びます。',
       feed: 'フィードで見たデコ',
       mine: '自分の写真',
       done: 'まねる完了',
-      chips: ['背景', 'フレーム', 'ステッカー2'],
+      chips: ['背景', 'フレーム', 'テクスチャ', 'ステッカー2'],
       button: 'まねる',
     },
     more: {
@@ -227,15 +234,17 @@ export const COPY: Record<Lang, Copy> = {
         { t: '下書きの自動保存', d: '途中でやめても大丈夫。マイ › 下書きから続けられます。' },
         { t: 'エディターの中で', d: 'パックとチュルをエディターを離れずに購入できます。' },
       ],
+      draft: '下書き', saved: '自動保存済み', churu: 'チュル',
     },
     honest: {
       title: '正直にまとめると',
+      sub: 'いいことばかり言ってもつまらないので。先に知っておくと安心なこと。',
       items: [
-        'デコと無料テンプレートは無料です。',
-        '鍵のついたテンプレートはサブスク用の素材を使います。',
-        'AIアートはチュルを使います。一枚につき一つ。',
-        '飛び出すは iOS 17 以降で、アプリが猫を見つけられたときに使えます。',
-        '広告はありません。1.1 で広告SDKを完全に外しました。',
+        { b: 'デコは無料', d: '基本のデコと無料テンプレートはお金がかかりません。' },
+        { b: '鍵 = サブスク', d: '鍵つきテンプレートとサブスクの背景・フレームは、サブスクで開きます。' },
+        { b: 'チュル1つ = 1枚', d: 'チュルを使うのは AI アートだけです。' },
+        { b: 'iOS 17 以降', d: '飛び出すは、アプリが写真の中の猫を見つけたときに使えます。' },
+        { b: '広告ゼロ', d: '1.1 で広告SDKを完全に外しました。' },
       ],
     },
     final: {
@@ -273,26 +282,27 @@ export const COPY: Record<Lang, Copy> = {
     shuffle: {
       kicker: '随机换',
       title: '不满意？随机换一下。',
-      body: '背景和相框会在同一系列里替换，你自己贴的贴纸保持不动。',
+      body: '这里把订阅才能用的背景和相框也混了进来。在 App 里，随机换只在所选模板的同一系列中替换，你自己贴的贴纸保持不动。',
       button: '随机换',
       popOn: '跃出 开',
       popOff: '跃出 关',
-      note: '点点看。用的是和 App 一样的素材。',
+      note: '点点看。这些就是 App 里的背景和相框文件。',
+      wall: '背景', frame: '相框', tiers: { free: '免费', sub: '订阅', pack: '素材包' },
     },
     gallery: {
       kicker: '跃出',
       title: '每只猫的位置不同，照样探出头。',
-      body: '无论猫咪在照片的哪里，App 都会找到它并调整大小和位置。继续滚动，七只猫会依次探出头来。',
+      body: '无论猫咪在照片的哪里，App 都会找到它并调整大小和位置。继续滚动，八只猫会依次探出头来。这里的背景和相框都选自订阅和素材包。',
       honest: '老实说，如果猫头在照片顶部被裁掉了，就没法跃出。这时我们会把照片乖乖放进相框里。',
     },
     remix: {
       kicker: '套用',
       title: '在动态里看到的装饰，用在自己的照片上。',
-      body: '在喜欢的帖子上点「套用」，相同的背景、相框和贴纸就会铺到你的照片上。',
+      body: '在喜欢的帖子上点「套用」，相同的背景、相框、纹理和贴纸就会铺到你的照片上。',
       feed: '动态里看到的装饰',
       mine: '我的照片',
       done: '套用完成',
-      chips: ['背景', '相框', '贴纸 2'],
+      chips: ['背景', '相框', '纹理', '贴纸 2'],
       button: '套用',
     },
     more: {
@@ -303,15 +313,17 @@ export const COPY: Record<Lang, Copy> = {
         { t: '草稿自动保存', d: '装饰到一半离开也没关系，在「我 › 草稿」里继续。' },
         { t: '在编辑器里直接买', d: '不用离开编辑器就能买素材包和啾噜。' },
       ],
+      draft: '草稿', saved: '已自动保存', churu: '啾噜',
     },
     honest: {
       title: '老实说',
+      sub: '光说好话就没意思了。这些事先知道会更安心。',
       items: [
-        '装饰和免费模板都是免费的。',
-        '带锁的模板使用订阅专属素材。',
-        'AI 艺术使用啾噜，每张图一个。',
-        '跃出需要 iOS 17 及以上，并且 App 能识别出猫咪。',
-        '没有广告。1.1 版已经彻底移除广告 SDK。',
+        { b: '装饰免费', d: '基本装饰和免费模板不花钱。' },
+        { b: '带锁 = 订阅', d: '带锁模板和订阅背景、相框在订阅后解锁。' },
+        { b: '1 个啾噜 = 1 张图', d: '啾噜只用于 AI 艺术。' },
+        { b: 'iOS 17 及以上', d: 'App 在照片里找到猫咪时才能跃出。' },
+        { b: '零广告', d: '1.1 版已经彻底移除广告 SDK。' },
       ],
     },
     final: {
@@ -349,26 +361,27 @@ export const COPY: Record<Lang, Copy> = {
     shuffle: {
       kicker: '隨機換',
       title: '唔啱心水？隨機換。',
-      body: '背景同相框會喺同一系列入面換，你自己貼嘅貼紙唔會郁。',
+      body: '呢度連訂閱先用到嘅背景同相框都撈埋一齊。喺 App 入面，隨機換只會喺揀咗嘅範本同一系列入面換，你自己貼嘅貼紙唔會郁。',
       button: '隨機換',
       popOn: '躍出 開',
       popOff: '躍出 關',
-      note: '試吓撳。用嘅係同 App 一樣嘅素材。',
+      note: '試吓撳。呢啲就係 App 入面嘅背景同相框檔案。',
+      wall: '背景', frame: '相框', tiers: { free: '免費', sub: '訂閱', pack: '素材包' },
     },
     gallery: {
       kicker: '躍出',
       title: '每隻貓嘅位置唔同，一樣探頭。',
-      body: '無論貓仔喺相入面邊度，App 都會搵到佢再調好大小同位置。繼續轆，七隻貓會一隻接一隻探頭出嚟。',
+      body: '無論貓仔喺相入面邊度，App 都會搵到佢再調好大小同位置。繼續轆，八隻貓會一隻接一隻探頭出嚟。呢度嘅背景同相框都係揀自訂閱同素材包。',
       honest: '老實講，如果貓頭喺相片頂部被切咗，就躍唔出嚟。咁我哋會乖乖將相放入相框。',
     },
     remix: {
       kicker: '套用',
       title: '喺動態見到嘅裝飾，用喺自己張相度。',
-      body: '喺鍾意嘅帖文撳「套用」，同樣嘅背景、相框同貼紙就會鋪落你張相度。',
+      body: '喺鍾意嘅帖文撳「套用」，同樣嘅背景、相框、紋理同貼紙就會鋪落你張相度。',
       feed: '動態見到嘅裝飾',
       mine: '我張相',
       done: '套用完成',
-      chips: ['背景', '相框', '貼紙 2'],
+      chips: ['背景', '相框', '紋理', '貼紙 2'],
       button: '套用',
     },
     more: {
@@ -379,15 +392,17 @@ export const COPY: Record<Lang, Copy> = {
         { t: '草稿自動儲存', d: '整到一半走開都唔緊要，喺「我 › 草稿」繼續。' },
         { t: '喺編輯器入面直接買', d: '唔使離開編輯器就可以買素材包同啾嚕。' },
       ],
+      draft: '草稿', saved: '已自動儲存', churu: '啾嚕',
     },
     honest: {
       title: '老老實實講',
+      sub: '淨係講好嘢就冇癮啦。呢啲預先知道會安心啲。',
       items: [
-        '裝飾同免費範本都係免費嘅。',
-        '有鎖嘅範本用嘅係訂閱專用素材。',
-        'AI 藝術用啾嚕，每張圖一個。',
-        '躍出需要 iOS 17 或以上，而且 App 認到隻貓。',
-        '冇廣告。1.1 版已經完全移除廣告 SDK。',
+        { b: '裝飾免費', d: '基本裝飾同免費範本唔使錢。' },
+        { b: '有鎖 = 訂閱', d: '有鎖範本同訂閱背景、相框，訂閱之後就解鎖。' },
+        { b: '1 個啾嚕 = 1 張圖', d: '啾嚕只係用喺 AI 藝術。' },
+        { b: 'iOS 17 或以上', d: 'App 喺相入面搵到隻貓先可以躍出。' },
+        { b: '零廣告', d: '1.1 版已經完全移除廣告 SDK。' },
       ],
     },
     final: {
