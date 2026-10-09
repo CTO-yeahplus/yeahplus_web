@@ -15,6 +15,8 @@ const nextConfig: NextConfig = {
       { source: "/24stills/:page(privacy|terms|support).html", destination: "/24stills/:page" },
       // 선물·그룹 초대 안내는 아직 정적 HTML — 확장자 없는 주소도 받는다.
       { source: "/24stills/:page(gift|group)", destination: "/24stills/:page.html" },
+      // 노티 웹 체험판(1화)은 정적 HTML 한 장이다 (public/noti/demo/index.html) — 확장자 없는 주소도 받는다.
+      { source: "/noti/demo", destination: "/noti/demo/index.html" },
     ];
   },
 };

@@ -19,6 +19,7 @@ const PRODUCTS: { base: string; sub: string[] }[] = [
   { base: "contraptionlab", sub: ["privacy", "support", "terms"] },
   { base: "seodang", sub: ["privacy", "support", "terms"] },
   { base: "hyunja", sub: ["privacy", "support", "terms"] },
+  { base: "noti", sub: ["privacy", "support", "terms"] },
 ];
 
 /** 24STILLS — app/(stills). 폴더 이름이 숫자로 시작할 뿐 다른 제품과 같은 Next 라우트다. */
