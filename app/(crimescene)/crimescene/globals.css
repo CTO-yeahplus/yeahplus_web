@@ -1,4 +1,4 @@
-/* 전설의 조선 사건부 — GAME/APLUS/crimescene/site-react/src/styles.css 를 옮긴 것.
+/* 전설의 조선 사건부 — GAME/APLUS/crimescene/site-react/src/styles.css 를 옮긴 것 (그쪽의 tools/port_site.py 가 쓴다. 여기서 고치지 말 것).
    다른 라우트 그룹과 섞이지 않도록 클래스에 cs-, 색 · 글꼴 변수에 --cs- 프리픽스를 기계적으로 붙였다 (컴포넌트에서는 cx.ts 의 c('이름') 으로 쓴다).
    마우스 자리 · 진행도 변수(--mx --my --nx --ny --r --open --p --n --i --shift)는 JS 가 같은 이름으로 적으므로 그대로다.
    (site) 와 달리 Tailwind 를 쓰지 않는다. 글꼴(고운바탕 · 나눔손글씨 붓)은 layout.tsx 의 next/font 가 --cs-body-font · --cs-brush-font 로 넣는다. */
@@ -50,25 +50,30 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .cs-gate .cs-pin { background: var(--cs-paper); }
 .cs-snow { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .cs-gate .cs-mist { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(233, 223, 200, .55), rgba(233, 223, 200, 0) 26%, rgba(233, 223, 200, 0) 62%, var(--cs-paper)); pointer-events: none; }
-/* 제목은 그림 아래쪽의 빈 눈길 위에 둔다 (성문 위에 얹으면 글자가 묻힌다) */
-.cs-gate .cs-title { position: absolute; left: 0; right: 0; bottom: 14vh; text-align: center; padding: 0 20px; text-shadow: 0 0 18px var(--cs-paper), 0 0 8px var(--cs-paper), 0 0 3px var(--cs-paper); }
-.cs-kicker { margin: 0 0 6px; font-size: clamp(13px, 1.5vw, 17px); font-weight: 700; letter-spacing: .2em; color: var(--cs-accent); }
-.cs-kicker i { display: inline-block; width: .6em; height: .6em; margin-right: .7em; background: var(--cs-accent); transform: rotate(45deg) translateY(-.1em); }
-.cs-gate h1 { margin: 0; font: 400 clamp(64px, 10vw, 150px)/.96 var(--cs-brush); }
-.cs-gate h1 br.cs-m { display: none; }
-html[data-lang=en] .cs-gate h1 { font-size: clamp(44px, 7.2vw, 108px); }
-.cs-gate .cs-lead { margin: 10px 0 0; font-size: clamp(16px, 1.9vw, 23px); line-height: 1.6; color: #2c241b; }
 .cs-hint { position: absolute; left: 0; right: 0; bottom: max(34px, env(safe-area-inset-bottom)); margin: 0; text-align: center; font-size: 13.5px; letter-spacing: .14em; color: var(--cs-ink2); }
 .cs-hint i { display: block; width: 1.5px; height: 34px; margin: 0 auto 10px; background: var(--cs-ink); animation: drop 1.8s ease-in-out infinite; transform-origin: top; }
 @keyframes drop { 0% { transform: scaleY(0); opacity: 0; } 40% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1) translateY(16px); opacity: 0; } }
 .cs-gate .cs-says, .cs-gate .cs-father, .cs-gate .cs-later { position: absolute; left: 0; right: 0; padding: 0 24px; text-align: center; text-shadow: 0 0 16px var(--cs-paper), 0 0 6px var(--cs-paper), 0 0 2px var(--cs-paper); }
 .cs-gate .cs-says { top: 62vh; }
 .cs-gate .cs-says small { display: block; font-size: 12.5px; font-weight: 700; letter-spacing: .2em; color: var(--cs-accent); margin-bottom: 12px; }
-.cs-gate .cs-says p { margin: 0; font-size: clamp(20px, 2.6vw, 34px); }
+.cs-gate .cs-says p { margin: 0; font: 400 clamp(30px, 4.2vw, 58px)/1.3 var(--cs-brush); }   /* 성문 장면의 첫 줄 — 제목 대신 이 장면의 모습이 먼저 나온다 */
 .cs-gate .cs-father { top: 58vh; margin: 0; }
 .cs-gate .cs-father p { margin: 0 0 14px; font: 400 clamp(30px, 4.6vw, 64px)/1.28 var(--cs-brush); }
 .cs-gate .cs-father .cs-cut { font-size: clamp(24px, 3.4vw, 46px); color: var(--cs-accent); }
 .cs-gate .cs-later { top: 36vh; }
+.cs-gate .cs-arrive { position: absolute; inset: 0; pointer-events: none; }
+/* 첫 화면의 포스터. 실루엣의 자리는 맨 아래 받기 포스터(.cs-get .cs-figure)와 같다: --fh 키 · (--fx, --fy) 가슴께(그림의 50% · 62%) — 여기를 중심으로 커진다 */
+.cs-gate .cs-pin { --fh: 100vh; --fx: calc(max(2vw, 26vw - 34vh) + 33.6vh); --fy: 71vh; }
+.cs-veil { position: absolute; left: calc(var(--fx) - 150vmax); top: calc(var(--fy) - 150vmax); width: 300vmax; height: 300vmax; rotate: -3deg; pointer-events: none; will-change: transform;
+  background: radial-gradient(circle at 50% 44%, #cb4331, #a92822 62vmax);
+  -webkit-mask-image: url(/crimescene/img/silhouette.webp), linear-gradient(#000, #000); mask-image: url(/crimescene/img/silhouette.webp), linear-gradient(#000, #000);
+  -webkit-mask-size: calc(var(--fh) * .672) var(--fh), 100% 100%; mask-size: calc(var(--fh) * .672) var(--fh), 100% 100%;
+  -webkit-mask-position: calc(150vmax - var(--fh) * .336) calc(150vmax - var(--fh) * .62), 0 0; mask-position: calc(150vmax - var(--fh) * .336) calc(150vmax - var(--fh) * .62), 0 0;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-composite: xor; mask-composite: exclude; }
+.cs-shade { position: absolute; left: calc(var(--fx) - var(--fh) * .336); top: calc(var(--fy) - var(--fh) * .62); height: var(--fh); width: auto; max-width: none; transform-origin: 50% 62%; rotate: -3deg; pointer-events: none; will-change: transform, opacity; }
+.cs-intro { position: absolute; inset: 0; display: flex; align-items: center; justify-content: flex-end; padding: 12vh 8vw 12vh 0; color: #f6ecd6; }
+.cs-intro .cs-hint { color: #f6ecd6; opacity: .85; }
+.cs-intro .cs-hint i { background: #f6ecd6; }
 .cs-gate .cs-later b { display: block; font: 400 clamp(54px, 9vw, 130px)/1 var(--cs-brush); }
 .cs-gate .cs-later > span { display: block; margin-top: 14px; font-size: clamp(16px, 1.9vw, 22px); color: var(--cs-ink2); }
 
@@ -179,23 +184,31 @@ html[data-lang=en] .cs-hand { font-size: clamp(22px, 2.9vw, 32px); }
 .cs-note .cs-under { position: relative; margin: 0; max-width: 34em; text-align: center; font-size: clamp(15px, 1.6vw, 18px); color: #e9dfc8; }
 
 /* ── 8. 띠 */
-.cs-band { overflow: hidden; padding: 26px 0; background: var(--cs-accent); color: #f6ecd6; }
+.cs-band { overflow: hidden; padding: 26px 0; background: #1c1713; color: #f3ead2; }   /* 띠는 먹색 — 붉은 화면은 바로 아래의 포스터 한 번뿐이다 */
 .cs-belt { display: flex; width: max-content; white-space: nowrap; will-change: transform; }
 .cs-belt > span { display: inline-flex; align-items: center; font: 400 clamp(30px, 4.2vw, 56px)/1 var(--cs-brush); }
-.cs-belt > span > i { display: inline-block; width: .32em; height: .32em; margin: 0 .8em; background: #f6ecd6; transform: rotate(45deg); opacity: .7; }
+.cs-belt > span > i { display: inline-block; width: .32em; height: .32em; margin: 0 .8em; background: var(--cs-accent); transform: rotate(45deg); }
 
-/* ── 9. 받기 */
-.cs-get { display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 4vw; padding: 12vh 8vw; background: var(--cs-paper) radial-gradient(120% 90% at 50% 40%, #f1e8d1, #e2d6ba 78%, #d6c8a8); }
-.cs-shots { display: flex; justify-content: center; }
-.cs-shots img { width: 31%; margin: 0 -3%; border-radius: 16px; border: 2px solid var(--cs-ink); box-shadow: 8px 10px 0 rgba(26, 21, 18, .3); }
-.cs-cta .cs-icon { border-radius: 21px; box-shadow: 5px 6px 0 rgba(26, 21, 18, .3); }
-.cs-cta h2 { margin: 16px 0 6px; font: 400 clamp(44px, 5.6vw, 76px)/1.05 var(--cs-brush); }
-.cs-cta > p { margin: 0 0 20px; max-width: 26em; }
-.cs-store { display: inline-block; padding: 12px 30px; font-weight: 700; font-size: 18px; text-decoration: none; color: var(--cs-ink); background: var(--cs-gold); border: 2px solid var(--cs-ink); box-shadow: 6px 6px 0 rgba(26, 21, 18, .8); }
-.cs-store.cs-soon { background: var(--cs-paper2); color: var(--cs-ink2); }
-.cs-facts { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; padding: 0; list-style: none; }
-.cs-facts li { padding: 2px 12px; font-size: 13.5px; border: 1.5px solid var(--cs-ink); background: var(--cs-paper2); }
-.cs-cta .cs-fine { margin-top: 20px; font-size: 13.5px; color: var(--cs-ink2); }
+/* ── 9. 앱 화면 */
+.cs-shots { padding: 12vh 8vw 13vh; text-align: center; background: var(--cs-paper) radial-gradient(120% 90% at 50% 40%, #f1e8d1, #e2d6ba 78%, #d6c8a8); }
+.cs-shots .cs-head { margin: 0 0 7vh; }
+.cs-shots .cs-row { display: flex; justify-content: center; }
+.cs-shots .cs-row img { width: min(250px, 27vw); margin: 0 -1.5vw; border-radius: 16px; border: 2px solid var(--cs-ink); box-shadow: 8px 10px 0 rgba(26, 21, 18, .3); }
+
+/* ── 10. 받기: 주홍 포스터 (앱 아이콘과 같은 그림). 실루엣은 왼쪽 아래에 닻을 내리고, 모자 꼭대기가 잘리지 않게 높이로 맞춘다 */
+.cs-get { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: flex-end; min-height: 100vh; min-height: 100svh; padding: 12vh 8vw 12vh 0; background: radial-gradient(circle at 30% 42%, #cb4331, #a92822 78%); color: #f6ecd6; }
+.cs-get .cs-figure { position: absolute; left: max(2vw, calc(26vw - 34vh)); bottom: -9vh; height: 100vh; width: auto; max-width: none; rotate: -3deg; filter: drop-shadow(1.4vh 1.6vh 0 rgba(26, 21, 18, .18)); pointer-events: none; }
+.cs-cta { position: relative; width: min(560px, 44vw); }
+.cs-cta .cs-kicker2 { margin: 0 0 4px; color: #f6ecd6; opacity: .9; }
+.cs-cta :is(h1, h2) { margin: 0 0 14px; font: 400 clamp(60px, 8.4vw, 132px)/1 var(--cs-brush); }
+html[data-lang=en] .cs-cta :is(h1, h2) { font-size: clamp(46px, 6.2vw, 96px); }
+.cs-cta > p { margin: 0 0 24px; max-width: 24em; font-size: clamp(16px, 1.5vw, 19px); }
+.cs-store { display: inline-block; padding: 13px 32px; font-weight: 700; font-size: 18px; text-decoration: none; color: var(--cs-ink); background: var(--cs-gold); border: 2px solid var(--cs-ink); box-shadow: 6px 6px 0 rgba(26, 21, 18, .75); }
+.cs-store.cs-soon { background: #f3ead2; color: var(--cs-ink2); }
+.cs-facts { display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 0; padding: 0; list-style: none; }
+.cs-facts li { padding: 2px 12px; font-size: 13.5px; border: 1.5px solid rgba(246, 236, 214, .75); }
+.cs-cta .cs-fine { margin-top: 20px; font-size: 13.5px; opacity: .82; }
+.cs-cta .cs-fine a { color: inherit; }
 
 /* ── 옆 줄 */
 .cs-rail { position: fixed; z-index: 40; right: max(12px, env(safe-area-inset-right)); top: 22vh; height: 56vh; width: 2px; pointer-events: none; mix-blend-mode: difference; }
@@ -235,10 +248,6 @@ html[data-lang=en] .cs-hand { font-size: clamp(22px, 2.9vw, 32px); }
 @media (max-width: 760px) {
   body { font-size: 16px; }
   .cs-nav .cs-brand b { font-size: 20px; }
-  .cs-gate h1 { font-size: 19vw; }
-  .cs-gate h1 br.cs-m { display: block; }
-  html[data-lang=en] .cs-gate h1 { font-size: 13.5vw; }
-  .cs-gate .cs-title { bottom: 16vh; }
   .cs-nav .cs-links a { padding: 4px 6px; font-size: 13.5px; }
   .cs-page-home .cs-nav .cs-brand b, html[data-lang=en] .cs-nav .cs-brand b { display: none; }   /* 영어 이름은 길어서 폰 너비에서 메뉴를 밀어낸다 → 아이콘만 */
   .cs-nav { gap: 6px; }
@@ -255,7 +264,18 @@ html[data-lang=en] .cs-hand { font-size: clamp(22px, 2.9vw, 32px); }
   .cs-voice q { font-size: 13px; }
   .cs-verdict { min-height: 110px; font-size: 14.5px; }
   .cs-dusk .cs-lines { bottom: 10vh; }
-  .cs-get { grid-template-columns: 1fr; padding: 9vh 7vw; gap: 6vh; }
+  .cs-shots { padding: 9vh 6vw 10vh; }
+  .cs-shots .cs-row img { width: 31vw; margin: 0 -2vw; border-radius: 11px; }
+  /* 폰: 실루엣이 위, 글이 아래. 실루엣은 아래쪽이 글 뒤로 잠긴다 */
+  .cs-get { display: block; min-height: 0; padding: 0 7vw 9vh; }
+  /* 폰의 첫 화면: 실루엣이 위 가운데, 글이 아래 */
+  .cs-gate .cs-pin { --fh: 100vw; --fx: 50vw; --fy: calc(6vh + 62vw); }
+  .cs-intro { align-items: flex-end; justify-content: flex-start; padding: 0 7vw 13vh; }
+  .cs-intro .cs-cta h1 { font-size: 15vw; }
+  .cs-get .cs-figure { position: relative; left: auto; bottom: auto; display: block; height: auto; width: 82vw; margin: 5vh auto -30vw; -webkit-mask-image: linear-gradient(#000 62%, transparent 96%); mask-image: linear-gradient(#000 62%, transparent 96%); }
+  .cs-cta { width: auto; }
+  .cs-cta :is(h1, h2) { font-size: 17vw; }
+  html[data-lang=en] .cs-cta :is(h1, h2) { font-size: 12.5vw; }
   .cs-rail { right: 6px; }
 }
 @media (max-height: 640px) { .cs-council h2 { font-size: 30px; } .cs-voice q { display: none; } }

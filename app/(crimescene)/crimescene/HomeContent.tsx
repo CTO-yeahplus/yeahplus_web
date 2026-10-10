@@ -2,7 +2,7 @@
 
 /* 전설의 조선 사건부 랜딩 — 원본: GAME/APLUS/crimescene/site-react/src/pages/Home.jsx.
    바뀐 것: framer-motion 가져오기, 타입, 클래스는 c('이름')(cs- 프리픽스), 위아래 줄은 layout 의 SiteShell 이 그린다.
-   ⚠️ 이 파일은 tools/port 스크립트 없이 손으로 맞춘 사본이다 — 원본을 고치면 여기도 같이 고친다. */
+   ⚠️ 이 파일은 그쪽의 tools/port_site.py 가 쓴다. 여기서 고치지 말고 원본을 고친 뒤 다시 옮긴다. */
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useVelocity, useMotionValue, useMotionValueEvent, useAnimationFrame, type MotionValue } from 'framer-motion';
@@ -13,7 +13,8 @@ import { c } from './cx';
 // ─────────────────────────────────────────────────────────────
 // 랜딩 — 휠을 굴리면 이야기가 한 장씩 넘어간다.
 // 눈 온 새벽의 성문(열다섯 해 전) → 성문 안으로 → 사건부가 펴진다 → 등불로 현장을 비춘다 → 사람들 → 의논(직접 고른다)
-// → 해가 진다(기한) → 여덟 화 → 아버지의 글(먹이 번지듯 드러난다) → 받기.
+// → 해가 진다(기한) → 여덟 화 → 아버지의 글(먹이 번지듯 드러난다) → 앱 화면 → 받기(주홍 포스터).
+// 갓 실루엣과 주홍은 페이지의 앞뒤에만 쓴다: 첫 화면의 포스터(실루엣이 커지며 이야기로 들어간다)와 마지막 받기 포스터. 그 사이는 종이와 먹이다.
 // 장면마다 화면에 붙어 있는 구간(.pin, sticky)이 있고, 그 구간의 스크롤 진행도(0~1)가 그림과 글을 움직인다. 마우스는 등불과 책의 기울기를 움직인다.
 // ─────────────────────────────────────────────────────────────
 
@@ -67,35 +68,59 @@ function Snow({ wind }: { wind: MV }) {
   return <canvas className={c('snow')} ref={cv} aria-hidden="true" />;
 }
 
-// ── 0. 성문 (열다섯 해 전 → 열다섯 해 뒤). 굴리면 성문 안으로 걸어 들어간다
+// ── 0. 포스터 → 성문 (열다섯 해 전 → 열다섯 해 뒤)
+// 첫 화면은 맨 아래 받기 영역과 같은 주홍 포스터다 (페이지가 같은 그림으로 열리고 닫힌다).
+// 굴리면 검은 실루엣이 커지면서 그 안이 비쳐 성문 장면이 보이고, 실루엣이 화면을 다 덮으면 이야기가 시작된다.
+//   · .veil = 실루엣 모양의 구멍이 뚫린 주홍 막, .shade = 그 구멍을 메운 검은 실루엣. 둘이 같은 점(가슴께)을 중심으로 함께 커진다
+//   · 구멍은 CSS 마스크로 뚫고 크기는 transform 으로만 바꾼다 (마스크를 프레임마다 다시 그리지 않는다)
+//   · 진행도: q = 포스터가 걷히는 구간(앞 30%) · g = 그 뒤 성문 장면의 진행도
 function Gate() {
   const [ref, p] = useScene();
-  const s = useSpring(p, { stiffness: 120, damping: 30 });
+  const { lang } = useLang();
+  const store = appStoreUrl(lang);
+  const q: MV = R<number>(p, [0, 0.3], [0, 1]);
+  const g = useTransform(p, (v) => Math.max(0, (v - 0.3) / 0.7));
+  const s = useSpring(g, { stiffness: 120, damping: 30 });
   const { scrollY } = useScroll();
   const wind = useSpring(useVelocity(scrollY), { stiffness: 200, damping: 40 });
+  const zoom = useTransform(q, (v) => 1 + 10 * Math.pow(v, 2.3));
+  const intro = useRef<HTMLDivElement | null>(null);
+  useMotionValueEvent(q, 'change', (v) => { if (intro.current) intro.current.style.pointerEvents = v > 0.12 ? 'none' : ''; });
   return (
-    <section ref={ref} className={c('scene gate')} style={{ height: '300vh' }}>
+    <section ref={ref} className={c('scene gate')} style={{ height: '430vh' }}>
       <div className={c('pin')}>
         <motion.img className={c('bg')} src={img('gate.webp')} alt="" style={{ scale: R(s, [0, 0.62, 1], [1.04, 1.7, 4.6]), opacity: R(s, [0, 0.82, 0.97], [1, 1, 0]), transformOrigin: '49% 57%' }} />
         <Snow wind={wind} />
         <div className={c('mist')} />
-        <motion.div className={c('title')} style={{ opacity: R(s, [0, 0.16], [1, 0]), y: R(s, [0, 0.18], [0, -70]) }}>
-          <p className={c('kicker')}><i /><L ko="증거로 푸는 조선 수사 이야기" en="A JOSEON-ERA DETECTIVE STORY" /></p>
-          <h1><L ko={<>전설의 <br className={c('m')} />조선 사건부</>} en={<>Legendary <br className={c('m')} />Joseon Casebook</>} /></h1>
-          <LB as="p" className={c('lead')} ko={<>아버지가 남긴 사건부.<br />풀지 못한 사건은 이제 내가 푼다.</>} en={<>Your father left a casebook of unsolved cases.<br />Now they are yours.</>} />
+        {/* 제목은 포스터에서 이미 나왔다 — 성문 장면은 제목 없이 때 · 곳 · 그 자리의 모습으로 바로 들어간다. 포스터가 거의 걷힌 뒤에 나타난다 */}
+        <motion.div className={c('arrive')} style={{ opacity: R(q, [0.72, 0.98], [0, 1]) }}>
+          <motion.div className={c('says')} style={{ opacity: R(s, [0.22, 0.3], [1, 0]), y: R(s, [0.22, 0.3], [0, -30]) }}>
+            <small><L ko="열다섯 해 전 · 섣달 · 동틀 녘 · 숭례문 밖" en="FIFTEEN YEARS AGO · WINTER DAWN · OUTSIDE THE SOUTH GATE" /></small>
+            <p><L ko="귀양 가는 아버지가 열 살 난 아이에게 책 한 권을 안긴다." en="A father on his way to exile presses a book into his ten-year-old son’s arms." /></p>
+          </motion.div>
+          <motion.p className={c('hint')} style={{ opacity: R(s, [0, 0.06], [1, 0]) }}><i /><L ko="휠을 굴리면 성문으로 들어선다" en="Scroll to walk through the gate" /></motion.p>
         </motion.div>
-        <motion.p className={c('hint')} style={{ opacity: R(s, [0, 0.06], [1, 0]) }}><i /><L ko="휠을 굴리면 성문으로 들어선다" en="Scroll to walk through the gate" /></motion.p>
-        <motion.div className={c('says')} style={pass(s, 0.2, 0.28, 0.4, 0.47)}>
-          <small><L ko="열다섯 해 전 · 섣달 · 동틀 녘 · 숭례문 밖" en="FIFTEEN YEARS AGO · WINTER DAWN · OUTSIDE THE SOUTH GATE" /></small>
-          <p><L ko="귀양 가는 아버지가 열 살 난 아이에게 책 한 권을 안긴다." en="A father on his way to exile presses a book into his ten-year-old son’s arms." /></p>
-        </motion.div>
-        <motion.blockquote className={c('father')} style={pass(s, 0.46, 0.54, 0.68, 0.75)}>
+        <motion.blockquote className={c('father')} style={pass(s, 0.32, 0.4, 0.62, 0.7)}>
           <LB as="p" ko={<>“첫 장만 읽어라.<br />뒷장은 네 눈으로 주검 앞에 서 본 뒤에 펴거라.”</>} en={<>“Read only the first page.<br />Open the rest after you have stood before the dead with your own eyes.”</>} />
           <LB as="p" className={c('cut')} ko="“본 대로 적어라. 그리고 무원아…”" en="“Write what you see. And Mu-won…”" />
         </motion.blockquote>
         <motion.div className={c('later')} style={{ opacity: R(s, [0.78, 0.86, 0.95, 1], [0, 1, 1, 0]), scale: R(s, [0.78, 1], [0.94, 1.08]) }}>
           <b><L ko="열다섯 해 뒤" en="Fifteen years later" /></b>
           <span><L ko="책 한 권을 품에 넣은 젊은이가 그 문으로 들어선다" en="A young man walks in through that gate, the book inside his coat" /></span>
+        </motion.div>
+        {/* 포스터: 주홍 막(실루엣 구멍) + 구멍을 메운 검은 실루엣 + 제목 */}
+        <motion.div className={c('veil')} style={{ scale: zoom, opacity: R(q, [0.9, 1], [1, 0]) }} />
+        <motion.img className={c('shade')} src={img('silhouette.webp')} alt="" style={{ scale: zoom, opacity: R(q, [0.04, 0.46], [1, 0]) }} />
+        <motion.div className={c('intro')} ref={intro} style={{ opacity: R(q, [0, 0.2], [1, 0]), x: R(q, [0, 0.24], [0, 70]) }}>
+          <div className={c('cta')}>
+            <p className={c('kicker2')}><L ko="증거로 푸는 조선 수사 이야기" en="A JOSEON-ERA DETECTIVE STORY" /></p>
+            <h1><L ko={<>전설의<br />조선 사건부</>} en={<>Legendary<br />Joseon Casebook</>} /></h1>
+            <LB as="p" ko={<>아버지가 남긴 사건부.<br />풀지 못한 사건은 이제 내가 푼다.</>} en={<>Your father left a casebook of unsolved cases.<br />Now they are yours.</>} />
+            {store
+              ? <a className={c('store')} href={store} target="_blank" rel="noreferrer"><L ko="App Store 에서 받기" en="Download on the App Store" /></a>
+              : <span className={c('store soon')}><L ko="App Store 출시 준비 중" en="Coming soon to the App Store" /></span>}
+          </div>
+          <p className={c('hint')}><i /><L ko="휠을 굴리면 이야기가 시작된다" en="Scroll to begin" /></p>
         </motion.div>
       </div>
     </section>
@@ -140,7 +165,7 @@ function Book() {
             <div className={c('block')} />
             <div className={c('leaf first')} style={{ backgroundImage: `url(${img('book_page.webp')})` }}>
               <motion.h2 style={{ opacity: R(p, [0.56, 0.68], [0, 1]) }}><L ko="원통한 이가 없게 하라" en="Let no one be wronged" /></motion.h2>
-              {/* 낙관은 그림이다 (GAME/APLUS/crimescene/tools/make_seal.js) — CSS 로 그린 붉은 네모는 단추처럼 보였다. 종이에 눌러 찍듯 빠르게 나타난다 */}
+              {/* 낙관은 그림이다 (tools/make_seal.js) — CSS 로 그린 붉은 네모는 단추처럼 보였다. 종이에 눌러 찍듯 빠르게 나타난다 */}
               <motion.img className={c('seal')} src={img('seal_muwon.webp')} alt="無冤" style={{ opacity: R(p, [0.68, 0.705], [0, 0.96]), scale: R(p, [0.68, 0.73], [1.22, 1]) }} />
               <motion.p style={{ opacity: R(p, [0.74, 0.82], [0, 1]) }}><L ko="없을 무, 원통할 원. 그 아이의 이름이다." en="Mu-won: “let no one be wronged.” It is the boy’s name." /></motion.p>
               <motion.div className={c('cast')} style={{ opacity: R(p, [0.16, 0.4, 0.66], [0, 0.6, 0]) }} />
@@ -372,18 +397,30 @@ function Band() {
   );
 }
 
-// ── 9. 받기
+// ── 9. 앱 화면 (종이 위에 석 장)
+function Shots() {
+  return (
+    <section className={c('shots paper')}>
+      <p className={c('head')}><L ko="손안의 사건부" en="The casebook in your hand" /></p>
+      <div className={c('row')}>
+        {[1, 2, 3].map((n) => <motion.img key={n} src={img(`shot${n}.webp`)} alt="" loading="lazy" initial={{ opacity: 0, y: 60, rotate: (n - 2) * 5 }} whileInView={{ opacity: 1, y: n === 2 ? -18 : 0, rotate: (n - 2) * 5 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.7, delay: n * 0.12 }} />)}
+      </div>
+    </section>
+  );
+}
+
+// ── 10. 받기 — 주홍 포스터. 앱 아이콘과 같은 그림(주홍 바탕의 갓 실루엣)으로 페이지를 닫는다. 붉은 화면은 여기 한 번뿐이다
 function Get() {
   const { lang } = useLang();
   const store = appStoreUrl(lang);
+  const ref = useRef<HTMLElement | null>(null);
+  const { scrollYProgress: p } = useScroll({ target: ref, offset: ['start end', 'end end'] });
   return (
-    <section className={c('get paper')} id="get">
-      <div className={c('shots')}>
-        {[1, 2, 3].map((n) => <motion.img key={n} src={img(`shot${n}.webp`)} alt="" loading="lazy" initial={{ opacity: 0, y: 60, rotate: (n - 2) * 5 }} whileInView={{ opacity: 1, y: n === 2 ? -18 : 0, rotate: (n - 2) * 5 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.7, delay: n * 0.12 }} />)}
-      </div>
+    <section ref={ref} className={c('get')} id="get">
+      <motion.img className={c('figure')} src={img('silhouette.webp')} alt="" style={{ y: R(p, [0, 1], ['16%', '0%']), opacity: R(p, [0, 0.35], [0, 1]) }} />
       <div className={c('cta')}>
-        <img className={c('icon')} src={img('icon-180.png')} alt="" width="92" height="92" />
-        <h2><L ko="전설의 조선 사건부" en="Legendary Joseon Casebook" /></h2>
+        <p className={c('kicker2')}><L ko="증거로 푸는 조선 수사 이야기" en="A JOSEON-ERA DETECTIVE STORY" /></p>
+        <h2><L ko={<>전설의<br />조선 사건부</>} en={<>Legendary<br />Joseon Casebook</>} /></h2>
         <LB as="p" ko="1화와 2화는 무료. 3화부터 8화까지는 시즌 1 — 한 번 구매로 모두 열립니다." en="Episodes 1 and 2 are free. Episodes 3–8 are Season 1 — one purchase unlocks them all." />
         {store
           ? <a className={c('store')} href={store} target="_blank" rel="noreferrer"><L ko="App Store 에서 받기" en="Download on the App Store" /></a>
@@ -420,6 +457,7 @@ export default function HomeContent() {
       <Dusk />
       <Episodes />
       <Note />
+      <Shots />
       <Band />
       <Get />
     </>
