@@ -64,13 +64,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .cs-gate .cs-arrive { position: absolute; inset: 0; pointer-events: none; }
 /* 첫 화면의 포스터. 실루엣의 자리는 맨 아래 받기 포스터(.cs-get .cs-figure)와 같다: --fh 키 · (--fx, --fy) 가슴께(그림의 50% · 62%) — 여기를 중심으로 커진다 */
 .cs-gate .cs-pin { --fh: 100vh; --fx: calc(max(2vw, 26vw - 34vh) + 33.6vh); --fy: 71vh; }
-.cs-veil { position: absolute; left: calc(var(--fx) - 150vmax); top: calc(var(--fy) - 150vmax); width: 300vmax; height: 300vmax; rotate: -3deg; pointer-events: none; will-change: transform;
+/* 이름 주의: .cs-veil · .cs-shade 는 다른 장면(해 질 때까지 · 현장 · 밤)의 어두운 막이다 — 같은 이름을 쓰면 그 장면들이 주홍으로 덮인다 */
+.cs-gate .cs-curtain { position: absolute; left: calc(var(--fx) - 150vmax); top: calc(var(--fy) - 150vmax); width: 300vmax; height: 300vmax; rotate: -3deg; pointer-events: none; will-change: transform;
   background: radial-gradient(circle at 50% 44%, #cb4331, #a92822 62vmax);
   -webkit-mask-image: url(/crimescene/img/silhouette.webp), linear-gradient(#000, #000); mask-image: url(/crimescene/img/silhouette.webp), linear-gradient(#000, #000);
   -webkit-mask-size: calc(var(--fh) * .672) var(--fh), 100% 100%; mask-size: calc(var(--fh) * .672) var(--fh), 100% 100%;
   -webkit-mask-position: calc(150vmax - var(--fh) * .336) calc(150vmax - var(--fh) * .62), 0 0; mask-position: calc(150vmax - var(--fh) * .336) calc(150vmax - var(--fh) * .62), 0 0;
   -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-composite: xor; mask-composite: exclude; }
-.cs-shade { position: absolute; left: calc(var(--fx) - var(--fh) * .336); top: calc(var(--fy) - var(--fh) * .62); height: var(--fh); width: auto; max-width: none; transform-origin: 50% 62%; rotate: -3deg; pointer-events: none; will-change: transform, opacity; }
+.cs-gate .cs-inkman { position: absolute; left: calc(var(--fx) - var(--fh) * .336); top: calc(var(--fy) - var(--fh) * .62); height: var(--fh); width: auto; max-width: none; transform-origin: 50% 62%; rotate: -3deg; pointer-events: none; will-change: transform, opacity; }
 .cs-intro { position: absolute; inset: 0; display: flex; align-items: center; justify-content: flex-end; padding: 12vh 8vw 12vh 0; color: #f6ecd6; }
 .cs-intro .cs-hint { color: #f6ecd6; opacity: .85; }
 .cs-intro .cs-hint i { background: #f6ecd6; }

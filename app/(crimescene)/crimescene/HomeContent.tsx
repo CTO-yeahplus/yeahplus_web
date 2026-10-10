@@ -109,8 +109,8 @@ function Gate() {
           <span><L ko="책 한 권을 품에 넣은 젊은이가 그 문으로 들어선다" en="A young man walks in through that gate, the book inside his coat" /></span>
         </motion.div>
         {/* 포스터: 주홍 막(실루엣 구멍) + 구멍을 메운 검은 실루엣 + 제목 */}
-        <motion.div className={c('veil')} style={{ scale: zoom, opacity: R(q, [0.9, 1], [1, 0]) }} />
-        <motion.img className={c('shade')} src={img('silhouette.webp')} alt="" style={{ scale: zoom, opacity: R(q, [0.04, 0.46], [1, 0]) }} />
+        <motion.div className={c('curtain')} style={{ scale: zoom, opacity: R(q, [0.9, 1], [1, 0]) }} />
+        <motion.img className={c('inkman')} src={img('silhouette.webp')} alt="" style={{ scale: zoom, opacity: R(q, [0.04, 0.46], [1, 0]) }} />
         <motion.div className={c('intro')} ref={intro} style={{ opacity: R(q, [0, 0.2], [1, 0]), x: R(q, [0, 0.24], [0, 70]) }}>
           <div className={c('cta')}>
             <p className={c('kicker2')}><L ko="증거로 푸는 조선 수사 이야기" en="A JOSEON-ERA DETECTIVE STORY" /></p>
