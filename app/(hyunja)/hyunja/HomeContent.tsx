@@ -8,7 +8,8 @@
  *  · 구절 한 장: 원문 → 음독 → 번역 → 풀이를 눌러 층층이 펼친다
  *  · 필사: 한글 줄 공책 / 한문 원고지 전환 · 낙관 · 어록 · 카드 · 프라이버시
  * 본문과 구절은 앱의 content.json(파일럿 w1 '나를 함부로 대하는 사람이 있을 때')과
- * docs/METADATA_KO.md 문안을 그대로 가져왔다. 수량(고민·구절 편수)은 정식판 확정 전이라 적지 않는다.
+ * docs/METADATA_KO.md 문안을 그대로 가져왔다. 수량(고민 40·구절 160)은 정식판 초안(content.json 1.0-draft, 10/13)
+ * 기준이고 앱의 site/hyunja/index.html 과 같다. 감수로 편수가 바뀌면 여기도 고친다.
  * 화면 사진은 앱 웹 빌드(web/index.html)를 아이폰 크기로 띄워 그대로 찍은 것이다.
  */
 
@@ -117,6 +118,7 @@ function Hero() {
           </a>
         </Reveal>
         <Reveal as="ul" className="hj-pills" delay={300}>
+          <li>{L('고민 40 · 구절 160', '40 worries · 160 passages')}</li>
           <li>{L('한 번 구매', 'Buy once')}</li>
           <li>{L('광고 없음', 'No ads')}</li>
           <li>{L('회원 가입 없음', 'No account')}</li>
@@ -324,8 +326,8 @@ function RoundTable() {
             </div>
             <p className="hj-table-note">
               {L(
-                '네 사람의 답은 서로 다릅니다. 같은 고민에 곧게 맞서라는 말과 내려놓으라는 말이 함께 놓입니다. 어느 쪽이 지금 나에게 맞는지 고르면 됩니다.',
-                'The four answers disagree. “Stand straight” and “let it go” sit side by side on the same worry — you choose the one that fits you today.'
+                '네 사람의 답은 서로 다릅니다. 같은 고민에 곧게 맞서라는 말과 내려놓으라는 말이 함께 놓입니다. 어느 쪽이 지금 나에게 맞는지 고르면 됩니다. 고민 40가지마다 네 현자의 구절을 하나씩, 모두 160편을 실었습니다.',
+                'The four answers disagree. “Stand straight” and “let it go” sit side by side on the same worry — you choose the one that fits you today. Forty worries, one passage from each sage on every one: 160 in all.'
               )}
             </p>
           </div>
@@ -842,7 +844,7 @@ function Buy() {
             {L('사면 끝. 그다음은 없습니다.', 'Buy it once. That is the end of it.')}
           </h2>
           <ul>
-            <li>{L('한 번 구매로 모든 내용을 봅니다', 'One purchase opens everything')}</li>
+            <li>{L('한 번 구매로 고민 40가지 · 구절 160편을 모두 봅니다', 'One purchase opens all 40 worries and 160 passages')}</li>
             <li>{L('구독도, 앱 안 추가 결제도 없습니다', 'No subscription and no in-app purchases')}</li>
             <li>{L('광고가 없습니다', 'No advertising')}</li>
             <li>{L('글자 크기 세 단계 · 어두운 화면 지원', 'Three text sizes and a dark screen')}</li>

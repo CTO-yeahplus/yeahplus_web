@@ -21,12 +21,19 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     url: '/hyunja',
     title: TITLE,
-    description: '고민 하나에 네 현자의 답 · 필사 · 나의 어록. 한 번 구매 · 광고 없음 · 회원 가입 없음.',
+    description: '고민 40가지에 네 현자의 답 160편 · 필사 · 나의 어록. 한 번 구매 · 광고 없음 · 회원 가입 없음.',
     type: 'website',
     images: [{ url: '/hyunja/og.jpg', width: 1200, height: 630 }],
   },
   twitter: { card: 'summary_large_image' },
-  icons: { icon: '/hyunja/icon-512.png', apple: '/hyunja/icon-512.png' },
+  // 앱 아이콘(책꽂이의 네 권 + 賢 인장) — 앱 프로젝트 site/web-icons 에서 그대로 가져왔다
+  icons: {
+    icon: [
+      { url: '/hyunja/favicon.ico', sizes: 'any' },
+      { url: '/hyunja/favicon-32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: '/hyunja/apple-touch-icon.png',
+  },
 };
 
 export const viewport: Viewport = { themeColor: '#F4EFE4' };
