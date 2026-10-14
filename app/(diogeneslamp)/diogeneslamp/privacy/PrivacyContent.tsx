@@ -1,0 +1,193 @@
+'use client';
+
+/* 디오게네스의 등불 개인정보 처리방침 — hyunja·seodang 의 처리방침과 같은 뼈대로 새로 썼다.
+   '이 웹사이트' 항목은 crimescene/privacy 4번의 문장을 그대로 옮겼다(이 라우트도 Vercel Analytics · Speed Insights 를 싣는다).
+   ⚠️ 이 주소가 App Store Connect 의 개인정보 처리방침 URL 이다.
+   앱의 실제 동작 · PrivacyInfo · ASC App Privacy("데이터를 수집하지 않음")와 반드시 일치해야 한다.
+   저장 위치: 앱 저장소 + Documents/diogeneslamp/save.json (iCloud·기기 백업에 포함될 수 있음). */
+
+import Link from 'next/link';
+import { APP_EN, APP_KO, BIZ, COMPANY_EN, COMPANY_KO, MAIL, useDocTitle, useLang } from '../i18n';
+
+const EFFECTIVE_KO = '2026년 10월 14일';
+const EFFECTIVE_EN = 'October 14, 2026';
+
+export default function PrivacyContent() {
+  const { L } = useLang();
+  useDocTitle(`개인정보 처리방침 — ${APP_KO}`, `Privacy Policy — ${APP_EN}`);
+  const COMPANY = L(COMPANY_KO, COMPANY_EN);
+
+  return (
+    <div className="dl-wrap dl-narrow dl-doc">
+      <h1>{L('개인정보 처리방침', 'Privacy Policy')}</h1>
+      <p className="dl-meta">
+        {L(`시행일 ${EFFECTIVE_KO} · ${COMPANY}`, `Effective ${EFFECTIVE_EN} · ${COMPANY}`)}
+      </p>
+
+      <div className="dl-callout">
+        <p>
+          <strong>{L('요약 — 개인정보를 수집하지 않습니다.', 'In short — we collect no personal data.')}</strong>
+        </p>
+        <p>
+          {L(
+            '디오게네스의 등불에는 계정과 로그인이 없고, 광고·분석·크래시 보고 도구가 들어 있지 않으며, 회사 서버도 없습니다. 앱은 스스로 네트워크 요청을 하지 않습니다. 진행 기록은 사용자의 기기 안에만 저장되고, 회사는 볼 수 없습니다.',
+            'Diogenes’ Lamp has no account and no login, contains no advertising, analytics or crash-reporting tools, and talks to no server of ours. The app makes no network requests of its own. Your progress is stored only on your device, where we cannot see it.'
+          )}
+        </p>
+      </div>
+
+      <h2>{L('1. 수집하는 정보', '1. Information we collect')}</h2>
+      <p>
+        {L(
+          '없습니다. 이름·연락처·기기 식별자·광고 식별자·위치·사용 기록을 수집하지 않고, 사용자를 추적하지 않습니다. 앱에는 회사 서버와 통신하는 기능이 없으며, 앱이 스스로 네트워크 요청을 하지 않는지는 빌드 단계에서 검사합니다.',
+          'None. We do not collect names, contact details, device or advertising identifiers, location or usage records, and we do not track you. The app has no code that talks to a server of ours, and every build is checked to confirm that it makes no network requests of its own.'
+        )}
+      </p>
+
+      <h2>{L('2. 기기 안에 저장되는 것', '2. What is stored on your device')}</h2>
+      <table className="dl-table-doc">
+        <thead>
+          <tr>
+            <th>{L('무엇', 'What')}</th>
+            <th>{L('어디에', 'Where')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              {L(
+                '진행 기록 — 이름표에 적은 이름, 정답·별·검거 기록, 저녁 성찰 메모, 담아 둔 구절',
+                'Your progress — the name on your bookplate, your answers, stars and forgers caught, your evening review notes and the passages you kept'
+              )}
+            </td>
+            <td>
+              {L(
+                <>
+                  사용자 기기의 앱 저장 공간과, 앱의 Documents 폴더에 있는 파일 하나(
+                  <code>diogeneslamp/save.json</code>)
+                </>,
+                <>
+                  The app’s storage on your device, and one file in the app’s Documents folder (
+                  <code>diogeneslamp/save.json</code>)
+                </>
+              )}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p style={{ marginTop: 14 }}>
+        {L(
+          '이 정보는 회사로 전송되지 않습니다. 위 파일은 iOS 의 동작에 따라 사용자의 iCloud 백업이나 기기 백업에 포함될 수 있습니다. 백업은 Apple 이 관리하며 회사는 볼 수 없습니다. 앱을 삭제하면 기기 안의 진행 기록도 함께 지워집니다.',
+          'None of this is ever sent to us. Depending on how iOS backs up your device, the file above may be included in your iCloud backup or your device backup. Backups are managed by Apple and we cannot see them. Deleting the app deletes the progress stored on the device.'
+        )}
+      </p>
+
+      <h2>{L('3. 앱이 요청하는 권한', '3. Permissions the app asks for')}</h2>
+      <table className="dl-table-doc">
+        <thead>
+          <tr>
+            <th>{L('권한', 'Permission')}</th>
+            <th>{L('언제, 왜', 'When and why')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{L('사진 추가', 'Add to Photos')}</td>
+            <td>
+              {L(
+                "공유 시트에서 '이미지 저장'을 누를 때만 iOS 가 묻습니다. 사진을 읽지 않고, 저장만 합니다.",
+                'iOS asks only when you tap “Save Image” in the share sheet. The app never reads your library; it only adds the image.'
+              )}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>{L('4. 출처 링크와 메일', '4. Source links and email')}</h2>
+      <ul>
+        <li>
+          {L(
+            '판정의 출처 링크를 누르면 Safari 로 외부 사이트(Project Gutenberg 등)가 열립니다. 그 사이트에서는 그 사이트의 개인정보 처리방침이 적용됩니다.',
+            'Tapping a source link opens an outside website (such as Project Gutenberg) in Safari. That site’s own privacy policy applies there.'
+          )}
+        </li>
+        <li>
+          {L(
+            `'오류 제보'와 '감정 의뢰'는 메일 앱을 열어 ${MAIL} 로 보낼 메일을 준비할 뿐입니다. 보낼지 말지는 사용자가 정하며, 사용자가 직접 보내는 메일입니다. 받은 메일은 답변을 위해 보관하며, 문의가 끝난 뒤 1년이 지나면 지웁니다.`,
+            `“Report an error” and “send a quote” simply open your Mail app with a message addressed to ${MAIL}. You decide whether to send it; it is an email you send yourself. We keep emails we receive in order to reply, and delete them one year after the inquiry is closed.`
+          )}
+        </li>
+      </ul>
+
+      <h2>{L('5. 구매', '5. Purchases')}</h2>
+      <p>
+        {L(
+          '앱은 App Store 에서 한 번 구입하는 유료 앱이며, 앱 안의 추가 결제가 없습니다. 결제는 Apple 이 처리하고, 회사는 결제 정보나 Apple 계정 정보를 받지 않습니다.',
+          'The app is a one-time paid download from the App Store, with no in-app purchases. Payment is handled by Apple; we never receive your payment details or Apple Account information.'
+        )}
+      </p>
+
+      <h2>{L('6. 제3자 제공·위탁', '6. Third parties')}</h2>
+      <p>
+        {L(
+          '수집하는 정보가 없으므로 제3자에게 제공하거나 위탁하는 정보도 없습니다. 카드 이미지를 보낼 때는 iOS 공유 화면이 열리고, 받을 곳은 사용자가 직접 고릅니다.',
+          'Because we collect nothing, nothing is shared with or processed by third parties. Sharing an image opens the iOS share sheet, and you choose where it goes.'
+        )}
+      </p>
+
+      <h2>{L('7. 이 웹사이트', '7. This website')}</h2>
+      <p>
+        {L(
+          '이 웹사이트에는 회원가입과 문의 양식, 광고가 없고 쿠키를 쓰지 않습니다. 고른 언어(한국어/English)만 여러분의 브라우저에 저장됩니다. 글꼴과 그림은 모두 이 도메인에서 내려받습니다.',
+          'This website has no sign-up, contact form or ads, and uses no cookies. Only your language choice (한국어/English) is saved in your browser. Fonts and images are all served from this domain.'
+        )}
+      </p>
+      <p>
+        {L(
+          '방문 통계와 페이지 속도는 Vercel 의 도구(Web Analytics · Speed Insights)로 집계합니다. 이 도구들은 쿠키를 쓰지 않고 방문자를 개인 단위로 식별하지 않습니다. 호스팅 업체가 보안과 운영을 위해 접속 기록(IP 주소, 브라우저 종류, 요청 시각 등)을 짧은 기간 자동으로 보관할 수 있으며, 회사는 이 기록으로 방문자를 식별하지 않습니다.',
+          'Visit counts and page speed are measured with Vercel’s tools (Web Analytics and Speed Insights), which use no cookies and do not identify individual visitors. Our hosting provider may automatically keep access logs (IP address, browser type, request time) for a short period for security and operations; we do not use them to identify visitors.'
+        )}
+      </p>
+
+      <h2>{L('8. 만 14세 미만', '8. Children')}</h2>
+      <p>
+        {L(
+          '이 앱은 만 14세 미만 아동을 대상으로 하지 않습니다. 아동을 포함해 누구의 개인정보도 수집하지 않습니다.',
+          'The app is not directed at children under 14. We do not collect personal data from anyone, including children.'
+        )}
+      </p>
+
+      <h2>{L('9. 이용자의 권리', '9. Your rights')}</h2>
+      <p>
+        {L(
+          '회사는 개인정보를 보유하지 않으므로 열람·정정·삭제를 요청할 대상 정보가 없습니다. 기기 안의 진행 기록은 앱을 삭제해 언제든 지울 수 있습니다.',
+          'Because we hold no personal data, there is nothing for us to provide, correct or delete. You can erase the progress on your device at any time by deleting the app.'
+        )}
+      </p>
+
+      <h2>{L('10. 변경', '10. Changes')}</h2>
+      <p>
+        {L(
+          '이 방침이 바뀌면 이 페이지에 새 시행일과 함께 게시합니다. 앱이 개인정보를 수집하게 되는 변경이라면 그 전에 앱과 이 페이지에서 먼저 알립니다.',
+          'If this policy changes, we will post it here with a new effective date. If a change would make the app collect personal data, we will announce it in the app and on this page beforehand.'
+        )}
+      </p>
+
+      <h2>{L('11. 문의', '11. Contact')}</h2>
+      <p>
+        {L('개인정보 보호 책임자', 'Privacy officer')} · {BIZ.ceo} ({L('대표', 'CEO')}) · {COMPANY} ·{' '}
+        <a className="dl-mailto" href={`mailto:${MAIL}`}>
+          {MAIL}
+        </a>
+      </p>
+
+      <p className="dl-meta" style={{ marginTop: 30 }}>
+        <Link href="/diogeneslamp/support">{L('지원', 'Support')}</Link>
+        {' · '}
+        <Link href="/diogeneslamp/terms">{L('이용 약관', 'Terms of Use')}</Link>
+        {' · '}
+        <Link href="/diogeneslamp">{L('디오게네스의 등불 홈', 'Diogenes’ Lamp home')}</Link>
+      </p>
+    </div>
+  );
+}
