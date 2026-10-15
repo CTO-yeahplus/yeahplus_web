@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     url: '/diogeneslamp',
     title: TITLE,
-    description: '전시실 12곳 · 사건 136건 · 오늘의 사건 · 원문 서고. 한 번 구입 · 광고 없음 · 계정 없음.',
+    description: '전시실 12곳 · 사건 136건 · 오늘의 사건 · 원문 서고. 한 번 구입 · 계정 없음 · 데이터 수집 없음.',
     type: 'website',
     images: [{ url: '/diogeneslamp/og.jpg', width: 1200, height: 630 }],
   },

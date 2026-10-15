@@ -605,7 +605,7 @@ function Deal() {
   const { L } = useLang();
   const items: [string, string][] = [
     [L('한 번 구입', 'Buy once'), L('구독도, 앱 안 추가 결제도 없습니다', 'No subscription, no in-app purchases')],
-    [L('광고 없음', 'No ads'), L('판정 사이에 끼어드는 것이 없습니다', 'Nothing between you and the case')],
+    [L('출처를 직접 확인', 'Check the source yourself'), L('모든 판정에 근거와 출처 링크', 'Every verdict links to its evidence')],
     [L('계정 없음', 'No account'), L('가입 없이 바로 시작합니다', 'Start straight away')],
     [L('데이터 수집 없음', 'No data collection'), L('진행 기록은 기기 안에만', 'Your progress stays on your device')],
     [L('오프라인 플레이', 'Plays offline'), L('인터넷 없이도 됩니다', 'No connection needed')],

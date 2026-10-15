@@ -9,8 +9,8 @@
 import Link from 'next/link';
 import { APP_EN, APP_KO, BIZ, COMPANY_EN, COMPANY_KO, MAIL, useDocTitle, useLang } from '../i18n';
 
-const EFFECTIVE_KO = '2026년 10월 14일';
-const EFFECTIVE_EN = 'October 14, 2026';
+const EFFECTIVE_KO = '2026년 10월 15일';
+const EFFECTIVE_EN = 'October 15, 2026';
 
 export default function PrivacyContent() {
   const { L } = useLang();
@@ -30,8 +30,8 @@ export default function PrivacyContent() {
         </p>
         <p>
           {L(
-            '디오게네스의 등불에는 계정과 로그인이 없고, 광고·분석·크래시 보고 도구가 들어 있지 않으며, 회사 서버도 없습니다. 앱은 스스로 네트워크 요청을 하지 않습니다. 진행 기록은 사용자의 기기 안에만 저장되고, 회사는 볼 수 없습니다.',
-            'Diogenes’ Lamp has no account and no login, contains no advertising, analytics or crash-reporting tools, and talks to no server of ours. The app makes no network requests of its own. Your progress is stored only on your device, where we cannot see it.'
+            '디오게네스의 등불에는 계정과 로그인이 없고, 광고 추적·분석·크래시 보고 도구(SDK)가 들어 있지 않으며, 회사 서버도 없습니다. 앱은 스스로 네트워크 요청을 하지 않습니다. 진행 기록은 사용자의 기기 안에만 저장되고, 회사는 볼 수 없습니다.',
+            'Diogenes’ Lamp has no account and no login, contains no ad-tracking, analytics or crash-reporting tools (SDKs), and talks to no server of ours. The app makes no network requests of its own. Your progress is stored only on your device, where we cannot see it.'
           )}
         </p>
       </div>
@@ -130,16 +130,16 @@ export default function PrivacyContent() {
       <h2>{L('6. 제3자 제공·위탁', '6. Third parties')}</h2>
       <p>
         {L(
-          '수집하는 정보가 없으므로 제3자에게 제공하거나 위탁하는 정보도 없습니다. 카드 이미지를 보낼 때는 iOS 공유 화면이 열리고, 받을 곳은 사용자가 직접 고릅니다.',
-          'Because we collect nothing, nothing is shared with or processed by third parties. Sharing an image opens the iOS share sheet, and you choose where it goes.'
+          '수집하는 정보가 없으므로 제3자에게 제공하거나 위탁하는 정보도 없습니다. 카드 이미지를 보낼 때는 iOS 공유 화면이 열리고, 받을 곳은 사용자가 직접 고릅니다. 앱에 제휴·협찬 콘텐츠가 실리더라도 협찬사에 사용자 정보를 넘기지 않으며, 협찬 콘텐츠를 보여 주려고 사용자를 추적하거나 광고 식별자를 쓰지 않습니다.',
+          'Because we collect nothing, nothing is shared with or processed by third parties. Sharing an image opens the iOS share sheet, and you choose where it goes. If the app carries partner or sponsored content, no information about you goes to the sponsor, and we do not track you or use advertising identifiers to show it.'
         )}
       </p>
 
       <h2>{L('7. 이 웹사이트', '7. This website')}</h2>
       <p>
         {L(
-          '이 웹사이트에는 회원가입과 문의 양식, 광고가 없고 쿠키를 쓰지 않습니다. 고른 언어(한국어/English)만 여러분의 브라우저에 저장됩니다. 글꼴과 그림은 모두 이 도메인에서 내려받습니다.',
-          'This website has no sign-up, contact form or ads, and uses no cookies. Only your language choice (한국어/English) is saved in your browser. Fonts and images are all served from this domain.'
+          '이 웹사이트에는 회원가입과 문의 양식이 없고 쿠키를 쓰지 않습니다. 고른 언어(한국어/English)만 여러분의 브라우저에 저장됩니다. 글꼴과 그림은 모두 이 도메인에서 내려받습니다.',
+          'This website has no sign-up or contact form, and uses no cookies. Only your language choice (한국어/English) is saved in your browser. Fonts and images are all served from this domain.'
         )}
       </p>
       <p>

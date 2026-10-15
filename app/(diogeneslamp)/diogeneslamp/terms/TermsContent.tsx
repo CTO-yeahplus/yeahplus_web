@@ -1,15 +1,15 @@
 'use client';
 
 /* 디오게네스의 등불 이용 약관 — hyunja/terms 의 뼈대를 이 앱에 맞게 고쳐 썼다.
-   사실관계: 한 번 구입하는 유료 앱(앱 내 구입·구독·광고·계정 없음) · Apple 표준 EULA ·
+   사실관계: 한 번 구입하는 유료 앱(앱 내 구입·구독·계정 없음. 제휴·협찬 콘텐츠는 열어 둔다 — 2026-10-15) · Apple 표준 EULA ·
    원문은 퍼블릭 도메인, 영·한 번역은 편집부가 새로 옮김, 대조용 옛 영역본은 퍼블릭 도메인 번역만 ·
    가짜 판정은 공개 자료 근거 + 앱 안 출처 링크 · 초상과 그림은 AI 그림 도구로 그린 상상도. */
 
 import Link from 'next/link';
 import { APP_EN, APP_KO, COMPANY_EN, COMPANY_KO, MAIL, useDocTitle, useLang } from '../i18n';
 
-const EFFECTIVE_KO = '2026년 10월 14일';
-const EFFECTIVE_EN = 'October 14, 2026';
+const EFFECTIVE_KO = '2026년 10월 15일';
+const EFFECTIVE_EN = 'October 15, 2026';
 const EULA = 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/';
 
 export default function TermsContent() {
@@ -57,8 +57,8 @@ export default function TermsContent() {
       <ul>
         <li>
           {L(
-            '디오게네스의 등불은 한 번 구입하는 유료 앱입니다. 자동 갱신되는 구독이 아니며, 광고와 앱 안의 추가 결제가 없습니다.',
-            'Diogenes’ Lamp is a paid app you buy once. It is not an auto-renewing subscription, and there are no ads and no in-app purchases.'
+            '디오게네스의 등불은 한 번 구입하는 유료 앱입니다. 자동 갱신되는 구독이 아니며, 앱 안의 추가 결제가 없습니다. 앱에 제휴·협찬 콘텐츠가 실릴 수 있으며, 그런 콘텐츠에는 협찬임을 표시합니다.',
+            'Diogenes’ Lamp is a paid app you buy once. It is not an auto-renewing subscription, and there are no in-app purchases. The app may include partner or sponsored content; such content is labeled as sponsored.'
           )}
         </li>
         <li>

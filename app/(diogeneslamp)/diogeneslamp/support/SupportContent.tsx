@@ -83,6 +83,13 @@ export default function SupportContent() {
       ),
     },
     {
+      q: L('광고나 협찬이 있나요?', 'Are there ads or sponsorships?'),
+      a: L(
+        '지금 버전에는 없습니다. 앞으로 제휴·협찬 콘텐츠가 실릴 수 있으며, 그때는 앱 안에 ‘협찬’이라고 표시합니다. 협찬이 있어도 계정이나 앱 안 추가 결제는 생기지 않고, 개인정보를 수집하거나 사용자를 추적하지 않습니다.',
+        'Not in the current version. Partner or sponsored content may appear in future, and it will be labeled “Sponsored” in the app. Even then there is no account and no in-app purchase, and we collect no personal data and do not track you.'
+      ),
+    },
+    {
       q: L('환불은 어떻게 하나요?', 'How do I get a refund?'),
       a: L(
         '구매와 환불은 Apple 이 처리합니다. reportaproblem.apple.com 에서 신청할 수 있습니다.',
