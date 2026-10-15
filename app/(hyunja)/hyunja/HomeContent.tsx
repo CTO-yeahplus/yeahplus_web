@@ -120,7 +120,6 @@ function Hero() {
         <Reveal as="ul" className="hj-pills" delay={300}>
           <li>{L('고민 40 · 구절 160', '40 worries · 160 passages')}</li>
           <li>{L('한 번 구매', 'Buy once')}</li>
-          <li>{L('광고 없음', 'No ads')}</li>
           <li>{L('회원 가입 없음', 'No account')}</li>
           <li>{L('iPhone · iPad', 'iPhone and iPad')}</li>
         </Reveal>
@@ -783,7 +782,7 @@ function Privacy() {
   const { L } = useLang();
   const zeros = [
     L('계정', 'accounts'),
-    L('광고', 'ads'),
+    L('광고 추적', 'ad tracking'),
     L('추가 결제', 'extra charges'),
     L('분석 도구', 'analytics'),
   ];
@@ -846,7 +845,6 @@ function Buy() {
           <ul>
             <li>{L('한 번 구매로 고민 40가지 · 구절 160편을 모두 봅니다', 'One purchase opens all 40 worries and 160 passages')}</li>
             <li>{L('구독도, 앱 안 추가 결제도 없습니다', 'No subscription and no in-app purchases')}</li>
-            <li>{L('광고가 없습니다', 'No advertising')}</li>
             <li>{L('글자 크기 세 단계 · 어두운 화면 지원', 'Three text sizes and a dark screen')}</li>
             <li>{L('iPhone과 iPad에서 쓸 수 있습니다', 'Works on iPhone and iPad')}</li>
           </ul>

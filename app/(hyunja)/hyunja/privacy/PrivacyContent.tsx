@@ -8,8 +8,8 @@
 import Link from 'next/link';
 import { COMPANY_EN, COMPANY_KO, MAIL, useDocTitle, useLang } from '../i18n';
 
-const EFFECTIVE_KO = '2026년 9월 30일';
-const EFFECTIVE_EN = 'September 30, 2026';
+const EFFECTIVE_KO = '2026년 10월 15일';
+const EFFECTIVE_EN = 'October 15, 2026';
 
 export default function PrivacyContent() {
   const { L } = useLang();
@@ -29,8 +29,8 @@ export default function PrivacyContent() {
         </p>
         <p>
           {L(
-            '회원 가입이 없고, 광고·분석 도구가 없으며, 앱은 저희 서버로 어떤 정보도 보내지 않습니다. 사용자가 쓴 기록은 사용자의 기기와 사용자의 iCloud에만 저장되고, 저희는 볼 수 없습니다.',
-            'There is no account, no advertising and no analytics, and the app sends nothing to any server of ours. What you write stays on your device and in your own iCloud, where we cannot see it.'
+            '회원 가입이 없고, 광고 추적·분석 도구(SDK)가 없으며, 앱은 저희 서버로 어떤 정보도 보내지 않습니다. 사용자가 쓴 기록은 사용자의 기기와 사용자의 iCloud에만 저장되고, 저희는 볼 수 없습니다.',
+            'There is no account and no ad-tracking or analytics tools (SDKs), and the app sends nothing to any server of ours. What you write stays on your device and in your own iCloud, where we cannot see it.'
           )}
         </p>
       </div>
@@ -116,8 +116,8 @@ export default function PrivacyContent() {
       <h2>{L('4. 제3자 제공·위탁', '4. Third parties')}</h2>
       <p>
         {L(
-          '없습니다. 카드나 백업 파일을 보낼 때는 iOS 공유 화면이 열리고, 받을 곳은 사용자가 직접 고릅니다.',
-          'None. Sharing a card or a backup file opens the iOS share sheet, and you choose where it goes.'
+          '없습니다. 카드나 백업 파일을 보낼 때는 iOS 공유 화면이 열리고, 받을 곳은 사용자가 직접 고릅니다. 앱에 제휴·협찬 콘텐츠가 실리더라도 협찬사에 사용자 정보를 넘기지 않으며, 협찬 콘텐츠를 보여 주려고 사용자를 추적하거나 광고 식별자를 쓰지 않습니다.',
+          'None. Sharing a card or a backup file opens the iOS share sheet, and you choose where it goes. If the app carries partner or sponsored content, no information about you goes to the sponsor, and we do not track you or use advertising identifiers to show it.'
         )}
       </p>
 
@@ -140,6 +140,12 @@ export default function PrivacyContent() {
         {L(
           '이 방침이 바뀌면 이 페이지와 앱 업데이트 안내에 알립니다.',
           'If this policy changes, we will post it here and note it in the app’s release notes.'
+        )}
+      </p>
+      <p className="hj-meta">
+        {L(
+          '바뀐 내용 · 2026년 10월 15일 — 제휴·협찬 콘텐츠에 관한 문장을 더하고, ‘광고·분석 도구 없음’을 ‘광고 추적·분석 도구(SDK) 없음’으로 고쳤습니다. 수집하는 정보는 그대로 없습니다.',
+          'Changes · October 15, 2026 — added a sentence on partner or sponsored content and changed “no advertising or analytics” to “no ad-tracking or analytics tools (SDKs)”. We still collect nothing.'
         )}
       </p>
 

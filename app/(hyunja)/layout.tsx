@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     url: '/hyunja',
     title: TITLE,
-    description: '고민 40가지에 네 현자의 답 160편 · 필사 · 나의 어록. 한 번 구매 · 광고 없음 · 회원 가입 없음.',
+    description: '고민 40가지에 네 현자의 답 160편 · 필사 · 나의 어록. 한 번 구매 · 회원 가입 없음 · 데이터 수집 없음.',
     type: 'website',
     images: [{ url: '/hyunja/og.jpg', width: 1200, height: 630 }],
   },

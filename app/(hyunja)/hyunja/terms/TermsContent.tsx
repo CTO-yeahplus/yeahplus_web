@@ -7,8 +7,8 @@
 import Link from 'next/link';
 import { COMPANY_EN, COMPANY_KO, MAIL, useDocTitle, useLang } from '../i18n';
 
-const EFFECTIVE_KO = '2026년 10월 1일';
-const EFFECTIVE_EN = 'October 1, 2026';
+const EFFECTIVE_KO = '2026년 10월 15일';
+const EFFECTIVE_EN = 'October 15, 2026';
 const EULA = 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/';
 
 export default function TermsContent() {
@@ -58,6 +58,12 @@ export default function TermsContent() {
           {L(
             '현자의 서재는 한 번 결제하면 계속 쓰는 유료 앱입니다. 자동 갱신되는 구독이 아니며, 앱 안에 추가 결제가 없습니다.',
             'The Sages’ Study is a paid app you buy once and keep. It is not an auto-renewing subscription, and there are no in-app purchases.'
+          )}
+        </li>
+        <li>
+          {L(
+            '앱에 제휴·협찬 콘텐츠가 실릴 수 있으며, 그런 콘텐츠에는 협찬임을 표시합니다. 협찬이 있어도 추가 결제나 계정은 생기지 않습니다.',
+            'The app may include partner or sponsored content; such content is labeled as sponsored. It never adds a charge or an account.'
           )}
         </li>
         <li>
