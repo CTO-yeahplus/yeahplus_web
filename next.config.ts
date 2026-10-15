@@ -17,6 +17,9 @@ const nextConfig: NextConfig = {
       { source: "/24stills/:page(gift|group)", destination: "/24stills/:page.html" },
       // 노티 웹 체험판(1화)은 정적 HTML 한 장이다 (public/noti/demo/index.html) — 확장자 없는 주소도 받는다.
       { source: "/noti/demo", destination: "/noti/demo/index.html" },
+      // 디오게네스의 등불 감정 대결 웹 체험판 (public/diogeneslamp/c/, 앱 저장소의 build.py 가 만든 web/challenge 를 통째로 복사).
+      // 앱 빌드 안에 https://yeahplus.co.kr/diogeneslamp/c#DL1.… 로 고정돼 있어 이 주소를 바꾸면 안 된다.
+      { source: "/diogeneslamp/c", destination: "/diogeneslamp/c/index.html" },
     ];
   },
 };
