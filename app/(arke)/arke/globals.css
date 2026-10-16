@@ -412,3 +412,60 @@ a:hover { text-decoration: underline; }
   .ark-legal-table { font-size: 12.5px; }
   .ark-legal-table th, .ark-legal-table td { padding: 8px 9px; }
 }
+
+/* ── 2026-10 리뉴얼: 프로필 링크 랜딩(학생 / 학부모 두 버튼 · 약속 · 틀린 문제의 일생) ── */
+.ark-btn-lg { padding: 15px 26px; font-size: 15.5px; font-weight: 700; }
+.ark-cta-two { flex-direction: column; align-items: center; gap: 10px; }
+.ark-cta-two .ark-btn { min-width: 320px; justify-content: center; }
+.ark-dday {
+  display: inline-block; margin-top: 18px; min-height: 30px; padding: 5px 14px; border-radius: 999px;
+  background: #fff; border: 1px solid var(--ark-line); font-size: 13.5px; font-weight: 700; color: var(--ark-ink-soft);
+}
+.ark-dday:empty { visibility: hidden; }
+.ark-dday b { color: #e5383b; font-weight: 800; margin-left: 4px; }
+
+.ark-promises { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.ark-promise {
+  background: #fff; border: 1px solid var(--ark-line); border-radius: 14px; padding: 26px 26px 22px;
+}
+.ark-promise-no { font-family: var(--ark-font-heading); font-size: 30px; font-weight: 700; color: var(--ark-gold); line-height: 1; }
+.ark-promise h3 { margin: 12px 0 6px; font-size: 14px; font-weight: 800; color: var(--ark-gold); letter-spacing: 0.01em; }
+.ark-promise-line { margin: 0; font-size: 21px; font-weight: 800; line-height: 1.45; letter-spacing: -0.02em; color: var(--ark-ink); }
+.ark-promise-how { margin: 14px 0 0; padding-top: 12px; border-top: 1px dashed var(--ark-line); font-size: 13px; color: var(--ark-sub); }
+
+.ark-life { list-style: none; margin: 0 auto; padding: 0; max-width: 620px; display: flex; flex-direction: column; gap: 12px; }
+.ark-life li { display: flex; align-items: center; gap: 18px; background: #fff; border: 1px solid var(--ark-line); border-radius: 14px; padding: 16px 20px; }
+.ark-life li strong { display: block; font-size: 13px; color: var(--ark-sub); font-weight: 700; }
+.ark-life li p { margin: 2px 0 0; font-size: 16.5px; font-weight: 700; line-height: 1.5; }
+.ark-life-chip {
+  flex: none; width: 62px; height: 46px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 800; color: #fff; background: var(--ark-ink);
+}
+.ark-life-chip.red { background: #e5383b; }
+.ark-life-chip.gold { background: var(--ark-gold); }
+
+.ark-phones-scroll { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+.ark-phones-scroll .ark-phone { max-width: 220px; }
+
+.ark-parents { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.ark-parent { background: var(--ark-paper); border: 1px solid var(--ark-line); border-radius: 14px; padding: 24px; display: flex; flex-direction: column; }
+.ark-parent h3 { margin: 0 0 8px; font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
+.ark-parent p { margin: 0; font-size: 14.5px; color: var(--ark-ink-soft); flex: 1; }
+.ark-parent span { margin-top: 14px; font-size: 12.5px; font-weight: 700; color: var(--ark-gold); }
+.ark-parent-cta { margin-top: 26px; text-align: center; }
+.ark-parent-cta p { margin: 10px 0 0; font-size: 13.5px; color: var(--ark-sub); }
+
+@media (max-width: 880px) {
+  .ark-parents { grid-template-columns: 1fr; }
+  /* 화면은 세로로 쌓지 않고 옆으로 넘긴다(폰에서 다섯 장이 끝없이 길어지지 않게) */
+  .ark-phones-scroll {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 16px;
+    margin: 0 -18px; padding: 4px 18px 12px; -webkit-overflow-scrolling: touch;
+  }
+  .ark-phones-scroll .ark-phone-wrap { flex: 0 0 64%; scroll-snap-align: center; }
+}
+@media (max-width: 720px) {
+  .ark-promises { grid-template-columns: 1fr; }
+  .ark-promise-line { font-size: 19px; }
+  .ark-cta-two .ark-btn { min-width: 0; width: 100%; }
+}

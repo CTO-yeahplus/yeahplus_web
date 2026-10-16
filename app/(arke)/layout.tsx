@@ -6,17 +6,17 @@ import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
-  title: 'ARKE — 고2 수능 코치 · 수학 + 영어',
+  title: 'ARKE — 틀린 문제가 그냥 지나가지 않게 · 고2 수능 수학·영어',
   description:
-    '수학은 오답 진단 → 개념맵 → 오늘의 처방, 영어는 유형별 훈련 → AI 3단 해설 → 오답노트. 고2 수능 대비를 하나의 앱에서.',
+    '같은 문제에 두 번 지지 않는 고3. 첫 진단 10문항으로 약점에 이름을 붙이고, 학평 틀린 번호는 다음 날 처방으로. 고2 수능 수학·영어 코치.',
   metadataBase: new URL('https://yeahplus.co.kr'),
   alternates: { canonical: '/arke' },
   openGraph: {
     siteName: 'YeahPlus',
     locale: 'ko_KR',
     url: '/arke',
-    title: 'ARKE — 고2 수능 코치',
-    description: '오늘 뭘 풀지, ARKE가 정합니다. 수학·영어 통합 수능 훈련 앱.',
+    title: 'ARKE — 틀린 문제가 그냥 지나가지 않게',
+    description: '같은 문제에 두 번 지지 않는 고3. 첫 진단 10문항은 무료.',
     type: 'website',
     images: ['/arke/arke_logo.png'],
   },
@@ -36,9 +36,10 @@ function Header() {
           <span className="ark-brand-name">ARKE</span>
         </Link>
         <nav className="ark-nav-links">
-          <Link href="/arke#features" className="ark-nav-hide">
-            기능
+          <Link href="/arke#promise" className="ark-nav-hide">
+            소개
           </Link>
+          <Link href="/arke#parents">학부모</Link>
           <Link href="/arke#pricing" className="ark-nav-hide">
             요금제
           </Link>
