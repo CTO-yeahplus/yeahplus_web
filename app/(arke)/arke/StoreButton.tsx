@@ -2,10 +2,11 @@
 
 import { useSyncExternalStore } from 'react';
 
-// App Store 캠페인 링크(App Store Connect → 앱 분석 → 캠페인에서 받은 형식).
-// ct 는 "어디서 왔나_누가 눌렀나" — 예: ig_student · yt_parent · web_student.
+// App Store 캠페인 링크. ct 는 "어디서 왔나_누가 눌렀나" — 예: ig_student · yt_parent · web_student.
 // 어디서 왔는지는 프로필 링크의 ?from= 으로 받는다(yeahplus.co.kr/arke?from=ig).
-const BASE = 'https://apps.apple.com/app/apple-store/id6800566496?pt=121180501&mt=8';
+// 주소에 /kr/ 를 꼭 넣는다 — ARKE 는 한국 스토어에만 있어서, 나라가 빠진 /app/… 주소는
+// 기기·브라우저 지역이 한국이 아니면 "페이지를 찾을 수 없음"(404)이 된다(2026-10-16 확인).
+const BASE = 'https://apps.apple.com/kr/app/arke/id6800566496?pt=121180501&mt=8';
 const SOURCES = new Set(['ig', 'yt', 'tt', 'fb', 'th', 'blog', 'kakao']);
 
 export function storeUrl(from: string, role: 'student' | 'parent'): string {
