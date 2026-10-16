@@ -1,0 +1,169 @@
+/* ARKE 휠 인터랙티브 소개 — 장면마다 화면을 붙잡고(sticky) 휠 진행도로 그린다.
+   색은 앱과 같다: 종이 #f3f2f2 · 먹 #201f1d · 금 #a06f24 · 오답 빨강 #e5383b. 검정 장면은 앱의 수학 카드(먹색)와 같은 톤. */
+.ark-app { --head: 57px; --red: #e5383b; --ink: #201f1d; --paper: #f3f2f2; --gold: #a06f24; }
+
+.akx-red { color: var(--red); }
+.akx-gold { color: var(--gold); }
+.akx-dark .akx-gold { color: #d7b57e; }
+
+/* ── 공통 장면 틀 ── */
+.akx-scene { position: relative; }
+.akx-pin { position: sticky; top: var(--head); height: calc(100svh - var(--head)); display: flex; align-items: center; overflow: hidden; }
+.akx-pin-col { flex-direction: column; justify-content: center; align-items: stretch; gap: 28px; }
+.akx-wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+.akx-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 56px; align-items: center; }
+.akx-col { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.akx-center { text-align: center; }
+.akx-dark { background: var(--ink); color: #f3f2f2; }
+.akx-kicker { margin: 0 0 14px; font-size: 13px; font-weight: 800; letter-spacing: .14em; color: var(--gold); }
+.akx-dark .akx-kicker { color: #d7b57e; }
+.akx-h2 { margin: 0; font-weight: 900; letter-spacing: -0.045em; line-height: 1.12; font-size: clamp(34px, 5.2vw, 64px); }
+.akx-h2-a, .akx-h2-b { display: block; }
+.akx-h2-one { font-size: clamp(30px, 4.2vw, 48px); }
+.akx-note { margin: 22px 0 0; font-size: 14.5px; color: #7d7979; font-weight: 600; }
+.akx-dark .akx-note { color: #9b9797; }
+.akx-swap { animation: akx-up .42s cubic-bezier(.2, .9, .2, 1.15) both; }
+@keyframes akx-up { from { opacity: 0; transform: translateY(22px) scale(.98); } to { opacity: 1; transform: none; } }
+.akx-stage { position: relative; display: flex; justify-content: center; align-items: center; min-height: 0; }
+.akx-card { background: #fff; border: 1px solid #d7d3d3; border-radius: 22px; box-shadow: 0 24px 60px rgba(45, 43, 43, .14); }
+.akx-chip { display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 46px; border-radius: 12px; background: var(--red); color: #fff; font-weight: 800; font-size: 21px; transition: background .2s; }
+.akx-chip.sm { width: 52px; height: 38px; font-size: 17px; border-radius: 10px; }
+
+/* ── 0. 첫 화면 ── */
+.akx-hero { position: relative; min-height: calc(100svh - var(--head)); display: flex; align-items: center; justify-content: center; overflow: hidden; text-align: center; padding: 40px 0;
+  background: radial-gradient(90% 70% at 50% 35%, #f8f6f5 0, #f3f2f2 55%, #ebe8e6 100%); --px: 0; --py: 0; }
+.akx-hero-in { position: relative; z-index: 1; max-width: 760px; padding: 0 24px; }
+.akx-h1 { margin: 22px 0 0; font-weight: 900; letter-spacing: -0.05em; line-height: 1.08; font-size: clamp(44px, 7.6vw, 92px); }
+.akx-h1 em { font-style: normal; color: var(--gold); }
+.akx-lead { margin: 22px auto 0; max-width: 520px; font-size: clamp(16px, 1.6vw, 19px); color: #605d5d; font-weight: 600; }
+.akx-hint { margin: 26px 0 0; font-size: 13px; font-weight: 700; color: #9b9797; }
+.akx-hint i { display: inline-block; font-style: normal; animation: akx-bob 1.4s ease-in-out infinite; }
+@keyframes akx-bob { 50% { transform: translateY(5px); } }
+.akx-float { position: absolute; width: 74px; height: 54px; border-radius: 14px; background: var(--red); color: #fff; font-weight: 800; font-size: 24px;
+  display: flex; align-items: center; justify-content: center; box-shadow: 0 14px 34px rgba(229, 56, 59, .25); opacity: .9;
+  transform: translate(calc(var(--px) * var(--d) * -46px), calc(var(--py) * var(--d) * -46px)) rotate(var(--r)); transition: transform .25s ease-out;
+  animation: akx-drift 6s ease-in-out infinite; animation-delay: calc(var(--d) * -2s); }
+@keyframes akx-drift { 50% { margin-top: -12px; } }
+
+/* ── 1. 다시 온다 ── */
+.akx-again { height: 420vh; }
+.akx-paper { position: relative; width: min(520px, 100%); background: #fff; color: var(--ink); border-radius: 26px; padding: 30px 34px 38px; box-shadow: 0 40px 90px rgba(0, 0, 0, .35); }
+.akx-paper-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+.akx-cal { text-align: right; line-height: 1.2; }
+.akx-cal b { display: block; font-size: 22px; font-weight: 900; letter-spacing: -0.03em; }
+.akx-cal i { font-style: normal; font-size: 13px; font-weight: 800; color: var(--red); }
+.akx-qno { margin: 0; font-size: 26px; font-weight: 900; }
+.akx-q { margin: 10px 0 0; font-size: clamp(17px, 1.7vw, 21px); font-weight: 700; line-height: 1.6; letter-spacing: -0.02em; }
+.akx-opts { margin: 18px 0 0; font-size: 16px; color: #605d5d; font-weight: 600; white-space: pre; }
+.akx-ans { position: relative; margin-top: 22px; height: 70px; border: 3px solid #d7d3d3; border-radius: 16px; display: flex; align-items: center; padding: 0 24px; font-size: 36px; font-weight: 900; }
+.akx-caret { display: inline-block; width: 3px; height: 34px; background: var(--ink); animation: akx-blink 1s steps(1) infinite; }
+@keyframes akx-blink { 50% { opacity: 0; } }
+.akx-o { position: absolute; left: -26px; top: -32px; width: 140px; height: 130px; overflow: visible; }
+.akx-o ellipse { fill: none; stroke: var(--gold); stroke-width: 18; }
+.akx-x { position: absolute; right: -26px; top: 120px; width: 150px; height: 150px; pointer-events: none; }
+.akx-x path { fill: none; stroke: var(--red); stroke-width: 28; stroke-linecap: round; }
+
+/* ── 2. 이름 붙은 약점 ── */
+.akx-name { height: 360vh; background: var(--paper); }
+.akx-diag { width: min(500px, 100%); padding: 26px 28px 20px; }
+.akx-diag-top { display: flex; justify-content: space-between; align-items: baseline; }
+.akx-diag-top b { font-size: 46px; font-weight: 900; letter-spacing: -0.05em; }
+.akx-diag-top b span { font-size: 22px; color: #9b9797; }
+.akx-timer { font: 800 34px 'SF Mono', Menlo, monospace; letter-spacing: -0.04em; }
+.akx-timer.on { color: var(--gold); }
+.akx-dots { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin: 12px 0 20px; }
+.akx-dots i { height: 8px; border-radius: 4px; background: #e4dfdc; }
+.akx-dots i.on { background: var(--ink); }
+.akx-units { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; }
+.akx-units li { transition: opacity .3s; }
+.akx-units li.dim { opacity: .35; }
+.akx-unit-n { display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 700; margin-bottom: 5px; }
+.akx-unit-n em { font-style: normal; font-size: 11.5px; font-weight: 800; color: #fff; background: var(--red); padding: 2px 8px; border-radius: 999px; }
+.akx-units li.weak .akx-unit-n { color: var(--red); }
+.akx-bar { display: block; height: 10px; border-radius: 5px; background: #ebe8e6; overflow: hidden; }
+.akx-bar i { display: block; height: 100%; border-radius: 5px; }
+.akx-sample { margin: 14px 0 0; text-align: right; font-size: 11.5px; color: #9b9797; font-weight: 700; }
+
+/* ── 3. 성적표가 지도로 ── */
+.akx-map { height: 360vh; background: #f8f6f5; }
+.akx-map-stage { min-height: 420px; flex-direction: column; gap: 14px; }
+.akx-grid30 { position: absolute; left: 50%; top: 50%; margin: 0; translate: -50% -50%; display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; padding: 22px; width: min(440px, 100%); transition: opacity .2s; }
+.akx-grid30 span { height: 44px; border-radius: 10px; border: 2px solid #d7d3d3; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; transition: background .2s, color .2s, transform .25s; }
+.akx-grid30 span.on { background: var(--red); border-color: var(--red); color: #fff; transform: scale(1.08); }
+.akx-mapped { position: relative; z-index: 1; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; width: min(400px, 92%); }
+.akx-mapped li { display: flex; align-items: center; gap: 14px; background: #fff; border-radius: 16px; padding: 12px 16px; box-shadow: 0 14px 34px rgba(45, 43, 43, .12); }
+.akx-mapped b { font-size: 20px; font-weight: 900; letter-spacing: -0.03em; }
+.akx-rx { position: relative; z-index: 1; width: min(400px, 92%); padding: 16px 20px; background: var(--ink); color: #f3f2f2; border: none; }
+.akx-rx-h { margin: 0 0 8px; font-size: 13px; font-weight: 800; color: #d7b57e; letter-spacing: .08em; }
+.akx-rx-i { margin: 6px 0 0; display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 700; }
+.akx-rx-i i { font-style: normal; width: 22px; height: 22px; border-radius: 50%; background: #d7b57e; color: var(--ink); font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+.akx-rx-i span { margin-left: auto; font-size: 11.5px; color: #e9a96b; font-weight: 800; }
+
+/* ── 4. 돌려받는 시간 ── */
+.akx-time { height: 300vh; }
+.akx-clock { font: 800 clamp(96px, 14vw, 180px) 'SF Mono', Menlo, monospace; letter-spacing: -0.05em; color: #f3f2f2; transition: color .25s; }
+.akx-clock.red { color: var(--red); }
+.akx-colon { animation: akx-blink 1s steps(1) infinite; }
+.akx-today { list-style: none; margin: 0; padding: 0; width: min(440px, 100%); display: flex; flex-direction: column; gap: 12px; }
+.akx-today li { display: flex; align-items: center; gap: 16px; background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .14); border-radius: 18px; padding: 16px 20px; font-size: 19px; font-weight: 800; transition: background .25s, transform .25s; }
+.akx-today li i { font-style: normal; width: 38px; height: 38px; border-radius: 12px; border: 2px solid #605d5d; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+.akx-today li.on { background: rgba(160, 111, 36, .22); border-color: #a06f24; transform: translateX(6px); }
+.akx-today li.on i { background: #a06f24; border-color: #a06f24; color: #fff; }
+
+/* ── 5. 역전의 3월 ── */
+.akx-winter { height: 320vh; }
+.akx-count small { display: block; font-size: clamp(18px, 2vw, 24px); font-weight: 800; color: #d7d3d3; }
+.akx-count b { display: block; font-size: clamp(110px, 17vw, 220px); font-weight: 900; line-height: .95; letter-spacing: -0.06em; color: var(--red); font-variant-numeric: tabular-nums; }
+.akx-count b span { font-size: .32em; color: #f3f2f2; margin-left: 6px; letter-spacing: -0.03em; }
+.akx-winter .akx-h2 { font-size: clamp(26px, 3.6vw, 44px); margin-top: 16px; }
+.akx-weeks { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; margin-top: 30px; width: min(860px, 100%); }
+.akx-weeks div { border: 1px solid rgba(255, 255, 255, .18); border-radius: 14px; padding: 14px 6px; transition: background .25s, border-color .25s; }
+.akx-weeks div.on { background: #a06f24; border-color: #a06f24; }
+.akx-weeks b { display: block; font-size: 17px; font-weight: 900; }
+.akx-weeks span { display: block; margin-top: 4px; font-size: 11.5px; font-weight: 700; color: #d7d3d3; }
+.akx-weeks div.on span { color: #fff3e4; }
+
+/* ── 6. 화면 ── */
+.akx-gallery { height: 300vh; background: var(--paper); }
+.akx-rail { overflow: hidden; width: 100%; }
+.akx-track { display: flex; gap: 34px; padding: 0 max(28px, calc((100vw - 1120px) / 2 + 28px)); width: max-content; will-change: transform; }
+.akx-phone { margin: 0; flex: none; width: clamp(200px, 21vw, 250px); text-align: center; }
+.akx-phone img { display: block; width: 100%; height: auto; border-radius: 26px; border: 1px solid #d7d3d3; background: #fff; padding: 7px; box-shadow: 0 24px 60px rgba(45, 43, 43, .16); }
+.akx-phone figcaption { margin-top: 14px; font-size: 13.5px; color: #7d7979; font-weight: 600; }
+.akx-phone figcaption b { display: block; font-size: 16px; color: var(--ink); font-weight: 900; margin-bottom: 2px; }
+
+/* ── 떠 있는 버튼 ── */
+.akx-float-cta { position: fixed; left: 50%; bottom: 18px; z-index: 40; display: flex; gap: 8px; padding: 8px; border-radius: 999px;
+  background: rgba(243, 242, 242, .92); border: 1px solid #d7d3d3; box-shadow: 0 14px 40px rgba(45, 43, 43, .2);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  transform: translate(-50%, 140%); opacity: 0; transition: transform .35s cubic-bezier(.2, .9, .2, 1.1), opacity .25s; }
+.akx-float-cta.on { transform: translate(-50%, 0); opacity: 1; }
+.akx-float-cta .ark-btn { border-radius: 999px; white-space: nowrap; }
+
+/* ── 반응형 ── */
+@media (max-width: 880px) {
+  .akx-grid { grid-template-columns: minmax(0, 1fr); gap: 22px; align-content: center; }
+  .akx-copy { text-align: center; }
+  .akx-h2 { font-size: clamp(28px, 7.4vw, 40px); }
+  .akx-note { margin-top: 10px; font-size: 12.5px; }
+  .akx-paper { padding: 22px 22px 26px; }
+  .akx-x { width: 110px; height: 110px; top: 110px; right: -14px; }
+  .akx-map-stage { min-height: 360px; }
+  .akx-grid30 span { height: 36px; font-size: 14px; }
+  .akx-weeks { grid-template-columns: repeat(4, 1fr); }
+  .akx-clock { text-align: center; }
+  .akx-today li { font-size: 16px; padding: 12px 16px; }
+}
+@media (max-width: 520px) {
+  .akx-wrap { padding: 0 18px; }
+  .akx-float { width: 54px; height: 40px; font-size: 17px; }
+  .akx-diag { padding: 18px 18px 14px; }
+  .akx-diag-top b { font-size: 34px; }
+  .akx-timer { font-size: 26px; }
+  .akx-units { gap: 7px; }
+  .akx-unit-n { font-size: 13px; }
+  .akx-opts { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .akx-swap, .akx-float, .akx-hint i, .akx-caret, .akx-colon { animation: none; }
+}
