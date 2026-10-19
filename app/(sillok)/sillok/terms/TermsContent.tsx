@@ -58,10 +58,10 @@ export default function TermsContent() {
         <section>
           <h2>4. 지식재산권</h2>
           <p>앱에 담긴 사건 서술, 해설, 낱말 뜻풀이, 그림, 음악, 코드 등 모든 창작물의 저작권은 주식회사 예아플러스(yeahplus)에 있습니다.</p>
-          <p>역사적 사실 자체는 누구의 소유도 아닙니다. 이 앱의 문장은{' '}<strong>사실을 확인한 뒤 전부 새로 작성한 것</strong>이며, 타인의 번역물이나 해설을 옮기지 않았습니다. 사료 출처는 실록의 권과 날짜로만 표기합니다. 초상화나 유물 사진을 사용하지 않고 모든 그림을 직접 제작했습니다.</p>
+          <p>역사적 사실 자체는 누구의 소유도 아닙니다. 이 앱의 문장은{' '}<strong>사실을 확인한 뒤 전부 새로 작성한 것</strong>이며, 타인의 번역물이나 해설을 옮기지 않았습니다. 사료 출처는 실록의 권과 날짜로만 표기합니다. 어진(임금의 초상)은 국립고궁박물관이 공공누리 제1유형으로 공개한 소장품을 출처와 함께 이용했으며, 그 밖의 그림은 모두 이 앱을 위해 새로 제작했습니다.</p>
           <div className="sl-en-block">
             <h3>4. Intellectual property</h3>
-            <p>Copyright in the app's event narratives, commentary, glossary definitions, artwork, music and code belongs to yeahplus. Historical facts themselves belong to no one: all prose in this app was{' '}<strong>written fresh after verifying the facts,</strong>{' '}reproducing no one else's translation or commentary, and sources are cited by volume and date only. No portrait or artifact photography is used; all artwork is original.</p>
+            <p>Copyright in the app's event narratives, commentary, glossary definitions, artwork, music and code belongs to yeahplus. Historical facts themselves belong to no one: all prose in this app was{' '}<strong>written fresh after verifying the facts,</strong>{' '}reproducing no one else's translation or commentary, and sources are cited by volume and date only. Royal portraits are used from the National Palace Museum of Korea's collection under KOGL Type 1 with attribution; all other artwork is original.</p>
           </div>
         </section>
 

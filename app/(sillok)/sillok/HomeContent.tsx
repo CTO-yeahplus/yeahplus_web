@@ -8,7 +8,7 @@ import Image from 'next/image';
    단, 아래 App Store 버튼은 출시 후 손으로 고친 자리다(원본에는 링크가 없다). */
 
 /** 출시됨(2026-09). 이 값이 비면 버튼이 자동으로 「곧 출시」 안내로 돌아간다. */
-const APP_STORE_URL = 'https://apps.apple.com/kr/app/id6810510913';
+const APP_STORE_URL = 'https://apps.apple.com/app/apple-store/id6810510913?pt=121180501&ct=site&mt=8';
 
 export default function HomeContent() {
   return (
@@ -159,8 +159,8 @@ export default function HomeContent() {
               <span className="sl-n" aria-hidden="true">2</span>
               <span className="sl-lt">
                 <b><span data-l="ko">사건 카드 3~5장</span><span data-l="en">Three to five event cards</span></b>
-                <span data-l="ko">두루마리 상소가 펼쳐집니다. 상황 서너 문장을 읽고 선택지 두세 개 중 하나를 고릅니다.</span>
-                <span data-l="en">A scroll unfurls. Read three or four sentences of context, then pick one of two or three courses of action.</span>
+                <span data-l="ko">두루마리 상소가 펼쳐집니다. 상황 서너 문장을 읽고 두 갈래 길 가운데 하나를 고릅니다.</span>
+                <span data-l="en">A scroll unfurls. Read three or four sentences of context, then choose between two courses of action.</span>
               </span>
             </li>
             <li>
@@ -351,8 +351,8 @@ export default function HomeContent() {
               <span data-l="en">Dates, people and events were cross-checked; anything we were unsure of was left out.</span></li>
           <li><span data-l="ko">국역본 문장은 한 줄도 옮기지 않았습니다. 사실만 확인하고 문장은 전부 새로 썼으며, 출처는 실록의 권과 날짜로만 표기합니다.</span>
               <span data-l="en">Not one sentence is copied from a published translation. Facts were verified and all prose written fresh; sources are cited by volume and date only.</span></li>
-          <li><span data-l="ko">초상화나 유물 사진을 쓰지 않고 모든 그림을 직접 그렸습니다.</span>
-              <span data-l="en">No portrait or artifact photography is used; every illustration is drawn in-app.</span></li>
+          <li><span data-l="ko">임금의 초상은 국립고궁박물관이 공개한 어진(공공누리 제1유형)을 출처와 함께 실었고, 그 밖의 그림은 모두 이 앱을 위해 새로 그렸습니다.</span>
+              <span data-l="en">Royal portraits are public-domain works released by the National Palace Museum of Korea (KOGL Type 1), credited in the app; every other illustration was made for this app.</span></li>
           <li><span data-l="ko">학계 통설만 서술하고 야사는 쓰지 않습니다. 특정 인물을 깎아내리거나 현대 정치와 연결하지 않습니다.</span>
               <span data-l="en">Only mainstream scholarship, no folklore. No disparagement of individuals, no links to present-day politics.</span></li>
           <li><span data-l="ko">아이 눈높이를 넘는 잔혹한 표현은 쓰지 않습니다.</span>
