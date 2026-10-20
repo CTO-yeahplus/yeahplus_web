@@ -4,13 +4,14 @@
    '이 웹사이트' 항목은 crimescene/privacy 4번의 문장을 그대로 옮겼다(이 라우트도 Vercel Analytics · Speed Insights 를 싣는다).
    ⚠️ 이 주소가 App Store Connect 의 개인정보 처리방침 URL 이다.
    앱의 실제 동작 · PrivacyInfo · ASC App Privacy("데이터를 수집하지 않음")와 반드시 일치해야 한다.
-   저장 위치: 앱 저장소 + Documents/diogeneslamp/save.json (iCloud·기기 백업에 포함될 수 있음). */
+   저장 위치: 앱 저장소 + Documents/diogeneslamp/save.json (iCloud·기기 백업에 포함될 수 있음).
+   2026-10-20: 수사본부 제보 양식(웹사이트)이 받는 항목·보관 기간·위탁(Supabase 서울)을 7절에 더했다 — sql/fishyquotes_case_hq.sql 과 맞춰 둘 것. */
 
 import Link from 'next/link';
 import { APP_EN, APP_KO, BIZ, COMPANY_EN, COMPANY_KO, MAIL, useDocTitle, useLang } from '../i18n';
 
-const EFFECTIVE_KO = '2026년 10월 15일';
-const EFFECTIVE_EN = 'October 15, 2026';
+const EFFECTIVE_KO = '2026년 10월 20일';
+const EFFECTIVE_EN = 'October 20, 2026';
 
 export default function PrivacyContent() {
   const { L } = useLang();
@@ -32,6 +33,12 @@ export default function PrivacyContent() {
           {L(
             '수상한 명언에는 계정과 로그인이 없고, 광고 추적·분석·크래시 보고 도구(SDK)가 들어 있지 않으며, 회사 서버도 없습니다. 앱은 스스로 네트워크 요청을 하지 않습니다. 진행 기록은 사용자의 기기 안에만 저장되고, 회사는 볼 수 없습니다.',
             'Fishy Quotes has no account and no login, contains no ad-tracking, analytics or crash-reporting tools (SDKs), and talks to no server of ours. The app makes no network requests of its own. Your progress is stored only on your device, where we cannot see it.'
+          )}
+        </p>
+        <p>
+          {L(
+            '앱 밖의 일 하나: 이 웹사이트의 수사본부 제보 양식에 직접 적어 보내는 내용(명언·제보 내용, 고르면 닉네임·이메일)은 회사가 받아 보관합니다. 7절에 무엇을 언제까지 보관하는지 적었습니다.',
+            'One thing outside the app: what you choose to send through the Case HQ report form on this website (the quote and your report, and a nickname and email if you add them) is received and kept by us. Section 7 says what and for how long.'
           )}
         </p>
       </div>
@@ -103,7 +110,7 @@ export default function PrivacyContent() {
         </tbody>
       </table>
 
-      <h2>{L('4. 출처 링크와 메일', '4. Source links and email')}</h2>
+      <h2>{L('4. 출처 링크 · 수사본부 · 메일', '4. Source links, Case HQ and email')}</h2>
       <ul>
         <li>
           {L(
@@ -113,8 +120,20 @@ export default function PrivacyContent() {
         </li>
         <li>
           {L(
-            `'오류 제보'와 '감정 의뢰'는 메일 앱을 열어 ${MAIL} 로 보낼 메일을 준비할 뿐입니다. 보낼지 말지는 사용자가 정하며, 사용자가 직접 보내는 메일입니다. 받은 메일은 답변을 위해 보관하며, 문의가 끝난 뒤 1년이 지나면 지웁니다.`,
-            `“Report an error” and “send a quote” simply open your Mail app with a message addressed to ${MAIL}. You decide whether to send it; it is an email you send yourself. We keep emails we receive in order to reply, and delete them one year after the inquiry is closed.`
+            `'수상한 점 제보'·'수상한 명언 제보'·'사건 게시판'은 Safari 로 이 웹사이트의 수사본부 페이지를 열 뿐입니다. 이때 주소에는 사건 번호·앱 언어·(검색에 없던) 검색어만 담기며, 앱이 데이터를 보내지는 않습니다. 제보를 보낼지 말지는 사용자가 그 페이지에서 정합니다(7절).`,
+            `“Something fishy? Report it”, “Report a fishy quote” and “Case board” simply open the Case HQ pages of this website in Safari. The address carries only the case number, the app language and (when a search found nothing) the search words; the app sends no data. Whether to send a report is up to you on that page (section 7).`
+          )}
+        </li>
+        <li>
+          {L(
+            `공로장 코드는 앱 안에서 서명만 확인합니다. 코드를 넣어도 앱은 어디에도 연결하지 않습니다.`,
+            `A commendation code is checked on the device by its signature alone. Entering one does not make the app connect anywhere.`
+          )}
+        </li>
+        <li>
+          {L(
+            `${MAIL} 로 직접 보내 주시는 메일은 답변을 위해 보관하며, 문의가 끝난 뒤 1년이 지나면 지웁니다.`,
+            `Emails you send to ${MAIL} are kept so we can reply, and deleted one year after the inquiry is closed.`
           )}
         </li>
       </ul>
@@ -130,16 +149,59 @@ export default function PrivacyContent() {
       <h2>{L('6. 제3자 제공·위탁', '6. Third parties')}</h2>
       <p>
         {L(
-          '수집하는 정보가 없으므로 제3자에게 제공하거나 위탁하는 정보도 없습니다. 카드 이미지를 보낼 때는 iOS 공유 화면이 열리고, 받을 곳은 사용자가 직접 고릅니다. 앱에 제휴·협찬 콘텐츠가 실리더라도 협찬사에 사용자 정보를 넘기지 않으며, 협찬 콘텐츠를 보여 주려고 사용자를 추적하거나 광고 식별자를 쓰지 않습니다.',
-          'Because we collect nothing, nothing is shared with or processed by third parties. Sharing an image opens the iOS share sheet, and you choose where it goes. If the app carries partner or sponsored content, no information about you goes to the sponsor, and we do not track you or use advertising identifiers to show it.'
+          '앱은 수집하는 정보가 없으므로 제3자에게 제공하거나 위탁하는 정보도 없습니다. 카드 이미지를 보낼 때는 iOS 공유 화면이 열리고, 받을 곳은 사용자가 직접 고릅니다. 앱에 제휴·협찬 콘텐츠가 실리더라도 협찬사에 사용자 정보를 넘기지 않으며, 협찬 콘텐츠를 보여 주려고 사용자를 추적하거나 광고 식별자를 쓰지 않습니다.',
+          'Because the app collects nothing, nothing is shared with or processed by third parties. Sharing an image opens the iOS share sheet, and you choose where it goes. If the app carries partner or sponsored content, no information about you goes to the sponsor, and we do not track you or use advertising identifiers to show it.'
         )}
       </p>
 
       <h2>{L('7. 이 웹사이트', '7. This website')}</h2>
       <p>
         {L(
-          '이 웹사이트에는 회원가입과 문의 양식이 없고 쿠키를 쓰지 않습니다. 고른 언어(한국어/English)만 여러분의 브라우저에 저장됩니다. 글꼴과 그림은 모두 이 도메인에서 내려받습니다.',
-          'This website has no sign-up or contact form, and uses no cookies. Only your language choice (한국어/English) is saved in your browser. Fonts and images are all served from this domain.'
+          '이 웹사이트에는 회원가입이 없고 쿠키를 쓰지 않습니다. 고른 언어(한국어/English)만 여러분의 브라우저에 저장됩니다. 글꼴과 그림은 모두 이 도메인에서 내려받습니다.',
+          'This website has no sign-up and uses no cookies. Only your language choice (한국어/English) is saved in your browser. Fonts and images are all served from this domain.'
+        )}
+      </p>
+      <p>
+        {L(
+          '수사본부 제보 양식(/fishyquotes/report)에 적어 보내는 내용은 아래와 같이 받습니다. 제보 내용과 이메일은 사건 게시판에 공개하지 않습니다.',
+          'What you send through the Case HQ report form (/fishyquotes/report) is handled as below. Your report text and email are never published on the case board.'
+        )}
+      </p>
+      <table className="dl-table-doc">
+        <thead>
+          <tr>
+            <th>{L('항목', 'What')}</th>
+            <th>{L('목적', 'Why')}</th>
+            <th>{L('보관', 'How long')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{L('명언·사건 번호·제보 내용·근거 링크·언어', 'Quote, case number, report text, source links, language')}</td>
+            <td>{L('원문 대조·판결, 앱 사건 수정', 'Checking and ruling on it, fixing the case in the app')}</td>
+            <td>{L('판결 뒤 3년(같은 명언이 다시 제보될 때 대조용)', '3 years after the verdict (to compare when the same quote is reported again)')}</td>
+          </tr>
+          <tr>
+            <td>{L('닉네임 (선택, 동의 시)', 'Nickname (optional, with consent)')}</td>
+            <td>{L('사건 게시판·앱 판결문에 제보자 표시', 'Crediting you on the case board and in the app')}</td>
+            <td>{L('게시물과 앱 판결문이 있는 동안', 'As long as the board entry and the app credit exist')}</td>
+          </tr>
+          <tr>
+            <td>{L('이메일 (선택, 동의 시)', 'Email (optional, with consent)')}</td>
+            <td>{L('결과와 공로장 코드 안내', 'Sending you the result and a commendation code')}</td>
+            <td>{L('판결·기각 후 30일 안에 삭제', 'Deleted within 30 days of the verdict or dismissal')}</td>
+          </tr>
+          <tr>
+            <td>{L('접속 주소(IP)를 되돌릴 수 없게 바꾼 값', 'A one-way hash of your IP address')}</td>
+            <td>{L('같은 곳에서 짧은 시간에 몰리는 스팸 막기(시간당 5건)', 'Blocking spam floods from one place (5 per hour)')}</td>
+            <td>{L('하루 뒤 삭제', 'Deleted after one day')}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        {L(
+          '제보 내용은 데이터베이스 서비스 Supabase(Supabase Inc.)에 저장하며, 저장 서버는 대한민국(서울)에 있습니다. 이 위탁 외에 다른 곳에 제공하지 않습니다. 닉네임·이메일을 비워 두면 동의 없이 제보할 수 있고, 보낸 제보를 지우고 싶으면 접수번호와 함께 아래 문의처로 알려 주세요.',
+          'Reports are stored with the database service Supabase (Supabase Inc.), on servers in Seoul, Republic of Korea. They are not shared with anyone else. You can report without consenting by leaving the nickname and email empty; to have a report deleted, send us its report number at the contact below.'
         )}
       </p>
       <p>

@@ -54,9 +54,12 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let next: Lang | null = null;
+    // 앱이 여는 주소(수사본부 제보·게시판)는 ?l=ko|en 으로 앱의 언어를 넘긴다 — 저장된 선택보다 앞선다.
+    const fromUrl = new URLSearchParams(window.location.search).get('l');
+    if (fromUrl === 'ko' || fromUrl === 'en') next = fromUrl;
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved === 'ko' || saved === 'en') next = saved;
+      if (!next && (saved === 'ko' || saved === 'en')) next = saved;
     } catch {
       /* 프라이빗 모드 등 — 무시 */
     }

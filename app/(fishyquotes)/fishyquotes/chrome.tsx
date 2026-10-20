@@ -39,6 +39,7 @@ function Header() {
           {L(APP_KO, APP_EN)}
         </Link>
         <nav>
+          <NavItem href={`${BASE}/cases`}>{L('수사본부', 'Case HQ')}</NavItem>
           <NavItem href={`${BASE}/support`}>{L('지원', 'Support')}</NavItem>
           <NavItem href={`${BASE}/privacy`}>{L('개인정보', 'Privacy')}</NavItem>
           <button
@@ -63,6 +64,8 @@ function Footer({ year }: { year: number }) {
       <div className="dl-wrap">
         <div className="dl-links">
           <Link href={BASE}>{L('소개', 'Overview')}</Link>
+          <Link href={`${BASE}/cases`}>{L('사건 게시판', 'Case board')}</Link>
+          <Link href={`${BASE}/report`}>{L('수상한 명언 제보', 'Report a fishy quote')}</Link>
           <Link href={`${BASE}/support`}>{L('지원 · Support', 'Support')}</Link>
           <Link href={`${BASE}/privacy`}>{L('개인정보 처리방침', 'Privacy Policy')}</Link>
           <Link href={`${BASE}/terms`}>{L('이용 약관', 'Terms of Use')}</Link>

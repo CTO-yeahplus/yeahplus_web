@@ -175,6 +175,73 @@ h1, h2, h3 { margin: 0; line-height: 1.25; letter-spacing: -0.03em; font-weight:
 .dl-table-doc th { color: var(--dl-ink); font-weight: 700; white-space: nowrap; }
 .dl-doc code { font-size: .92em; background: var(--dl-card); border: 1px solid var(--dl-line); border-radius: 6px; padding: 1px 6px; }
 
+/* ── 수사본부: 제보 양식 · 사건 게시판 (클래스는 fq-) ── */
+.fq-kicker { margin-bottom: 8px; }
+.fq-form { margin-top: 26px; display: grid; gap: 18px; }
+.fq-field { display: grid; gap: 8px; }
+.fq-field > span, .fq-kind legend { font-weight: 800; font-size: 15.5px; color: var(--dl-ink); }
+.fq-field em { font-style: normal; color: var(--dl-red); }
+.fq-field small { justify-self: end; color: var(--dl-ink-2); font-size: 13px; margin-top: -4px; }
+.fq-field input, .fq-field textarea {
+  width: 100%; font: inherit; font-size: 16px; color: var(--dl-ink); background: var(--dl-card);
+  border: 1.5px solid var(--dl-line-2); border-radius: 14px; padding: 12px 14px; resize: vertical; }
+.fq-field input:focus, .fq-field textarea:focus { outline: none; border-color: var(--dl-night); box-shadow: 0 0 0 3px rgba(255, 197, 61, .45); }
+.fq-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.fq-kind { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px 22px; }
+.fq-kind legend { padding: 0; margin-bottom: 8px; width: 100%; }
+.fq-kind label, .fq-consent { display: flex; gap: 10px; align-items: flex-start; color: var(--dl-ink); font-size: 15.5px; cursor: pointer; }
+.fq-kind input, .fq-consent input { margin-top: 5px; accent-color: var(--dl-night); width: 18px; height: 18px; flex: none; }
+.fq-consent { background: var(--dl-card); border: 1px solid var(--dl-line-2); border-radius: 14px; padding: 14px 16px; font-size: 14px; color: var(--dl-ink-2); line-height: 1.6; }
+.fq-case { background: var(--dl-night); color: #F6F1FA; border-radius: 18px; padding: 20px 22px; }
+.fq-case p { color: #FFF; font-size: clamp(19px, 2.4vw, 23px); line-height: 1.45; margin: 8px 0 6px; }
+.fq-case-no { font-size: 13px; font-weight: 800; letter-spacing: .06em; color: var(--dl-gold); }
+.fq-case .fq-who { color: #D9CFE2; }
+.fq-who { color: var(--dl-ink-2); font-size: 14.5px; margin: 0; }
+.fq-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.fq-problem { margin: 0; color: var(--dl-red); font-weight: 700; }
+.fq-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 22px 0 6px; }
+.fq-form .fq-actions { margin: 4px 0 0; }
+.fq-actions .dl-btn { cursor: pointer; font-family: inherit; }
+.fq-actions .dl-btn:disabled { opacity: .6; cursor: default; transform: none; }
+.fq-ghost { background: transparent; border-color: var(--dl-line-2); }
+.fq-fallback { background: var(--dl-card); border: 1px solid var(--dl-line-2); border-left: 6px solid var(--dl-gold); border-radius: 18px; padding: 18px 20px; }
+.fq-fallback p { margin: 0 0 14px; color: var(--dl-ink); }
+.fq-receipt { display: inline-flex; flex-direction: column; margin: 22px 0 8px; padding: 16px 26px; border: 3px solid var(--dl-red);
+  border-radius: 14px; transform: rotate(-3deg); color: var(--dl-red); }
+.fq-receipt span { font-size: 13px; font-weight: 800; letter-spacing: .08em; }
+.fq-receipt b { font-size: 40px; line-height: 1.1; letter-spacing: .06em; }
+
+.fq-steps { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; counter-reset: s; }
+.fq-steps li { background: var(--dl-card); border: 1px solid var(--dl-line-2); border-radius: 16px; padding: 14px 16px; margin: 0;
+  font-size: 14.5px; line-height: 1.5; counter-increment: s; }
+.fq-steps b { display: block; color: var(--dl-ink); font-size: 16px; margin-bottom: 4px; }
+.fq-steps b::before { content: counter(s) ". "; color: var(--dl-red); }
+.fq-filter { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 14px; }
+.fq-filter button { font: inherit; font-size: 14px; font-weight: 700; padding: 7px 14px; border-radius: 999px; cursor: pointer;
+  border: 1.5px solid var(--dl-line-2); background: transparent; color: var(--dl-ink-2); }
+.fq-filter button[aria-pressed="true"] { background: var(--dl-night); border-color: var(--dl-night); color: #FFF; }
+.fq-card { background: var(--dl-card); border: 1px solid var(--dl-line-2); border-radius: 18px; padding: 18px 20px; margin-bottom: 12px; }
+.fq-pinned { border: 2px solid var(--dl-gold); margin-top: 26px; }
+.fq-pin { margin: 0 0 8px !important; font-size: 13px !important; font-weight: 800; letter-spacing: .06em; color: var(--dl-red) !important; }
+.fq-card-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.fq-no { font-size: 13px; color: var(--dl-ink-2); }
+.fq-stamp { flex: none; font-size: 13px; font-weight: 800; letter-spacing: .04em; padding: 3px 10px; border-radius: 8px;
+  border: 2px solid currentColor; color: var(--dl-ink-2); transform: rotate(-2deg); }
+.fq-s-investigating .fq-stamp { color: #C46A00; }
+.fq-v-real .fq-stamp { color: #0E9F6E; }
+.fq-v-fake .fq-stamp { color: var(--dl-red); }
+.fq-v-twisted .fq-stamp { color: #C46A00; }
+.fq-v-unchanged .fq-stamp { color: var(--dl-night); }
+.fq-quote { color: var(--dl-ink) !important; font-size: clamp(18px, 2.2vw, 21px) !important; line-height: 1.45; margin: 10px 0 4px; }
+.fq-summary { margin: 12px 0 0; }
+.fq-src { margin: 8px 0 0; padding-left: 18px; }
+.fq-src li { margin: 2px 0; font-size: 14.5px; }
+.fq-foot { margin: 10px 0 0; font-size: 13.5px !important; }
+.fq-empty { margin-top: 26px; text-align: center; background: var(--dl-card); border: 1.5px dashed var(--dl-line-2); border-radius: 18px; padding: 34px 22px; }
+.fq-empty p { margin: 0; }
+.fq-empty .dl-serif { color: var(--dl-ink); font-size: 21px; margin-bottom: 6px; }
+.fq-none { text-align: center; }
+
 /* ── 반응형 ── */
 @media (max-width: 900px) {
   .dl-hero-grid, .dl-feature { grid-template-columns: 1fr; gap: 30px; }
@@ -191,4 +258,5 @@ h1, h2, h3 { margin: 0; line-height: 1.25; letter-spacing: -0.03em; font-weight:
   .dl-brand { font-size: 15px; gap: 8px; }
   .dl-phone { width: min(260px, 68vw); }
   .dl-table-doc th { white-space: normal; }
+  .fq-row, .fq-steps { grid-template-columns: 1fr; }
 }

@@ -1,7 +1,7 @@
 'use client';
 
 /* 수상한 명언 지원 — hyunja/support 와 같은 뼈대(문의 상자 + 자주 묻는 질문).
-   메뉴 이름은 앱 template.html 의 문자열을 따랐다: 비망록 → 설정 → 효과음 · '오류 제보 · 명언 감정 의뢰'.
+   메뉴 이름은 앱 template.html 의 문자열을 따랐다: 비망록 → 설정 → 효과음 · 비망록 → 수사본부 · '수상한 점 제보'(2026-10-20 메일 → 웹 양식).
    ⚠️ 이 주소가 App Store Connect 의 지원 URL 이다. */
 
 import Link from 'next/link';
@@ -36,15 +36,22 @@ export default function SupportContent() {
     {
       q: L('판정이 틀린 것 같아요', 'I think a verdict is wrong'),
       a: L(
-        `알려 주시면 고맙겠습니다. 판정 화면의 '오류 제보'를 누르면 그 사건이 적힌 메일이 준비됩니다. 메일로 직접 보내셔도 됩니다 — ${MAIL} 로 명언 문장과 근거 자료(있으면 링크)를 적어 주세요. 확인해 다음 업데이트에 고칩니다.`,
-        `Please tell us — it helps. Tap “Report an error” on the verdict screen and a message naming that case is prepared for you. You can also email ${MAIL} directly with the quote and any source you have (a link is ideal). We will check it and fix it in the next update.`
+        `알려 주시면 고맙겠습니다. 판정 화면 맨 아래의 '수상한 점 제보'를 누르면 그 사건이 적힌 수사본부 제보 양식이 열립니다. 편집부가 원문과 대조해 판결하고, 진행 상황은 사건 게시판에 접수번호로 올라갑니다. 채택된 제보에는 공로장을 드립니다. 메일(${MAIL})로 보내셔도 똑같이 접수합니다.`,
+        `Please tell us — it helps. Tap “Something fishy? Report it” at the bottom of the verdict screen and the Case HQ report form opens with that case filled in. Our editors check it against the original, and progress is posted on the case board under your report number. Accepted reports earn a commendation. Emailing ${MAIL} works too.`
       ),
     },
     {
       q: L('감정받고 싶은 명언이 있어요', 'I have a quote I want checked'),
       a: L(
-        `비망록 → 설정의 '오류 제보 · 명언 감정 의뢰'에서 메일을 쓰거나, ${MAIL} 로 보내 주세요. 새 사건을 고를 때 참고합니다.`,
-        `Use “Report an error or send a quote” under My Book → Settings, or email ${MAIL}. We look at these when choosing new cases.`
+        `비망록 → 수사본부의 '수상한 명언 제보'를 누르거나, 이 사이트의 제보 양식(/fishyquotes/report)을 쓰세요. 앱 검색에 없는 문장이면 '이 명언 제보하기'를 눌러도 됩니다. 조사해서 판결하고, 새 사건이 되면 다음 업데이트에 실립니다.`,
+        `Tap “Report a fishy quote” under My Book → Case HQ, or use the report form on this site (/fishyquotes/report). If a search in the app finds nothing, “Report this quote” works too. We investigate, post the verdict, and new cases join the next update.`
+      ),
+    },
+    {
+      q: L('공로장 코드는 어디에 넣나요?', 'Where do I enter a commendation code?'),
+      a: L(
+        '채택된 제보자에게 메일로 보내 드리는 코드입니다. 앱의 비망록 → 수사본부 → 코드 입력에 붙여 넣으면 \'명예 수사관\' 공로장이 비망록에 철해집니다. 코드는 기기 안에서 확인하며, 서버나 계정이 필요 없습니다.',
+        'It is a code we email to reporters whose report is accepted. Paste it under My Book → Case HQ → Enter code in the app, and an “Honorary investigator” commendation is filed in your book. The code is checked on your device — no server or account needed.'
       ),
     },
     {
@@ -103,8 +110,8 @@ export default function SupportContent() {
       <h1>{L('지원', 'Support')}</h1>
       <p className="dl-meta">
         {L(
-          '궁금한 점이나 틀린 판정·번역을 발견하시면 메일로 알려 주세요. 영업일 기준 사흘 안에 답합니다.',
-          'Questions, or a verdict or translation that looks wrong? Email us — we reply within three business days.'
+          '궁금한 점은 메일로 알려 주세요. 영업일 기준 사흘 안에 답합니다. 틀린 판정·번역이나 수상한 명언은 수사본부에 제보해 주세요.',
+          'Questions? Email us — we reply within three business days. For a verdict or translation that looks wrong, or a fishy quote, please report it to Case HQ.'
         )}
       </p>
 
@@ -117,6 +124,12 @@ export default function SupportContent() {
           >
             {MAIL}
           </a>
+        </p>
+        <p>
+          <strong>{L('수사본부', 'Case HQ')}</strong> ·{' '}
+          <Link href="/fishyquotes/report">{L('수상한 명언 제보', 'Report a fishy quote')}</Link>
+          {' · '}
+          <Link href="/fishyquotes/cases">{L('사건 게시판', 'Case board')}</Link>
         </p>
         <p>
           {L(

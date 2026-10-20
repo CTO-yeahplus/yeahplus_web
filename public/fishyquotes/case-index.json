@@ -1,0 +1,1749 @@
+{
+"version": "1.0-rc1",
+"title": {
+"en": "Fishy Quotes",
+"ko": "수상한 명언"
+},
+"items": [
+{
+"id": "m-12",
+"type": "case",
+"who": {
+"en": "Henry David Thoreau",
+"ko": "헨리 데이비드 소로"
+},
+"en": "The mass of men lead lives of quiet desperation.",
+"ko": "대부분의 사람들은 조용한 절망 속에서 살아간다."
+},
+{
+"id": "a-14",
+"type": "case",
+"who": {
+"en": "Socrates",
+"ko": "소크라테스"
+},
+"en": "The unexamined life is not worth living.",
+"ko": "성찰하지 않는 삶은 살 가치가 없다."
+},
+{
+"id": "s-2",
+"type": "case",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "Without music, life would be a mistake.",
+"ko": "음악이 없다면 인생은 하나의 오류일 것이다."
+},
+{
+"id": "m-2",
+"type": "case",
+"who": {
+"en": "Albert Einstein",
+"ko": "알베르트 아인슈타인"
+},
+"en": "Imagination is more important than knowledge.",
+"ko": "상상력은 지식보다 중요하다."
+},
+{
+"id": "a-1",
+"type": "case",
+"who": {
+"en": "Plato",
+"ko": "플라톤"
+},
+"en": "Be kind, for everyone you meet is fighting a hard battle.",
+"ko": "친절하라. 당신이 만나는 모든 사람은 힘겨운 싸움을 하고 있으니."
+},
+{
+"id": "m-10",
+"type": "case",
+"who": {
+"en": "Oscar Wilde",
+"ko": "오스카 와일드"
+},
+"en": "Be yourself; everyone else is already taken.",
+"ko": "너 자신이 되어라. 다른 사람은 이미 다 임자가 있으니까."
+},
+{
+"id": "m-3",
+"type": "case",
+"who": {
+"en": "Mark Twain",
+"ko": "마크 트웨인"
+},
+"en": "The two most important days in your life are the day you are born and the day you find out why.",
+"ko": "인생에서 가장 중요한 두 날은 태어난 날과, 왜 태어났는지 알게 되는 날이다."
+},
+{
+"id": "s-9",
+"type": "case",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "What we do in life echoes in eternity.",
+"ko": "우리가 살면서 하는 일은 영원 속에 메아리친다."
+},
+{
+"id": "s2-6",
+"type": "case",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "The best revenge is not to be like your enemy.",
+"ko": "최고의 복수는 원수를 닮지 않는 것이다."
+},
+{
+"id": "q9",
+"type": "case",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "Don’t live as if you had ten thousand years ahead of you.",
+"ko": "만 년이라도 살 것처럼 살지 마라."
+},
+{
+"id": "q4",
+"type": "case",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "Everything we hear is an opinion, not a fact. Everything we see is a perspective, not the truth.",
+"ko": "우리가 듣는 모든 것은 사실이 아니라 의견이고, 우리가 보는 모든 것은 진실이 아니라 관점이다."
+},
+{
+"id": "s2-7",
+"type": "case",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "Waste no more time arguing about what a good man should be. Be one.",
+"ko": "좋은 사람이란 어떠해야 하는지 논하느라 더는 시간을 허비하지 마라. 그런 사람이 되어라."
+},
+{
+"id": "s2-9",
+"type": "case",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "Death smiles at us all; all a man can do is smile back.",
+"ko": "죽음은 우리 모두에게 미소 짓는다. 인간이 할 수 있는 일은 마주 미소 짓는 것뿐이다."
+},
+{
+"id": "s2-10",
+"type": "case",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "I shall pass through this world but once. Any good that I can do, or any kindness I can show, let me do it now, for I shall not pass this way again.",
+"ko": "나는 이 세상을 단 한 번 지나간다. 내가 할 수 있는 선행이나 베풀 수 있는 친절이 있다면 지금 하게 하라. 이 길을 다시 지나지 않을 것이므로."
+},
+{
+"id": "q5",
+"type": "case",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "Live a good life. If there are gods and they are just, they will not care how devout you have been, but will welcome you based on the virtues you have lived by.",
+"ko": "좋은 삶을 살라. 신들이 있고 그들이 정의롭다면, 네가 얼마나 경건했는지가 아니라 네가 지킨 덕으로 너를 맞을 것이다."
+},
+{
+"id": "s-10",
+"type": "case",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "The object of life is not to be on the side of the majority, but to escape finding oneself in the ranks of the insane.",
+"ko": "인생의 목적은 다수의 편에 서는 것이 아니라, 미친 자들의 대열에 서게 되는 것을 피하는 것이다."
+},
+{
+"id": "s-8",
+"type": "case",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "When you arise in the morning, think of what a precious privilege it is to be alive — to breathe, to think, to enjoy, to love.",
+"ko": "아침에 일어나면, 살아 있다는 것이 — 숨 쉬고, 생각하고, 즐기고, 사랑할 수 있다는 것이 — 얼마나 소중한 특권인지 생각하라."
+},
+{
+"id": "s2-8",
+"type": "case",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "It is not death that a man should fear, but he should fear never beginning to live.",
+"ko": "사람이 두려워해야 할 것은 죽음이 아니라, 삶을 한 번도 시작하지 못하는 것이다."
+},
+{
+"id": "a-15",
+"type": "case",
+"who": {
+"en": "Seneca",
+"ko": "세네카"
+},
+"en": "We suffer more often in imagination than in reality.",
+"ko": "우리는 현실에서보다 상상 속에서 더 자주 고통받는다."
+},
+{
+"id": "a-6",
+"type": "case",
+"who": {
+"en": "Seneca",
+"ko": "세네카"
+},
+"en": "Luck is what happens when preparation meets opportunity.",
+"ko": "행운이란 준비가 기회를 만날 때 일어나는 것이다."
+},
+{
+"id": "p2-16",
+"type": "case",
+"who": {
+"en": "Seneca",
+"ko": "세네카"
+},
+"en": "It is not because things are difficult that we do not dare; it is because we do not dare that they are difficult.",
+"ko": "일이 어려워서 감히 못 하는 것이 아니라, 우리가 감히 하지 않기 때문에 일이 어려운 것이다."
+},
+{
+"id": "a-8",
+"type": "case",
+"who": {
+"en": "Cicero",
+"ko": "키케로"
+},
+"en": "The budget should be balanced, the Treasury should be refilled, public debt should be reduced... People must again learn to work, instead of living on public assistance.",
+"ko": "예산은 균형을 이루고, 국고는 다시 채워지며, 공공 부채는 줄어야 한다… 사람들은 공공 부조에 기대 살지 말고 다시 일하는 법을 배워야 한다."
+},
+{
+"id": "p2-14",
+"type": "case",
+"who": {
+"en": "Cicero",
+"ko": "키케로"
+},
+"en": "A room without books is like a body without a soul.",
+"ko": "책 없는 방은 영혼 없는 육체와 같다."
+},
+{
+"id": "p2-7",
+"type": "case",
+"who": {
+"en": "Seneca",
+"ko": "세네카"
+},
+"en": "Every new beginning comes from some other beginning's end.",
+"ko": "모든 새로운 시작은 다른 시작의 끝에서 온다."
+},
+{
+"id": "p2-6",
+"type": "case",
+"who": {
+"en": "Epictetus",
+"ko": "에픽테토스"
+},
+"en": "We have two ears and one mouth so that we can listen twice as much as we speak.",
+"ko": "우리에게 귀가 둘이고 입이 하나인 것은 말하는 것보다 두 배로 들으라는 뜻이다."
+},
+{
+"id": "p2-1",
+"type": "case",
+"who": {
+"en": "Augustine of Hippo",
+"ko": "아우구스티누스"
+},
+"en": "The world is a book, and those who do not travel read only one page.",
+"ko": "세상은 한 권의 책이며, 여행하지 않는 사람은 그 책의 한 페이지만 읽는 것이다."
+},
+{
+"id": "p2-19",
+"type": "case",
+"who": {
+"en": "Augustine of Hippo",
+"ko": "아우구스티누스"
+},
+"en": "Lord, grant me chastity and continence, but not yet.",
+"ko": "주여, 제게 순결과 절제를 주소서. 하지만 아직은 말고요."
+},
+{
+"id": "k2-9",
+"type": "case",
+"who": {
+"en": "Dante Alighieri",
+"ko": "단테 알리기에리"
+},
+"en": "The hottest places in hell are reserved for those who, in a time of moral crisis, maintain their neutrality.",
+"ko": "지옥에서 가장 뜨거운 자리는 도덕적 위기의 시대에 중립을 지킨 자들을 위해 마련되어 있다."
+},
+{
+"id": "q10",
+"type": "case",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "Whoever is afraid of suffering is already suffering from what he fears.",
+"ko": "고통을 두려워하는 사람은 두려워하는 그것 때문에 이미 고통받고 있다."
+},
+{
+"id": "s-11",
+"type": "case",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "When I play with my cat, who knows if I am not a pastime to her more than she is to me?",
+"ko": "내가 고양이와 놀 때, 고양이가 나를 데리고 노는 것인지 내가 고양이를 데리고 노는 것인지 누가 알겠는가?"
+},
+{
+"id": "s-13",
+"type": "case",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "The thing I fear most is fear.",
+"ko": "내가 가장 두려워하는 것은 두려움이다."
+},
+{
+"id": "s-14",
+"type": "case",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "I want death to find me planting my cabbages.",
+"ko": "죽음이 나를 찾아올 때, 나는 양배추를 심고 있었으면 좋겠다."
+},
+{
+"id": "s2-11",
+"type": "case",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "Nothing is so firmly believed as what we least know.",
+"ko": "사람은 가장 모르는 것을 가장 굳게 믿는다."
+},
+{
+"id": "s2-15",
+"type": "case",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "Nothing human is alien to me.",
+"ko": "인간적인 것 가운데 나와 무관한 것은 없다."
+},
+{
+"id": "q6",
+"type": "case",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "My life has been full of terrible misfortunes, most of which never happened.",
+"ko": "내 인생은 끔찍한 불행으로 가득했지만, 그 대부분은 일어나지 않았다."
+},
+{
+"id": "s-15",
+"type": "case",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "To philosophize is to learn how to die.",
+"ko": "철학한다는 것은 죽는 법을 배우는 것이다."
+},
+{
+"id": "q7",
+"type": "case",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "To die for an idea is to place a pretty high price upon conjecture.",
+"ko": "어떤 생각을 위해 죽는 것은 추측에 꽤 비싼 값을 매기는 일이다."
+},
+{
+"id": "s2-12",
+"type": "case",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "Not being able to govern events, I govern myself.",
+"ko": "일어나는 일을 다스릴 수 없으니, 나는 나 자신을 다스린다."
+},
+{
+"id": "s2-13",
+"type": "case",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "There is no conversation more boring than the one where everybody agrees.",
+"ko": "모두가 동의하는 대화만큼 지루한 대화는 없다."
+},
+{
+"id": "s2-14",
+"type": "case",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "To philosophize is to doubt.",
+"ko": "철학한다는 것은 의심하는 것이다."
+},
+{
+"id": "s-18",
+"type": "case",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "Life swings like a pendulum backward and forward between pain and boredom.",
+"ko": "인생은 고통과 권태 사이를 오가는 시계추와 같다."
+},
+{
+"id": "s2-16",
+"type": "case",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "Wealth is like sea water: the more we drink, the thirstier we become; the same is true of fame.",
+"ko": "부는 바닷물과 같다. 마실수록 목이 마르다. 명예도 마찬가지다."
+},
+{
+"id": "q12",
+"type": "case",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "It is as foolish to be outraged at what people do as at a stone that rolls into your path.",
+"ko": "남이 하는 짓에 격분하는 것은 앞길로 굴러온 돌에 격분하는 것만큼 어리석다."
+},
+{
+"id": "q11",
+"type": "case",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "The first forty years of life supply the text; the next thirty supply the commentary.",
+"ko": "인생의 처음 40년은 본문을, 그다음 30년은 그 주석을 내놓는다."
+},
+{
+"id": "s-16",
+"type": "case",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "Talent hits a target no one else can hit; genius hits a target no one else can see.",
+"ko": "재능은 아무도 맞히지 못하는 과녁을 맞히고, 천재는 아무도 보지 못하는 과녁을 맞힌다."
+},
+{
+"id": "s-17",
+"type": "case",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "A man can be himself only so long as he is alone; and if he does not love solitude, he will not love freedom; for it is only when he is alone that he is really free.",
+"ko": "사람은 혼자 있을 때만 온전히 자기 자신일 수 있다. 고독을 사랑하지 않는 사람은 자유도 사랑하지 않는다. 혼자일 때만 진정 자유롭기 때문이다."
+},
+{
+"id": "q3",
+"type": "case",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "All truth passes through three stages. First, it is ridiculed. Second, it is violently opposed. Third, it is accepted as being self-evident.",
+"ko": "모든 진리는 세 단계를 거친다. 처음엔 조롱당하고, 다음엔 격렬한 반대에 부딪히며, 마지막엔 자명한 것으로 받아들여진다."
+},
+{
+"id": "s2-17",
+"type": "case",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "The cheapest form of pride is national pride.",
+"ko": "가장 값싼 자부심은 민족적 자부심이다."
+},
+{
+"id": "s2-18",
+"type": "case",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "Ordinary people think merely of how they will spend their time; a man of talent tries to use it.",
+"ko": "보통 사람은 시간을 어떻게 보낼지만 생각하고, 재능 있는 사람은 시간을 어떻게 쓸지 생각한다."
+},
+{
+"id": "s2-20",
+"type": "case",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "Just remember, once you're over the hill you begin to pick up speed.",
+"ko": "기억하라, 일단 고개를 넘으면 속도가 붙기 시작한다."
+},
+{
+"id": "s-20",
+"type": "case",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "It is difficult to find happiness within oneself, but it is impossible to find it anywhere else.",
+"ko": "행복을 자기 안에서 찾기는 어렵지만, 다른 곳에서 찾기는 불가능하다."
+},
+{
+"id": "s-19",
+"type": "case",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "Man can do what he wills, but he cannot will what he wills.",
+"ko": "인간은 자신이 원하는 것을 할 수는 있지만, 원하는 것을 원할 수는 없다."
+},
+{
+"id": "s2-19",
+"type": "case",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "We are like hedgehogs in winter: the closer we get to one another, the more we hurt each other.",
+"ko": "우리는 겨울의 고슴도치와 같다. 가까워질수록 서로를 더 아프게 찌른다."
+},
+{
+"id": "q8",
+"type": "case",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "What does not kill me makes me stronger.",
+"ko": "나를 죽이지 않는 것은 나를 더 강하게 만든다."
+},
+{
+"id": "s2-1",
+"type": "case",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "God is dead.",
+"ko": "신은 죽었다."
+},
+{
+"id": "s-1",
+"type": "case",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "He who has a why to live for can bear almost any how.",
+"ko": "살아야 할 이유를 아는 사람은 거의 어떤 상황도 견딜 수 있다."
+},
+{
+"id": "q1",
+"type": "case",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "And those who were seen dancing were thought to be insane by those who could not hear the music.",
+"ko": "춤추는 사람들은 음악을 듣지 못하는 이들에게 미친 사람으로 보였다."
+},
+{
+"id": "s-4",
+"type": "case",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "To live is to suffer, to survive is to find some meaning in the suffering.",
+"ko": "산다는 것은 고통받는 것이고, 살아남는다는 것은 그 고통 속에서 의미를 찾는 것이다."
+},
+{
+"id": "s2-2",
+"type": "case",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "He who would learn to fly one day must first learn to stand and walk and run and climb and dance; one cannot fly into flying.",
+"ko": "언젠가 날기를 배우려는 사람은 먼저 서고, 걷고, 달리고, 기어오르고, 춤추는 법을 배워야 한다. 단번에 날아서 나는 법을 익힐 수는 없다."
+},
+{
+"id": "s2-3",
+"type": "case",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "The world is beautiful, but has a disease called man.",
+"ko": "세상은 아름답다. 그러나 인간이라는 병을 앓고 있다."
+},
+{
+"id": "q2",
+"type": "case",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "A moral system valid for all is basically immoral.",
+"ko": "모두에게 통하는 도덕 체계는 근본적으로 비도덕적이다."
+},
+{
+"id": "s-3",
+"type": "case",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "Battle not with monsters, lest ye become a monster; and if you gaze into the abyss, the abyss gazes also into you.",
+"ko": "괴물과 싸우지 마라, 그대 자신이 괴물이 되지 않도록. 그리고 심연을 들여다보면 심연 또한 그대를 들여다본다."
+},
+{
+"id": "s2-4",
+"type": "case",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "God's only excuse is that he does not exist.",
+"ko": "신의 유일한 변명은 그가 존재하지 않는다는 것이다."
+},
+{
+"id": "s2-5",
+"type": "case",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "Nothing that makes us happy is an illusion.",
+"ko": "우리를 행복하게 하는 것은 그 무엇도 환상이 아니다."
+},
+{
+"id": "a-16",
+"type": "case",
+"who": {
+"en": "Epicurus",
+"ko": "에피쿠로스"
+},
+"en": "Death is nothing to us.",
+"ko": "죽음은 우리에게 아무것도 아니다."
+},
+{
+"id": "a-4",
+"type": "case",
+"who": {
+"en": "Plato",
+"ko": "플라톤"
+},
+"en": "Music gives a soul to the universe, wings to the mind, flight to the imagination, and life to everything.",
+"ko": "음악은 우주에 영혼을, 마음에 날개를, 상상력에 비상을, 그리고 모든 것에 생명을 준다."
+},
+{
+"id": "p2-2",
+"type": "case",
+"who": {
+"en": "Socrates",
+"ko": "소크라테스"
+},
+"en": "Education is the kindling of a flame, not the filling of a vessel.",
+"ko": "교육은 그릇을 채우는 것이 아니라 불을 지피는 것이다."
+},
+{
+"id": "p2-4",
+"type": "case",
+"who": {
+"en": "Plato",
+"ko": "플라톤"
+},
+"en": "Wise men speak because they have something to say; fools because they have to say something.",
+"ko": "현명한 사람은 할 말이 있어서 말하고, 어리석은 사람은 뭔가 말해야 해서 말한다."
+},
+{
+"id": "p2-5",
+"type": "case",
+"who": {
+"en": "Aristotle",
+"ko": "아리스토텔레스"
+},
+"en": "To avoid criticism, say nothing, do nothing, be nothing.",
+"ko": "비판을 피하는 유일한 방법은 아무 말도 하지 않고, 아무것도 하지 않고, 아무것도 되지 않는 것이다."
+},
+{
+"id": "a-2",
+"type": "case",
+"who": {
+"en": "Socrates",
+"ko": "소크라테스"
+},
+"en": "The secret of change is to focus all of your energy, not on fighting the old, but on building the new.",
+"ko": "변화의 비밀은 옛것과 싸우는 데가 아니라 새것을 세우는 데 모든 에너지를 쏟는 것이다."
+},
+{
+"id": "a-5",
+"type": "case",
+"who": {
+"en": "Plato",
+"ko": "플라톤"
+},
+"en": "Only the dead have seen the end of war.",
+"ko": "오직 죽은 자만이 전쟁의 끝을 보았다."
+},
+{
+"id": "a-9",
+"type": "case",
+"who": {
+"en": "Aristotle",
+"ko": "아리스토텔레스"
+},
+"en": "We are what we repeatedly do. Excellence, then, is not an act, but a habit.",
+"ko": "우리는 우리가 반복적으로 하는 행동 그 자체다. 그러므로 탁월함은 행위가 아니라 습관이다."
+},
+{
+"id": "a-12",
+"type": "case",
+"who": {
+"en": "The Buddha",
+"ko": "붓다"
+},
+"en": "Three things cannot be long hidden: the sun, the moon, and the truth.",
+"ko": "세 가지는 오래 숨길 수 없다. 해와 달, 그리고 진실이다."
+},
+{
+"id": "a-3",
+"type": "case",
+"who": {
+"en": "The Buddha",
+"ko": "붓다"
+},
+"en": "Holding on to anger is like grasping a hot coal with the intent of throwing it at someone else; you are the one who gets burned.",
+"ko": "분노를 붙들고 있는 것은 남에게 던지려고 뜨거운 숯을 쥐는 것과 같다. 결국 데는 것은 자기 자신이다."
+},
+{
+"id": "p2-3",
+"type": "case",
+"who": {
+"en": "Socrates",
+"ko": "소크라테스"
+},
+"en": "Be slow to fall into friendship; but when thou art in, continue firm and constant.",
+"ko": "친구를 사귀는 데는 천천히 하되, 일단 사귀었다면 변함없이 지켜라."
+},
+{
+"id": "p2-10",
+"type": "case",
+"who": {
+"en": "Aristotle",
+"ko": "아리스토텔레스"
+},
+"en": "It is the mark of an educated mind to be able to entertain a thought without accepting it.",
+"ko": "어떤 생각을 받아들이지 않고도 품어볼 수 있는 것이 교육받은 정신의 특징이다."
+},
+{
+"id": "p2-11",
+"type": "case",
+"who": {
+"en": "Socrates",
+"ko": "소크라테스"
+},
+"en": "I know that I know nothing.",
+"ko": "나는 내가 아무것도 모른다는 것을 안다."
+},
+{
+"id": "p2-17",
+"type": "case",
+"who": {
+"en": "Immanuel Kant",
+"ko": "이마누엘 칸트"
+},
+"en": "Sapere aude! Have the courage to use your own understanding.",
+"ko": "감히 알려고 하라. 너 자신의 지성을 사용할 용기를 가져라."
+},
+{
+"id": "m2-18",
+"type": "case",
+"who": {
+"en": "Benjamin Franklin",
+"ko": "벤저민 프랭클린"
+},
+"en": "In this world nothing can be said to be certain, except death and taxes.",
+"ko": "이 세상에서 확실한 것은 죽음과 세금뿐이다."
+},
+{
+"id": "p2-20",
+"type": "case",
+"who": {
+"en": "Isaac Newton",
+"ko": "아이작 뉴턴"
+},
+"en": "If I have seen further, it is by standing on the shoulders of giants.",
+"ko": "내가 더 멀리 보았다면, 그것은 거인들의 어깨 위에 서 있었기 때문이다."
+},
+{
+"id": "m2-10",
+"type": "case",
+"who": {
+"en": "Thomas Jefferson",
+"ko": "토머스 제퍼슨"
+},
+"en": "When the people fear the government, there is tyranny. When the government fears the people, there is liberty.",
+"ko": "국민이 정부를 두려워하면 폭정이고, 정부가 국민을 두려워하면 자유다."
+},
+{
+"id": "m2-4",
+"type": "case",
+"who": {
+"en": "Benjamin Franklin",
+"ko": "벤저민 프랭클린"
+},
+"en": "Tell me and I forget, teach me and I may remember, involve me and I learn.",
+"ko": "말해 주면 잊어버리고, 가르쳐 주면 기억할지도 모르지만, 참여시키면 배운다."
+},
+{
+"id": "m2-15",
+"type": "case",
+"who": {
+"en": "William Shakespeare",
+"ko": "윌리엄 셰익스피어"
+},
+"en": "Alas, poor Yorick! I knew him well.",
+"ko": "아, 가엾은 요릭! 나는 그를 잘 알았지."
+},
+{
+"id": "k2-5",
+"type": "case",
+"who": {
+"en": "Marie Antoinette",
+"ko": "마리 앙투아네트"
+},
+"en": "Let them eat cake.",
+"ko": "빵이 없으면 케이크를 먹으면 되지."
+},
+{
+"id": "p2-18",
+"type": "case",
+"who": {
+"en": "Blaise Pascal",
+"ko": "블레즈 파스칼"
+},
+"en": "I have made this letter longer than usual, only because I have not had the time to make it shorter.",
+"ko": "더 짧게 쓸 시간이 없어서 편지를 길게 썼습니다."
+},
+{
+"id": "m-6",
+"type": "case",
+"who": {
+"en": "Voltaire",
+"ko": "볼테르"
+},
+"en": "I disapprove of what you say, but I will defend to the death your right to say it.",
+"ko": "나는 당신의 의견에 반대하지만, 당신이 그것을 말할 권리는 목숨을 걸고 지키겠다."
+},
+{
+"id": "p2-9",
+"type": "case",
+"who": {
+"en": "Voltaire",
+"ko": "볼테르"
+},
+"en": "Judge a man by his questions rather than by his answers.",
+"ko": "사람은 대답이 아니라 질문으로 판단하라."
+},
+{
+"id": "p2-13",
+"type": "case",
+"who": {
+"en": "Voltaire",
+"ko": "볼테르"
+},
+"en": "Perfect is the enemy of good.",
+"ko": "최선은 차선의 적이다."
+},
+{
+"id": "p2-15",
+"type": "case",
+"who": {
+"en": "Galileo Galilei",
+"ko": "갈릴레오 갈릴레이"
+},
+"en": "Mathematics is the language with which God has written the universe.",
+"ko": "수학은 신이 우주를 쓴 문자다."
+},
+{
+"id": "m-7",
+"type": "case",
+"who": {
+"en": "Edmund Burke",
+"ko": "에드먼드 버크"
+},
+"en": "The only thing necessary for the triumph of evil is for good men to do nothing.",
+"ko": "악이 승리하는 데 필요한 유일한 조건은 선한 사람들이 아무것도 하지 않는 것이다."
+},
+{
+"id": "m2-16",
+"type": "case",
+"who": {
+"en": "William Shakespeare",
+"ko": "윌리엄 셰익스피어"
+},
+"en": "Methinks the lady doth protest too much.",
+"ko": "내가 보기에 저 여인은 너무 강하게 부인하는군."
+},
+{
+"id": "m-5",
+"type": "case",
+"who": {
+"en": "Winston Churchill",
+"ko": "윈스턴 처칠"
+},
+"en": "I have nothing to offer but blood, toil, tears and sweat.",
+"ko": "제가 드릴 수 있는 것은 피와 노고와 눈물과 땀뿐입니다."
+},
+{
+"id": "m2-14",
+"type": "case",
+"who": {
+"en": "Mark Twain",
+"ko": "마크 트웨인"
+},
+"en": "The reports of my death are greatly exaggerated.",
+"ko": "내가 죽었다는 소문은 크게 과장되었다."
+},
+{
+"id": "m-1",
+"type": "case",
+"who": {
+"en": "Albert Einstein",
+"ko": "알베르트 아인슈타인"
+},
+"en": "Everybody is a genius. But if you judge a fish by its ability to climb a tree, it will live its whole life believing that it is stupid.",
+"ko": "모든 사람은 천재다. 하지만 물고기를 나무 타는 능력으로 판단한다면, 물고기는 평생 자신이 어리석다고 믿으며 살 것이다."
+},
+{
+"id": "m2-1",
+"type": "case",
+"who": {
+"en": "Albert Einstein",
+"ko": "알베르트 아인슈타인"
+},
+"en": "Not everything that can be counted counts, and not everything that counts can be counted.",
+"ko": "셀 수 있는 모든 것이 중요한 것은 아니며, 중요한 모든 것을 셀 수 있는 것도 아니다."
+},
+{
+"id": "m2-21",
+"type": "case",
+"who": {
+"en": "Albert Einstein",
+"ko": "알베르트 아인슈타인"
+},
+"en": "Science without religion is lame, religion without science is blind.",
+"ko": "종교 없는 과학은 절뚝거리고, 과학 없는 종교는 눈이 멀었다."
+},
+{
+"id": "m-8",
+"type": "case",
+"who": {
+"en": "Charles Darwin",
+"ko": "찰스 다윈"
+},
+"en": "It is not the strongest of the species that survives, nor the most intelligent, but the one most responsive to change.",
+"ko": "살아남는 종은 가장 강한 종도, 가장 똑똑한 종도 아니다. 변화에 가장 잘 적응하는 종이다."
+},
+{
+"id": "m2-11",
+"type": "case",
+"who": {
+"en": "Benjamin Disraeli",
+"ko": "벤저민 디즈레일리"
+},
+"en": "There are three kinds of lies: lies, damned lies, and statistics.",
+"ko": "거짓말에는 세 종류가 있다. 거짓말, 새빨간 거짓말, 그리고 통계."
+},
+{
+"id": "m2-12",
+"type": "case",
+"who": {
+"en": "Abraham Lincoln",
+"ko": "에이브러햄 링컨"
+},
+"en": "You can fool all the people some of the time, and some of the people all the time, but you cannot fool all the people all the time.",
+"ko": "모든 사람을 잠시 속일 수 있고, 몇 사람을 언제까지나 속일 수도 있지만, 모든 사람을 언제까지나 속일 수는 없다."
+},
+{
+"id": "m-9",
+"type": "case",
+"who": {
+"en": "Mahatma Gandhi",
+"ko": "마하트마 간디"
+},
+"en": "Be the change you wish to see in the world.",
+"ko": "세상에서 보고 싶은 변화가 있다면, 스스로 그 변화가 되어라."
+},
+{
+"id": "m-4",
+"type": "case",
+"who": {
+"en": "Winston Churchill",
+"ko": "윈스턴 처칠"
+},
+"en": "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+"ko": "성공은 끝이 아니고, 실패는 치명적이지 않다. 중요한 것은 계속 나아가는 용기다."
+},
+{
+"id": "m2-5",
+"type": "case",
+"who": {
+"en": "Ralph Waldo Emerson",
+"ko": "랠프 월도 에머슨"
+},
+"en": "Do not go where the path may lead, go instead where there is no path and leave a trail.",
+"ko": "길이 이끄는 곳으로 가지 말고, 길이 없는 곳으로 가서 자취를 남겨라."
+},
+{
+"id": "m2-20",
+"type": "case",
+"who": {
+"en": "Steve Jobs",
+"ko": "스티브 잡스"
+},
+"en": "Design is not just what it looks like and feels like. Design is how it works.",
+"ko": "디자인은 단지 어떻게 보이고 느껴지느냐가 아니다. 디자인은 어떻게 작동하느냐다."
+},
+{
+"id": "m2-2",
+"type": "case",
+"who": {
+"en": "Pablo Picasso",
+"ko": "파블로 피카소"
+},
+"en": "Good artists copy, great artists steal.",
+"ko": "좋은 예술가는 모방하고, 위대한 예술가는 훔친다."
+},
+{
+"id": "m2-8",
+"type": "case",
+"who": {
+"en": "Nelson Mandela",
+"ko": "넬슨 만델라"
+},
+"en": "Our deepest fear is not that we are inadequate. Our deepest fear is that we are powerful beyond measure.",
+"ko": "우리가 가장 두려워하는 것은 우리가 부족하다는 사실이 아니다. 우리가 가장 두려워하는 것은 우리가 헤아릴 수 없이 강하다는 사실이다."
+},
+{
+"id": "m2-13",
+"type": "case",
+"who": {
+"en": "Marilyn Monroe",
+"ko": "마릴린 먼로"
+},
+"en": "Well-behaved women seldom make history.",
+"ko": "얌전한 여자는 역사를 만들지 못한다."
+},
+{
+"id": "m2-19",
+"type": "case",
+"who": {
+"en": "Franz Kafka",
+"ko": "프란츠 카프카"
+},
+"en": "A book must be the axe for the frozen sea within us.",
+"ko": "책은 우리 안의 얼어붙은 바다를 깨는 도끼여야 한다."
+},
+{
+"id": "m2-6",
+"type": "case",
+"who": {
+"en": "Mother Teresa",
+"ko": "마더 테레사"
+},
+"en": "People are often unreasonable, illogical, and self-centered. Forgive them anyway.",
+"ko": "사람들은 종종 비합리적이고 비논리적이며 자기중심적이다. 그래도 용서하라."
+},
+{
+"id": "m2-7",
+"type": "case",
+"who": {
+"en": "Martin Luther King Jr.",
+"ko": "마틴 루서 킹 주니어"
+},
+"en": "I mourn the loss of thousands of precious lives, but I will not rejoice in the death of one, not even an enemy.",
+"ko": "나는 수천의 소중한 생명을 잃은 것을 애도하지만, 단 한 사람의 죽음도, 설령 적이라 해도 기뻐하지 않겠다."
+},
+{
+"id": "k2-4",
+"type": "case",
+"who": {
+"en": "Blaise Pascal",
+"ko": "블레즈 파스칼"
+},
+"en": "Man is a thinking reed.",
+"ko": "인간은 생각하는 갈대다."
+},
+{
+"id": "k2-10",
+"type": "case",
+"who": {
+"en": "René Descartes",
+"ko": "르네 데카르트"
+},
+"en": "I think, therefore I am.",
+"ko": "나는 생각한다, 고로 존재한다."
+},
+{
+"id": "k-4",
+"type": "case",
+"who": {
+"en": "Socrates",
+"ko": "소크라테스"
+},
+"en": "Know thyself.",
+"ko": "너 자신을 알라."
+},
+{
+"id": "k-5",
+"type": "case",
+"who": {
+"en": "Socrates",
+"ko": "소크라테스"
+},
+"en": "A bad law is still the law.",
+"ko": "악법도 법이다."
+},
+{
+"id": "k2-2",
+"type": "case",
+"who": {
+"en": "Napoleon Bonaparte",
+"ko": "나폴레옹 보나파르트"
+},
+"en": "The word impossible is not in my dictionary.",
+"ko": "내 사전에 불가능이란 없다."
+},
+{
+"id": "k2-12",
+"type": "case",
+"who": {
+"en": "Aristotle",
+"ko": "아리스토텔레스"
+},
+"en": "Man is a social animal.",
+"ko": "인간은 사회적 동물이다."
+},
+{
+"id": "k2-14",
+"type": "case",
+"who": {
+"en": "Francis Bacon",
+"ko": "프랜시스 베이컨"
+},
+"en": "Knowledge is power.",
+"ko": "아는 것이 힘이다."
+},
+{
+"id": "k2-16",
+"type": "case",
+"who": {
+"en": "Niccolò Machiavelli",
+"ko": "니콜로 마키아벨리"
+},
+"en": "The end justifies the means.",
+"ko": "목적이 수단을 정당화한다."
+},
+{
+"id": "k2-18",
+"type": "case",
+"who": {
+"en": "Goethe",
+"ko": "괴테"
+},
+"en": "Man errs as long as he strives.",
+"ko": "인간은 노력하는 한 방황한다."
+},
+{
+"id": "k2-1",
+"type": "case",
+"who": {
+"en": "Galileo Galilei",
+"ko": "갈릴레오 갈릴레이"
+},
+"en": "And yet it moves.",
+"ko": "그래도 지구는 돈다."
+},
+{
+"id": "k2-3",
+"type": "case",
+"who": {
+"en": "Louis XIV",
+"ko": "루이 14세"
+},
+"en": "I am the State.",
+"ko": "짐이 곧 국가다."
+},
+{
+"id": "k2-17",
+"type": "case",
+"who": {
+"en": "Jean-Jacques Rousseau",
+"ko": "장자크 루소"
+},
+"en": "Return to nature.",
+"ko": "자연으로 돌아가라."
+},
+{
+"id": "k2-8",
+"type": "case",
+"who": {
+"en": "William Shakespeare",
+"ko": "윌리엄 셰익스피어"
+},
+"en": "Frailty, thy name is woman.",
+"ko": "약한 자여, 그대 이름은 여자니라."
+},
+{
+"id": "k2-20",
+"type": "case",
+"who": {
+"en": "Mark Twain",
+"ko": "마크 트웨인"
+},
+"en": "Quitting smoking is easy. I've done it hundreds of times.",
+"ko": "담배를 끊는 것만큼 쉬운 건 없다. 난 수백 번도 더 해봤다."
+},
+{
+"id": "a-17",
+"type": "case",
+"who": {
+"en": "Hippocrates",
+"ko": "히포크라테스"
+},
+"en": "Life is short, art is long.",
+"ko": "인생은 짧고 예술은 길다."
+},
+{
+"id": "k-6",
+"type": "case",
+"who": {
+"en": "“Harvard Library wall”",
+"ko": "‘하버드 도서관 벽’"
+},
+"en": "If you sleep now, you will dream; if you study now, you will realize your dream.",
+"ko": "지금 잠을 자면 꿈을 꾸지만, 지금 공부하면 꿈을 이룬다."
+},
+{
+"id": "k-2",
+"type": "case",
+"who": {
+"en": "Albert Einstein",
+"ko": "알베르트 아인슈타인"
+},
+"en": "Compound interest is the eighth wonder of the world. He who understands it, earns it; he who doesn't, pays it.",
+"ko": "복리는 세계 8대 불가사의다. 이를 이해하는 자는 돈을 벌고, 이해하지 못하는 자는 대가를 치른다."
+},
+{
+"id": "k-10",
+"type": "case",
+"who": {
+"en": "Albert Einstein",
+"ko": "알베르트 아인슈타인"
+},
+"en": "Insanity is doing the same thing over and over and expecting different results.",
+"ko": "어제와 똑같이 살면서 다른 미래를 기대하는 것은 정신병 초기 증세다."
+},
+{
+"id": "k-9",
+"type": "case",
+"who": {
+"en": "Abraham Lincoln",
+"ko": "에이브러햄 링컨"
+},
+"en": "If I had six hours to chop down a tree, I'd spend the first four sharpening the axe.",
+"ko": "나무를 베는 데 6시간이 주어진다면, 나는 도끼를 가는 데 4시간을 쓰겠다."
+},
+{
+"id": "k-8",
+"type": "case",
+"who": {
+"en": "Mark Twain",
+"ko": "마크 트웨인"
+},
+"en": "Twenty years from now you will be more disappointed by the things you didn't do than by the ones you did. So throw off the bowlines, sail away from the safe harbor.",
+"ko": "지금부터 20년 후 당신은 했던 일보다 하지 않았던 일로 더 실망할 것이다. 그러니 돛줄을 던져라. 안전한 항구를 떠나 항해하라."
+},
+{
+"id": "k-1",
+"type": "case",
+"who": {
+"en": "Baruch Spinoza",
+"ko": "바뤼흐 스피노자"
+},
+"en": "Even if the world were to end tomorrow, I would still plant an apple tree today.",
+"ko": "내일 지구가 멸망하더라도 나는 오늘 한 그루의 사과나무를 심겠다."
+},
+{
+"id": "k2-7",
+"type": "case",
+"who": {
+"en": "Hippocrates",
+"ko": "히포크라테스"
+},
+"en": "A disease that food cannot cure, medicine cannot cure either. (English counterpart: 'Let food be thy medicine and medicine be thy food.')",
+"ko": "음식으로 못 고치는 병은 약으로도 못 고친다."
+},
+{
+"id": "k2-11",
+"type": "case",
+"who": {
+"en": "Ernest Hemingway",
+"ko": "어니스트 헤밍웨이"
+},
+"en": "For sale: baby shoes, never worn.",
+"ko": "팝니다: 아기 신발, 한 번도 신지 않음."
+},
+{
+"id": "k2-13",
+"type": "case",
+"who": {
+"en": "Charlie Chaplin",
+"ko": "찰리 채플린"
+},
+"en": "A day without laughter is a day wasted.",
+"ko": "웃음이 없는 하루는 낭비한 하루다."
+},
+{
+"id": "k2-15",
+"type": "case",
+"who": {
+"en": "Winston Churchill",
+"ko": "윈스턴 처칠"
+},
+"en": "If you're going through hell, keep going.",
+"ko": "지옥을 걷고 있다면, 계속해서 걸어가라."
+},
+{
+"id": "k2-19",
+"type": "case",
+"who": {
+"en": "Benjamin Franklin",
+"ko": "벤저민 프랭클린"
+},
+"en": "By failing to prepare, you are preparing to fail.",
+"ko": "준비하는 데 실패하는 것은 실패를 준비하는 것이다."
+},
+{
+"id": "k-3",
+"type": "case",
+"who": {
+"en": "Abraham Lincoln",
+"ko": "에이브러햄 링컨"
+},
+"en": "Every man over forty is responsible for his face.",
+"ko": "나이 마흔이 넘으면 자기 얼굴에 책임을 져야 한다."
+},
+{
+"id": "l-3",
+"type": "case",
+"who": {
+"en": "Abraham Lincoln",
+"ko": "에이브러햄 링컨"
+},
+"en": "Better to remain silent and be thought a fool than to speak and remove all doubt.",
+"ko": "입을 열어 모든 의심을 없애느니, 차라리 침묵하여 바보로 여겨지는 편이 낫다."
+},
+{
+"id": "l-4",
+"type": "case",
+"who": {
+"en": "Confucius",
+"ko": "공자"
+},
+"en": "Choose a job you love, and you will never have to work a day in your life.",
+"ko": "좋아하는 일을 직업으로 삼으면 평생 하루도 일하지 않아도 된다."
+},
+{
+"id": "l-1",
+"type": "case",
+"who": {
+"en": "Mahatma Gandhi",
+"ko": "마하트마 간디"
+},
+"en": "First they ignore you, then they laugh at you, then they fight you, then you win.",
+"ko": "처음에 그들은 당신을 무시하고, 다음엔 비웃고, 다음엔 싸우려 들고, 그다음엔 당신이 이긴다."
+},
+{
+"id": "l-2",
+"type": "case",
+"who": {
+"en": "Henry Ford",
+"ko": "헨리 포드"
+},
+"en": "If I had asked people what they wanted, they would have said faster horses.",
+"ko": "사람들에게 무엇을 원하느냐고 물었다면, 그들은 더 빠른 말이라고 답했을 것이다."
+},
+{
+"id": "l-5",
+"type": "case",
+"who": {
+"en": "Nelson Mandela",
+"ko": "넬슨 만델라"
+},
+"en": "It always seems impossible until it's done.",
+"ko": "어떤 일이든 이루기 전까지는 늘 불가능해 보인다."
+},
+{
+"id": "l-6",
+"type": "case",
+"who": {
+"en": "Mark Twain",
+"ko": "마크 트웨인"
+},
+"en": "Dance like nobody's watching.",
+"ko": "아무도 보고 있지 않은 것처럼 춤춰라."
+},
+{
+"id": "l-7",
+"type": "case",
+"who": {
+"en": "Abraham Lincoln",
+"ko": "에이브러햄 링컨"
+},
+"en": "And in the end, it's not the years in your life that count. It's the life in your years.",
+"ko": "결국 중요한 것은 살아온 햇수가 아니라, 그 햇수 속에 담긴 삶이다."
+},
+{
+"id": "l-9",
+"type": "case",
+"who": {
+"en": "Winston Churchill",
+"ko": "윈스턴 처칠"
+},
+"en": "A pessimist sees the difficulty in every opportunity; an optimist sees the opportunity in every difficulty.",
+"ko": "비관주의자는 모든 기회에서 어려움을 보고, 낙관주의자는 모든 어려움에서 기회를 본다."
+},
+{
+"id": "l-10",
+"type": "case",
+"who": {
+"en": "George Orwell",
+"ko": "조지 오웰"
+},
+"en": "In a time of universal deceit, telling the truth is a revolutionary act.",
+"ko": "거짓이 판치는 시대에는 진실을 말하는 것 자체가 혁명적인 행동이다."
+},
+{
+"id": "l-11",
+"type": "case",
+"who": {
+"en": "Lao Tzu",
+"ko": "노자"
+},
+"en": "Watch your thoughts, they become words; watch your words, they become actions; watch your actions, they become habits; watch your habits, they become character; watch your character, it becomes your destiny.",
+"ko": "생각을 조심하라, 말이 된다. 말을 조심하라, 행동이 된다. 행동을 조심하라, 습관이 된다. 습관을 조심하라, 성격이 된다. 성격을 조심하라, 운명이 된다."
+},
+{
+"id": "l-13",
+"type": "case",
+"who": {
+"en": "Lord Acton",
+"ko": "액턴 경"
+},
+"en": "Power corrupts, and absolute power corrupts absolutely.",
+"ko": "권력은 부패한다. 절대 권력은 절대적으로 부패한다."
+},
+{
+"id": "l-14",
+"type": "case",
+"who": {
+"en": "Thomas Edison",
+"ko": "토머스 에디슨"
+},
+"en": "I have not failed. I've just found 10,000 ways that won't work.",
+"ko": "나는 실패한 적이 없다. 작동하지 않는 방법 1만 가지를 찾아냈을 뿐이다."
+},
+{
+"id": "l-8",
+"type": "case",
+"who": {
+"en": "Walt Disney",
+"ko": "월트 디즈니"
+},
+"en": "If you can dream it, you can do it.",
+"ko": "꿈꿀 수 있다면, 이룰 수도 있다."
+},
+{
+"id": "l-12",
+"type": "case",
+"who": {
+"en": "Winston Churchill",
+"ko": "윈스턴 처칠"
+},
+"en": "Democracy is the worst form of government, except for all the others.",
+"ko": "민주주의는 최악의 정치 체제다. 지금까지 시도된 다른 모든 체제를 제외하면."
+},
+{
+"id": "marcus-w1",
+"type": "card",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "Why trust their verdict over your own?",
+"ko": "남의 평가보다 내 판단을 믿어라",
+"cite_en": "Meditations 12.4",
+"cite_ko": "『명상록』 12권 4절"
+},
+{
+"id": "marcus-w2",
+"type": "card",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "Your anger hurts you more than their offense.",
+"ko": "분노가 상처보다 더 아프다",
+"cite_en": "Meditations 11.18 (8th point)",
+"cite_ko": "『명상록』 11권 18절 (여덟째)"
+},
+{
+"id": "marcus-w3",
+"type": "card",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "You’ll meet tomorrow with the mind you have today.",
+"ko": "내일은 오늘의 이성으로 맞으면 된다",
+"cite_en": "Meditations 7.8",
+"cite_ko": "『명상록』 7권 8절"
+},
+{
+"id": "marcus-w4",
+"type": "card",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "Bearing it well turns bad luck into good.",
+"ko": "의연히 견디면 불운도 행운이 된다",
+"cite_en": "Meditations 4.49 (closing sentence)",
+"cite_ko": "『명상록』 4권 49절 (끝 문장)"
+},
+{
+"id": "marcus-w5",
+"type": "card",
+"who": {
+"en": "Marcus Aurelius",
+"ko": "마르쿠스 아우렐리우스"
+},
+"en": "Don’t wait for later. Be good now.",
+"ko": "나중은 없다, 지금 선하게 살라",
+"cite_en": "Meditations 4.17",
+"cite_ko": "『명상록』 4권 17절"
+},
+{
+"id": "montaigne-w1",
+"type": "card",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "Their verdict is guesswork; trust your own.",
+"ko": "남의 판결 말고 내 판결을 따르라",
+"cite_en": "Essays III.2, “Of Repentance”",
+"cite_ko": "『에세』 3권 2장 「후회에 대하여」"
+},
+{
+"id": "montaigne-w2",
+"type": "card",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "Wait until you cool down; anger speaks first.",
+"ko": "화가 식을 때까지 결정을 미루라",
+"cite_en": "Essays II.31, “Of Anger”",
+"cite_ko": "『에세』 2권 31장 「분노에 대하여」"
+},
+{
+"id": "montaigne-w3",
+"type": "card",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "Fearing pain early makes you suffer it twice.",
+"ko": "미리 두려워하면 이미 아픈 것이다",
+"cite_en": "Essays III.13, “Of Experience”",
+"cite_ko": "『에세』 3권 13장 「경험에 대하여」"
+},
+{
+"id": "montaigne-w4",
+"type": "card",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "Setbacks are raw material; your mind shapes the outcome.",
+"ko": "불운은 재료일 뿐, 빚는 건 내 마음",
+"cite_en": "Essays I.40 (Villey I.14), “That the taste of good and evil depends on our opinion”",
+"cite_ko": "『에세』 1권 40장(Villey판 14장) 「좋고 나쁨의 맛은 우리의 생각에 달려 있다」"
+},
+{
+"id": "montaigne-w5",
+"type": "card",
+"who": {
+"en": "Michel de Montaigne",
+"ko": "미셸 드 몽테뉴"
+},
+"en": "A life’s worth lies in its use, not its length.",
+"ko": "삶의 가치는 길이가 아니라 쓰임에",
+"cite_en": "Essays I.19 (Villey I.20), “That to philosophize is to learn to die”",
+"cite_ko": "『에세』 1권 19장(Villey판 20장) 「철학한다는 것은 죽는 법을 배우는 것」"
+},
+{
+"id": "schopenhauer-w1",
+"type": "card",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "Nearly half our worries come from others’ opinions.",
+"ko": "근심의 절반은 남의 시선에서 온다",
+"cite_en": "Parerga I, Aphorisms on the Wisdom of Life, ch. 4",
+"cite_ko": "『소품과 보유』 1권 「삶의 지혜를 위한 잠언」 4장"
+},
+{
+"id": "schopenhauer-w2",
+"type": "card",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "Raging at people is like raging at stones.",
+"ko": "남에게 화내는 건 굴러온 돌에 화내는 것",
+"cite_en": "Parerga I, Aphorisms on the Wisdom of Life, ch. 5, §21",
+"cite_ko": "『소품과 보유』 1권 「삶의 지혜를 위한 잠언」 5장 21절"
+},
+{
+"id": "schopenhauer-w3",
+"type": "card",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "Don’t spend today’s peace on maybe-troubles.",
+"ko": "올지 모를 걱정에 오늘을 내주지 마라",
+"cite_en": "Parerga I, Aphorisms on the Wisdom of Life, ch. 5, §5",
+"cite_ko": "『소품과 보유』 1권 「삶의 지혜를 위한 잠언」 5장 5절"
+},
+{
+"id": "schopenhauer-w4",
+"type": "card",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "Stop replaying what can no longer be changed.",
+"ko": "바꿀 수 없는 일은 되감지 마라",
+"cite_en": "Parerga I, Aphorisms on the Wisdom of Life, ch. 5, §12",
+"cite_ko": "『소품과 보유』 1권 「삶의 지혜를 위한 잠언」 5장 12절"
+},
+{
+"id": "schopenhauer-w5",
+"type": "card",
+"who": {
+"en": "Arthur Schopenhauer",
+"ko": "아르투어 쇼펜하우어"
+},
+"en": "Later years are the commentary that explains life.",
+"ko": "인생 후반은 전반을 풀어 주는 주석이다",
+"cite_en": "Parerga I, Aphorisms on the Wisdom of Life, ch. 6, “On the Different Periods of Life”",
+"cite_ko": "『소품과 보유』 1권 「삶의 지혜를 위한 잠언」 6장 「생애의 시기에 대하여」"
+},
+{
+"id": "nietzsche-w1",
+"type": "card",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "You needn’t swat every sting; step away.",
+"ko": "모든 비난과 싸울 필요는 없다",
+"cite_en": "Thus Spoke Zarathustra I, “On the Flies of the Market-place”",
+"cite_ko": "『차라투스트라는 이렇게 말했다』 1부 「시장의 파리들에 대하여」"
+},
+{
+"id": "nietzsche-w2",
+"type": "card",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "Freedom from revenge is the highest hope.",
+"ko": "복수에서 풀려나는 것이 가장 큰 희망",
+"cite_en": "Thus Spoke Zarathustra II, “On the Tarantulas”",
+"cite_ko": "『차라투스트라는 이렇게 말했다』 2부 「타란툴라에 대하여」"
+},
+{
+"id": "nietzsche-w3",
+"type": "card",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "Learn to love what must be.",
+"ko": "피할 수 없는 것을 사랑하는 법",
+"cite_en": "The Gay Science §276",
+"cite_ko": "『즐거운 학문』 276절"
+},
+{
+"id": "nietzsche-w4",
+"type": "card",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "Hardship survived can become strength.",
+"ko": "견뎌 낸 시련은 힘이 될 수 있다",
+"cite_en": "Twilight of the Idols, “Maxims and Arrows” 8",
+"cite_ko": "『우상의 황혼』 「잠언과 화살」 8"
+},
+{
+"id": "nietzsche-w5",
+"type": "card",
+"who": {
+"en": "Friedrich Nietzsche",
+"ko": "프리드리히 니체"
+},
+"en": "Think less of death, more of life.",
+"ko": "죽음보다 삶을 더 생각하라",
+"cite_en": "The Gay Science §278, “The Thought of Death”",
+"cite_ko": "『즐거운 학문』 278절 「죽음에 대한 생각」"
+}
+]
+}
