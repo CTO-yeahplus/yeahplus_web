@@ -318,8 +318,8 @@ export default function HomeContent() {
               <span data-l="en"><b>No server communication.</b>{' '}Everything runs in airplane mode.</span></li>
           <li><span data-l="ko"><b>개인정보를 수집하지 않습니다.</b>{' '}분석 도구도 제3자 SDK도 넣지 않았습니다.</span>
               <span data-l="en"><b>No personal data collected.</b>{' '}No analytics, no third-party SDKs.</span></li>
-          <li><span data-l="ko"><b>아이가 눌러 나갈 외부 링크가 없습니다.</b>{' '}지원 이메일은 설정의 부모 확인 뒤에 있습니다.</span>
-              <span data-l="en"><b>No outbound links a child can tap.</b>{' '}The support address sits behind a parent check in Settings.</span></li>
+          <li><span data-l="ko"><b>아이가 눌러 나갈 외부 링크가 없습니다.</b>{' '}앱 안에는 이메일이나 웹 주소로 나가는 버튼이 하나도 없습니다 — 문의는 이 사이트의 지원 페이지로 받습니다.</span>
+              <span data-l="en"><b>No outbound links a child can tap.</b>{' '}There is no button inside the app that leads to e-mail or the web — support is handled on this website.</span></li>
         </ul>
 
         <div className="sl-callout" style={{ marginTop: "20px" }}>
