@@ -27,6 +27,9 @@ const PRODUCTS: { base: string; sub: string[] }[] = [
 /** 24STILLS — app/(stills). 폴더 이름이 숫자로 시작할 뿐 다른 제품과 같은 Next 라우트다. */
 const STATIC_PAGES = ["24stills", "24stills/privacy", "24stills/terms", "24stills/support"];
 
+/** 회사 문서 — app/(site)/privacy · terms · support */
+const COMPANY_PAGES = ["privacy", "terms", "support"];
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
@@ -59,5 +62,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: p.includes("/") ? 0.3 : 0.8,
   }));
 
-  return [home, ...products, ...statics];
+  const company = COMPANY_PAGES.map((p) => ({
+    url: `${SITE}/${p}`,
+    lastModified: now,
+    changeFrequency: "yearly" as const,
+    priority: 0.3,
+  }));
+
+  return [home, ...company, ...products, ...statics];
 }

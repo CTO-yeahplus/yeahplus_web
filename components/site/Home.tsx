@@ -636,16 +636,17 @@ function Contact() {
 
 /* ─────────────────────────── 꼬리 ─────────────────────────── */
 
-function Footer() {
+/** 회사 홈과 긴 글 페이지(Legal.tsx)가 같이 쓴다 — LangProvider 안에서만 그린다. */
+export function Footer() {
   const { L } = useLang();
   return (
     <footer className="yp-footer">
       <div className="yp-wrap">
         <div className="yp-foot-top">
-          <a href="#top" className="yp-brand" aria-label="YeahPlus">
+          <Link href="/" className="yp-brand" aria-label="YeahPlus">
             <Logo size={18} />
             <span>YeahPlus</span>
-          </a>
+          </Link>
           <div className="yp-foot-cols">
             {CATS.map((c) => (
               <nav key={c.id} aria-label={L(c.ko, c.en)}>
@@ -668,6 +669,11 @@ function Footer() {
           {L('경기도 파주시 교하로159번길 33, 3층 304호 에이318', '3F 304-A318, 33 Gyoha-ro 159beon-gil, Paju-si, Gyeonggi-do, Korea')} · {MAIL}
           <br />© {new Date().getFullYear()} YeahPlus Inc.
         </address>
+        <nav className="yp-foot-legal" aria-label={L('회사 문서', 'Company documents')}>
+          <Link href="/privacy">{L('개인정보처리방침', 'Privacy Policy')}</Link>
+          <Link href="/terms">{L('이용약관', 'Terms of Use')}</Link>
+          <Link href="/support">{L('지원', 'Support')}</Link>
+        </nav>
       </div>
     </footer>
   );
