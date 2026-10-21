@@ -890,6 +890,8 @@ let layer='orig', quiz=null, openTheme=null, onbStep=0, query='', fileCase=null;
 const TIERS=[0,10,25,50,100];
 function tierOf(c){let i=0; TIERS.forEach((v,j)=>{if(c>=v)i=j}); return i}
 const tier = () => S.ending ? 5 : tierOf(S.stats.correct);
+const ROMAN = ['I','II','III','IV','V','VI'];   /* 인장 가운데 숫자 = 감정사 등급(seal 과 같은 순서) */
+const tierLabel = i => (S.lang==='ko'?'등급 ':'Rank ')+ROMAN[i]+' · '+t('tiers')[i];
 const pv = sid => `--hi:${POP[sid].hi};--lo:${POP[sid].lo}`;
 const duo = (src, cls='', style='') => src ? `<span class="duo ${cls}" style="${style}"><img src="${src}" alt="" draggable="false"></span>` : `<span class="duo ${cls}" style="${style}"></span>`;
 const host = u => {try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return u}};
@@ -1095,7 +1097,7 @@ const sealDots = (n, max) => '●'.repeat(Math.max(0,n)) + '○'.repeat(Math.max
 function shareText(no, marks, used, tr, tt, seals){ const sc=marks.filter(Boolean).length; return `${t('brand')} · ${t('caseNo')(no)}\n${marks.map((m,i)=>mark(m,(used||[])[i])).join('')}  ${sc}/${marks.length}`+(seals!=null?`\n${t('sealsT')} ${sealDots(seals,3)}`:'')+(tt?`\n${t('traced')(tr,tt)}`:''); }
 function evidence(c){ if(!c.ev||!c.ev.length) return ''; return `<div class="evid"><div class="lab muted">${t('evidT')}</div><ol>${c.ev.map(e=>`<li><span class="y">${esc(S.lang==='ko'?(e.y_ko||e.y):e.y)}</span><span class="tx">${esc(S.lang==='ko'?(e.ko||e.en):e.en)}</span></li>`).join('')}</ol></div>`; }
 function tierBox(){ const ti=tier(), nxt=TIERS[ti+1];
-  return `<div class="tier">${seal(ti,58)}<div class="t"><div class="lab muted">${t('tierT')}</div><div class="tname">${t('tiers')[ti]}</div>
+  return `<div class="tier">${seal(ti,58)}<div class="t"><div class="lab muted">${t('tierT')} · ${ROMAN[ti]}</div><div class="tname">${t('tiers')[ti]}</div>
     <div class="bar"><span style="width:${nxt?Math.round((S.stats.correct-TIERS[ti])/(nxt-TIERS[ti])*100):100}%"></span></div><div class="mono muted">${nxt?t('toNext')(nxt-S.stats.correct):ti<5?t('toHon'):t('topTier')}</div></div></div>`; }
 const wingStars = w => { const g=S.gal[w.id]; return g ? Object.values(g.stars).reduce((a,b)=>a+b,0) : 0; };
 const wingOpen = (w,i) => i===0 || !!S.unlockAll || !!(S.gal[WINGS[i-1].id]||{}).done;
@@ -1720,7 +1722,7 @@ function render(){
   if(S.view==='quiz' && quiz && quiz.phase==='done') runTally();
   const pr=document.getElementById('promo');
   if(quiz && quiz.promoted!=null && (quiz.phase==='done'||quiz.phase==='fired') && !quiz.promoShown){ quiz.promoShown=true;
-    pr.innerHTML=`<div class="promo" data-close="promo"><div class="box">${seal(quiz.promoted,150)}<div class="lab muted" style="margin-top:10px">${t('promoted')}</div><div class="rank" style="font-size:28px">${t('tiers')[quiz.promoted]}</div><p class="muted">${t('promoNote')}</p><button class="btn solid" id="promook">${t('ok')}</button></div></div>`; pr.hidden=false; }
+    pr.innerHTML=`<div class="promo" data-close="promo"><div class="box">${seal(quiz.promoted,150)}<div class="lab muted" style="margin-top:10px">${t('promoted')} · ${S.lang==='ko'?'등급':'Rank'} ${ROMAN[quiz.promoted]}</div><div class="rank" style="font-size:28px">${t('tiers')[quiz.promoted]}</div><p class="muted">${t('promoNote')}</p><button class="btn solid" id="promook">${t('ok')}</button></div></div>`; pr.hidden=false; }
   if(fileCase && document.getElementById('modal').hidden===false) openFile(fileCase, true);
   persist();
 }
@@ -2050,7 +2052,7 @@ async function shareCard(c){
   await fontsReady(); const P_=POP[c.sage], s=sage(c.sage), ko=S.lang==='ko'; const cv=document.createElement('canvas'); cv.width=1080; cv.height=1350; const ctx=cv.getContext('2d');
   ctx.fillStyle=P_.hi; ctx.fillRect(0,0,1080,1350);
   const por=await duoCanvas(ART&&ART[c.sage],P_.hi,P_.lo,1080,560); if(por) ctx.drawImage(por,0,0);
-  ctx.fillStyle=P_.lo; ctx.font=ko?'900 34px "Noto Sans KR"':'800 30px "Archivo"'; ctx.fillText((ko?t('brand'):'DIOGENES’ LAMP'),60,80);
+  ctx.fillStyle=P_.lo; ctx.font=ko?'900 34px "Noto Sans KR"':'800 30px "Archivo"'; ctx.fillText((ko?t('brand'):'FISHY QUOTES'),60,80);
   ctx.fillStyle='#FFFFFF'; rrect(ctx,40,520,1000,790,36); ctx.fill();
   ctx.fillStyle='#15131C'; let size=ko?46:56, lines, lh;
   for(;size>=28;size-=2){ ctx.font=ko?`700 ${size}px "Gowun Batang", serif`:`italic 500 ${size}px "Bodoni Moda", serif`; lines=wrapLines(ctx,'“'+text(c)+'”',900); lh=size*(ko?1.6:1.25); if(lines.length*lh<=520) break; }
@@ -2065,7 +2067,7 @@ async function shareCase(c){
   await fontsReady(); const p=P(c), ko=S.lang==='ko'; const cv=document.createElement('canvas'); cv.width=1080; cv.height=1350; const ctx=cv.getContext('2d');
   ctx.fillStyle=p.hi; ctx.fillRect(0,0,1080,1350);
   const por=await duoCanvas(p.art,p.hi,p.lo,1080,430,!p.portrait); if(por){ ctx.globalAlpha=.9; ctx.drawImage(por,0,0); ctx.globalAlpha=1; }
-  ctx.fillStyle=p.lo; ctx.font=ko?'900 34px "Noto Sans KR"':'800 30px "Archivo"'; ctx.fillText(ko?'수상한 명언 · 감정 결과':'DIOGENES’ LAMP · VERDICT',60,78);
+  ctx.fillStyle=p.lo; ctx.font=ko?'900 34px "Noto Sans KR"':'800 30px "Archivo"'; ctx.fillText(ko?'수상한 명언 · 감정 결과':'FISHY QUOTES · VERDICT',60,78);
   ctx.fillStyle='#FFFFFF'; rrect(ctx,40,380,1000,930,36); ctx.fill();
   ctx.fillStyle='#15131C'; let size=ko?62:72, lines, lh;
   for(;size>=30;size-=2){ ctx.font=ko?`700 ${size}px "Gowun Batang", serif`:`italic 500 ${size}px "Bodoni Moda", serif`; lines=wrapLines(ctx,'“'+L(c,'quote')+'”',880); lh=size*(ko?1.55:1.22); if(lines.length*lh<=420) break; }
@@ -2085,15 +2087,17 @@ async function certificate(sc, n=5){
   Object.values(POP).forEach((p,i)=>{ ctx.fillStyle=p.hi; ctx.fillRect(i*270,0,270,22); });
   const desk=await duoCanvas(ART&&ART.desk,'#FFC53D','#2B0F3A',1000,420); if(desk){ ctx.save(); rrect(ctx,40,60,1000,420,30); ctx.clip(); ctx.drawImage(desk,40,60); ctx.restore(); }
   ctx.textAlign='center'; ctx.fillStyle='#F2F0F5';
-  ctx.font=ko?'900 34px "Noto Sans KR"':'800 30px "Archivo"'; ctx.fillText(ko?'수상한 명언 · 진위 감정서':'DIOGENES’ LAMP · CERTIFICATE',540,560);
+  ctx.font=ko?'900 34px "Noto Sans KR"':'800 30px "Archivo"'; ctx.fillText(ko?'수상한 명언 · 진위 감정서':'FISHY QUOTES · CERTIFICATE',540,560);
   ctx.font=ko?'700 44px "Gowun Batang"':'italic 500 50px "Bodoni Moda"'; ctx.fillText(ko?'이 사람은':'This certifies that',540,650);
   ctx.font=ko?'900 76px "Noto Sans KR"':'800 84px "Bodoni Moda"'; ctx.fillText(S.name||(ko?'익명의 독자':'an anonymous reader'),540,760);
   ctx.font=ko?'700 36px "Gowun Batang"':'italic 500 40px "Bodoni Moda"'; ctx.fillStyle='#C9C6D2';
   const where = w ? (ko?`「${w.ko}」의 명언 ${n}개 가운데`:`examined ${n} quotes in ${w.en}`) : (ko?`인터넷 명언 ${n}개 가운데`:`examined ${n} quotes from the internet`);
   ctx.fillText(where,540,840); ctx.fillText(ko?`${sc}개의 진위를 바르게 가렸습니다.`:`and judged ${sc} of them correctly.`,540,892);
   ctx.fillStyle='#F2F0F5'; ctx.font='800 170px "Bodoni Moda"'; ctx.fillText(sc+'/'+n,380,1110);
-  ctx.font='600 26px "IBM Plex Mono", monospace'; ctx.fillStyle='#A3A0AD'; ctx.fillText((t('tiers')[ti]+'  ·  '+(quiz&&quiz.mode==='daily'?t('caseNo')(caseNo):ymd(today))).toUpperCase(),540,1230);
   const sv = new Blob([seal(ti,260).replace('class="seal"','xmlns="http://www.w3.org/2000/svg"').replace(/currentColor/g,'#FFC53D')],{type:'image/svg+xml'}); const si=await loadImg(URL.createObjectURL(sv)); if(si) ctx.drawImage(si,700,900,260,260);
+  /* 인장 바로 아래에 그 인장의 뜻(등급) — 점수 1/3 옆이라 점수 표시로 읽히지 않게 (2026-10-21) */
+  ctx.fillStyle='#FFC53D'; ctx.font=ko?'800 30px "Noto Sans KR"':'700 26px "Archivo"'; ctx.fillText(ko?tierLabel(ti):tierLabel(ti).toUpperCase(),830,1212);
+  ctx.font='600 26px "IBM Plex Mono", monospace'; ctx.fillStyle='#A3A0AD'; ctx.fillText((quiz&&quiz.mode==='daily'?t('caseNo')(caseNo):ymd(today)).toUpperCase(),540,1290);
   showImage(cv);
 }
 async function honCert(){
@@ -2101,7 +2105,7 @@ async function honCert(){
   ctx.fillStyle='#15131C'; ctx.fillRect(0,0,1080,1350);
   ctx.strokeStyle='#F5C542'; ctx.lineWidth=6; rrect(ctx,36,36,1008,1278,28); ctx.stroke(); ctx.lineWidth=2; rrect(ctx,58,58,964,1234,20); ctx.stroke();
   ctx.textAlign='center'; ctx.fillStyle='#F5C542';
-  ctx.font=ko?'900 34px "Noto Sans KR"':'800 30px "Archivo"'; ctx.fillText(ko?'수상한 명언 · 임명장':'DIOGENES’ LAMP · LETTER OF APPOINTMENT',540,140);
+  ctx.font=ko?'900 34px "Noto Sans KR"':'800 30px "Archivo"'; ctx.fillText(ko?'수상한 명언 · 임명장':'FISHY QUOTES · LETTER OF APPOINTMENT',540,140);
   const sv=new Blob([seal(5,240).replace('class="seal"','xmlns="http://www.w3.org/2000/svg"').replace(/currentColor/g,'#F5C542')],{type:'image/svg+xml'}); const si=await loadImg(URL.createObjectURL(sv)); if(si) ctx.drawImage(si,420,180,240,240);
   ctx.fillStyle='#F2F0F5'; ctx.font=ko?'700 40px "Gowun Batang"':'italic 500 44px "Bodoni Moda"';
   (ko?['위 사람은 위조범 열두 명과','그 두목 ‘출처 미상’을 검거하였기에']:['Having caught twelve forgers','and their kingpin, Author Unknown,']).forEach((l,k)=>ctx.fillText(l,540,520+k*58));
