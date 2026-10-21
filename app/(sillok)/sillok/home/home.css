@@ -1,0 +1,153 @@
+/* 조선왕조실록 소개 — 휠 장면 (HomeContent.tsx). 색 · 글꼴은 globals.css 의 --sl-* 토큰(한지 · 먹 · 단청)을 그대로 쓴다.
+   장면 = 높이가 긴 .slh-pin 안에서 화면 하나(.slh-stage)를 붙잡아 두고, 지나가는 비율(0..1)로 그린다.
+   모션 줄이기를 켜면 .still — 붙잡지 않고 펼쳐 놓은 꼴. */
+
+.slh{ --serif:"AppleMyungjo","Nanum Myeongjo","Noto Serif KR","Batang",serif; }
+.slh h1, .slh h2{ text-wrap:balance; }
+.slh-eyebrow{font-size:13px;font-weight:800;letter-spacing:.14em;color:var(--sl-red);margin-bottom:10px}
+.slh-pin{position:relative}
+.slh-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.slh-pin.still{height:auto !important}
+.slh-pin.still .slh-stage{position:relative;height:auto;overflow:visible;padding:72px 0}
+
+/* ── 1. 히어로 ─────────────────────────────── */
+.slh-hero{height:150vh;position:relative}
+.slh-hero-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.slh-hero-art{position:absolute;inset:0;pointer-events:none}
+.slh-hero-frame{position:absolute;width:min(520px,62vw);border-radius:12px;overflow:hidden;
+  box-shadow:0 18px 50px rgba(60,42,20,.22);border:6px solid var(--sl-paper);opacity:.32;will-change:transform}
+.slh-hero-frame img{width:100%;height:auto}
+.slh-hero-frame.f0{left:-6%;top:12%}
+.slh-hero-frame.f1{right:-8%;top:4%}
+.slh-hero-frame.f2{right:4%;bottom:-6%;width:min(420px,52vw)}
+.slh-hero-copy{position:relative;z-index:1;text-align:center;padding:0 22px;max-width:760px}
+.slh-hero-copy h1{font-size:clamp(30px,6vw,46px);font-weight:800;letter-spacing:-1px;line-height:1.25}
+.slh-hero-line{letter-spacing:-.02em;font-weight:800;font-size:clamp(24px,4.6vw,38px);line-height:1.4;margin:18px 0 6px;color:var(--sl-ink)}
+.slh-hero-copy .sl-badges{justify-content:center}
+.slh-cue{margin-top:26px;font-size:13px;color:var(--sl-ink-3);display:flex;flex-direction:column;align-items:center;gap:8px}
+.slh-cue i{width:1px;height:34px;background:linear-gradient(var(--sl-ink-3),transparent);animation:slh-cue 1.8s ease-in-out infinite}
+@keyframes slh-cue{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(8px);opacity:1}}
+
+/* ── 2. 당신이 왕입니다 ─────────────────────── */
+.slh-demo{height:420vh}
+.slh-demo-grid{width:100%;max-width:1060px;margin:0 auto;padding:0 22px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:48px;align-items:center}
+.slh-demo-text{position:relative;min-height:300px}
+.slh-step{position:absolute;inset:0 0 auto 0;opacity:0;transform:translateY(18px);transition:opacity .45s ease,transform .45s ease;pointer-events:none}
+.slh-step.past{transform:translateY(-18px)}
+.slh-step.on{opacity:1;transform:none;pointer-events:auto}
+.slh-step h2{letter-spacing:-.02em;font-size:clamp(28px,4.4vw,44px);line-height:1.25;font-weight:800;margin-bottom:14px}
+.slh-step p:not(.slh-eyebrow){font-size:17px;line-height:1.85;color:var(--sl-ink-2);max-width:30em}
+.slh-dots{position:absolute;left:0;bottom:-34px;display:flex;gap:8px;list-style:none}
+.slh-dots li{width:22px;height:4px;border-radius:2px;background:var(--sl-line-2);transition:background .3s}
+.slh-dots li.on{background:var(--sl-red)}
+
+.slh-card{position:relative;background:var(--sl-paper);border-radius:22px;box-shadow:var(--sl-shadow);border:1px solid var(--sl-line);
+  overflow:hidden;font-size:15px;line-height:1.7}
+.slh-card-top{text-align:center;font-size:12.5px;color:var(--sl-ink-3);padding:12px 0 6px;font-weight:700}
+.slh-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:0 14px 12px}
+.slh-stat{position:relative;background:#fffaf0;border:1px solid var(--sl-line);border-radius:12px;padding:6px 6px 8px;text-align:center}
+.slh-stat-n{display:block;font-size:11.5px;color:var(--sl-ink-3)}
+.slh-stat b{display:block;font-size:19px;font-variant-numeric:tabular-nums;line-height:1.3}
+.slh-stat-bar{display:block;height:4px;border-radius:2px;background:var(--sl-hanji-2);overflow:hidden;margin-top:3px}
+.slh-stat-bar i{display:block;height:100%;background:var(--c)}
+.slh-stat em{position:absolute;top:-10px;right:-4px;font-style:normal;font-size:11.5px;font-weight:800;padding:1px 6px;border-radius:999px;background:var(--sl-paper);border:1px solid var(--sl-line-2)}
+.slh-stat em.up{color:var(--sl-green)}
+.slh-stat em.down{color:var(--sl-red)}
+.k-people{--c:var(--sl-green)} .k-treasury{--c:var(--sl-gold)} .k-defense{--c:var(--sl-blue)} .k-culture{--c:var(--sl-red)}
+.slh-scroll{margin:0 14px 14px;background:#fffdf6;border-radius:14px;border-top:8px solid #6d4d2c;border-bottom:8px solid #6d4d2c;padding:14px 16px 16px}
+.slh-scroll-img{border-radius:10px;overflow:hidden;margin-bottom:10px}
+.slh-scroll-img img{width:100%;height:auto}
+.slh-card-meta{font-size:12.5px;color:var(--sl-red);font-weight:800}
+.slh-card-title{font-size:19px !important;margin:2px 0 6px !important;line-height:1.4 !important}
+.slh-card-body{font-size:14.5px;color:var(--sl-ink-2);line-height:1.75}
+.slh-choices{display:grid;gap:8px;margin-top:12px;opacity:.25;transition:opacity .4s}
+.slh-choices.on{opacity:1}
+.slh-choices button{font:inherit;font-size:14.5px;font-weight:700;text-align:left;color:var(--sl-ink);background:#fff;border:1px solid var(--sl-line-2);
+  border-left:4px solid var(--sl-gold);border-radius:12px;padding:10px 12px;cursor:pointer;transition:background .2s,border-color .2s,transform .2s}
+.slh-choices button:hover{background:#fff8e6}
+.slh-choices button:focus-visible{outline:2px solid var(--sl-blue);outline-offset:2px}
+.slh-choices button.picked{border-color:var(--sl-red);border-left-color:var(--sl-red);background:#fbeee8;transform:translateX(4px)}
+.slh-annal{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(#fbf4e2,#f3e6c8);border-top:2px solid var(--sl-red);
+  padding:20px 20px 22px;transform:translateY(105%);transition:transform .55s cubic-bezier(.2,.8,.2,1);box-shadow:0 -12px 30px rgba(60,42,20,.18)}
+.slh-annal.on{transform:none}
+.slh-annal-seal{position:absolute;top:14px;right:16px;width:44px;height:44px;display:grid;place-items:center;border:2.5px solid var(--sl-red);color:var(--sl-red);
+  font-family:var(--serif);font-weight:900;font-size:24px;border-radius:6px;transform:rotate(-6deg)}
+.slh-annal-if{font-size:14px;color:var(--sl-ink-2);margin-bottom:10px;padding-right:56px}
+.slh-annal-if b{display:block;color:var(--sl-ink);font-size:13px;margin-bottom:2px}
+.slh-annal-lead{letter-spacing:-.02em;font-weight:800;font-size:17px;margin-bottom:6px;padding-right:56px}
+.slh-annal-text{font-size:14.5px;color:var(--sl-ink-2);line-height:1.8}
+.slh-annal-src{font-size:12.5px;color:var(--sl-ink-3);margin-top:8px}
+.slh-demo.still .slh-step{position:relative;opacity:1;transform:none;margin-bottom:26px}
+.slh-demo.still .slh-dots{display:none}
+.slh-demo.still .slh-annal{position:relative;transform:none;box-shadow:none}
+
+/* ── 3. 500년 ─────────────────────────────── */
+.slh-journey{height:520vh}
+.slh-journey .slh-stage{justify-content:flex-start;padding-top:max(56px,7vh)}
+.slh-journey-head{text-align:center;padding:0 22px}
+.slh-journey-head h2{font-size:clamp(22px,3.4vw,30px);font-weight:800;letter-spacing:-.5px}
+.slh-year{font-family:var(--serif);font-weight:900;font-size:clamp(64px,13vw,132px);line-height:1;color:var(--sl-ink);font-variant-numeric:tabular-nums;margin:8px 0 2px;letter-spacing:-2px}
+.slh-reign{font-size:15px;color:var(--sl-ink-2);min-height:1.8em}
+.slh-reign span:first-child, .slh-reign > span[data-l]:first-of-type{color:var(--sl-red);font-weight:800}
+.slh-strip-wrap{--card:min(640px,74vw);--gap:28px;margin-top:22px;overflow:visible}
+.slh-strip{display:flex;gap:var(--gap);list-style:none;padding-left:calc(50vw - var(--card) / 2);will-change:transform}
+.slh-strip li{flex:0 0 var(--card);transform-origin:center;transition:none}
+.slh-strip img{width:100%;height:auto;border-radius:14px;border:6px solid var(--sl-paper);box-shadow:var(--sl-shadow)}
+.slh-strip-cap{display:block;font-size:14px;color:var(--sl-ink-2);margin-top:10px;text-align:center}
+.slh-strip-cap b{color:var(--sl-red);font-variant-numeric:tabular-nums}
+.slh-strip-cap small{display:block;font-size:12px;color:var(--sl-ink-3)}
+.slh-rail{display:flex;gap:4px;justify-content:center;margin:18px auto 0;padding:0 22px;max-width:640px}
+.slh-rail i{flex:1;height:5px;border-radius:3px;background:var(--sl-line-2);transition:background .25s}
+.slh-rail i.on{background:var(--sl-red)}
+.slh-journey-note{text-align:center;font-size:13px;color:var(--sl-ink-3);margin-top:12px;padding:0 22px}
+.slh-journey.still .slh-strip{flex-wrap:wrap;padding:0 22px;justify-content:center;--card:min(300px,80vw)}
+.slh-journey.still .slh-year, .slh-journey.still .slh-reign, .slh-journey.still .slh-rail{display:none}
+
+/* ── 4. 물려받는 나라 ───────────────────────── */
+.slh-inherit{height:280vh}
+.slh-inherit-in{width:100%;max-width:760px;margin:0 auto;padding:0 22px}
+.slh-inherit-in h2{letter-spacing:-.02em;font-size:clamp(26px,4.2vw,40px);line-height:1.3;font-weight:800}
+.slh-inherit-k{margin:22px 0 14px;font-weight:800;font-size:17px;color:var(--sl-blue);min-height:1.7em}
+.slh-bars{display:grid;gap:12px}
+.slh-bar{display:grid;grid-template-columns:64px minmax(0,1fr) 44px;gap:12px;align-items:center;font-weight:700}
+.slh-bar-track{height:14px;border-radius:7px;background:var(--sl-hanji-2);overflow:hidden;border:1px solid var(--sl-line)}
+.slh-bar-track i{display:block;height:100%;background:var(--c);border-radius:7px}
+.slh-bar b{font-variant-numeric:tabular-nums;text-align:right;font-size:18px}
+.slh-inherit-note{margin-top:20px;font-size:15px;color:var(--sl-ink-2);line-height:1.8}
+
+/* ── 5~6. 펼친 글 ───────────────────────────── */
+.slh-plain{padding-top:56px}
+
+/* ── 끝 ────────────────────────────────────── */
+.slh-finale{position:relative;margin-top:72px;min-height:80vh;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#fbf4e2}
+.slh-finale-img{position:absolute;inset:0}
+.slh-finale-img img{width:100%;height:100%;object-fit:cover;filter:saturate(.85) brightness(.45)}
+.slh-finale-in{position:relative;text-align:center;padding:64px 22px;max-width:760px}
+.slh-finale-in .slh-eyebrow{color:#f0c9a0}
+.slh-finale-in h2{letter-spacing:-.02em;font-size:clamp(26px,4.6vw,42px);line-height:1.35;font-weight:800;color:#fbf4e2}
+.slh-finale .sl-price-note{color:#e8dcc0}
+
+@media (max-width:760px){
+  .slh-demo{height:460vh}
+  .slh-demo-grid{grid-template-columns:minmax(0,1fr);gap:14px}
+  .slh-demo .slh-stage{justify-content:flex-start;padding-top:14px}
+  .slh-demo-text{order:2;min-height:190px}
+  .slh-step h2{font-size:24px;margin-bottom:6px}
+  .slh-step p:not(.slh-eyebrow){font-size:15px;line-height:1.7}
+  .slh-eyebrow{font-size:12px;margin-bottom:4px}
+  .slh-dots{bottom:-18px}
+  .slh-card{order:1;font-size:13.5px}
+  .slh-scroll{padding:10px 12px 12px}
+  .slh-scroll-img{display:none}
+  .slh-card-body{font-size:13px;line-height:1.65}
+  .slh-card-title{font-size:16px !important}
+  .slh-choices button{font-size:13px;padding:8px 10px}
+  .slh-annal{padding:16px 16px 18px}
+  .slh-annal-text{font-size:13px}
+  .slh-hero-frame{opacity:.22}
+  .slh-strip-wrap{--card:78vw;--gap:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  .slh-cue i{animation:none}
+  .slh-step,.slh-annal,.slh-choices button{transition:none}
+}

@@ -36,7 +36,8 @@ body{
   line-height:1.78;
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
-  overflow-x:hidden;
+  /* hidden 은 body 를 스크롤 상자로 만들어 소개 페이지의 장면 고정(position:sticky)을 깬다 → clip */
+  overflow-x:clip;
   word-break:keep-all;
   overflow-wrap:anywhere;
 }
