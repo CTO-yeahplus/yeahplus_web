@@ -5,7 +5,8 @@
    ⚠️ 이 주소가 App Store Connect 의 개인정보 처리방침 URL 이다.
    앱의 실제 동작 · PrivacyInfo · ASC App Privacy("데이터를 수집하지 않음")와 반드시 일치해야 한다.
    저장 위치: 앱 저장소 + Documents/diogeneslamp/save.json (iCloud·기기 백업에 포함될 수 있음).
-   2026-10-20: 수사본부 제보 양식(웹사이트)이 받는 항목·보관 기간·위탁(Supabase 서울)을 7절에 더했다 — sql/fishyquotes_case_hq.sql 과 맞춰 둘 것. */
+   2026-10-20: 수사본부 제보 양식(웹사이트)이 받는 항목·보관 기간·위탁을 7절에 더했다 — sql/fishyquotes_case_hq.sql 과 맞춰 둘 것.
+   2026-10-21: Supabase 는 묘해 프로젝트(지역 Southeast Asia = 싱가포르) → 7절에 국외 이전 고지(개인정보 보호법 28조의8)를 넣었다. 프로젝트를 옮기면 이 표를 고칠 것. */
 
 import Link from 'next/link';
 import { APP_EN, APP_KO, BIZ, COMPANY_EN, COMPANY_KO, MAIL, useDocTitle, useLang } from '../i18n';
@@ -200,8 +201,43 @@ export default function PrivacyContent() {
       </table>
       <p>
         {L(
-          '제보 내용은 데이터베이스 서비스 Supabase(Supabase Inc.)에 저장하며, 저장 서버는 대한민국(서울)에 있습니다. 이 위탁 외에 다른 곳에 제공하지 않습니다. 닉네임·이메일을 비워 두면 동의 없이 제보할 수 있고, 보낸 제보를 지우고 싶으면 접수번호와 함께 아래 문의처로 알려 주세요.',
-          'Reports are stored with the database service Supabase (Supabase Inc.), on servers in Seoul, Republic of Korea. They are not shared with anyone else. You can report without consenting by leaving the nickname and email empty; to have a report deleted, send us its report number at the contact below.'
+          '제보 내용은 데이터베이스 서비스 Supabase 에 맡겨 저장하며, 저장 서버는 싱가포르에 있습니다. 개인정보 보호법에 따른 국외 이전 사항은 아래와 같습니다. 이 위탁 외에 다른 곳에 제공하지 않습니다.',
+          'Reports are stored with the database service Supabase, on servers in Singapore. The details of this overseas transfer are below. Reports are not shared with anyone else.'
+        )}
+      </p>
+      <table className="dl-table-doc fq-xfer">
+        <tbody>
+          <tr>
+            <th>{L('이전받는 자', 'Recipient')}</th>
+            <td>{L('Supabase Inc. (supabase.com) — 데이터베이스 호스팅', 'Supabase Inc. (supabase.com) — database hosting')}</td>
+          </tr>
+          <tr>
+            <th>{L('이전 국가', 'Country')}</th>
+            <td>{L('싱가포르 (Supabase 서버 지역 Southeast Asia)', 'Singapore (Supabase region Southeast Asia)')}</td>
+          </tr>
+          <tr>
+            <th>{L('이전 시기·방법', 'When and how')}</th>
+            <td>{L('제보 양식을 보낼 때, 암호화된 연결(HTTPS)로', 'When you send the report form, over an encrypted connection (HTTPS)')}</td>
+          </tr>
+          <tr>
+            <th>{L('항목·목적·보관', 'What, why, how long')}</th>
+            <td>{L('위 표와 같습니다', 'As in the table above')}</td>
+          </tr>
+          <tr>
+            <th>{L('거부 방법과 효과', 'How to refuse')}</th>
+            <td>
+              {L(
+                `제보하지 않거나 ${MAIL} 로 메일을 보내면 국외로 이전되지 않습니다. 양식에서 닉네임·이메일을 비워 두면 그 두 항목은 이전되지 않으며, 대신 결과 안내와 공로장을 받을 수 없습니다.`,
+                `If you do not report, or email ${MAIL} instead, nothing is transferred abroad. Leaving the nickname and email empty keeps those two out of the transfer; you just won’t get the result or a commendation.`
+              )}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        {L(
+          '보낸 제보를 지우고 싶으면 접수번호와 함께 아래 문의처로 알려 주세요.',
+          'To have a report deleted, send us its report number at the contact below.'
         )}
       </p>
       <p>

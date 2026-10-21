@@ -213,8 +213,8 @@ function ReportForm({ sp }: { sp: URLSearchParams }) {
             <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
             <span>
               {L(
-                '[필수] 개인정보 수집·이용에 동의합니다. 수집 항목: 이메일, 닉네임 · 목적: 제보 결과와 공로장 코드 안내, 판결문·사건 게시판에 제보자 표시(닉네임) · 보유 기간: 판결 후 30일 안에 이메일 삭제, 닉네임은 게시물과 앱 판결문이 있는 동안. 동의하지 않아도 제보할 수 있습니다(닉네임·이메일 칸을 비워 두세요 — 결과 안내와 공로장은 받을 수 없습니다).',
-                '[Required] I agree to the collection and use of my email and nickname — only to send me the result and a commendation code, and to credit me by nickname on the case board and in the app. Emails are deleted within 30 days of the verdict. You can report without them (leave both fields empty — you just won’t get the result or a commendation).'
+                '[필수] 개인정보 수집·이용에 동의합니다. 수집 항목: 이메일, 닉네임 · 목적: 제보 결과와 공로장 코드 안내, 판결문·사건 게시판에 제보자 표시(닉네임) · 보유 기간: 판결 후 30일 안에 이메일 삭제, 닉네임은 게시물과 앱 판결문이 있는 동안 · 국외 이전: Supabase Inc.의 싱가포르 서버에 보낼 때 저장. 동의하지 않아도 제보할 수 있습니다(닉네임·이메일 칸을 비워 두세요 — 결과 안내와 공로장은 받을 수 없습니다).',
+                '[Required] I agree to the collection and use of my email and nickname — only to send me the result and a commendation code, and to credit me by nickname on the case board and in the app. Emails are deleted within 30 days of the verdict. Reports are stored on Supabase Inc.’s servers in Singapore. You can report without them (leave both fields empty — you just won’t get the result or a commendation).'
               )}{' '}
               <Link href="/fishyquotes/privacy">{L('개인정보 처리방침', 'Privacy Policy')}</Link>
             </span>
@@ -253,7 +253,8 @@ function ReportForm({ sp }: { sp: URLSearchParams }) {
           </div>
         )}
         <p className="dl-meta">
-          {L('제보 원문과 이메일은 공개되지 않습니다. 게시판에는 편집부가 정리한 사건 기록만 올라갑니다.', 'What you write and your email are never published. The board shows only the case records our editors write up.')}
+          {L('제보 원문과 이메일은 공개되지 않습니다. 게시판에는 편집부가 정리한 사건 기록만 올라갑니다. 제보는 Supabase 의 싱가포르 서버에 저장됩니다.', 'What you write and your email are never published. The board shows only the case records our editors write up. Reports are stored on Supabase servers in Singapore.')}{' '}
+          <Link href="/fishyquotes/privacy">{L('개인정보 처리방침 7절', 'Privacy Policy §7')}</Link>
         </p>
       </form>
     </div>

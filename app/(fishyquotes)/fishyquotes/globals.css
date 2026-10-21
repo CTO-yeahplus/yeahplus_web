@@ -241,6 +241,7 @@ h1, h2, h3 { margin: 0; line-height: 1.25; letter-spacing: -0.03em; font-weight:
 .fq-empty p { margin: 0; }
 .fq-empty .dl-serif { color: var(--dl-ink); font-size: 21px; margin-bottom: 6px; }
 .fq-none { text-align: center; }
+.dl-table-doc.fq-xfer th { width: 32%; min-width: 7em; word-break: keep-all; white-space: normal; }
 
 /* ── 반응형 ── */
 @media (max-width: 900px) {
