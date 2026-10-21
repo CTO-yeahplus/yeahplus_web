@@ -1,6 +1,7 @@
 /* 수상한 명언 수사본부 — 제보 접수 (POST /fishyquotes/api/report).
  * Supabase 의 fq_submit_report 함수 하나만 부른다(표는 RLS 로 잠겨 있어 anon 키로는 읽지도 쓰지도 못한다).
- * 설정: sql/fishyquotes_case_hq.sql 을 Supabase 에서 실행하고, Vercel 환경 변수 FQ_SUPABASE_URL · FQ_SUPABASE_ANON_KEY 를 넣는다.
+ * 설정: sql/fishyquotes_case_hq.sql 을 Supabase(묘해 프로젝트, 회사 공용)에서 실행하고, Vercel 환경 변수 FQ_SUPABASE_URL · FQ_SUPABASE_ANON_KEY
+ *   · FQ_SUBMIT_SECRET(SQL 의 fq_config.submit_secret 과 같은 값) · FQ_IP_SALT 를 넣는다. anon 키는 묘해 앱에 들어 있는 공개 값이라 비밀값으로 서버만 통과시킨다.
  * 설정 전이면 503 { fallback: true } → 양식이 메일 보내기로 바뀐다(심사 때 고장 난 페이지가 되지 않게).
  * 접속 주소는 소금을 친 해시로만 넘긴다(시간당 5건 제한용, DB 가 하루 뒤 지운다). */
 
@@ -11,6 +12,7 @@ export const dynamic = 'force-dynamic';
 
 const URL_ = process.env.FQ_SUPABASE_URL;
 const KEY = process.env.FQ_SUPABASE_ANON_KEY;
+const SECRET = process.env.FQ_SUBMIT_SECRET;
 const SALT = process.env.FQ_IP_SALT || 'fishyquotes-case-hq';
 
 const str = (v: unknown, max: number) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
@@ -48,7 +50,7 @@ export async function POST(req: Request) {
   if (email && !isMail(email)) return json(400, { error: 'bad_email' });
   if ((nickname || email) && !consent) return json(400, { error: 'consent_required' });
 
-  if (!URL_ || !KEY) return json(503, { fallback: true });
+  if (!URL_ || !KEY || !SECRET) return json(503, { fallback: true });
 
   const ip = (req.headers.get('x-forwarded-for') || '').split(',')[0].trim() || req.headers.get('x-real-ip') || '';
   const ipHash = ip ? createHash('sha256').update(SALT + ip).digest('hex').slice(0, 32) : null;
@@ -58,6 +60,7 @@ export async function POST(req: Request) {
       method: 'POST',
       headers: { apikey: KEY, authorization: `Bearer ${KEY}`, 'content-type': 'application/json' },
       body: JSON.stringify({
+        p_secret: SECRET,
         p_lang: lang,
         p_kind: kind,
         p_case_id: caseId || null,
