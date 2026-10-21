@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """예아플러스 — 인스타그램 · 페이스북 · Threads 자동 게시. 일정 목록(marketing/publish/schedule.json)대로 Meta Graph API 를 부른다.
 노티(GAMEAPP 저장소 noti/tools/social/publish.py — 원본은 묘해, Threads 는 페이스루틴)의 것을 옮겨 왔다(2026-10-21).
-노티와 다른 점: Threads 에는 따로 쓴 글(caption_th)과 표지 한 장(images_th)이 올라간다. 인스타그램 공동 게시자(collaborators)를 넣을 수 있다.
+노티와 다른 점: Threads 에는 따로 쓴 글(caption_th)과 표지 한 장(images_th)이 올라가고, 바로 이어서 내 글에 첫 답글(reply_th —
+판정 공개 · 링크)을 단다(TOWER 68 의 방식, 2026-10-21). 인스타그램 공동 게시자(collaborators)를 넣을 수 있다.
 
     인스타그램  Business Suite 화면에서는 예약이 되지만 API 에는 예약이 없다(POST /{ig-user}/media 의 매개변수에 없다).
                 게시 시각이 되면(이 스크립트가 그때 실행되면) 바로 게시한다.
@@ -9,6 +10,7 @@
                 caption_fb(링크가 들어간 판)가 올라간다. video_fb 가 있으면 그 영상을, 없으면 인스타그램과 같은 영상을 쓴다.
     Threads     인스타그램처럼 API 에 예약이 없어 게시 시각에 바로 올린다(Threads API — graph.threads.net).
                 caption_th(Threads 에 맞춰 따로 쓴 글, 주제 태그 하나)와 images_th(보통 표지 한 장)가 올라간다.
+                본문을 올린 뒤 첫 답글(reply_th)을 단다. 답글만 실패하면 본문은 그대로 두고 실패로 알린다(답글만 손으로).
                 THREADS_ACCESS_TOKEN 이 있을 때만(없으면 조용히 건너뛴다).
     스토리      스티커를 붙일 수 없어 올리지 않는다(손으로).
 
@@ -60,6 +62,14 @@ TOKEN = os.environ.get('META_ACCESS_TOKEN', '').strip()
 THREADS = os.environ.get('THREADS_GRAPH_URL', 'https://graph.threads.net/v1.0').rstrip('/')
 TH_TOKEN = os.environ.get('THREADS_ACCESS_TOKEN', '').strip()
 TH_TAG = '#예아플러스'      # caption_th 가 없을 때만 쓴다. Threads 는 글마다 주제 태그 하나
+# 첫 답글을 달려면 Meta 앱의 Threads 권한에 threads_manage_replies 가 있어야 한다 — 없으면 403 (code 10) (TOWER 68, 2026-10-20 실측)
+# 본문을 게시한 직후에는 답글이 거절될 수 있다(본문이 아직 준비 중) → 기다렸다가 몇 번 더 시도한다
+TH_REPLY_WAIT = float(os.environ.get('THREADS_REPLY_WAIT', '20'))
+TH_REPLY_TRIES = 4
+# 컨테이너를 만들고 곧바로 게시하면 "The requested resource does not exist (code 24, subcode 4279009)" 이 날 수 있다
+# (TOWER 68, 2026-10-21 실측 — 상태가 FINISHED 여도). Meta 는 만들고 나서 평균 30초 기다리라고 한다 → 기다렸다가 몇 번 더
+TH_PUBLISH_WAIT = float(os.environ.get('THREADS_PUBLISH_WAIT', '10'))
+TH_PUBLISH_TRIES = 6
 MEDIA_BASE = os.environ.get('SOCIAL_MEDIA_BASE', '').strip().rstrip('/')
 ENABLED = os.environ.get('SOCIAL_PUBLISH_ENABLED', '').strip().lower() == 'true'
 RELEASED = os.environ.get('APP_RELEASED', '').strip().lower() == 'true'
@@ -248,28 +258,53 @@ def th_wait(container: str, tries: int = 24) -> None:
     raise ApiError(f'Threads 컨테이너 {container} 가 시간 안에 준비되지 않았습니다.')
 
 
-def th_publish(item: dict, me: dict) -> str:
+def th_post(uid: str, params: dict) -> str:
+    """컨테이너를 만들고(또는 이미 만든 묶음 컨테이너를 받아) 준비되면 게시한다 → 게시물 id."""
+    container = params.pop('_container', None) or api('POST', f'{uid}/threads', params, TH_TOKEN, base=THREADS)['id']
+    th_wait(container)
+    for n in range(TH_PUBLISH_TRIES):
+        time.sleep(TH_PUBLISH_WAIT)
+        try:
+            return api('POST', f'{uid}/threads_publish', {'creation_id': container}, TH_TOKEN, base=THREADS)['id']
+        except ApiError as e:
+            if '4279009' not in str(e) or n == TH_PUBLISH_TRIES - 1:
+                raise
+    raise ApiError('Threads 게시 재시도가 끝났습니다.')
+
+
+def th_publish(item: dict, me: dict) -> tuple:
+    """본문을 올리고 첫 답글(reply_th)을 단다 → (본문 id, 답글 id · 'unchecked' · None, 답글 오류 또는 None).
+    이미 올라가 있으면(최근 글의 첫 줄이 같으면) 그 id 와 'unchecked' 를 돌려주고 답글은 달지 않는다."""
     uid, text = me['id'], th_caption(item)
     recent = api('GET', 'me/threads', {'fields': 'id,text', 'limit': 20}, TH_TOKEN, base=THREADS).get('data', [])
     dup = next((m['id'] for m in recent if first_line(m.get('text') or '') == first_line(text)), None)
     if dup:
-        return dup
+        return dup, ('unchecked' if item.get('reply_th') else None), None
     if item['kind'] == 'reel':
-        container = api('POST', f'{uid}/threads', {'media_type': 'VIDEO', 'video_url': url_of(item['video']), 'text': text},
-                        TH_TOKEN, base=THREADS)['id']
+        pid = th_post(uid, {'media_type': 'VIDEO', 'video_url': url_of(item['video']), 'text': text})
     elif len(item.get('images_th') or []) == 1:
         # 예아플러스: Threads 에는 표지 한 장과 따로 쓴 글. 슬라이드를 그대로 옮기면 광고처럼 읽힌다
-        container = api('POST', f'{uid}/threads', {'media_type': 'IMAGE', 'image_url': url_of(item['images_th'][0]), 'text': text},
-                        TH_TOKEN, base=THREADS)['id']
+        pid = th_post(uid, {'media_type': 'IMAGE', 'image_url': url_of(item['images_th'][0]), 'text': text})
     else:
         kids = [api('POST', f'{uid}/threads', {'media_type': 'IMAGE', 'image_url': url_of(rel), 'is_carousel_item': True},
                     TH_TOKEN, base=THREADS)['id'] for rel in (item.get('images_th') or item['images'])]
         for k in kids:
             th_wait(k)
-        container = api('POST', f'{uid}/threads', {'media_type': 'CAROUSEL', 'children': ','.join(kids), 'text': text},
-                        TH_TOKEN, base=THREADS)['id']
-    th_wait(container)
-    return api('POST', f'{uid}/threads_publish', {'creation_id': container}, TH_TOKEN, base=THREADS)['id']
+        parent = api('POST', f'{uid}/threads', {'media_type': 'CAROUSEL', 'children': ','.join(kids), 'text': text},
+                     TH_TOKEN, base=THREADS)['id']
+        pid = th_post(uid, {'_container': parent})
+    if not item.get('reply_th'):
+        return pid, None, None
+    errors = []
+    for _ in range(TH_REPLY_TRIES):
+        time.sleep(TH_REPLY_WAIT)
+        try:
+            return pid, th_post(uid, {'media_type': 'TEXT', 'text': item['reply_th'], 'reply_to_id': pid}), None
+        except ApiError as e:
+            errors.append(str(e))
+            if 'code 10,' in str(e) or 'http 403' in str(e):
+                break                      # 권한 문제는 기다려도 풀리지 않는다
+    return pid, None, f'{len(errors)}번 시도 — ' + ' / '.join(dict.fromkeys(errors))
 
 
 # ── 일정 ──────────────────────────────────────────────────────────────────────
@@ -393,7 +428,18 @@ def run(state_path: str | None, only: str | None, now: dt.datetime, channel: str
             try:
                 if ch == 'th':
                     th_me_ = th_me_ or th_me()
-                    rid = th_publish(it, th_me_)
+                    rid, reply, err = th_publish(it, th_me_)
+                    st[ch] = {'id': rid, 'done': now.isoformat(timespec='seconds'), 'how': todo, 'reply': reply}
+                    lines.append(f'✅ {label} — {name} {verb} ({rid})')
+                    if reply == 'unchecked':
+                        lines.append('   이미 올라가 있던 글입니다 — 첫 답글이 달려 있는지 Threads 에서 확인해 주세요')
+                    elif reply:
+                        lines.append(f'   첫 답글: {reply}')
+                    elif err:
+                        lines.append(f'   ❌ 첫 답글을 달지 못했습니다 — 본문은 올라갔습니다. 답글만 손으로 달아 주세요: {err}')
+                        failed = True
+                    save()
+                    continue
                 else:
                     acc = acc or account()
                     rid = ig_publish(it, acc) if ch == 'ig' else fb_publish(it, acc, it['when'] if todo == 'schedule' else None)

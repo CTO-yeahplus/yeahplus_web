@@ -13,6 +13,7 @@
 
   · (예아플러스) Threads 에는 표지 한 장(IMAGE 하나)과 따로 쓴 글, 인스타그램 공동 게시자(collaborators)
   · (예아플러스) 실제 일정 파일(marketing/publish/schedule.json)로 1주차 첫 글이 세 채널에 맞는 꼴로 올라간다
+  · (예아플러스) Threads 첫 답글: 본문 바로 다음에 reply_to_id 로 달린다. 답글만 실패하면 본문은 남기고 실패로 알리며, 다시 돌아도 본문을 또 올리지 않는다
 
 사용:  python3 marketing/social/test_publish.py      (저장소 뿌리 — frontend 폴더에서. 노티의 시험을 옮겨 와 예아플러스 시험을 붙였다)
 """
@@ -22,6 +23,7 @@ from urllib.parse import parse_qs, urlparse
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))      # 저장소 뿌리 (frontend/)
 CALLS, IG_MEDIA, TH_POSTS = [], [], []
+TH_TEXT = {}      # Threads 컨테이너 id → 글 (게시하면 최근 글 목록에 그 글이 보이게)
 SEQ = [0]
 
 
@@ -92,9 +94,12 @@ class H(BaseHTTPRequestHandler):
         if u.path == '/PAGE/feed':
             return self.send({'id': nid('PAGE_')})
         if u.path == '/th/TH/threads':
-            return self.send({'id': nid('t')})
+            if q.get('reply_to_id') and q.get('text') == 'FAIL403':
+                return self.send({'error': {'message': 'Application does not have permission for this action', 'code': 10}}, 403)
+            cid = nid('t'); TH_TEXT[cid] = q.get('text') or LAST_TH[0]
+            return self.send({'id': cid})
         if u.path == '/th/TH/threads_publish':
-            TH_POSTS.insert(0, {'id': nid('thp'), 'text': LAST_TH[0]})
+            TH_POSTS.insert(0, {'id': nid('thp'), 'text': TH_TEXT.get(q.get('creation_id'), LAST_TH[0])})
             return self.send({'id': TH_POSTS[0]['id']})
         self.send({'error': {'message': 'unknown', 'code': 100}}, 400)
 
@@ -136,7 +141,8 @@ def main():
         json.dump({'tz': '+09:00', 'items': items}, open(os.path.join(pub, 'schedule.json'), 'w'), ensure_ascii=False)
         state = os.path.join(d, 'state.json')
         env0 = {**os.environ, 'META_GRAPH_URL': url, 'META_RUPLOAD_URL': url, 'META_ACCESS_TOKEN': 'user-token',
-                'SOCIAL_MEDIA_BASE': 'https://cdn.example/social', 'META_POLL_SEC': '0', 'META_PAGE_ID': ''}
+                'SOCIAL_MEDIA_BASE': 'https://cdn.example/social', 'META_POLL_SEC': '0', 'META_PAGE_ID': '',
+                'THREADS_REPLY_WAIT': '0', 'THREADS_PUBLISH_WAIT': '0'}
         env0.pop('SOCIAL_PUBLISH_ENABLED', None); env0.pop('APP_RELEASED', None)
 
         def run(now, extra=None, args=()):
@@ -323,7 +329,8 @@ def main():
         kids = [x for x in posts('/IG/media') if x[2].get('is_carousel_item') == 'true']
         assert len(kids) == len(first['images']) == 6 and kids[0][2]['image_url'].endswith(first['images'][0]), kids
         th = posts('/th/TH/threads')
-        assert len(th) == 1 and th[0][2]['media_type'] == 'IMAGE' and th[0][2]['text'] == first['caption_th'], th
+        assert len(th) == 2 and th[0][2]['media_type'] == 'IMAGE' and th[0][2]['text'] == first['caption_th'], th
+        assert th[1][2]['media_type'] == 'TEXT' and th[1][2]['text'] == first['reply_th'] and th[1][2]['reply_to_id'].startswith('thp'), th
         # 페이스북: 첫 글은 바로 게시, 7일 안의 나머지 글은 예약 (해시태그는 본문에서 빠지고 끝에 #예아플러스 하나, 링크에 utm)
         fb = posts('/PAGE/feed')
         now_ = [x for x in fb if 'scheduled_publish_time' not in x[2]]
@@ -335,10 +342,24 @@ def main():
         # 같은 날 페이스북 예약: 다음 글(10/30)은 7일 안이라 예약으로 들어가 있다
         nxt = sorted(real['items'], key=lambda x: x['at'])[1]
         assert done.get(nxt['id'], {}).get('fb', {}).get('how') == 'schedule', done
+        assert done[first['id']]['th']['reply'], done
         print(r.stdout.strip())
 
+        # 14) 답글만 실패(권한 403): 본문은 남기고 실패로 끝난다. 권한 문제라 한 번만 시도한다. 다시 돌아도 본문 · 답글을 또 올리지 않는다
+        bad = item('bad', '2026-10-28T12:30:00+09:00', 'carousel', images_th=['bad/1.jpg'],
+                   caption_th='bad Threads 첫 줄\n\n#예아플러스', reply_th='FAIL403')
+        json.dump({'tz': '+09:00', 'items': [bad]}, open(os.path.join(pub, 'schedule.json'), 'w'), ensure_ascii=False)
+        os.remove(state); CALLS.clear(); IG_MEDIA.clear(); TH_POSTS.clear(); LAST_TH[0] = 'bad Threads 첫 줄'
+        r = run('2026-10-28T12:32:00+09:00', {**TH, 'SOCIAL_CHANNELS': 'th'})
+        assert r.returncode == 1 and '첫 답글을 달지 못했습니다' in r.stdout and '1번 시도' in r.stdout, r.stdout
+        assert len(posts('/th/TH/threads_publish')) == 1, '본문이 올라가지 않았다'
+        assert json.load(open(state))['bad']['th']['id'].startswith('thp')
+        CALLS.clear()
+        r = run('2026-10-28T12:52:00+09:00', {**TH, 'SOCIAL_CHANNELS': 'th'})
+        assert r.returncode == 0 and not posts('/th/TH/threads'), '다시 올렸다'
+
     srv.shutdown()
-    print('통과: 토큰 만들기 · 미리보기 · 인스타그램 릴스/캐러셀 · 페이스북 예약/바로 게시 · Threads 영상/여러 장 · Threads 토큰 늘리기 · 중복 방지 · 출시 확인 · 보류 · 놓침 · (예아플러스) Threads 표지 한 장 · 공동 게시자 · 실제 일정 1주차')
+    print('통과: 토큰 만들기 · 미리보기 · 인스타그램 릴스/캐러셀 · 페이스북 예약/바로 게시 · Threads 영상/여러 장 · Threads 토큰 늘리기 · 중복 방지 · 출시 확인 · 보류 · 놓침 · (예아플러스) Threads 표지 한 장 · 공동 게시자 · 실제 일정 1주차 · Threads 첫 답글')
 
 
 if __name__ == '__main__':

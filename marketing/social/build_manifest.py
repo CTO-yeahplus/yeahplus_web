@@ -8,7 +8,8 @@
             ### 11/4 화 12:30 · 예아플러스의 앱 02 — `carousel/W2/app-myohae-{1~6}.png` · 링크 `/meow` · 공동 @계정
             제목 줄에서 날짜 · 시각 · 시리즈 · 회차 · 그림 · 링크를 읽는다. 덧붙일 수 있는 것: `· 주제 #공부법` (Threads 주제 태그),
             `· 공동 @계정` (인스타그램 공동 게시자, 최대 3), `· 보류 까닭` (overrides.json 에서 풀어야 올라간다).
-            그 아래 첫 코드 블록 = 인스타그램 캡션, 둘째 코드 블록 = Threads 글.
+            그 아래 첫 코드 블록 = 인스타그램 캡션, 둘째 코드 블록 = Threads 글,
+            (선택) `Threads 답글:` 다음 코드 블록 = Threads 첫 답글(판정 공개 · 링크). 없으면 제품 링크(utm_source=threads) 한 줄을 단다.
             릴스는 그림 자리에 `reels/x.mp4`, 커버는 덧붙여 · 커버 `reels/x.png`.
 만드는 것 marketing/publish/schedule.json   (저장소에 올린다. GitHub Actions 가 읽는다)
           marketing/publish/media/<날짜>/…   올릴 파일 사본 (git 에는 올리지 않는다)
@@ -17,7 +18,8 @@
 채널마다 글
   인스타그램  첫 코드 블록 그대로.
   페이스북    같은 글에서 해시태그 줄을 빼고, 끝에 눌리는 링크(utm_source=facebook)와 #예아플러스 하나.
-  Threads     둘째 코드 블록 + 주제 태그 하나. 그림은 표지(첫 장) 한 장. 500자 안.
+  Threads     둘째 코드 블록 + 주제 태그 하나. 그림은 표지(첫 장) 한 장. 500자 안. 본문에는 링크를 넣지 않고,
+              올린 직후 첫 답글(reply_th)로 판정 · 링크를 단다(TOWER 68 의 방식).
 
 사용:  python3 marketing/social/build_manifest.py      (저장소 뿌리 — frontend 폴더에서. 표준 라이브러리 + sips)
 CAPTIONS.md 나 그림을 고쳤으면 다시 실행하고 schedule.json 을 커밋한다. 그림을 고쳤으면 upload_media.py 도 다시.
@@ -122,6 +124,10 @@ def main() -> int:
         if len(blocks) < 2:
             sys.exit(f'❌ {head}: 코드 블록이 둘(인스타그램 캡션 · Threads 글) 있어야 한다')
         cap, th = blocks[0].strip(), blocks[1].strip()
+        reply = re.search(r'^Threads 답글:\s*\n+```\n(.*?)\n```', sec, flags=re.S | re.M)
+        item['reply_th'] = reply.group(1).strip() if reply else f'→ {with_utm(link.group(1), "threads", campaign)}'
+        assert len(item['reply_th']) <= 500, f"{iid}: Threads 답글이 500자를 넘는다 ({len(item['reply_th'])}자)"
+        assert 'http' not in th, f'{iid}: Threads 본문에는 링크를 넣지 않는다 — 링크는 답글로'
         assert len(cap) <= 2200 and cap.count('#') <= 30, f'{iid}: 캡션이 인스타그램 한도를 넘는다'
         item['caption_ig'] = cap
         item['caption_fb'] = facebook(cap, link.group(1), campaign)
