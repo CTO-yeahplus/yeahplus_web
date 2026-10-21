@@ -1,0 +1,99 @@
+name: 예아플러스 소셜 게시
+
+# 예아플러스 회사 계정의 인스타그램 · 페이스북 페이지 · Threads 글을 일정대로 올린다 — marketing/AUTOMATION.md
+#   · 일정과 캡션: marketing/publish/schedule.json (marketing/social/build_manifest.py 가 저장소 밖의 원고 YEAHPLUS_WEB/marketing/CAPTIONS.md 로 만든다)
+#   · 인스타그램 · Threads 는 API 에 예약이 없어, 게시 시각에 맞춰 이 워크플로가 돌면서 바로 올린다.
+#   · 페이스북은 며칠 앞까지 예약으로 넣는다(Business Suite 플래너에 보인다).
+#   · 저장소 변수 YEAHPLUS_SOCIAL_PUBLISH_ENABLED 가 true 가 아니면 아무것도 올리지 않고 할 일만 적는다.
+# 노티(GAMEAPP 저장소 .github/workflows/noti-social.yml)의 것을 옮겨 왔다.
+# 예약 실행은 기본 브랜치(main)의 파일로만 돈다. GitHub 의 예약 실행은 몇 시간씩 늦을 수 있어 Supabase 가 정시에 깨운다
+# (marketing/social/supabase_trigger.sql). 아래 예약은 그 보조다. 시각은 UTC — 한국 시간에서 9시간을 뺀다.
+on:
+  schedule:
+    - cron: '32,52 3 * * 2,4'        # 화 · 목 12:32, 12:52 — 실록의 선택 · 그 말, 진짜일까? 12:30
+    - cron: '2,22,42 1 * * 6'        # 토 10:02, 10:22, 10:42 — 만든 이유 10:00
+    - cron: '2,22 11 * * 0'          # 일 20:02, 20:22 — 한 장면(격주 릴스) 20:00
+    - cron: '7 0 * * *'              # 매일 09:07 — 페이스북 예약 채우기
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'run = 올리기 · plan = 앞으로 2주 일정 · whoami = 토큰 확인'
+        type: choice
+        options: [plan, whoami, run]
+        default: plan
+      only:
+        description: 'run: 이 id 한 건만 지금 올린다 (예: 2026-10-28-carousel). 비우면 일정대로'
+        required: false
+      channel:
+        description: 'run: 올릴 채널 (both = 맡은 채널 전부 · th = Threads)'
+        type: choice
+        options: [both, ig, fb, th]
+        default: both
+
+concurrency:
+  group: yeahplus-social-publish
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # 게시 상태를 refs/yeahplus-social/state 에 적는다
+
+jobs:
+  publish:
+    name: 게시
+    # 켜기 전에는 예약 실행을 돌리지 않는다(손으로 실행하는 것은 언제나 된다 — 미리보기 · 토큰 확인용).
+    if: github.event_name == 'workflow_dispatch' || vars.YEAHPLUS_SOCIAL_PUBLISH_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      META_ACCESS_TOKEN: ${{ secrets.YEAHPLUS_META_ACCESS_TOKEN }}
+      META_PAGE_ID: ${{ vars.YEAHPLUS_META_PAGE_ID }}
+      SOCIAL_MEDIA_BASE: ${{ vars.YEAHPLUS_SOCIAL_MEDIA_BASE }}
+      SOCIAL_PUBLISH_ENABLED: ${{ vars.YEAHPLUS_SOCIAL_PUBLISH_ENABLED }}
+      FB_SCHEDULE_DAYS: ${{ vars.YEAHPLUS_FB_SCHEDULE_DAYS }}
+      SOCIAL_CHANNELS: ${{ vars.YEAHPLUS_SOCIAL_CHANNELS }}
+      THREADS_ACCESS_TOKEN: ${{ secrets.YEAHPLUS_THREADS_ACCESS_TOKEN }}   # 없으면 Threads 만 조용히 건너뛴다
+    steps:
+      # 게시에 필요한 두 폴더만 받는다
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            marketing/social
+            marketing/publish
+
+      - name: 준비
+        run: echo "STATE=$RUNNER_TEMP/state.json" >> "$GITHUB_ENV"
+
+      # 상태는 브랜치가 아닌 자리(refs/yeahplus-social/state)에 둔다. 브랜치에 두면 푸시할 때마다 Vercel 이 미리보기 배포를 만든다.
+      - name: 게시 상태 불러오기
+        run: |
+          if git fetch -q origin refs/yeahplus-social/state 2>/dev/null; then
+            git show FETCH_HEAD:state.json > "$STATE"; echo "상태: $(git log -1 --format=%cI FETCH_HEAD)"
+          else
+            echo '{}' > "$STATE"; echo "상태: 없음 (처음)"
+          fi
+          cp "$STATE" "$STATE.before"
+
+      - name: 게시
+        env:
+          CMD: ${{ github.event.inputs.command || 'run' }}
+          ONLY: ${{ github.event.inputs.only }}
+          CHANNEL: ${{ github.event.inputs.channel }}
+        run: |
+          args=("$CMD")
+          if [ "$CMD" != "whoami" ]; then args+=(--state "$STATE"); fi
+          if [ "$CMD" = "run" ] && [ -n "$ONLY" ]; then args+=(--only "$ONLY"); fi
+          if [ "$CMD" = "run" ] && [ -n "$CHANNEL" ] && [ "$CHANNEL" != "both" ]; then args+=(--channel "$CHANNEL"); fi
+          python3 marketing/social/publish.py "${args[@]}"
+
+      - name: 게시 상태 저장
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if cmp -s "$STATE" "$STATE.before"; then exit 0; fi
+          dir="$(mktemp -d)"; cp "$STATE" "$dir/state.json"; cd "$dir"
+          git init -q -b state
+          git add state.json
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit -q -m "예아플러스 소셜 게시 상태 $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:refs/yeahplus-social/state

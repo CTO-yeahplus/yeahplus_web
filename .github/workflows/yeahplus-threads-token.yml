@@ -1,0 +1,49 @@
+name: 예아플러스 Threads 토큰 갱신
+
+# Threads 장기 토큰은 60일이면 만료된다. 한 달에 두 번(1일 · 15일) 60일 더 늘리고, 새 값을 저장소 비밀 값
+# YEAHPLUS_THREADS_ACCESS_TOKEN 에 다시 넣는다 — marketing/AUTOMATION.md 「Threads」
+#   · 기본 GITHUB_TOKEN 으로는 비밀 값을 고칠 수 없어, 그 일만 하는 세분화 토큰을 쓴다:
+#     비밀 값 YEAHPLUS_SECRETS_PAT = GitHub Fine-grained token (이 저장소 하나 · 권한 Secrets: Read and write 만)
+#   · 새 토큰은 화면에도 로그에도 찍지 않는다. 새 토큰으로 계정이 읽히고 30일 넘게 남았을 때만 바꿔 넣는다.
+# 노티의 noti-threads-token.yml 을 옮겨 왔다. 시각은 UTC — 1일 · 15일 10:53 (한국 — 노티 10:47 과 겹치지 않게).
+on:
+  schedule:
+    - cron: '53 1 1,15 * *'
+  workflow_dispatch:
+
+concurrency:
+  group: yeahplus-threads-token
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    name: 토큰 늘리기
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      THREADS_ACCESS_TOKEN: ${{ secrets.YEAHPLUS_THREADS_ACCESS_TOKEN }}
+      GH_TOKEN: ${{ secrets.YEAHPLUS_SECRETS_PAT }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: marketing/social
+
+      # 먼저 비밀 값을 쓸 수 있는지 본다 — 토큰만 늘리고 넣지 못하면 새 토큰을 잃는다
+      - name: 준비 확인
+        run: |
+          if [ -z "$THREADS_ACCESS_TOKEN" ]; then echo "::error::YEAHPLUS_THREADS_ACCESS_TOKEN 이 없습니다"; exit 1; fi
+          if [ -z "$GH_TOKEN" ]; then echo "::error::YEAHPLUS_SECRETS_PAT 이 없습니다 (marketing/AUTOMATION.md 「Threads」)"; exit 1; fi
+          gh secret list --repo "$GITHUB_REPOSITORY" > /dev/null \
+            || { echo "::error::비밀 값 쓰기 토큰으로 비밀 값을 읽지 못했습니다 — 만료됐거나 권한(Secrets: Read and write)이 없습니다"; exit 1; }
+
+      - name: 늘리기
+        run: |
+          out="$RUNNER_TEMP/th"
+          python3 marketing/social/publish.py th-refresh --out "$out"
+          echo "::add-mask::$(cat "$out")"
+          gh secret set YEAHPLUS_THREADS_ACCESS_TOKEN --repo "$GITHUB_REPOSITORY" < "$out"
+          rm -f "$out"
+          echo "YEAHPLUS_THREADS_ACCESS_TOKEN 을 새 토큰으로 바꿨습니다"

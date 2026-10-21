@@ -1,0 +1,3 @@
+{
+ "_help": "글 id 별로 schedule.json 의 값을 덮어쓴다. 예) \"2026-10-28-carousel\": {\"skip\": true} 는 건너뛰고(손으로 이미 올렸거나 Business Suite 에 예약해 둔 글), {\"hold\": null} 은 보류를 풀고, {\"at\": \"2026-10-28T13:00:00+09:00\"} 은 시각을 옮긴다. build_manifest.py 를 다시 돌려도 이 파일은 남는다."
+}
