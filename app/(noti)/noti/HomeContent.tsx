@@ -88,7 +88,7 @@ function Arrive() {
         <motion.img className="nt-bg" src={img('entrance')} alt="" style={{ y: R(p, [0, 1], ['-4%', '4%']), scale: 1.1, opacity: R(p, [0, 0.12, 0.88, 1], [0, 0.85, 0.85, 0]) }} />
         <div className="nt-veil" />
         <div className="nt-lines">
-          <motion.p className="nt-when" style={fade(p, 0.06)}><Tx ko="3월 2일 · 연화대학교병원 응급실 앞" en="March 2 · Outside the ER, Yeonhwa University Hospital" /></motion.p>
+          <motion.p className="nt-when" style={fade(p, 0.06)}><Tx ko="3월 2일 · 은산대학교병원 응급실 앞" en="March 2 · Outside the ER, Eunsan University Hospital" /></motion.p>
           <motion.p className="nt-big" style={fade(p, 0.16)}><Tx ko="3월엔 대학병원에 가지 말라는 말이 있다." en="They say: stay out of teaching hospitals in March." /></motion.p>
           <motion.p className="nt-big" style={fade(p, 0.36)}><Tx ko="새 인턴이 들어오는 달이라서다." en="It’s the month the new interns start." /></motion.p>
           <motion.p className="nt-big nt-gold" style={fade(p, 0.56)}><Tx ko="그 말이 가리키는 사람이, 오늘부터 나다." en="As of today, that intern is you." /></motion.p>
