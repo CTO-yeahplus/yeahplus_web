@@ -5,7 +5,7 @@
 다른 곳에 두었으면 환경변수 YEAHPLUS_MARKETING 으로 알려 준다.
 
 읽는 것   <원고>/CAPTIONS.md
-            ### 10/28 화 12:30 · 실록의 선택 01 — `carousel/W1/1-sillok-{1~6}.png` · 링크 `/sillok`
+            ### 11/4 화 12:30 · 예아플러스의 앱 02 — `carousel/W2/app-myohae-{1~6}.png` · 링크 `/meow` · 공동 @계정
             제목 줄에서 날짜 · 시각 · 시리즈 · 회차 · 그림 · 링크를 읽는다. 덧붙일 수 있는 것: `· 주제 #공부법` (Threads 주제 태그),
             `· 공동 @계정` (인스타그램 공동 게시자, 최대 3), `· 보류 까닭` (overrides.json 에서 풀어야 올라간다).
             그 아래 첫 코드 블록 = 인스타그램 캡션, 둘째 코드 블록 = Threads 글.
@@ -38,7 +38,8 @@ SITE = 'https://yeahplus.co.kr'
 FB_TAG = '#예아플러스'
 # 시리즈 → (형식, utm_campaign, 기본 Threads 주제 태그)
 SERIES = {
-    '실록의 선택': ('carousel', 'sillok-choice', '#한국사'),
+    '예아플러스의 앱': ('carousel', 'app-spotlight', '#예아플러스'),    # 화요일 — 앱 하나, 전용 계정이 있으면 `· 공동 @계정`
+    '실록의 선택': ('carousel', 'sillok-choice', '#한국사'),          # 2026-10-21 회사 계정에서 내렸다(@sillok.king 과 겹친다)
     '그 말, 진짜일까?': ('carousel', 'is-it-true', '#명언'),
     '만든 이유': ('carousel', 'why-we-made', '#앱디자인'),
     '한 장면': ('reel', 'one-scene', '#예아플러스'),
