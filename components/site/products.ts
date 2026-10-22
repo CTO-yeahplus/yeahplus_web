@@ -46,10 +46,11 @@ export const PRODUCTS: Product[] = [
     descEn: 'The cat you photographed at home, turned into art by AI.',
   },
   {
-    id: 'munghae', cat: 'image', ko: '멍해', en: 'MUNGHAE', href: '/munghae', status: 'soon',
-    icon: I('munghae'), accent: '#c99a4a',
-    descKo: '별이 된 아이들을 기억하는 공간. 반려동물을 위한 디지털 추모공원.',
-    descEn: 'A place to remember pets who have passed. A digital memorial park.',
+    // 2026-10-22 멍해 본편을 간직이 대체 — 주소(/munghae)와 id 는 그대로 둔다
+    id: 'munghae', cat: 'daily', ko: '간직', en: 'Keepsake', href: '/munghae', status: 'soon',
+    icon: I('munghae'), accent: '#f7b96b', promise: true,
+    descKo: '무지개다리를 건넌 반려동물을 유리 스노우볼 안에 간직하는 조용한 추모 공간.',
+    descEn: 'A quiet memorial snow globe for the pet who crossed the rainbow bridge.',
   },
 
   // ── 배움과 고전 ──

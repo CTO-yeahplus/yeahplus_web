@@ -1,60 +1,67 @@
 import type { Metadata } from 'next';
+import { EMAIL } from '../site';
+
+export const dynamic = 'force-static';
 
 export const metadata: Metadata = {
-  title: '이용약관 — 멍해 (MUNGHAE)',
-  description: '멍해(MUNGHAE) 서비스 이용약관',
+  title: '이용약관 · Terms — 간직 Keepsake',
+  description: '간직 이용약관. Apple 표준 사용권 계약(EULA)을 따르며, 앱 안 구입은 한 번 구매로 평생 이용하는 비소모성 상품입니다.',
+  alternates: { canonical: '/munghae/terms' },
 };
 
-export default function MunghaeTerms() {
+/* 별도 약관 대신 Apple 표준 EULA 를 쓴다 (METADATA_EN 설명 끝에도 같은 링크).
+   2026-10-22 멍해 본편(계정·구독이 있던 앱)의 약관을 대체했다. */
+const EULA = 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/';
+
+export default function KeepsakeTerms() {
   return (
-    <div className="container">
-      <article className="mh-doc">
-        <h1>이용약관</h1>
-        <p className="updated">최종 업데이트: 2025년 1월</p>
+    <div className="kp-wrap kp-doc">
+      <div className="kp-doc-head">
+        <h1>이용약관<br />Terms of Use</h1>
+        <div className="kp-sub">간직 · Keepsake</div>
+        <div className="kp-rev">시행일 2026년 10월 22일 · Effective 22 October 2026</div>
+      </div>
 
-        <p className="lead">
-          본 약관은 주식회사 예아플러스(이하 &ldquo;회사&rdquo;)가 제공하는 반려동물 디지털 추모 서비스
-          &ldquo;멍해(MUNGHAE)&rdquo;(이하 &ldquo;서비스&rdquo;)의 이용과 관련하여 회사와 이용자 간의 권리·의무 및
-          책임사항을 규정합니다.
-        </p>
+      <section>
+        <h2>1. 사용권 계약</h2>
+        <p>간직의 이용에는 Apple 표준 사용권 계약(EULA)이 적용됩니다: <a href={EULA}>{EULA}</a></p>
+        <div className="kp-en-block">
+          <h3>1. License agreement</h3>
+          <p>Use of Keepsake is governed by Apple&rsquo;s standard Licensed Application End User License Agreement: <a href={EULA}>{EULA}</a></p>
+        </div>
+      </section>
 
-        <h2>1. 서비스 이용</h2>
+      <section>
+        <h2>2. 앱 안 구입</h2>
         <p>
-          멍해(MUNGHAE)는 반려가족이 사랑하는 반려동물을 디지털로 기억하고 추모할 수 있는 서비스입니다. 서비스를
-          이용함으로써 본 약관에 동의하게 됩니다.
+          간직 프로와 아트 팩은 한 번 구매하면 같은 Apple 계정에서 평생 쓰는 비소모성 상품입니다. 구독이 없으며, 환불은 Apple 의 절차를
+          따릅니다. 기록 기능(사진·편지·방명록·기념일·촛불·백업)은 구입과 관계없이 무료입니다.
         </p>
+        <div className="kp-en-block">
+          <h3>2. In-app purchases</h3>
+          <p>
+            Keepsake Pro and art packs are one-time, non-consumable purchases for your Apple account. There are no
+            subscriptions; refunds follow Apple&rsquo;s process. Record-keeping features (photos, letters, guestbook,
+            anniversaries, candles, backup) are free regardless of purchases.
+          </p>
+        </div>
+      </section>
 
-        <h2>2. 콘텐츠 책임</h2>
-        <p>
-          사용자가 업로드하는 사진·영상·텍스트의 저작권은 사용자에게 있으며, 멍해는 서비스 제공 목적 외에 해당
-          콘텐츠를 사용하지 않습니다.
-        </p>
+      <section>
+        <h2>3. 이용자의 기록</h2>
+        <p>앱에 남긴 사진과 글은 이용자의 것이며 이용자의 기기 안에만 있습니다. 개발자는 이를 받거나 이용하지 않습니다.</p>
+        <div className="kp-en-block">
+          <h3>3. Your records</h3>
+          <p>The photos and words you keep in the app are yours and stay on your device. The developer neither receives nor uses them.</p>
+        </div>
+      </section>
 
-        <h2>3. 서비스 제한</h2>
-        <p>
-          불법 콘텐츠, 타인 비방, 개인정보 침해 등의 목적으로 서비스를 이용하는 경우 계정이 정지될 수 있습니다.
-        </p>
-
-        <h2>4. 구독 및 결제</h2>
-        <p>
-          프리미엄 구독은 App Store 또는 Google Play를 통해 처리되며, 구독 취소 시에도 현재 결제 기간이 종료될
-          때까지 서비스를 이용할 수 있습니다.
-        </p>
-
-        <h2>문의</h2>
-        <p>
-          본 약관에 관한 문의는 <a href="mailto:contact@yeahplus.co.kr">contact@yeahplus.co.kr</a> 으로 연락 주시기
-          바랍니다.
-        </p>
-
-        <p className="legal-note">
-          상호: 주식회사 예아플러스 · 대표자: 고재혁 · 사업자등록번호: 283-88-02519
-          <br />
-          통신판매업신고번호: 2022-경기파주-2995
-          <br />
-          주소: 경기도 파주시 교하로159번길 33, 3층 304호 에이318(목동동, 목동프라자)
-        </p>
-      </article>
+      <section>
+        <h2>4. 문의 · Contact</h2>
+        <div className="kp-contact">
+          <a className="kp-mail" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+        </div>
+      </section>
     </div>
   );
 }
