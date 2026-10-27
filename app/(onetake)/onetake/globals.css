@@ -259,6 +259,21 @@ ul.ot-bullets li::before{content:"";position:absolute;left:0;top:.75em;width:6px
 .ot-flinks a:hover{color:var(--ot-lime)}
 .ot-biz{font-size:12px;line-height:1.7;color:var(--ot-ink-3);margin-top:4px}
 
+/* ─────────── 0 라이브 촬영장 (home/LiveHero.tsx — 엔진 iframe) ─────────── */
+.ot-live{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:#000}
+.ot-live-poster{object-fit:cover;object-position:62% 50%}
+.ot-live-copy{position:absolute;left:clamp(18px,4.4vw,64px);top:50%;transform:translateY(-44%);z-index:1;text-shadow:0 2px 20px rgba(0,0,0,.5)}
+.ot-live-logo{font:italic 900 clamp(64px,9.4vw,112px)/.9 -apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:-.05em;margin:0}
+.ot-live-logo span{color:var(--ot-lime);display:block}
+.ot-live-copy p{margin-top:16px;font-size:clamp(19px,2.1vw,26px);font-weight:800;letter-spacing:-.02em}
+.ot-live-load{margin-top:26px;display:flex;align-items:center;gap:10px;font:700 12px var(--ot-mono);letter-spacing:.18em;color:var(--ot-ink-2)}
+.ot-live-load i{width:9px;height:9px;border-radius:50%;background:var(--ot-rec);animation:ot-blink 1.1s steps(2,end) infinite}
+.ot-live-fr{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:2;opacity:0;transition:opacity .8s;display:block;background:transparent}
+.ot-live-fr.on{opacity:1}
+.ot-navbar-float{transition:opacity .3s,background .3s}
+html.ot-driving .ot-navbar-float{opacity:0;pointer-events:none}
+@media (max-aspect-ratio:1/1){ .ot-live-copy{top:auto;bottom:80px;transform:none} .ot-live-poster{object-position:30% 50%} }
+
 /* ─────────── 1-b 기울이기(자이로) — HARD MODE ─────────── */
 .ot-tilt{overflow:hidden;background:linear-gradient(180deg,transparent,rgba(255,59,48,.05) 40%,transparent)}
 .ot-tilt-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(30px,5vw,70px);align-items:center}

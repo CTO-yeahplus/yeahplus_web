@@ -16,7 +16,7 @@ function Nav() {
     const el = bar.current;
     if (!home || !el) return;
     const on = () => {
-      const take = document.querySelector('.ot-take');
+      const take = document.querySelector('.ot-live, .ot-take');
       const end = take ? take.getBoundingClientRect().bottom : 0;
       if (end < 64) el.setAttribute('data-solid', '1');
       else el.removeAttribute('data-solid');

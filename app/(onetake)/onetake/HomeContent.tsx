@@ -1,10 +1,10 @@
 'use client';
 
 /* ONE TAKE 랜딩 — 기획 APLUS/drift/docs/WEB_SITE.md
-   0 원 테이크(휠 = 테이크) → 1 찍는 법(세 박자) → 1-b 기울이기(자이로) HARD MODE → 2 장소 7곳(가로 트랙) → 3 예고편 → 4 조건표 → 5 끝.
+   0 라이브 촬영장(실시간 엔진 · 15초 직접 · 내 편집본 — 안 되는 기기는 예전 '휠 = 테이크') → 1 찍는 법(세 박자) → 1-b 기울이기(자이로) HARD MODE → 2 장소 7곳(가로 트랙) → 3 예고편 → 4 조건표 → 5 끝.
    바닥 전체에 타이어 자국(Skid). 글은 한 번에 한 문장 — 기능 나열 대신 '해 보는 것'. */
 import Image from 'next/image';
-import Take from './home/Take';
+import LiveHero from './home/LiveHero';
 import Skid from './home/Skid';
 import Scenes from './home/Scenes';
 import Trailer from './home/Trailer';
@@ -68,7 +68,7 @@ export default function HomeContent() {
   return (
     <>
       <Skid />
-      <Take />
+      <LiveHero />
 
       <section className="ot-sec" id="how">
         <div className="ot-wrap">
