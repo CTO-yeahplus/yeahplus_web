@@ -4,7 +4,8 @@
    (https://www.yeahplus.co.kr/onetake/privacy). 한/영을 동시에 보여준다.
    원본 문안: APLUS/drift/docs/PRIVACY_POLICY.md · 근거표: APLUS/drift/docs/SUBMISSION_ANSWERS.md 3-1절
    (데이터가 수집되지 않음 — 네트워크 호출 0, 분석·광고·크래시 SDK 없음, 저장은 기기 안, 결제는 Apple).
-   앱에 분석·크래시·광고 SDK, 서버, Game Center 가 생기면 이 문서와 App Privacy 라벨을 함께 고친다. */
+   2026-10-27 같은 날 개정(빌드 5): Game Center 순위표 · 릴/포스터(사진 '추가 전용' 권한) · 도전장 링크(# 뒤에 판 기록) — 수집 없음은 그대로.
+   앱에 분석·크래시·광고 SDK, 서버가 생기면 이 문서와 App Privacy 라벨을 함께 고친다. */
 
 import { COMPANY, EMAIL } from '../i18n';
 
@@ -18,7 +19,7 @@ export default function PrivacyContent() {
           Privacy Policy
         </h1>
         <div className="ot-sub">원 테이크 · ONE TAKE</div>
-        <div className="ot-rev">시행일 2026년 10월 27일 · Effective 27 October 2026</div>
+        <div className="ot-rev">시행일 2026년 10월 27일 (같은 날 개정 — Game Center · 릴 · 도전장) · Effective 27 October 2026 (revised the same day)</div>
       </div>
 
       <div className="ot-callout">
@@ -73,15 +74,26 @@ export default function PrivacyContent() {
       <section>
         <h2>3. 네트워크와 제3자 서비스</h2>
         <p>
-          앱은 스스로 인터넷에 접속하지 않으며, 비행기 모드에서도 모든 기능이 작동합니다. 광고, 분석, 크래시 보고 등{' '}
+          앱은 회사 서버에 접속하지 않으며, 순위표를 빼면 비행기 모드에서도 모든 기능이 작동합니다. 광고, 분석, 크래시 보고 등{' '}
           <strong>제3자 SDK 를 일절 쓰지 않으며</strong>, 이용자를 추적하지 않습니다.
+        </p>
+        <p>
+          <strong>Game Center</strong> — 기기에서 Game Center 에 로그인해 있으면, 앱은 장소별 최고 점수와 &lsquo;오늘의 촬영&rsquo;
+          점수를 Apple 의 Game Center 순위표에 올립니다. 이 처리는 Apple 이 하며, 회사는 점수나 계정 정보를 따로 받거나
+          저장하지 않습니다. 순위표에는 Game Center 별명과 점수만 보입니다. 로그인하지 않으면 아무것도 올라가지 않습니다.
         </p>
         <div className="ot-en-block">
           <h3>3. Network and third parties</h3>
           <p>
-            The App does not connect to the internet on its own, and everything works in airplane mode. It uses{' '}
+            The App never connects to our servers, and apart from leaderboards everything works in airplane mode. It uses{' '}
             <strong>no advertising networks, no analytics, no crash reporting and no third-party SDKs</strong>, and you are
             not tracked.
+          </p>
+          <p>
+            <strong>Game Center</strong> — if you are signed in to Game Center on your device, the App posts your best score
+            for each location and your &ldquo;Today&rsquo;s Shoot&rdquo; score to Apple&rsquo;s Game Center leaderboards. Apple
+            handles this; we do not receive or store your scores or account details. Leaderboards show only your Game Center
+            nickname and score. If you are not signed in, nothing is posted.
           </p>
         </div>
       </section>
@@ -97,7 +109,11 @@ export default function PrivacyContent() {
           <li>
             <strong>진동(햅틱)</strong> — 기기에서 진동을 내기만 하며, 아무 정보도 읽거나 보내지 않습니다.
           </li>
-          <li>앱은 카메라·마이크·사진·위치·연락처 권한을 요청하지 않습니다.</li>
+          <li>
+            <strong>사진(추가만)</strong> — 만든 릴·포스터를 공유 화면에서 &lsquo;저장&rsquo;할 때만 사진 앱에 추가합니다. 앱은
+            사진을 읽지 않으며, 허용하지 않아도 게임은 모두 됩니다.
+          </li>
+          <li>앱은 카메라·마이크·위치·연락처 권한을 요청하지 않습니다.</li>
         </ul>
         <div className="ot-en-block">
           <h3>4. Device features</h3>
@@ -110,7 +126,11 @@ export default function PrivacyContent() {
             <li>
               <strong>Haptics</strong> — the App only plays vibrations on the device; nothing is read or sent.
             </li>
-            <li>The App does not ask for camera, microphone, photo, location or contacts access.</li>
+            <li>
+              <strong>Photos (add only)</strong> — the App adds a reel or poster you made to Photos only when you choose
+              &ldquo;Save&rdquo; on the share sheet. It never reads your library, and everything works without it.
+            </li>
+            <li>The App does not ask for camera, microphone, location or contacts access.</li>
           </ul>
         </div>
       </section>
@@ -133,14 +153,29 @@ export default function PrivacyContent() {
       </section>
 
       <section>
-        <h2>6. 이용자가 직접 보내는 파일</h2>
+        <h2>6. 릴 · 포스터 · 도전장 — 이용자가 직접 보내는 것</h2>
         <p>
-          이용자가 iOS 공유 화면으로 파일을 직접 보내는 경우, 그 파일은 이용자가 고른 곳으로만 가며 회사에는 전달되지
-          않습니다.
+          릴(세로 영상)과 포스터는 <strong>기기 안에서</strong> 만들어지고, 이용자가 iOS 공유 화면으로 보낼 때만 이용자가
+          고른 곳으로 갑니다. 회사에는 전달되지 않습니다.
+        </p>
+        <p>
+          &lsquo;도전장&rsquo; 링크에는 그 판의 기록(조작 · 차 위치 · 점수 · 등급, 그리고 설정에 적어 둔 경우 감독 이름)이
+          링크의 <strong>#</strong> 뒤에 담깁니다. 링크를 받은 사람은 이 내용을 볼 수 있습니다. 링크를 열면 이 웹사이트가
+          받는 사람의 브라우저 안에서 그 판을 다시 재생하며, <strong>#</strong> 뒤의 내용은 웹 서버로 전송되지 않습니다.
+          감독 이름은 비워 둘 수 있습니다.
         </p>
         <div className="ot-en-block">
-          <h3>6. Files you share</h3>
-          <p>If you send a file using the iOS share sheet, it goes only where you choose. It is not sent to us.</p>
+          <h3>6. Reels, posters and dares — things you send yourself</h3>
+          <p>
+            Reels (vertical videos) and posters are made <strong>on your device</strong> and go only where you send them with
+            the iOS share sheet. They are not sent to us.
+          </p>
+          <p>
+            A &ldquo;dare&rdquo; link carries that take&rsquo;s record (controls, car position, score, grade and, if you set
+            one, your director name) after the <strong>#</strong> in the link. Anyone you send it to can see this. Opening the
+            link replays the take inside the recipient&rsquo;s browser on this website; the part after the <strong>#</strong> is
+            never sent to the web server. You can leave the director name blank.
+          </p>
         </div>
       </section>
 

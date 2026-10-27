@@ -20,6 +20,9 @@ const nextConfig: NextConfig = {
       // 수상한 명언 Fishy Quotes 감정 대결 웹 체험판 (public/fishyquotes/c/, 앱 저장소 APLUS/fishyquotes 의 build.py 가 만든 web/challenge 를 통째로 복사).
       // 앱 빌드 안에 https://yeahplus.co.kr/fishyquotes/c#DL1.… 로 고정돼 있다.
       { source: "/fishyquotes/c", destination: "/fishyquotes/c/index.html" },
+      // 원 테이크 ONE TAKE 도전장 보기판 (public/onetake/c/index.html = 앱 저장소 APLUS/drift 의 `python3 build.py --web`, `node tools/web_assets.cjs play` 가 복사).
+      // 앱이 https://www.yeahplus.co.kr/onetake/c#v1.… 로 공유한다 — # 뒤(그 판 기록)는 서버로 오지 않는다.
+      { source: "/onetake/c", destination: "/onetake/c/index.html" },
     ];
   },
   async redirects() {

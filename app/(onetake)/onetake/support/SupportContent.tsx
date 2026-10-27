@@ -56,6 +56,27 @@ const FAQ: { q: [string, string]; a: [string, string] }[] = [
     ],
   },
   {
+    q: ['찍은 판을 영상으로 남길 수 있나요?', 'Can I keep a take as a video?'],
+    a: [
+      '결과 화면의 [릴 뽑기]를 누르면 방금 본 편집본이 세로 영상(인스타 릴스·쇼츠 크기)으로 만들어집니다. 끝에는 슬레이트가 붙고, 크게 부딪힌 판은 [NG 릴]도 뽑을 수 있습니다. [포스터]는 그 판의 가장 큰 순간 한 장입니다. 슬레이트·포스터의 이름은 설정 › 현장 › &lsquo;감독 이름&rsquo;에서 적습니다. 영상은 기기 안에서 만들어지고, 공유 화면에서 고른 곳으로만 갑니다.',
+      'Tap Reel on the results screen and the edit you just watched becomes a vertical video (Reels / Shorts size) with a slate at the end; a take with a big crash can also make an NG reel. Poster is one frame from the biggest moment. Set the name on the slate and poster in Settings › Set › Director name. Everything is made on your device and goes only where you send it.',
+    ],
+  },
+  {
+    q: ['친구에게 도전장을 보내려면?', 'How do I dare a friend?'],
+    a: [
+      '결과 화면의 [도전장]을 누르면 링크가 만들어집니다. 받은 사람은 링크를 열어 브라우저에서 그 판의 편집본을 보고, 앱이 있으면 [앱에서 도전]으로 같은 장소에서 반투명 차(도전장)와 함께 달립니다. 판 기록은 링크 # 뒤에만 담겨 서버로 가지 않습니다. 링크가 길어서 일부 메신저에서 잘리면 끝까지 복사해 붙여 넣어 주세요.',
+      'Tap Dare on the results screen to make a link. Your friend opens it to watch your take in the browser, and with the app installed taps Take the dare to race your translucent car on the same location. The take lives only after the # in the link and never reaches a server. The link is long; if a messenger cuts it, copy and paste the whole thing.',
+    ],
+  },
+  {
+    q: ['오늘의 촬영과 순위는 무엇인가요?', 'What are Today’s Shoot and the leaderboards?'],
+    a: [
+      '장소 카드 줄 맨 앞의 &lsquo;오늘의 촬영&rsquo;은 한국 시각 자정마다 바뀌는 하루 한 판입니다. 모두 같은 장소에서 같은 지시(짧은 필름 · 무사고 · 롱테이크 · S 컷만)로 찍습니다. Game Center 에 로그인해 있으면 오늘의 촬영 점수와 장소별 최고 점수가 [순위]에 올라갑니다.',
+      'Today’s Shoot, the first card in the location row, is one take a day that changes at midnight Korea time: everyone shoots the same location with the same order (short film, no crashes, long take, S cuts only). If you are signed in to Game Center, your Today’s Shoot score and your best score for each location go to the Leaderboards.',
+    ],
+  },
+  {
     q: ['소리나 음악을 줄이고 싶어요', 'I want less sound or music'],
     a: [
       '설정 › 소리에서 &lsquo;소리&rsquo; · &lsquo;음악&rsquo;을 따로 끄고, &lsquo;음악 크기&rsquo;를 고릅니다. 이어폰을 쓰면 360도로 놓인 소리를 더 잘 들을 수 있습니다.',
