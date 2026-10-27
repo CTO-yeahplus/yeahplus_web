@@ -259,6 +259,32 @@ ul.ot-bullets li::before{content:"";position:absolute;left:0;top:.75em;width:6px
 .ot-flinks a:hover{color:var(--ot-lime)}
 .ot-biz{font-size:12px;line-height:1.7;color:var(--ot-ink-3);margin-top:4px}
 
+/* ─────────── 1-b 기울이기(자이로) — HARD MODE ─────────── */
+.ot-tilt{overflow:hidden;background:linear-gradient(180deg,transparent,rgba(255,59,48,.05) 40%,transparent)}
+.ot-tilt-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(30px,5vw,70px);align-items:center}
+@media (max-width:860px){ .ot-tilt-grid{grid-template-columns:1fr} }
+.ot-hard{display:inline-block;padding:3px 8px 2px;margin-right:8px;border:1.5px solid var(--ot-rec);color:var(--ot-rec);border-radius:4px;letter-spacing:.18em}
+.ot-tilt-rules{list-style:none;margin:30px 0 0;padding:0;display:grid;gap:16px;counter-reset:r}
+.ot-tilt-rules li{counter-increment:r;position:relative;padding-left:44px;font-size:15px;line-height:1.65;color:var(--ot-ink-2);opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s}
+.ot-tilt-rules li.in{opacity:1;transform:none}
+.ot-tilt-rules li::before{content:counter(r,decimal-leading-zero);position:absolute;left:0;top:2px;font:800 12px var(--ot-mono);color:var(--ot-lime);letter-spacing:.1em}
+.ot-tilt-rules b{display:block;color:var(--ot-ink);font-size:17px;font-weight:900;letter-spacing:-.02em;margin-bottom:2px}
+.ot-tilt-stage{position:relative;padding:40px 10px 64px;display:flex;flex-direction:column;align-items:center}
+.ot-phone{position:relative;width:100%;max-width:540px;aspect-ratio:16/9;border-radius:30px;padding:12px;background:#050506;
+  box-shadow:0 0 0 2px #2a2a2e,0 30px 60px rgba(0,0,0,.55),inset 0 0 0 1px #3a3a40;transform:rotate(0deg);transform-origin:50% 60%}
+.ot-phone img{width:100%;height:100%;object-fit:cover;border-radius:19px;display:block}
+.ot-phone-notch{position:absolute;left:4px;top:50%;width:8px;height:58px;margin-top:-29px;border-radius:4px;background:#050506}
+.ot-tilt-stage.in .ot-phone{animation:ot-rock 4.2s cubic-bezier(.45,0,.55,1) infinite}
+@keyframes ot-rock{0%,100%{transform:rotate(-11deg)}48%,52%{transform:rotate(13deg)}}
+/* 수평계: 폰과 반대로 기포가 미끄러진다 */
+.ot-level{position:relative;margin-top:44px;width:min(320px,70%);height:14px;border-radius:7px;background:rgba(243,241,234,.08);box-shadow:inset 0 0 0 1px var(--ot-line-2)}
+.ot-level::before{content:"";position:absolute;left:50%;top:-5px;bottom:-5px;width:2px;margin-left:-1px;background:var(--ot-line-2)}
+.ot-level i{position:absolute;left:50%;top:2px;width:30px;height:10px;margin-left:-15px;border-radius:5px;background:var(--ot-lime);box-shadow:0 0 14px rgba(198,255,26,.6)}
+.ot-tilt-stage.in .ot-level i{animation:ot-bubble 4.2s cubic-bezier(.45,0,.55,1) infinite}
+@keyframes ot-bubble{0%,100%{transform:translateX(-120px)}48%,52%{transform:translateX(130px)}}
+.ot-tilt-cap{margin-top:14px;font:700 12px var(--ot-mono);letter-spacing:.16em;color:var(--ot-ink-3)}
+@media (max-width:560px){ @keyframes ot-bubble{0%,100%{transform:translateX(-80px)}48%,52%{transform:translateX(86px)}} }
+
 /* ─────────── 모션 줄이기 — 장면을 펼쳐 놓은 꼴로 ─────────── */
 @media (prefers-reduced-motion:reduce){
   .ot-take{height:auto}
@@ -269,4 +295,7 @@ ul.ot-bullets li::before{content:"";position:absolute;left:0;top:.75em;width:6px
   .ot-track{flex-direction:column;transform:none!important}
   .ot-card{flex-basis:auto}
   .ot-scenes-bar{display:none}
+  .ot-tilt-stage.in .ot-phone{animation:none;transform:rotate(-8deg)}
+  .ot-tilt-stage.in .ot-level i{animation:none;transform:translateX(-80px)}
+  .ot-tilt-rules li{opacity:1;transform:none;transition:none}
 }

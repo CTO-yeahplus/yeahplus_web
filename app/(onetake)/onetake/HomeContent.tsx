@@ -1,13 +1,14 @@
 'use client';
 
 /* ONE TAKE 랜딩 — 기획 APLUS/drift/docs/WEB_SITE.md
-   0 원 테이크(휠 = 테이크) → 1 찍는 법(세 박자) → 2 장소 7곳(가로 트랙) → 3 예고편 → 4 조건표 → 5 끝.
+   0 원 테이크(휠 = 테이크) → 1 찍는 법(세 박자) → 1-b 기울이기(자이로) HARD MODE → 2 장소 7곳(가로 트랙) → 3 예고편 → 4 조건표 → 5 끝.
    바닥 전체에 타이어 자국(Skid). 글은 한 번에 한 문장 — 기능 나열 대신 '해 보는 것'. */
 import Image from 'next/image';
 import Take from './home/Take';
 import Skid from './home/Skid';
 import Scenes from './home/Scenes';
 import Trailer from './home/Trailer';
+import Tilt from './home/Tilt';
 import { useSeen, useTilt } from './home/motion';
 
 const BEATS = [
@@ -58,7 +59,7 @@ const FACTS = [
   { ko: ['광고 없음', '중간에 끊는 것이 없다'], en: ['No ads', 'Nothing cuts in'] },
   { ko: ['계정도 추적도 없음', '기록은 기기 안에. 보낸 도전장만 7일 맡아 둔다'], en: ['No account, no tracking', 'Records stay on your device. Only dares you send are kept, for 7 days'] },
   { ko: ['인터넷 없이', '촬영은 비행기 모드에서도 된다'], en: ['Works offline', 'Shooting runs in airplane mode'] },
-  { ko: ['iPhone · iPad', '가로 화면. 기울여서 조향도'], en: ['iPhone · iPad', 'Landscape. Tilt steering too'] },
+  { ko: ['iPhone · iPad', '가로 화면. 자이로 조향은 HARD MODE'], en: ['iPhone · iPad', 'Landscape. Gyro steering is hard mode'] },
   { ko: ['합성한 소리', '엔진·자갈·빗소리·음악을 실시간으로'], en: ['Live sound', 'Engine, gravel, rain and music made in real time'] },
 ] as const;
 
@@ -87,6 +88,8 @@ export default function HomeContent() {
           </div>
         </div>
       </section>
+
+      <Tilt />
 
       <Scenes />
 
