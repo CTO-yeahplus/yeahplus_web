@@ -23,6 +23,8 @@ const nextConfig: NextConfig = {
       // 원 테이크 ONE TAKE 도전장 보기판 (public/onetake/c/index.html = 앱 저장소 APLUS/drift 의 `python3 build.py --web`, `node tools/web_assets.cjs play` 가 복사).
       // 앱이 https://www.yeahplus.co.kr/onetake/c#v1.… 로 공유한다 — # 뒤(그 판 기록)는 서버로 오지 않는다.
       { source: "/onetake/c", destination: "/onetake/c/index.html" },
+      // 2026-10-27 짧은 주소: /onetake/c/Ab3x9Kq — 보기판이 /onetake/api/dare?id= 로 기록을 받아 온다(보관 7일, sql/onetake_dares.sql).
+      { source: "/onetake/c/:id([A-Za-z0-9]{7})", destination: "/onetake/c/index.html" },
     ];
   },
   async redirects() {

@@ -4,8 +4,10 @@
    (https://www.yeahplus.co.kr/onetake/privacy). 한/영을 동시에 보여준다.
    원본 문안: APLUS/drift/docs/PRIVACY_POLICY.md · 근거표: APLUS/drift/docs/SUBMISSION_ANSWERS.md 3-1절
    (데이터가 수집되지 않음 — 네트워크 호출 0, 분석·광고·크래시 SDK 없음, 저장은 기기 안, 결제는 Apple).
-   2026-10-27 같은 날 개정(빌드 5): Game Center 순위표 · 릴/포스터(사진 '추가 전용' 권한) · 도전장 링크(# 뒤에 판 기록) — 수집 없음은 그대로.
-   앱에 분석·크래시·광고 SDK, 서버가 생기면 이 문서와 App Privacy 라벨을 함께 고친다. */
+   2026-10-27 같은 날 개정(빌드 5): Game Center 순위표 · 릴/포스터(사진 '추가 전용' 권한) · 도전장 링크(# 뒤에 판 기록).
+   2026-10-27 두 번째 개정(빌드 6): 도전장 짧은 주소 — 이용자가 [도전장]을 누를 때만 그 판 기록을 회사 사이트(Supabase, 싱가포르)에 7일 맡긴다
+   (sql/onetake_dares.sql · api/dare/route.ts). App Privacy = '사용자 콘텐츠 › 게임 플레이 콘텐츠 · 사용자와 연결 안 됨 · 앱 기능'.
+   앱에 분석·크래시·광고 SDK 가 생기거나 보내는 것이 늘면 이 문서와 App Privacy 라벨을 함께 고친다. */
 
 import { COMPANY, EMAIL } from '../i18n';
 
@@ -19,15 +21,17 @@ export default function PrivacyContent() {
           Privacy Policy
         </h1>
         <div className="ot-sub">원 테이크 · ONE TAKE</div>
-        <div className="ot-rev">시행일 2026년 10월 27일 (같은 날 개정 — Game Center · 릴 · 도전장) · Effective 27 October 2026 (revised the same day)</div>
+        <div className="ot-rev">시행일 2026년 10월 27일 (같은 날 개정 — Game Center · 릴 · 도전장 짧은 주소) · Effective 27 October 2026 (revised the same day)</div>
       </div>
 
       <div className="ot-callout">
         <p>
-          <strong>원 테이크는 어떠한 개인정보도 수집하지 않습니다.</strong>
+          <strong>원 테이크는 계정 · 연락처 · 기기 식별자 · 위치를 수집하지 않습니다.</strong> 이용자가 직접
+          &lsquo;도전장&rsquo;을 보낼 때만 그 판의 기록을 <strong>7일 동안</strong> 맡아 두었다가 지웁니다(6절).
         </p>
         <p style={{ marginTop: '10px' }}>
-          <strong>ONE TAKE collects no personal data.</strong>
+          <strong>ONE TAKE collects no account, contact, device-identifier or location data.</strong> Only when you send a
+          &ldquo;dare&rdquo; do we keep that take&rsquo;s record, <strong>for 7 days</strong>, and then delete it (section 6).
         </p>
       </div>
 
@@ -44,14 +48,16 @@ export default function PrivacyContent() {
       <section>
         <h2>1. 수집하는 정보</h2>
         <p>
-          앱은 이름·이메일·전화번호·기기 식별자·위치·사진·연락처를 포함해 <strong>어떤 종류의 개인정보도 수집·저장·전송하지
-          않습니다.</strong> 회원 가입과 로그인이 없습니다.
+          앱은 이메일·전화번호·기기 식별자·위치·사진·연락처를 <strong>수집하지 않습니다.</strong> 회원 가입과 로그인이
+          없습니다. 회사에 전달되는 것은 이용자가 &lsquo;도전장&rsquo;을 보낼 때의 그 판 기록 하나뿐이며, 자세한 내용은 6절에
+          있습니다.
         </p>
         <div className="ot-en-block">
           <h3>1. Information we collect</h3>
           <p>
-            The App does <strong>not collect, store or transmit any personal data</strong>, including names, email
-            addresses, phone numbers, device identifiers, location, photos or contacts. There is no sign-up and no login.
+            The App does <strong>not collect</strong> email addresses, phone numbers, device identifiers, location, photos or
+            contacts. There is no sign-up and no login. The only thing that reaches us is a take&rsquo;s record when you send a
+            &ldquo;dare&rdquo; &mdash; see section 6.
           </p>
         </div>
       </section>
@@ -74,7 +80,8 @@ export default function PrivacyContent() {
       <section>
         <h2>3. 네트워크와 제3자 서비스</h2>
         <p>
-          앱은 회사 서버에 접속하지 않으며, 순위표를 빼면 비행기 모드에서도 모든 기능이 작동합니다. 광고, 분석, 크래시 보고 등{' '}
+          앱이 회사 서버에 접속하는 것은 이용자가 &lsquo;도전장&rsquo;을 보낼 때 한 번뿐입니다(6절). 순위표와 도전장을 빼면
+          비행기 모드에서도 모든 기능이 작동합니다. 광고, 분석, 크래시 보고 등{' '}
           <strong>제3자 SDK 를 일절 쓰지 않으며</strong>, 이용자를 추적하지 않습니다.
         </p>
         <p>
@@ -85,7 +92,8 @@ export default function PrivacyContent() {
         <div className="ot-en-block">
           <h3>3. Network and third parties</h3>
           <p>
-            The App never connects to our servers, and apart from leaderboards everything works in airplane mode. It uses{' '}
+            The App connects to our server only when you send a &ldquo;dare&rdquo; (section 6). Apart from leaderboards and
+            dares, everything works in airplane mode. It uses{' '}
             <strong>no advertising networks, no analytics, no crash reporting and no third-party SDKs</strong>, and you are
             not tracked.
           </p>
@@ -159,11 +167,35 @@ export default function PrivacyContent() {
           고른 곳으로 갑니다. 회사에는 전달되지 않습니다.
         </p>
         <p>
-          &lsquo;도전장&rsquo; 링크에는 그 판의 기록(조작 · 차 위치 · 점수 · 등급, 그리고 설정에 적어 둔 경우 감독 이름)이
-          링크의 <strong>#</strong> 뒤에 담깁니다. 링크를 받은 사람은 이 내용을 볼 수 있습니다. 링크를 열면 이 웹사이트가
-          받는 사람의 브라우저 안에서 그 판을 다시 재생하며, <strong>#</strong> 뒤의 내용은 웹 서버로 전송되지 않습니다.
-          감독 이름은 비워 둘 수 있습니다.
+          <strong>도전장</strong> — 이용자가 결과 화면에서 [도전장]을 누를 때만, 앱은 그 판의 기록을 회사 사이트에 보내
+          짧은 주소(예: yeahplus.co.kr/onetake/c/Ab3x9Kq)를 받아 공유 화면에 넣습니다. 링크를 받은 사람은 이 기록으로 그 판을
+          다시 보고, 그 내용을 볼 수 있습니다.
         </p>
+        <ul className="ot-bullets">
+          <li>
+            <strong>보내는 것</strong> — 그 판의 조작 · 차 위치 · 점수 · 등급 · 장소 · 날짜, 그리고 설정에 적어 둔 경우 감독 이름.
+            감독 이름은 비워 둘 수 있습니다. 계정 · 기기 식별자 · 위치는 보내지 않습니다.
+          </li>
+          <li>
+            <strong>목적</strong> — 짧은 링크로 도전장을 전달하고 재생하기 위해서만 씁니다. 분석 · 광고 · 다른 목적에 쓰지
+            않습니다.
+          </li>
+          <li>
+            <strong>보관</strong> — 보낸 때부터 <strong>7일</strong>. 그 뒤에는 자동으로 지워지며 링크도 열리지 않습니다. 같은
+            시간에 너무 많이 보내는 것을 막기 위해 접속 주소를 그대로 저장하지 않고 되돌릴 수 없는 값(해시)으로 바꿔 두며, 이
+            값은 하루 뒤 지웁니다.
+          </li>
+          <li>
+            <strong>국외 이전</strong> — 기록은 데이터베이스 서비스 Supabase Inc.(supabase.com)에 맡겨 저장하며 서버는
+            싱가포르(지역 Southeast Asia)에 있습니다. [도전장]을 누를 때 암호화된 연결(HTTPS)로 옮겨집니다. 이 위탁 외에 다른
+            곳에 제공하지 않습니다.
+          </li>
+          <li>
+            <strong>거부</strong> — [도전장]을 누르지 않으면 아무것도 보내지 않습니다. 연결이 안 될 때는 예전처럼 기록을
+            링크의 <strong>#</strong> 뒤에 담은 긴 링크를 보내며, 이 경우 <strong>#</strong> 뒤의 내용은 웹 서버로 전송되지
+            않습니다.
+          </li>
+        </ul>
         <div className="ot-en-block">
           <h3>6. Reels, posters and dares — things you send yourself</h3>
           <p>
@@ -171,26 +203,52 @@ export default function PrivacyContent() {
             the iOS share sheet. They are not sent to us.
           </p>
           <p>
-            A &ldquo;dare&rdquo; link carries that take&rsquo;s record (controls, car position, score, grade and, if you set
-            one, your director name) after the <strong>#</strong> in the link. Anyone you send it to can see this. Opening the
-            link replays the take inside the recipient&rsquo;s browser on this website; the part after the <strong>#</strong> is
-            never sent to the web server. You can leave the director name blank.
+            <strong>Dares</strong> &mdash; only when you tap &ldquo;Dare&rdquo; on the result screen, the App sends that
+            take&rsquo;s record to our website and gets back a short link (e.g. yeahplus.co.kr/onetake/c/Ab3x9Kq) to put in the
+            share sheet. Anyone you send it to can replay the take and see this record.
           </p>
+          <ul className="ot-bullets">
+            <li>
+              <strong>What is sent</strong> &mdash; the take&rsquo;s controls, car position, score, grade, location and date,
+              and your director name if you set one (you can leave it blank). No account, device identifier or location.
+            </li>
+            <li>
+              <strong>Why</strong> &mdash; only to deliver and replay the dare through a short link. Never for analytics,
+              advertising or anything else.
+            </li>
+            <li>
+              <strong>How long</strong> &mdash; <strong>7 days</strong> from sending, then it is deleted automatically and the
+              link stops working. To prevent flooding, your IP address is stored only as an irreversible hash, deleted after
+              one day.
+            </li>
+            <li>
+              <strong>Overseas transfer</strong> &mdash; records are stored with the database service Supabase Inc.
+              (supabase.com) on servers in Singapore (region Southeast Asia), sent over an encrypted connection (HTTPS) when you
+              tap &ldquo;Dare&rdquo;. They are not shared with anyone else.
+            </li>
+            <li>
+              <strong>Opting out</strong> &mdash; if you don&rsquo;t tap &ldquo;Dare&rdquo;, nothing is sent. If there is no
+              connection, the App falls back to a long link that carries the record after the <strong>#</strong>, which is
+              never sent to the web server.
+            </li>
+          </ul>
         </div>
       </section>
 
       <section>
         <h2>7. 아동의 개인정보 · 이용자의 권리</h2>
         <p>
-          앱은 누구의 개인정보도 수집하지 않으므로 아동의 개인정보도 수집하지 않습니다. 회사가 보관하는 개인정보가 없으므로
-          열람·정정·삭제를 요청하실 대상이 없습니다. 기기 안의 기록은 <strong>앱을 지우면 모두 사라집니다.</strong>
+          앱은 계정 · 연락처 · 위치를 수집하지 않으며, 아동을 따로 알아보거나 아동의 정보를 모으지 않습니다. 회사가 맡아 두는
+          것은 이용자가 보낸 도전장 기록뿐이며 7일 뒤 지워집니다. 그 전에 지우고 싶으면 짧은 주소의 마지막 7자를 아래
+          문의처로 알려 주세요. 기기 안의 기록은 <strong>앱을 지우면 모두 사라집니다.</strong>
         </p>
         <div className="ot-en-block">
           <h3>7. Children&rsquo;s privacy · your rights</h3>
           <p>
-            The App collects no personal data from anyone, including children. We hold no personal data about you, so there
-            is nothing for us to access, correct or delete. The records on your device <strong>are removed when you delete
-            the App.</strong>
+            The App collects no account, contact or location data and does not identify or target children. The only thing
+            we keep is a dare record you sent, deleted after 7 days; to have it deleted sooner, send us the last 7 characters
+            of the short link at the contact below. The records on your device <strong>are removed when you delete the
+            App.</strong>
           </p>
         </div>
       </section>

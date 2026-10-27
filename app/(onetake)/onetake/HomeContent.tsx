@@ -56,8 +56,8 @@ const FACTS = [
   { ko: ['장소 평생권', '한 번 사면 나머지 다섯 곳과 앞으로 나올 장소까지'], en: ['All Locations pass', 'One purchase: the other five, and every location to come'] },
   { ko: ['모범 테이크 7편', '사기 전에 장소마다 처음부터 끝까지 본다'], en: ['7 master takes', 'Watch every location start to finish before you buy'] },
   { ko: ['광고 없음', '중간에 끊는 것이 없다'], en: ['No ads', 'Nothing cuts in'] },
-  { ko: ['데이터 수집 없음', '계정도 서버도 없다. 기록은 기기 안에만'], en: ['No data collected', 'No account, no server. Records stay on your device'] },
-  { ko: ['인터넷 없이', '비행기 모드에서도 전부 된다'], en: ['Works offline', 'Everything runs in airplane mode'] },
+  { ko: ['계정도 추적도 없음', '기록은 기기 안에. 보낸 도전장만 7일 맡아 둔다'], en: ['No account, no tracking', 'Records stay on your device. Only dares you send are kept, for 7 days'] },
+  { ko: ['인터넷 없이', '촬영은 비행기 모드에서도 된다'], en: ['Works offline', 'Shooting runs in airplane mode'] },
   { ko: ['iPhone · iPad', '가로 화면. 기울여서 조향도'], en: ['iPhone · iPad', 'Landscape. Tilt steering too'] },
   { ko: ['합성한 소리', '엔진·자갈·빗소리·음악을 실시간으로'], en: ['Live sound', 'Engine, gravel, rain and music made in real time'] },
 ] as const;

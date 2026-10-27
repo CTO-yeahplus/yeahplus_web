@@ -65,8 +65,8 @@ const FAQ: { q: [string, string]; a: [string, string] }[] = [
   {
     q: ['친구에게 도전장을 보내려면?', 'How do I dare a friend?'],
     a: [
-      '결과 화면의 [도전장]을 누르면 링크가 만들어집니다. 받은 사람은 링크를 열어 브라우저에서 그 판의 편집본을 보고, 앱이 있으면 [앱에서 도전]으로 같은 장소에서 반투명 차(도전장)와 함께 달립니다. 판 기록은 링크 # 뒤에만 담겨 서버로 가지 않습니다. 링크가 길어서 일부 메신저에서 잘리면 끝까지 복사해 붙여 넣어 주세요.',
-      'Tap Dare on the results screen to make a link. Your friend opens it to watch your take in the browser, and with the app installed taps Take the dare to race your translucent car on the same location. The take lives only after the # in the link and never reaches a server. The link is long; if a messenger cuts it, copy and paste the whole thing.',
+      '결과 화면의 [도전장]을 누르면 링크가 만들어집니다. 받은 사람은 링크를 열어 브라우저에서 그 판의 편집본을 보고, 앱이 있으면 [앱에서 도전]으로 같은 장소에서 반투명 차(도전장)와 함께 달립니다. 링크는 짧은 주소(yeahplus.co.kr/onetake/c/…)이며, 그 판 기록은 보낸 날부터 7일 동안만 열립니다 — 지난 도전장은 새로 보내 주세요. 연결이 안 될 때는 기록을 담은 긴 링크가 대신 만들어지며, 메신저에서 잘리면 끝까지 복사해 붙여 넣어 주세요.',
+      'Tap Dare on the results screen to make a link. Your friend opens it to watch your take in the browser, and with the app installed taps Take the dare to race your translucent car on the same location. The link is a short address (yeahplus.co.kr/onetake/c/…) and the take stays available for 7 days from sending — send a new dare after that. Without a connection the app makes a long link that carries the take instead; if a messenger cuts it, copy and paste the whole thing.',
     ],
   },
   {
