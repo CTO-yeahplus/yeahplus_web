@@ -56,7 +56,7 @@ export default function LiveHero() {
       const d = e.data, html = document.documentElement;
       if (d.s === 'live') setReady(true);
       /* 시승 중엔 히어로를 화면에 꽉 차게 + 위 메뉴 바를 숨긴다(게임 HUD 를 덮는다) */
-      if (d.s === 'drive' && sec.current) { window.scrollTo({ top: sec.current.offsetTop, behavior: 'smooth' }); html.classList.add('ot-driving'); }
+      if (d.s === 'drive' && sec.current) { html.classList.add('ot-driving'); window.scrollTo(0, sec.current.offsetTop); }
       if (d.s === 'live' || d.s === 'end' || d.s === 'cut') html.classList.remove('ot-driving');
       /* 엔진 위에서 끈 만큼 사이트를 스크롤 (iframe 이 터치·휠을 받아 버리므로 엔진이 넘겨 준다) */
       if (typeof d.scroll === 'number') window.scrollBy(0, d.scroll);
@@ -65,6 +65,14 @@ export default function LiveHero() {
     window.addEventListener('message', on);
     return () => { clearTimeout(t); window.removeEventListener('message', on); document.documentElement.classList.remove('ot-driving'); };
   }, [src, ready]);
+
+  /* 시승 중 화면을 돌리거나 주소줄이 접히고 펴지면 히어로를 다시 화면 맨 위에 맞춘다 */
+  useEffect(() => {
+    const fit = () => { if (document.documentElement.classList.contains('ot-driving') && sec.current) window.scrollTo(0, sec.current.offsetTop); };
+    const vv = window.visualViewport;
+    window.addEventListener('resize', fit); window.addEventListener('orientationchange', fit); vv?.addEventListener('resize', fit);
+    return () => { window.removeEventListener('resize', fit); window.removeEventListener('orientationchange', fit); vv?.removeEventListener('resize', fit); };
+  }, []);
 
   /* ②·③ 언어 · 화면 밖 */
   useEffect(() => {
@@ -104,6 +112,7 @@ export default function LiveHero() {
           src={src}
           title="ONE TAKE — live"
           allow="autoplay; fullscreen; gyroscope; accelerometer"
+          allowFullScreen
           loading="eager"
         />
       )}

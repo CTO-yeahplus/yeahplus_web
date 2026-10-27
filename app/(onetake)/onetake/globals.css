@@ -260,7 +260,11 @@ ul.ot-bullets li::before{content:"";position:absolute;left:0;top:.75em;width:6px
 .ot-biz{font-size:12px;line-height:1.7;color:var(--ot-ink-3);margin-top:4px}
 
 /* ─────────── 0 라이브 촬영장 (home/LiveHero.tsx — 엔진 iframe) ─────────── */
-.ot-live{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:#000}
+.ot-live{position:relative;height:100vh;height:100svh;overflow:hidden;background:#000}
+/* 큰 화면만 최소 높이 — 휴대폰 가로(보이는 높이 330~390)에 560 을 걸면 게임 아래 버튼(GAS · 사이드)이 화면 밖으로 밀렸다(2026-10-27 유진) */
+@media (min-height:600px) and (min-width:900px){ .ot-live{min-height:560px} }
+/* 시승 중: 지금 보이는 높이(주소줄을 뺀 높이)에 딱 맞춘다 — 주소줄이 접히고 펴질 때마다 따라간다(dvh) */
+html.ot-driving .ot-live{height:100dvh;min-height:0}
 .ot-live-poster{object-fit:cover;object-position:62% 50%}
 .ot-live-copy{position:absolute;left:clamp(18px,4.4vw,64px);top:50%;transform:translateY(-44%);z-index:1;text-shadow:0 2px 20px rgba(0,0,0,.5)}
 .ot-live-logo{font:italic 900 clamp(64px,9.4vw,112px)/.9 -apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:-.05em;margin:0}
