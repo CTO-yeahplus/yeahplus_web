@@ -211,7 +211,7 @@ function Pillars() {
   const { L } = useLang();
   const active = useActiveIndex(PILLAR_IDS);
   const titles = [
-    L('작은 팀, 많은 완성작', 'A small team, many finished products'),
+    L('결정은 빠르게, 완성은 끝까지', 'Decide fast, finish fully'),
     L('영화를 만들던 눈', 'An eye trained on film'),
     L('사람을 존중하는 설계', 'Design that respects people'),
     L('근거가 있는 콘텐츠', 'Content with sources'),
@@ -277,20 +277,20 @@ function Pillars() {
           </aside>
 
           <div className="yp-chapters">
-            {/* 1 · 작은 팀, 많은 완성작 */}
+            {/* 1 · 결정은 빠르게, 완성은 끝까지 */}
             <article id={PILLAR_IDS[0]} className="yp-chapter">
               <div className="yp-chapter-copy yp-rv">
                 <p className="yp-kicker">{titles[0]}</p>
                 <h3 className="yp-h3">
-                  {L(`작은 팀이 ${COUNT.all}개의 제품을 끝까지 만들었습니다.`, `A small team has taken ${COUNT.all} products all the way.`)}
+                  {L(`기획에서 출시까지 멈추지 않고, ${COUNT.all}개의 제품을 내놓았습니다.`, `From idea to launch without losing pace: ${COUNT.all} products shipped.`)}
                 </h3>
                 <p>
                   {L(
-                    '2022년 창업 뒤로 사진, 배움, 게임, 일상 네 분야에서 제품을 만들어 왔습니다. 앱마다 자기 이름과 아이콘, 제품 페이지, 도움말, 개인정보 처리방침과 약관을 갖추고 나갑니다.',
-                    'Since 2022 we have built products across photo, learning, games and everyday life. Each one ships with its own name and icon, product page, help centre, privacy policy and terms.'
+                    '결정의 단계가 짧아 아이디어가 바로 시제품이 되고, 시제품이 곧장 스토어로 갑니다. 2022년 창업 뒤로 사진, 배움, 게임, 일상 네 분야에서 그렇게 만들어 왔고, 앱마다 자기 이름과 아이콘, 제품 페이지, 도움말, 개인정보 처리방침과 약관을 갖추고 나갑니다.',
+                    'Decisions take few steps, so an idea becomes a prototype and a prototype goes straight to the store. That is how we have built across photo, learning, games and everyday life since 2022, and every app ships with its own name and icon, product page, help centre, privacy policy and terms.'
                   )}
                 </p>
-                <ol className="yp-pipe" aria-label={L('한 팀이 맡는 일', 'What one team owns')}>
+                <ol className="yp-pipe" aria-label={L('한 흐름으로 이어지는 일', 'One continuous flow')}>
                   {[L('기획', 'Planning'), L('디자인', 'Design'), L('개발', 'Engineering'), L('스토어 심사', 'Store review'), L('제품 페이지', 'Product page'), L('고객 지원', 'Support')].map((s) => (
                     <li key={s}>{s}</li>
                   ))}
@@ -404,7 +404,8 @@ function Pillars() {
 const FLAGSHIP: Partial<Record<Product['cat'], { id: string; shot: string }>> = {
   image: { id: 'cinelook', shot: 'cinelook' },
   learn: { id: 'seodang', shot: 'seodang' },
-  game: { id: 'mineforge', shot: 'mineforge' },
+  game: { id: 'kkorong', shot: 'kkorong' },
+  daily: { id: 'faceroutine', shot: 'faceroutine' },
 };
 
 function Products() {
@@ -499,7 +500,9 @@ function Products() {
 function People() {
   const { L } = useLang();
   const career = [
-    { tag: L('지금', 'Now'), t: L('인생네컷 CTO', 'CTO, Life4Cuts'), d: L('글로벌 포토 키오스크 플랫폼의 기술을 총괄합니다. 비전 AI와 클라우드 인프라를 다룹니다.', 'Leads technology for a global photo-kiosk platform, from vision AI to cloud infrastructure.') },
+    { tag: L('지금', 'Now'), t: L('예아플러스 창업자 · 대표', 'Founder & CEO, YeahPlus'), d: L('사진 · 배움 · 게임 · 일상의 제품을 기획부터 출시까지 이끕니다.', 'Leads products in photo, learning, games and everyday life from idea to launch.') },
+    { tag: L('경력', 'Career'), t: L('인생네컷 CTO', 'CTO, Life4Cuts'), d: L('글로벌 포토 키오스크 플랫폼의 기술을 총괄했습니다. 비전 AI와 클라우드 인프라를 다뤘습니다.', 'Led technology for a global photo-kiosk platform, from vision AI to cloud infrastructure.') },
+    { tag: L('경력', 'Career'), t: L('CJ ENM R&D 센터 · 스페셜리스트', 'Specialist, CJ ENM R&D Center'), d: L('CJ ENM R&D 센터에서 스페셜리스트로 일했습니다.', 'Worked as a specialist at the CJ ENM R&D Center.') },
     { tag: L('경력', 'Career'), t: L('대학 교수 · VFX/CG 수퍼바이저', 'Professor · VFX/CG supervisor'), d: L('대학에서 후학을 가르치며 국내외 대형 프로젝트의 시각효과를 이끌었습니다.', 'Taught at university while leading visual effects on major projects in Korea and abroad.') },
     { tag: L('시작', 'Origin'), t: 'Lucasfilm Ltd. · Senior TD', d: L('조지 루카스가 세운 시각효과 스튜디오에서 세계 기준의 제작 파이프라인을 익혔습니다.', 'Learned world-standard production pipelines at the visual effects studio George Lucas founded.') },
   ];
