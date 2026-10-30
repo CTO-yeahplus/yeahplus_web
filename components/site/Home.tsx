@@ -58,8 +58,9 @@ function ProductLink({ p, children, className }: { p: Product; children: ReactNo
   );
 }
 
-function Status({ s }: { s: Product['status'] }) {
+function Status({ s, badge }: { s: Product['status']; badge?: Product['badge'] }) {
   const { L } = useLang();
+  if (s !== 'live' && badge) return <span className="yp-status yp-soon-date">{L(badge.ko, badge.en)}</span>;
   return <span className={`yp-status ${s === 'live' ? 'yp-live' : ''}`}>{s === 'live' ? L('출시', 'Live') : L('준비 중', 'Coming soon')}</span>;
 }
 
@@ -334,7 +335,7 @@ function Pillars() {
             <article id={PILLAR_IDS[2]} className="yp-chapter">
               <div className="yp-chapter-copy yp-rv">
                 <p className="yp-kicker">{titles[2]}</p>
-                <h3 className="yp-h3">{L('광고로 붙잡지 않고, 데이터를 가져가지 않습니다.', 'No ads to hold you, no data taken from you.')}</h3>
+                <h3 className="yp-h3">{L('유료 앱은 광고로 붙잡지 않고, 데이터를 가져가지 않습니다.', 'Our paid apps hold you with no ads and take no data.')}</h3>
                 <p>
                   {L(
                     `유료 앱 ${COUNT.promise}편은 같은 약속을 제품 페이지와 개인정보 처리방침에 적어 두었습니다. 카메라 보정처럼 무거운 일도 가능한 한 기기 안에서 끝냅니다.`,
@@ -458,7 +459,7 @@ function Products() {
                       <AppIcon p={flag} size={64} />
                       <div>
                         <b>{L(flag.ko, flag.en)}</b>
-                        <Status s={flag.status} />
+                        <Status s={flag.status} badge={flag.badge} />
                       </div>
                     </div>
                     <p>{L(flag.descKo, flag.descEn)}</p>
@@ -477,7 +478,7 @@ function Products() {
                     <div className="yp-card-body">
                       <div className="yp-card-top">
                         <b>{L(p.ko, p.en)}</b>
-                        <Status s={p.status} />
+                        <Status s={p.status} badge={p.badge} />
                       </div>
                       <p>{L(p.descKo, p.descEn)}</p>
                       <span className="yp-card-url">{p.href.startsWith('/') ? `yeahplus.co.kr${p.href}` : p.href.replace('https://', '')}</span>
@@ -540,8 +541,9 @@ function People() {
 
 function History() {
   const { L } = useLang();
-  const appStore = ['묘해', '24STILLS', 'TOWER 68', 'ARKE', '조선왕조실록', '스틸스톰 아레나', 'MINEFORGE'];
-  const appStoreEn = ['MYOHAE', '24STILLS', 'TOWER 68', 'ARKE', 'Joseon Annals', 'SteelStorm Arena', 'MINEFORGE'];
+  // App Store 에 지금 올라가 있는 앱 — 2026-10-30 공개 목록(개발자 YEAHPLUS) 기준. 새로 오르면 여기에도 적는다.
+  const appStore = ['24STILLS', 'TOWER 68', 'AURA', '묘해', 'MINEFORGE', '페이스루틴', 'ARKE', '조선왕조실록', '스틸스톰 아레나'];
+  const appStoreEn = ['24STILLS', 'TOWER 68', 'AURA', 'MYOHAE', 'MINEFORGE', 'FaceRoutine', 'ARKE', 'Joseon Annals', 'SteelStorm Arena'];
   const steps = [
     { y: '2022', t: L('창업', 'Founded'), d: L('콘텐츠에 기술을 더해 일상을 넓히겠다는 생각으로 시작했습니다.', 'Started with the idea of widening everyday life by adding technology to content.') },
     { y: '2023', t: L('기반', 'Foundation'), d: L('핵심 소프트웨어를 납품하고 기술 검증을 마쳤습니다.', 'Delivered core software and completed technical validation.') },
@@ -551,8 +553,8 @@ function History() {
       y: L('지금', 'Today'),
       t: L('네 분야의 제품군', 'A four-field product line'),
       d: L(
-        `App Store에 ${appStore.join(', ')}를 내놓았고, CineLook·성어서당·현자의 서재를 비롯한 ${COUNT.soon}개가 출시를 앞두고 있습니다.`,
-        `On the App Store: ${appStoreEn.join(', ')}. ${COUNT.soon} more, including CineLook, Seodang and The Sages’ Study, are close to launch.`
+        `App Store에 ${appStore.join(', ')}를 내놓았습니다. 꼬롱을 찾아라가 11월 10일에 나오고, 수상한 명언·현자의 서재·간직을 비롯한 ${COUNT.soon - 1}개가 그 뒤를 잇습니다.`,
+        `On the App Store: ${appStoreEn.join(', ')}. Find Kkorong arrives on November 10, followed by ${COUNT.soon - 1} more, including Fishy Quotes, The Sages’ Study and Keepsake.`
       ),
     },
   ];
@@ -673,6 +675,10 @@ export function Footer() {
           <Link href="/privacy">{L('개인정보처리방침', 'Privacy Policy')}</Link>
           <Link href="/terms">{L('이용약관', 'Terms of Use')}</Link>
           <Link href="/support">{L('지원', 'Support')}</Link>
+          <span className="yp-foot-sep" aria-hidden="true">·</span>
+          <a href="https://www.instagram.com/yeahplus.co.kr/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.threads.com/@yeahplus.co.kr" target="_blank" rel="noopener noreferrer">Threads</a>
+          <a href="https://www.facebook.com/1410521218805519" target="_blank" rel="noopener noreferrer">Facebook</a>
         </nav>
       </div>
     </footer>

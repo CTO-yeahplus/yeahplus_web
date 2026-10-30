@@ -3,6 +3,8 @@
  * status: 'live' 는 App Store 나 웹에서 지금 쓸 수 있는 것, 'soon' 은 출시 준비 중.
  * 앱이 스토어에 오르면 그 줄의 status 만 'live' 로 바꾸면 홈의 숫자와 배지가 함께 바뀐다.
  * icon 이 없는 제품은 accent 색 타일에 mark 글자를 세운다.
+ * badge 를 주면 「준비 중」 대신 그 글자를 띄운다(사전예약 · 출시일). 출시되면 badge 를 지우고 status 를 'live' 로.
+ * 상태는 App Store 공개 목록(개발자 YEAHPLUS)과 각 프로젝트 기록으로 맞춘다 — 2026-10-30 확인.
  */
 
 export type Category = 'image' | 'learn' | 'game' | 'daily';
@@ -21,6 +23,8 @@ export type Product = {
   accent: string;
   /** 유료 앱의 공통 약속(광고·수집·구독 없음)을 제품 페이지에 적어 둔 앱 */
   promise?: boolean;
+  /** 「준비 중」 대신 보여 줄 글자 (예: 사전예약 · 출시일) */
+  badge?: { ko: string; en: string };
 };
 
 const I = (f: string) => `/site/icons/${f}.webp`;
@@ -62,7 +66,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'hyunja', cat: 'learn', ko: '현자의 서재', en: 'The Sages’ Study', href: '/hyunja', status: 'soon',
-    icon: I('hyunja'), accent: '#9e2b22', promise: true,
+    icon: I('hyunja'), accent: '#9e2b22',   // '광고 없음' 약속을 뺐다(2026-10-15, 제휴 · 협찬을 열어 둠) → promise 아님
     descKo: '고민 하나에 공자·맹자·순자·노자의 답. 따라 쓰고 한 줄을 남겨 내 어록을 만듭니다.',
     descEn: 'One worry, four answers from Confucius, Mencius, Xunzi and Laozi. Trace them and keep your own book.',
   },
@@ -85,6 +89,12 @@ export const PRODUCTS: Product[] = [
     descEn: 'A Korean SAT coach for 11th graders that decides what to study today. Math and English.',
   },
   {
+    id: 'fishyquotes', cat: 'learn', ko: '수상한 명언', en: 'Fishy Quotes', href: '/fishyquotes', status: 'soon',
+    icon: I('fishyquotes'), accent: '#e8a92c',
+    descKo: '인터넷에 떠도는 명언이 진짜인지, 원문을 찾아 감정합니다.',
+    descEn: 'Is that famous quote real? Trace it to the original and judge.',
+  },
+  {
     id: 'neurovoca', cat: 'learn', ko: '뇌새김', en: 'NeuroVoca', href: 'https://neurovoca.co.kr', status: 'live',
     icon: I('neurovoca'), accent: '#4f46e5',
     descKo: '잊기 직전에 다시 꺼내 주는 영어 단어 암기 엔진.',
@@ -100,7 +110,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'kkorong', cat: 'game', ko: '꼬롱을 찾아라', en: 'Find Kkorong', href: 'https://kkorong.com', status: 'soon',
-    icon: I('kkorong'), accent: '#1f9a8a', promise: true,
+    icon: I('kkorong'), accent: '#1f9a8a', promise: true, badge: { ko: '11/10 출시 · 사전예약', en: 'Out Nov 10 · Pre-order' },   // App Store id6818048506
     descKo: '움직이는 군중 속에서 꼬마 여행자 꼬롱을 찾는 관찰 퍼즐. 매일 새로운 오늘의 장면.',
     descEn: 'Spot a tiny traveler in a moving crowd. An observation puzzle with a new Daily Scene every day.',
   },
@@ -116,6 +126,55 @@ export const PRODUCTS: Product[] = [
     descKo: 'JFK 관제탑 31년, 한 시간에 68대. 손끝으로 하늘의 질서를.',
     descEn: 'Thirty-one years in the JFK tower, 68 landings an hour. Keep the sky in order.',
   },
+
+  {
+    id: 'noti', cat: 'game', ko: '노티', en: 'NOTI', href: '/noti', status: 'soon',
+    icon: I('noti'), accent: '#f2b33d',
+    descKo: '새벽 3시, 첫 당직의 결정이 1년을 따라옵니다. 여덟 화의 메디컬 드라마 게임.',
+    descEn: 'One call at 3 a.m. follows you for a year. An eight-episode medical drama you play.',
+  },
+  {
+    id: 'crimescene', cat: 'game', ko: '전설의 조선 사건부', en: 'Legendary Joseon Casebook', href: '/crimescene', status: 'soon',
+    icon: I('crimescene'), accent: '#b8392c',
+    descKo: '증거를 모아 조선 후기의 사건을 푸는 수사 이야기. 여덟 화, 세 가지 결말.',
+    descEn: 'Gather evidence and solve cases in late Joseon. Eight episodes, three endings.',
+  },
+  {
+    id: 'onetake', cat: 'game', ko: '원 테이크', en: 'ONE TAKE', href: '/onetake', status: 'soon',
+    icon: I('onetake'), accent: '#a6d62a',
+    descKo: '차 한 대, 테이크 한 번. 컷 없이 이어 가는 드리프트 스턴트.',
+    descEn: 'One car, one take, no cuts. A drift stunt in a single shot.',
+  },
+  {
+    id: 'steelrace', cat: 'game', ko: '스틸레이스', en: 'STEELRACE', href: '/steelrace', status: 'soon',
+    icon: I('steelrace'), accent: '#2fbfe6',
+    descKo: '두 엄지로 나는 야간 FPV 드론 레이스.',
+    descEn: 'A night-time FPV drone race flown with two thumbs.',
+  },
+
+  // ── 일상 ──
+  {
+    id: 'aura', cat: 'daily', ko: 'AURA', en: 'AURA', href: 'https://auraootd.com', status: 'live',
+    icon: I('aura'), accent: '#d9779a',
+    descKo: '오늘의 룩을 발견하고 바로 따라 사는 패션·뷰티 커뮤니티.',
+    descEn: 'Discover today’s look and shop it right away.',
+  },
+  {
+    id: 'woldeok', cat: 'daily', ko: '월덕', en: 'WOLDEOK', href: 'https://woldeok.app', status: 'live',
+    icon: I('woldeok'), accent: '#c9a043',
+    descKo: '생년월일로 사주 원국과 오늘의 흐름을 읽어 주는 운세.',
+    descEn: 'Enter your birth date to read your saju chart and today’s flow.',
+  },
+  {
+    id: 'faceroutine', cat: 'daily', ko: 'FaceRoutine', en: 'FaceRoutine', href: 'https://faceroutine.app', status: 'live',
+    icon: I('faceroutine'), accent: '#2f9e8a',
+    descKo: '하루 5분, 카메라가 세어 주는 얼굴 근육 코치. 영상은 기기 안에서만 처리합니다.',
+    descEn: 'Five minutes a day; the camera counts your facial reps, processed on the device.',
+  },
+];
+
+/** 홈에서 내린 제품 — 2026-08-18 첫 커밋 뒤 진행 기록이 없다. 페이지(/pipforge 등)와 사이트맵은 그대로 둔다. 다시 움직이면 PRODUCTS 로 옮긴다. */
+export const PAUSED: Product[] = [
   {
     id: 'pipforge', cat: 'game', ko: 'PIPFORGE', en: 'PIPFORGE', href: '/pipforge', status: 'soon',
     icon: I('pipforge'), accent: '#d58a2a', promise: true,
@@ -139,26 +198,6 @@ export const PRODUCTS: Product[] = [
     mark: '玉', accent: '#2f9a6a',
     descKo: '같은 문양을 이으면 맥이 자라는 마작 솔리테어 로그라이크.',
     descEn: 'Mahjong solitaire where matching a suit grows your vein.',
-  },
-
-  // ── 일상 ──
-  {
-    id: 'aura', cat: 'daily', ko: 'AURA', en: 'AURA', href: 'https://auraootd.com', status: 'live',
-    icon: I('aura'), accent: '#d9779a',
-    descKo: '오늘의 룩을 발견하고 바로 따라 사는 패션·뷰티 커뮤니티.',
-    descEn: 'Discover today’s look and shop it right away.',
-  },
-  {
-    id: 'woldeok', cat: 'daily', ko: '월덕', en: 'WOLDEOK', href: 'https://woldeok.app', status: 'live',
-    icon: I('woldeok'), accent: '#c9a043',
-    descKo: '생년월일로 사주 원국과 오늘의 흐름을 읽어 주는 운세.',
-    descEn: 'Enter your birth date to read your saju chart and today’s flow.',
-  },
-  {
-    id: 'faceroutine', cat: 'daily', ko: 'FaceRoutine', en: 'FaceRoutine', href: 'https://faceroutine.app', status: 'live',
-    mark: 'F', accent: '#2f9e8a',
-    descKo: '하루 5분, 카메라가 세어 주는 얼굴 근육 코치. 영상은 기기 안에서만 처리합니다.',
-    descEn: 'Five minutes a day; the camera counts your facial reps, processed on the device.',
   },
 ];
 
