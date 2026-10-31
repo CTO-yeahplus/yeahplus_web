@@ -22,8 +22,8 @@ export default function SupportContent() {
     {
       q: L('무엇이 들어 있나요?', 'What is included?'),
       a: L(
-        '사자성어 60편, 장면 삽화 242장, 획순 시범 한자 186자가 앱 안에 모두 들어 있습니다. 추가로 내려받을 것이 없습니다.',
-        'Sixty idioms, 242 scene illustrations and 186 characters with stroke-order demonstrations — all bundled in the app, with nothing extra to download.'
+        '사자성어 60편, 장면 삽화 242장, 획순 시범 한자 160자가 앱 안에 모두 들어 있습니다. 추가로 내려받을 것이 없습니다.',
+        'Sixty idioms, 242 scene illustrations and 160 characters with stroke-order demonstrations — all bundled in the app, with nothing extra to download.'
       ),
     },
     {
@@ -141,6 +141,16 @@ export default function SupportContent() {
           </details>
         ))}
       </div>
+
+      <h2 id="review">{L('한문 감수', 'Classical Chinese review')}</h2>
+      <p>
+        <strong>{L('최서형', 'Choi Seohyeong')}</strong>
+      </p>
+      <ul>
+        <li>{L('성균관대학교 한문학과 학사·석사 졸업', 'B.A. and M.A., Department of Classical Chinese, Sungkyunkwan University')}</li>
+        <li>{L('칭화대학교 철학과 박사과정', 'Ph.D. candidate in Philosophy, Tsinghua University')}</li>
+        <li>{L('한국고전번역원 연수과정 졸업', 'Completed the training program, Institute for the Translation of Korean Classics')}</li>
+      </ul>
 
       <p className="sd-meta" style={{ marginTop: 30 }}>
         <Link href="/seodang/privacy">{L('개인정보 처리방침', 'Privacy Policy')}</Link>

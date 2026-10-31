@@ -212,8 +212,8 @@ function StoryScroll() {
       alt: L('한 획씩 그어지는 획순 시범 화면', 'The stroke-order demonstration, drawn one stroke at a time'),
       h: L('한자 네 글자를 손으로 씁니다', 'Write the four characters by hand'),
       p: L(
-        '畫 龍 點 睛 — 붓선생이 한 획씩 먼저 그어 보입니다. 연한 글자 위를 따라 쓰면 성어 카드가 책장에 꽂힙니다.',
-        '畫 龍 點 睛 — Master Brush draws each stroke first. Trace over the pale guide and the idiom card goes onto the shelf.'
+        '畫 龍 點 睛 — 시범이 있는 글자는 붓선생이 한 획씩 먼저 그어 보입니다. 연한 글자 위를 따라 쓰면 성어 카드가 책장에 꽂힙니다.',
+        '畫 龍 點 睛 — where a demonstration is available, Master Brush draws each stroke first. Trace over the pale guide and the idiom card goes onto the shelf.'
       ),
     },
   ];
@@ -503,11 +503,11 @@ function StrokeDemo() {
             <p style={{ color: 'var(--sd-ink2)', marginTop: 10 }}>
               {L(
                 <>
-                  앱에는 이런 획순 시범이 <b>186자</b> 들어 있습니다. 따라 쓰기는 획 하나하나를
+                  앱에는 이런 획순 시범이 <b>160자</b> 들어 있습니다. 따라 쓰기는 획 하나하나를
                   확인해서, 아이가 끝까지 쓰도록 안내합니다.
                 </>,
                 <>
-                  The app holds <b>186</b> characters demonstrated this way. Tracing checks every
+                  The app holds <b>160</b> characters demonstrated this way. Tracing checks every
                   single stroke, guiding the child to the end.
                 </>
               )}
@@ -540,7 +540,7 @@ function Numbers() {
   const nums = [
     { n: 60, label: L('이야기 (사자성어 60편)', 'stories (60 idioms)') },
     { n: 242, label: L('장면 삽화', 'scene illustrations') },
-    { n: 186, label: L('획순 시범 한자', 'characters with stroke demos') },
+    { n: 160, label: L('획순 시범 한자', 'characters with stroke demos') },
   ];
   return (
     <section style={{ paddingTop: 0 }}>
@@ -682,12 +682,15 @@ function Review() {
             🖋️
           </div>
           <div>
-            <h3>{L('한문 전공자와 초등 교사가 감수합니다', 'Checked by a classical-Chinese scholar and a primary teacher')}</h3>
+            <h3>{L('한문 전공자가 감수했습니다', 'Reviewed by a scholar of classical Chinese')}</h3>
             <p>
               {L(
-                '성어 60편의 뜻풀이와 유래, 출전, 한자 획순 186자, 삽화 242장을 한문 전공자와 초등 교사가 나누어 살펴봅니다. 아이에게 그대로 전해질 내용이라, 옛 책에 적힌 대로인지·초등 눈높이에 맞는지를 각각 확인합니다.',
-                'The meanings, origins and sources of all 60 idioms, the stroke order of 186 characters and 242 illustrations are reviewed by a scholar of classical Chinese and by a primary-school teacher — one checking it against the classics, the other against what a child can follow.'
+                '성어 60편의 뜻풀이와 유래, 출전, 한자와 훈음, 이야기 본문, 삽화 242장을 한문 전공자가 살펴보았습니다. 대만·일본 자료를 쓴 한자 85자의 획순도 확인해, 한국 획순과 다른 글자는 시범을 빼고 따라 쓰기만 남겼습니다.',
+                'A scholar of classical Chinese reviewed the meanings, origins and sources of all 60 idioms, the characters and their Korean readings, the story text and all 242 illustrations. The stroke order of 85 characters taken from Taiwanese or Japanese data was also checked, and those that differ from Korean stroke order keep tracing but no demonstration.'
               )}
+            </p>
+            <p>
+              <Link href="/seodang/support#review">{L('감수자 소개 보기', 'About the reviewer')}</Link>
             </p>
           </div>
         </Reveal>
