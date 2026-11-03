@@ -6,7 +6,8 @@
    40% 선을 넘는 순간 점화, 점화 뒤 40% 아래로 내리면 엔진 끔(다시 못 켠다). 손을 떼도 출력은 그대로. 마우스 좌우 = 폰을 옆으로 옮기는 몸짓(카메라가 돈다). 오늘의 주차는 앱과 같은 날 같은 조건. */
 import { useEffect, useRef, useState } from 'react';
 import { bot, daily, dayIndex, makeState, needAt, SCALE, step, V, verdict, windowStatus, type Daily, type State, type Verdict } from './sim';
-import { burst, drawFrame, emit, View, type Puff } from './render';
+import { burst, clamp, drawFrame, emit, View, type Puff } from './render';
+import { PLATES, preload } from './plates';
 import { fit, lerp } from './stage';
 
 type Mode = 'easy' | 'normal';
@@ -124,6 +125,7 @@ export default function Play() {
     sound: true,
     ticks: 0,
     endAt: 0,
+    doneAt: 0,
   });
 
   useEffect(() => {
@@ -192,6 +194,7 @@ export default function Play() {
     if (!ctx) return;
     const v = new View();
     const L = live.current;
+    const getPlate = preload([PLATES.desk.A, PLATES.bench.A, PLATES.station.A], () => {});
     let raf = 0, last = performance.now(), alive = true;
     const gauge = B.querySelector<HTMLElement>('[data-k=grip]');
     const gfill = B.querySelector<HTMLElement>('[data-k=gfill]');
@@ -261,6 +264,7 @@ export default function Play() {
       if (capped) v = { ...v, grade: 'A' };
       L.phase = 'done';
       L.endAt = s.t;
+      L.doneAt = performance.now() / 1000;
       if (s.td) {
         burst(L.puffs, s.t, s.x, 46, Math.floor(s.t * 100));
         L.snd?.thump(Math.min(1, s.td.vs / 6));
@@ -337,8 +341,13 @@ export default function Play() {
           hintNow = windowStatus(s).status === 'now';
         }
       }
+      const place = d?.kind === 1 ? 'bench' : d ? 'station' : 'desk';
+      // 사진 판: 폰은 제자리 — 높이 떠 있으면 조금 올려다보고, 끝나면 패드로 다가간다
+      const doneK = L.phase === 'done' ? Math.min(1, (t / 1000 - (L.doneAt || t / 1000)) / 1.2) : 0;
       drawFrame(ctx, v, {
-        place: d?.kind === 1 ? 'bench' : d ? 'station' : 'desk',
+        plate: getPlate(PLATES[place].A),
+        plateCam: { zoom: 1.16 + doneK * 0.08, look: idle ? 0.3 : clamp((by - 0.08) / 0.5), anchorY: 0.66 + doneK * 0.06 },
+        place,
         pose: s ? { x: s.x, y: s.y, lean: s.lean, legs: s.legs, th: s.throttle, on: s.engineOn } : { x: 0, y: 900, lean: 0, legs: 0, th: 0, on: false },
         t: L.phase === 'done' ? (L.endAt += dt * 0.5) : (s?.t ?? 0),
         clock: t / 1000,
@@ -404,8 +413,8 @@ export default function Play() {
           <span data-l="en">Land one yourself</span>
         </h2>
         <p className="rp-lead">
-          <span data-l="ko">앱과 같은 물리, 같은 점수. 고리가 판정 고리에 닿는 순간 누른다. 마우스를 좌우로 움직이면 폰을 옆으로 옮긴 것처럼 깊이가 보인다.</span>
-          <span data-l="en">Same physics and scoring as the app. Press the moment the ring meets the pad ring. Move the mouse sideways to see depth, like shifting your phone.</span>
+          <span data-l="ko">앱과 같은 물리, 같은 점수. 위에서 떨어지는 부스터 — 줄어드는 고리가 판정 고리에 닿는 순간 누른다.</span>
+          <span data-l="en">Same physics and scoring as the app. A booster drops from above — press the moment the shrinking ring meets the pad ring.</span>
         </p>
       </div>
 

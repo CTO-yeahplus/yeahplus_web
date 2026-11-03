@@ -60,6 +60,25 @@ export class View {
     this.u = cross(r, f);
   }
 
+  /** 사진 판 위 — 카메라는 패드(원점)를 바라보고, 원점은 사진 속 (cx, cy) 에 맺힌다(렌즈 시프트).
+      F 는 사진의 세로 화각에서 나온 초점 거리(화면 픽셀). 폰을 들어 올려다보는 것은 사진과 함께 옮기는 것으로 흉내 낸다 */
+  setPlate(w: number, h: number, el: number, dist: number, F: number, cx: number, cy: number, yaw = 0) {
+    this.w = w;
+    this.h = h;
+    this.cam = { yaw, el, dist, ty: 0, fov: 2 * Math.atan(h / 2 / F) };
+    this.F = F;
+    this.cx = cx;
+    this.cy = cy;
+    const ce = Math.cos(el);
+    const E: Vec3 = [Math.sin(yaw) * dist * ce, Math.sin(el) * dist, Math.cos(yaw) * dist * ce];
+    const f = norm(sub([0, 0, 0], E));
+    const r = norm(cross(f, [0, 1, 0]));
+    this.E = E;
+    this.f = f;
+    this.r = r;
+    this.u = cross(r, f);
+  }
+
   p(P: Vec3): P2 {
     const d = sub(P, this.E);
     const z = Math.max(0.02, dot(d, this.f));
@@ -208,7 +227,7 @@ export function drawPlace(ctx: CanvasRenderingContext2D, v: View, place: Place, 
     }
     // 벤치 널빤지
     for (let i = -3; i <= 4; i++) {
-      const z0 = -0.27 + i * 0.105, z1 = z0 + 0.09;
+      const z0 = -0.255 + (i + 2) * 0.105, z1 = z0 + 0.09; // 다섯 장이 패드 중심(z 0)을 가운데에 두게 — 전엔 앞으로 7.5cm 걸쳤다
       if (i < -2 || i > 2) continue;
       poly(ctx, v, [[-1.45, 0, z0], [1.45, 0, z0], [1.45, 0, z1], [-1.45, 0, z1]]);
       const q = v.p([0, 0, z0]);
@@ -382,11 +401,21 @@ export function drawPad(ctx: CanvasRenderingContext2D, v: View, glow = 0, ringHi
   ctx.fillStyle = 'rgba(244,246,248,.75)';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
+  // 글자도 바닥에 눕힌다 — 원의 접선 방향으로 돌리고, 내려다보는 각만큼 납작하게
+  const flat = clamp(Math.abs(Math.sin(v.cam.el)), 0.12, 1);
   for (let i = 0; i < txt.length; i++) {
     const a = -(i / txt.length) * Math.PI * 2 + 2.2;
     const q = v.p([Math.cos(a) * 0.093, 0.002, Math.sin(a) * 0.093]);
-    ctx.font = `800 ${Math.max(5, q.s * 0.0085)}px ui-monospace,Menlo,monospace`;
-    ctx.fillText(txt[i], q.x, q.y);
+    const q2 = v.p([Math.cos(a - 0.05) * 0.093, 0.002, Math.sin(a - 0.05) * 0.093]);
+    const fs = Math.max(4, q.s * 0.0085);
+    if (fs < 5 && flat < 0.3) continue;
+    ctx.save();
+    ctx.translate(q.x, q.y);
+    ctx.rotate(Math.atan2(q2.y - q.y, q2.x - q.x));
+    ctx.scale(1, flat);
+    ctx.font = `800 ${fs}px ui-monospace,Menlo,monospace`;
+    ctx.fillText(txt[i], 0, 0);
+    ctx.restore();
   }
   // 엔진 빛이 패드를 비춘다
   if (glow > 0.01) {
@@ -439,7 +468,7 @@ export function boosterBase(f: Frame | Pose): Vec3 {
   return [f.x * SCALE, f.y * SCALE + LIFT, (f as Pose).z ?? 0];
 }
 
-export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, t: number, liv: Livery = STD, scale = 1) {
+export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, t: number, liv: Livery = STD, scale = 1, flame = true) {
   const O = boosterBase(pose);
   const ax: Vec3 = [Math.sin(pose.lean), Math.cos(pose.lean), 0];
   const side: Vec3 = [Math.cos(pose.lean), -Math.sin(pose.lean), 0];
@@ -556,13 +585,21 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
   legsFront.forEach((d) => d());
 
   // 불꽃
-  if (pose.on && pose.th > 0) drawFlame(ctx, v, at, ax, pose, t, scale);
+  if (flame && pose.on && pose.th > 0) drawFlame(ctx, v, at, ax, pose, t, scale);
 }
 
 function mix(a: string, b: string, k: number) {
   const A = parseInt(a.slice(1), 16), B = parseInt(b.slice(1), 16);
   const m = (s: number) => Math.round(((A >> s) & 255) * (1 - k) + ((B >> s) & 255) * k);
   return '#' + ((m(16) << 16) | (m(8) << 8) | m(0)).toString(16).padStart(6, '0');
+}
+
+/** 불꽃만 — 사진 판 위에서는 기체를 색 보정한 뒤 불꽃을 따로 얹는다(불꽃까지 어두워지지 않게) */
+export function drawFlameOnly(ctx: CanvasRenderingContext2D, v: View, pose: Pose, t: number, scale = 1) {
+  if (!pose.on || pose.th <= 0) return;
+  const O = boosterBase(pose);
+  const ax: Vec3 = [Math.sin(pose.lean), Math.cos(pose.lean), 0];
+  drawFlame(ctx, v, (u) => add(O, mul(ax, u * scale)), ax, pose, t, scale);
 }
 
 function drawFlame(ctx: CanvasRenderingContext2D, v: View, at: (u: number) => Vec3, ax: Vec3, pose: Pose, t: number, scale: number) {
@@ -638,8 +675,8 @@ export function burst(list: Puff[], t: number, x: number, n: number, seed: numbe
   for (let i = 0; i < n; i++) list.push({ ts: t, x: x * SCALE, y: 0.005, kind: 2, seed: seed * 13 + i, pow: 1 });
 }
 
-export function drawPuffs(ctx: CanvasRenderingContext2D, v: View, list: Puff[], t: number, place: Place) {
-  const dust = place === 'desk' ? [120, 100, 84] : place === 'bench' ? [150, 130, 120] : [175, 180, 186];
+export function drawPuffs(ctx: CanvasRenderingContext2D, v: View, list: Puff[], t: number, place: Place, dustRGB?: number[], smokeRGB?: number[]) {
+  const dust = dustRGB ?? (place === 'desk' ? [120, 100, 84] : place === 'bench' ? [150, 130, 120] : [175, 180, 186]);
   const items: { z: number; fn: () => void }[] = [];
   for (const p of list) {
     const age = t - p.ts;
@@ -676,7 +713,7 @@ export function drawPuffs(ctx: CanvasRenderingContext2D, v: View, list: Puff[], 
     const fade = Math.sin(Math.PI * Math.min(1, age / life)) * (p.kind === 2 ? 0.26 : 0.15);
     const q = v.p([x, y, z]);
     const rr = size * q.s;
-    const col = p.kind === 1 ? [210, 205, 200] : dust;
+    const col = p.kind === 1 ? (smokeRGB ?? [210, 205, 200]) : dust;
     items.push({
       z: q.z,
       fn: () => {
@@ -694,12 +731,185 @@ export function drawPuffs(ctx: CanvasRenderingContext2D, v: View, list: Puff[], 
 }
 
 /** 장면 하나를 그린다 — 배경 · 패드 · 그림자 · 입자 · 기체 */
+/* ─── 사진 판 — 폰 카메라가 보는 실제 장소 ─── */
+export type Plate = {
+  img: HTMLImageElement | null; // 아직 안 받았으면 null → 그림 배경으로
+  iw: number;
+  ih: number;
+  px: number; // 패드 중심이 맺히는 자리(사진 비율 0…1)
+  py: number;
+  el: number; // 카메라 → 패드 내려다보는 각(rad)
+  dist: number; // 카메라 → 패드 거리(m)
+  fovY: number; // 사진 세로 화각(rad)
+  yaw?: number;
+  tint: [number, number, number, number]; // 합성한 물건에 덮는 장소 빛(r, g, b, 세기)
+  dust: number[];
+  smoke: number[];
+  glow: [number, number, number]; // 엔진 빛이 바닥을 비추는 색
+};
+
+export type PlateCam = { zoom: number; look: number; anchorY?: number }; // look 0…1 = 위로 올려다보는 정도
+
+/** 사진을 화면에 덮어 그릴 자리와 그에 맞는 카메라 */
+export function placePlate(v: View, cw: number, ch: number, pl: Plate, pc: PlateCam) {
+  const s0 = Math.max(cw / pl.iw, ch / pl.ih) * pc.zoom;
+  const W = pl.iw * s0, H = pl.ih * s0;
+  const ax = cw / 2, ay = ch * (pc.anchorY ?? 0.66);
+  let ox = ax - pl.px * W, oy = ay - pl.py * H;
+  ox = Math.min(0, Math.max(cw - W, ox));
+  oy = Math.min(0, Math.max(ch - H, oy));
+  // 올려다보기: 사진 위쪽 남는 만큼 아래로 민다(폰을 드는 것)
+  oy = oy + (0 - oy) * Math.min(1, Math.max(0, pc.look));
+  const F = H / 2 / Math.tan(pl.fovY / 2);
+  v.setPlate(cw, ch, pl.el, pl.dist, F, ox + pl.px * W, oy + pl.py * H, pl.yaw ?? 0);
+  return { ox, oy, W, H };
+}
+
+let layer: HTMLCanvasElement | null = null;
+let grain: HTMLCanvasElement | null = null;
+function getLayer(w: number, h: number) {
+  if (!layer) layer = document.createElement('canvas');
+  if (layer.width !== w || layer.height !== h) {
+    layer.width = w;
+    layer.height = h;
+  }
+  return layer;
+}
+function getGrain() {
+  if (grain) return grain;
+  grain = document.createElement('canvas');
+  grain.width = grain.height = 256;
+  const g = grain.getContext('2d')!;
+  const d = g.createImageData(256, 256);
+  for (let i = 0; i < d.data.length; i += 4) {
+    const n = 128 + (Math.random() - 0.5) * 90;
+    d.data[i] = d.data[i + 1] = d.data[i + 2] = n;
+    d.data[i + 3] = 255;
+  }
+  g.putImageData(d, 0, 0);
+  return grain;
+}
+
+/** 사진 위에 AR 로 합성 — 사진 · 바닥 빛 · (패드 · 그림자 · 기체 → 장소 빛으로 색 보정) · 불꽃 · 연기 · 그레인 · 비네트 */
+function drawOnPlate(
+  ctx: CanvasRenderingContext2D,
+  v: View,
+  pl: Plate,
+  rect: { ox: number; oy: number; W: number; H: number },
+  o: { pose: Pose; t: number; clock: number; puffs: Puff[]; hint?: number | null; hintNow?: boolean; liv?: Livery; ringR?: number; parked?: number | null; padAlpha?: number },
+) {
+  const { width: cw, height: ch } = ctx.canvas;
+  ctx.drawImage(pl.img!, rect.ox, rect.oy, rect.W, rect.H);
+  const hAbove = o.pose.y * SCALE;
+  const glow = o.pose.on ? o.pose.th * clamp(1 - hAbove / 0.5) : 0;
+  // 엔진 빛이 실제 바닥을 비춘다(사진 위에 더하기)
+  if (glow > 0.01) {
+    const c = v.p([o.pose.x * SCALE, 0, o.pose.z ?? 0]);
+    const rr = 0.26 * c.s;
+    const g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, rr);
+    const [r, gg, b] = pl.glow;
+    g.addColorStop(0, `rgba(${r},${gg},${b},${0.55 * glow})`);
+    g.addColorStop(0.35, `rgba(${r},${gg},${b},${0.2 * glow})`);
+    g.addColorStop(1, `rgba(${r},${gg},${b},0)`);
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.ellipse(c.x, c.y, rr, rr * clamp(Math.sin(v.cam.el) + 0.1, 0.2, 1), 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+  // 합성할 물건은 따로 그려 장소 빛을 입힌다
+  const L = getLayer(cw, ch);
+  const lc = L.getContext('2d')!;
+  lc.clearRect(0, 0, cw, ch);
+  // 패드가 바닥에 닿는 접지 그림자
+  const c0 = v.p([0, 0, 0]);
+  const pr = PAD_R * 1.18 * c0.s, k = clamp(Math.sin(v.cam.el), 0.12, 1);
+  const sg = lc.createRadialGradient(c0.x, c0.y + pr * k * 0.12, pr * 0.6, c0.x, c0.y + pr * k * 0.12, pr * 1.15);
+  sg.addColorStop(0, 'rgba(0,0,0,.55)');
+  sg.addColorStop(1, 'rgba(0,0,0,0)');
+  lc.save();
+  lc.translate(c0.x, c0.y);
+  lc.scale(1, k);
+  lc.translate(-c0.x, -c0.y);
+  lc.fillStyle = sg;
+  lc.beginPath();
+  lc.arc(c0.x, c0.y + pr * 0.12, pr * 1.15, 0, Math.PI * 2);
+  lc.fill();
+  lc.restore();
+  lc.globalAlpha = o.padAlpha ?? 1;
+  drawPad(lc, v, glow * 0.6, o.hint ?? null, !!o.hintNow, o.ringR);
+  lc.globalAlpha = 1;
+  drawShadow(lc, v, o.pose.x * SCALE, hAbove, o.pose.z ?? 0);
+  if (o.parked != null) drawBooster(lc, v, { x: o.parked, y: 0, lean: 0, legs: 1, th: 0, on: false, soot: 0.4 }, o.clock, { hull: '#d8d4cc', accent: '#9aa0a6' });
+  drawBooster(lc, v, o.pose, o.clock, o.liv, 1, false);
+  // 장소 빛 — 물건만(source-atop)
+  const [tr, tg, tb, ta] = pl.tint;
+  lc.globalCompositeOperation = 'source-atop';
+  lc.fillStyle = `rgba(${tr},${tg},${tb},${ta})`;
+  lc.fillRect(0, 0, cw, ch);
+  // 엔진 빛이 동체 아래를 비춘다
+  if (glow > 0.01) {
+    const n = v.p([o.pose.x * SCALE, hAbove + 0.02, o.pose.z ?? 0]);
+    const gg = lc.createRadialGradient(n.x, n.y, 0, n.x, n.y, 0.12 * n.s);
+    gg.addColorStop(0, `rgba(255,170,80,${0.5 * glow})`);
+    gg.addColorStop(1, 'rgba(255,170,80,0)');
+    lc.globalCompositeOperation = 'source-atop';
+    lc.fillStyle = gg;
+    lc.fillRect(0, 0, cw, ch);
+  }
+  lc.globalCompositeOperation = 'source-over';
+  ctx.drawImage(L, 0, 0);
+  drawFlameOnly(ctx, v, o.pose, o.clock);
+  ctx.save();
+  ctx.globalAlpha = 0.6; // 사진 위에서는 연기 · 먼지를 옅게 — 진하면 장면 전체가 뿌옇게 덮인다
+  drawPuffs(ctx, v, o.puffs, o.t, 'desk', pl.dust, pl.smoke);
+  ctx.restore();
+  // 폰 카메라 느낌 — 그레인 · 비네트
+  ctx.save();
+  ctx.globalAlpha = 0.045;
+  ctx.globalCompositeOperation = 'overlay';
+  const pat = ctx.createPattern(getGrain(), 'repeat');
+  if (pat) {
+    const gx = Math.floor(Math.random() * 256), gy = Math.floor(Math.random() * 256);
+    ctx.translate(-gx, -gy);
+    ctx.fillStyle = pat;
+    ctx.fillRect(gx, gy, cw, ch);
+  }
+  ctx.restore();
+  const vg = ctx.createRadialGradient(cw / 2, ch / 2, Math.min(cw, ch) * 0.35, cw / 2, ch / 2, Math.hypot(cw, ch) * 0.62);
+  vg.addColorStop(0, 'rgba(0,0,0,0)');
+  vg.addColorStop(1, 'rgba(0,0,0,.42)');
+  ctx.fillStyle = vg;
+  ctx.fillRect(0, 0, cw, ch);
+}
+
 export function drawFrame(
   ctx: CanvasRenderingContext2D,
   v: View,
-  o: { place: Place; pose: Pose; t: number; clock?: number; puffs: Puff[]; hint?: number | null; hintNow?: boolean; liv?: Livery; ringR?: number; parked?: number | null },
+  o: {
+    place: Place;
+    pose: Pose;
+    t: number;
+    clock?: number;
+    puffs: Puff[];
+    hint?: number | null;
+    hintNow?: boolean;
+    liv?: Livery;
+    ringR?: number;
+    parked?: number | null;
+    plate?: Plate | null;
+    plateCam?: PlateCam;
+    padAlpha?: number;
+  },
 ) {
   const clock = o.clock ?? o.t;
+  if (o.plate?.img) {
+    const rect = placePlate(v, ctx.canvas.width, ctx.canvas.height, o.plate, o.plateCam ?? { zoom: 1, look: 0 });
+    drawOnPlate(ctx, v, o.plate, rect, { ...o, clock });
+    return;
+  }
   drawPlace(ctx, v, o.place, clock);
   const hAbove = o.pose.y * SCALE;
   const glow = o.pose.on ? o.pose.th * clamp(1 - hAbove / 0.45) : 0;

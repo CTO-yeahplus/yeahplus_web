@@ -5,7 +5,8 @@
    구간: 착륙장 놓기 → 낙하 → 점화 창 → 점화 → 접지 → 정적 · 도장 → 다시 착륙(0.25×, 카메라가 돈다). */
 import { useEffect, useRef, useState } from 'react';
 import { frameAt, needAt, record, SCALE, type Frame } from './sim';
-import { burst, clamp, drawFrame, emit, RING_R, View, type Place, type Puff } from './render';
+import { burst, clamp, drawFrame, emit, RING_R, View, type Place, type PlateCam, type Puff } from './render';
+import { PLATES, preload } from './plates';
 import { ease, fit, lerp, progressOf, reduced, seg } from './stage';
 
 const START = { y: 250, vy: -45, x: 6, vx: -0.6, leanDeg: 2 };
@@ -37,6 +38,18 @@ function simTime(p: number): number {
   return T_TD - 3.4 + seg(p, K.settle, 0.985) * 4.2;
 }
 
+/** 사진 판 카메라 — 폰은 제자리. 높이 떠 있을 땐 올려다보고, 접지 뒤 패드로 다가가고, 다시 착륙은 낮춘 판(B)으로 컷 */
+function plateFor(p: number, f: Frame): { which: 'A' | 'B'; pc: PlateCam } {
+  const by = f.y * SCALE;
+  if (p < K.place) return { which: 'A', pc: { zoom: lerp(1.3, 1.16, ease(seg(p, 0, K.place))), look: 0 } };
+  if (p < K.td) return { which: 'A', pc: { zoom: 1.16, look: clamp((by - 0.06) / 0.45) } };
+  if (p < K.settle) {
+    const k = ease(seg(p, K.td, K.settle));
+    return { which: 'A', pc: { zoom: lerp(1.16, 1.42, k), look: 0, anchorY: lerp(0.66, 0.76, k) } };
+  }
+  return { which: 'B', pc: { zoom: lerp(1.0, 1.14, seg(p, K.settle, 1)), look: 0, anchorY: 0.7 } };
+}
+
 function camFor(p: number, f: Frame) {
   const by = f.y * SCALE;
   if (p < K.place) {
@@ -63,7 +76,7 @@ const BEATS: { a: number; b: number; ko: [string, string?]; en: [string, string?
   { a: 0.31, b: 0.4, ko: ['줄어드는 고리가 닿는 순간 — 지금.'], en: ['When the shrinking ring touches — now.'] },
   { a: 0.43, b: 0.52, ko: ['최소 출력에서도 엔진이 무게보다 세다.', '떠 있을 수 없다. 내려앉거나, 다시 올라가거나.'], en: ['Even at minimum, the engine out-pushes its weight.', "It can't hover. It lands, or it climbs."] },
   { a: 0.52, b: 0.6, ko: ['늦으면 부딪히고, 이르면 다시 올라간다.'], en: ['Too late and it hits. Too early and it climbs away.'] },
-  { a: 0.79, b: 0.97, ko: ['세우면, 그 자리에서 다시 착륙한다.', '0.25배속. 폰을 들고 돌면서.'], en: ['Land it, and it lands again right there.', 'Quarter speed. Walk around it with your phone.'] },
+  { a: 0.79, b: 0.97, ko: ['세우면, 그 자리에서 다시 착륙한다.', '0.25배속. 폰을 낮추고 가까이. 돌면서 봐도 된다.'], en: ['Land it, and it lands again right there.', 'Quarter speed. Get the phone down low, or walk around it.'] },
 ];
 
 const PLACES: { id: Place; ko: string; en: string }[] = [
@@ -114,6 +127,9 @@ export default function Descent() {
     const logs = Array.from(H.querySelectorAll<HTMLElement>('[data-log]'));
     const beats = Array.from(H.querySelectorAll<HTMLElement>('[data-beat]'));
     let pS = progressOf(el), raf = 0, alive = true;
+    const getPlate = preload(Object.values(PLATES).flatMap((x) => [x.A, x.B]), () => {});
+    // 맞춤 확인용: ?rpcal=bench-A 면 그 판에 선 기체를 고정해서 보여 준다(사진 바꿀 때 px · py · el · dist 잡는 데)
+    const cal = typeof location !== 'undefined' ? new URLSearchParams(location.search).get('rpcal') : null;
     const still = reduced();
     const t0 = performance.now();
 
@@ -141,15 +157,43 @@ export default function Descent() {
         }
       }
       const visible = p >= K.place * 0.8;
+      const pf = plateFor(p, f);
+      const calP = cal ? (cal.split('-') as [Place, 'A' | 'B']) : null;
+      const spec = calP ? PLATES[calP[0]][calP[1]] : PLATES[placeRef.current][pf.which];
       drawFrame(ctx, v, {
+        plate: getPlate(spec),
+        plateCam: calP ? { zoom: 1, look: 0 } : pf.pc,
         place: placeRef.current,
-        pose: visible ? { x: f.x, y: f.y, lean: f.lean, legs: f.legs, th: f.th, on: f.on } : { x: 0, y: 900, lean: 0, legs: 0, th: 0, on: false },
+        pose: calP ? { x: 0, y: 0, lean: 0, legs: 1, th: 0, on: false } : visible ? { x: f.x, y: f.y, lean: f.lean, legs: f.legs, th: f.th, on: f.on } : { x: 0, y: 900, lean: 0, legs: 0, th: 0, on: false },
         t: ts,
         clock: now,
         puffs: PUFFS,
         hint,
         hintNow,
       });
+      // 화면 밖 — 앱처럼 위쪽 화살표 + 고도(사진 판은 폰이 제자리라 높을 땐 안 보인다)
+      if (visible && p < K.td && !calP) {
+        const nose = v.p([f.x * SCALE, f.y * SCALE + 0.24, 0]);
+        const tail = v.p([f.x * SCALE, f.y * SCALE, 0]);
+        if (tail.y < c.height * 0.02) {
+          const x = Math.min(c.width - 40, Math.max(40, nose.x));
+          const s = c.height / 900;
+          const blink = 0.6 + 0.4 * Math.sin(now * 8);
+          ctx.save();
+          ctx.fillStyle = `rgba(255,179,31,${blink})`;
+          ctx.beginPath();
+          ctx.moveTo(x, c.height * 0.12);
+          ctx.lineTo(x - 16 * s, c.height * 0.12 + 22 * s);
+          ctx.lineTo(x + 16 * s, c.height * 0.12 + 22 * s);
+          ctx.closePath();
+          ctx.fill();
+          ctx.font = `700 ${Math.round(15 * s)}px ui-monospace,Menlo,monospace`;
+          ctx.textAlign = 'center';
+          ctx.fillStyle = '#FFB31F';
+          ctx.fillText(`${Math.max(0, f.y).toFixed(0)} m`, x, c.height * 0.12 + 46 * s);
+          ctx.restore();
+        }
+      }
       // 착륙장 놓기 — 스캔 점과 퍼지는 고리
       if (p < K.place + 0.02) {
         const c0 = v.p([0, 0, 0]);

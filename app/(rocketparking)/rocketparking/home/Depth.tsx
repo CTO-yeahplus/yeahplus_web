@@ -1,14 +1,16 @@
 'use client';
 
 /* 2. 이 앱에서만 되는 몸짓 — 점화 직전 폰을 옆으로 옮겨 깊이를 본다.
-   부스터는 패드에서 7cm 앞(카메라 쪽)에 떠 있다. 정면에서는 패드 위로 겹쳐 보이고, 옆으로 돌면 비껴 있는 게 보인다.
-   휠로 내려가면 카메라가 돌고, 마우스를 올리면 마우스가 카메라다. */
+   부스터는 패드에서 7cm 앞(정면 카메라 쪽)에 떠 있다. 정면 판(deskA)에서는 패드 위로 겹쳐 보이고,
+   휠을 굴리면 폰이 옆으로 옮겨 가(휙 넘기는 전환) 옆 판(deskSide)에서 비껴 있는 게 보인다. 같은 방 · 같은 책상. */
 import { useEffect, useRef } from 'react';
 import { drawFrame, View, type Pose } from './render';
-import { fit, lerp, progressOf, reduced } from './stage';
+import { DESK_SIDE, PLATES, preload } from './plates';
+import { ease, fit, progressOf, reduced, seg } from './stage';
 
 const OFF = 0.07; // 패드 중심에서 앞으로 7cm
-const POSE: Pose = { x: 0, z: OFF, y: 0.3 * 250, lean: 0.03, legs: 0, th: 0, on: false };
+const HOVER = 0.16; // 패드 위 16cm 에 떠 있다
+const POSE: Pose = { x: 0, z: OFF, y: HOVER * 250, lean: 0.03, legs: 0, th: 0, on: false };
 
 export default function Depth() {
   const sec = useRef<HTMLElement | null>(null);
@@ -21,32 +23,40 @@ export default function Depth() {
     const ctx = c.getContext('2d');
     if (!ctx) return;
     const v = new View();
-    let raf = 0, alive = true, yaw = 0, mouse: number | null = null, lastMove = 0;
+    const getPlate = preload([PLATES.desk.A, DESK_SIDE], () => {});
+    let raf = 0, alive = true, pS = 0;
     const still = reduced();
-    const move = (e: PointerEvent) => {
-      if (e.pointerType !== 'mouse') return;
-      const r = c.getBoundingClientRect();
-      mouse = lerp(-1.35, 1.35, Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)));
-      lastMove = performance.now();
-    };
-    c.addEventListener('pointermove', move);
     const loop = () => {
       if (!alive) return;
       raf = requestAnimationFrame(loop);
       const r = el.getBoundingClientRect();
       if (r.bottom < 0 || r.top > window.innerHeight) return;
       fit(c);
-      const p = progressOf(el);
-      const target = mouse != null && performance.now() - lastMove < 2500 ? mouse : lerp(0, 1.35, Math.min(1, p * 1.25));
-      yaw = still ? target : yaw + (target - yaw) * 0.1;
+      const pT = progressOf(el);
+      pS = still ? pT : pS + (pT - pS) * 0.12;
+      const p = pS;
       const now = performance.now() / 1000;
-      v.set(c.width, c.height, { yaw, el: 0.16, dist: 0.8, ty: 0.2, fov: 0.85 });
-      drawFrame(ctx, v, { place: 'desk', pose: { ...POSE, y: POSE.y + Math.sin(now * 1.3) * 0.6 }, t: 0, clock: now, puffs: [] });
-      // 다림줄 — 부스터 바로 아래 바닥 점
-      const top = v.p([0, 0.3 + 0.012, OFF]), foot = v.p([0, 0.001, OFF]), pad = v.p([0, 0.001, 0]);
+      const k = ease(seg(p, 0.38, 0.62)); // 0 = 정면, 1 = 옆
+      const side = k > 0.5;
+      const pose = { ...POSE, y: POSE.y + Math.sin(now * 1.3) * 0.6 };
+      // 옮기는 동안 화면이 옆으로 흐른다 — 앞 판은 왼쪽으로 밀려 나가고, 옆 판이 오른쪽에서 들어온다
+      const whip = Math.sin(k * Math.PI); // 가운데에서 가장 세다
+      const shift = (side ? 1 - k : -k) * c.width * 0.35;
       ctx.save();
+      ctx.translate(shift, 0);
+      drawFrame(ctx, v, {
+        plate: getPlate(side ? DESK_SIDE : PLATES.desk.A),
+        plateCam: { zoom: 1.04, look: 0.5, anchorY: 0.72 },
+        place: 'desk',
+        pose,
+        t: 0,
+        clock: now,
+        puffs: [],
+      });
+      // 다림줄 — 부스터 바로 아래 바닥 점과 패드 중심까지
+      const top = v.p([0, HOVER + 0.012, OFF]), foot = v.p([0, 0.001, OFF]), pad = v.p([0, 0.001, 0]);
       ctx.setLineDash([5, 6]);
-      ctx.strokeStyle = 'rgba(255,179,31,.85)';
+      ctx.strokeStyle = 'rgba(255,179,31,.9)';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(top.x, top.y);
@@ -57,30 +67,36 @@ export default function Depth() {
       ctx.beginPath();
       ctx.arc(foot.x, foot.y, 5, 0, Math.PI * 2);
       ctx.fill();
-      // 패드 중심에서 떨어진 거리 — 옆에서 볼수록 길어 보인다
-      const side = Math.abs(Math.sin(yaw));
-      if (side > 0.25) {
-        ctx.strokeStyle = 'rgba(244,246,248,.8)';
-        ctx.lineWidth = 1.5;
+      if (side) {
+        ctx.strokeStyle = 'rgba(244,246,248,.9)';
+        ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(pad.x, pad.y);
         ctx.lineTo(foot.x, foot.y);
         ctx.stroke();
-        ctx.font = `700 ${Math.round(c.height * 0.028)}px ui-monospace,Menlo,monospace`;
+        ctx.font = `700 ${Math.round(c.height * 0.03)}px ui-monospace,Menlo,monospace`;
         ctx.fillStyle = '#F4F6F8';
         ctx.textAlign = 'center';
-        ctx.globalAlpha = Math.min(1, (side - 0.25) * 3);
-        ctx.fillText('7 cm', (pad.x + foot.x) / 2, Math.min(pad.y, foot.y) - c.height * 0.035);
+        ctx.shadowColor = 'rgba(0,0,0,.7)';
+        ctx.shadowBlur = 8;
+        ctx.fillText('7 cm', (pad.x + foot.x) / 2, Math.max(pad.y, foot.y) + c.height * 0.055);
       }
       ctx.restore();
-      C.dataset.view = side < 0.3 ? 'front' : 'side';
-      C.style.setProperty('--yaw', String(yaw));
+      // 휙 — 옮기는 순간의 흐림(가로 줄무늬 잔상)
+      if (whip > 0.05) {
+        ctx.save();
+        ctx.globalAlpha = whip * 0.55;
+        for (let i = 1; i <= 4; i++) ctx.drawImage(c, (side ? 1 : -1) * i * 18 * whip, 0);
+        ctx.restore();
+        ctx.fillStyle = `rgba(0,0,0,${whip * 0.25})`;
+        ctx.fillRect(0, 0, c.width, c.height);
+      }
+      C.dataset.view = side ? 'side' : 'front';
     };
     raf = requestAnimationFrame(loop);
     return () => {
       alive = false;
       cancelAnimationFrame(raf);
-      c.removeEventListener('pointermove', move);
     };
   }, []);
 
@@ -103,8 +119,8 @@ export default function Depth() {
             <span data-l="en">One step to the side: it&rsquo;s 7 cm in front. Now you know which way to steer.</span>
           </p>
           <p className="rp-depth-hint rp-mono">
-            <span data-l="ko">휠을 굴리거나, 마우스를 좌우로</span>
-            <span data-l="en">Scroll, or move the mouse sideways</span>
+            <span data-l="ko">휠을 굴리면 폰이 옆으로 옮겨 간다</span>
+            <span data-l="en">Scroll to move the phone sideways</span>
           </p>
         </div>
       </div>
