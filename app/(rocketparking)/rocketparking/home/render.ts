@@ -366,6 +366,14 @@ function mug(ctx: CanvasRenderingContext2D, v: View, o: Vec3, t: number) {
 }
 
 /* ─── 패드 ─── */
+/** 주식회사 예아플러스 로고 — 1080 격자 좌표(앱 Theme.swift logoBars 와 같다) */
+const LOGO_BARS: [number, number][][] = [
+  [[310, 293], [411, 293], [411, 600], [310, 499]],
+  [[430, 293], [530, 293], [530, 819], [430, 719]],
+  [[550, 293], [650, 293], [650, 719], [550, 819]],
+  [[669, 293], [770, 293], [770, 499], [669, 600]],
+];
+
 export function drawPad(ctx: CanvasRenderingContext2D, v: View, glow = 0, ringHint: number | null = null, hintNow = false, ringR = RING_R) {
   const N = 64;
   const circ = (r: number, y = 0.0005): Vec3[] => Array.from({ length: N }, (_, i) => [Math.cos((i / N) * Math.PI * 2) * r, y, Math.sin((i / N) * Math.PI * 2) * r]);
@@ -389,11 +397,12 @@ export function drawPad(ctx: CanvasRenderingContext2D, v: View, glow = 0, ringHi
   ctx.fillStyle = LOOK.lime;
   ctx.fill('evenodd');
   ctx.restore();
-  // 가운데 셰브런(예아플러스 방패 줄 셋)
-  ctx.fillStyle = 'rgba(244,246,248,.92)';
-  for (let i = 0; i < 3; i++) {
-    const z0 = -0.024 + i * 0.017;
-    poly(ctx, v, [[-0.03, 0.0018, z0 + 0.012], [0.0, 0.0018, z0 - 0.004], [0.034, 0.0018, z0 + 0.008], [0.034, 0.0018, z0 + 0.016], [0.0, 0.0018, z0 + 0.004], [-0.03, 0.0018, z0 + 0.02]]);
+  // 가운데 주식회사 예아플러스 로고 — 막대 4개 방패(앱 Theme.swift drawLogo · drift/docs/brand/yeahplus_mark.svg 격자 그대로).
+  // 앱과 같은 크기: 패드 면 1024px 중 400px = 8.2cm. 로고 위쪽이 카메라 반대편이라 정면에서 바로 읽힌다
+  const LK = (PAD_R * 2 * (400 / 1024)) / 526;
+  ctx.fillStyle = 'rgba(237,237,237,.95)';
+  for (const bar of LOGO_BARS) {
+    poly(ctx, v, bar.map(([x, y]) => [(x - 540) * LK, 0.0018, (y - 556) * LK] as Vec3));
     ctx.fill();
   }
   // 가장자리 글자
@@ -570,7 +579,7 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
   }
   // 세로 글자
   const mid = v.p(at(0.11));
-  const fs = BR * scale * mid.s * 0.55;
+  const fs = BR * scale * mid.s * 0.75; // YEAHPLUS 는 짧아서 글자를 키운다
   if (fs > 4.5) {
     ctx.save();
     ctx.translate(mid.x, mid.y);
@@ -579,7 +588,7 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
     ctx.font = `800 ${fs}px ui-monospace,Menlo,monospace`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('ROCKET PARKING', 0, 0);
+    ctx.fillText('YEAHPLUS', 0, 0);
     ctx.restore();
   }
   legsFront.forEach((d) => d());
