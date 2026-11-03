@@ -20,14 +20,23 @@ export const LOOK = {
 
 /* ─── 기체 치수(실제 m) ─── */
 const BR = 0.0112; // 동체 반지름
-const BL = 0.24; // 길이
 const LIFT = 0.012; // 서 있을 때 노즐이 바닥에서 뜬 높이
 const HINGE = 0.045; // 다리 경첩
 export const PAD_R = 0.105; // 앞마당 반지름
 export const RING_R = 0.08; // 판정 고리(패드 반지름 20m × 1/250)
 
-export type Livery = { hull: string; accent: string; bands?: [number, number, string][]; stripes?: string };
+/** 도색 — 앱 Collection.swift Paint 와 같은 값. pattern 은 동체를 감싸는 무늬(앱 BrandArt.drawPattern 과 같은 배치) */
+export type HullPattern = 'plain' | 'checker' | 'hazard' | 'crosswalk' | 'petals' | 'pinstripe' | 'stencil';
+export type Livery = { hull: string; accent: string; ink?: string; pattern?: HullPattern; bands?: [number, number, string][] };
 export const STD: Livery = { hull: '#F1F2F0', accent: LOOK.lime };
+/** 기체 종류 — 앱 RocketVisual.proportions 와 같은 비율(r 굵기 · h 몸통 길이 · nose 머리) */
+export type VCls = 'standard' | 'heavy' | 'sprint' | 'twin';
+export const CLASS_SHAPE: Record<VCls, { r: number; h: number; nose: number }> = {
+  standard: { r: 1, h: 1, nose: 1 },
+  heavy: { r: 1.34, h: 0.94, nose: 0.9 },
+  sprint: { r: 0.92, h: 0.68, nose: 0.72 },
+  twin: { r: 1.16, h: 0.96, nose: 0.8 },
+};
 
 export class View {
   w = 1;
@@ -365,6 +374,165 @@ function mug(ctx: CanvasRenderingContext2D, v: View, o: Vec3, t: number) {
   }
 }
 
+/* ─── 소장품 — 패드 스킨 · 모양 · 발사대(앱 Collection.swift 와 같은 값) ─── */
+export type PadPattern = 'plain' | 'asphalt' | 'grass' | 'neon' | 'finish' | 'harbor';
+export type PadSkin = { id: string; base: string; ink: string; pattern: PadPattern; logo?: string };
+export type PadShape = 'round' | 'lot' | 'barge' | 'roof';
+export type Mount = { kind: 'tower' | 'gantry'; color: string };
+export const HOUSE_SKIN: PadSkin = { id: 'house', base: '#292929', ink: '#d1d1d1', pattern: 'plain' };
+
+type Box = { c: Vec3; s: Vec3; col: string; lit?: boolean; yaw?: number; pivot?: Vec3 };
+const LIGHT = norm([-0.45, 1, 0.55]);
+function boxDepth(v: View, b: Box) {
+  return dot(sub(boxCenter(b), v.E), v.f);
+}
+function boxCenter(b: Box): Vec3 {
+  if (!b.yaw || !b.pivot) return b.c;
+  const c = Math.cos(b.yaw), sn = Math.sin(b.yaw);
+  const dx = b.c[0] - b.pivot[0], dz = b.c[2] - b.pivot[2];
+  return [b.pivot[0] + dx * c - dz * sn, b.c[1], b.pivot[2] + dx * sn + dz * c];
+}
+/** 상자 여럿 — 먼 것부터, 카메라 쪽 면만, 빛 방향에 따라 밝기 */
+function drawBoxes(ctx: CanvasRenderingContext2D, v: View, list: Box[]) {
+  const faces: { d: number; pts: Vec3[]; col: string }[] = [];
+  for (const b of list) {
+    const [hx, hy, hz] = [b.s[0] / 2, b.s[1] / 2, b.s[2] / 2];
+    const cy = Math.cos(b.yaw ?? 0), sy = Math.sin(b.yaw ?? 0);
+    const P = (x: number, y: number, z: number): Vec3 => {
+      let px = b.c[0] + x, pz = b.c[2] + z;
+      if (b.yaw && b.pivot) {
+        const dx = px - b.pivot[0], dz = pz - b.pivot[2];
+        px = b.pivot[0] + dx * cy - dz * sy;
+        pz = b.pivot[2] + dx * sy + dz * cy;
+      }
+      return [px, b.c[1] + y, pz];
+    };
+    const R = (n: Vec3): Vec3 => (b.yaw ? [n[0] * cy - n[2] * sy, n[1], n[0] * sy + n[2] * cy] : n);
+    const F: [Vec3, Vec3[]][] = [
+      [[0, 1, 0], [P(-hx, hy, -hz), P(hx, hy, -hz), P(hx, hy, hz), P(-hx, hy, hz)]],
+      [[1, 0, 0], [P(hx, -hy, -hz), P(hx, -hy, hz), P(hx, hy, hz), P(hx, hy, -hz)]],
+      [[-1, 0, 0], [P(-hx, -hy, -hz), P(-hx, hy, -hz), P(-hx, hy, hz), P(-hx, -hy, hz)]],
+      [[0, 0, 1], [P(-hx, -hy, hz), P(-hx, hy, hz), P(hx, hy, hz), P(hx, -hy, hz)]],
+      [[0, 0, -1], [P(-hx, -hy, -hz), P(hx, -hy, -hz), P(hx, hy, -hz), P(-hx, hy, -hz)]],
+    ];
+    for (const [n0, pts] of F) {
+      const n = R(n0);
+      const c: Vec3 = mul(pts.reduce((acc, p) => add(acc, p), [0, 0, 0] as Vec3), 0.25);
+      if (dot(n, sub(v.E, c)) <= 0) continue;
+      const lit = b.lit ? 1 : 0.42 + 0.58 * Math.max(0, dot(n, LIGHT));
+      faces.push({ d: dot(sub(c, v.E), v.f), pts, col: b.lit ? b.col : shade(b.col, lit - 1) });
+    }
+  }
+  faces.sort((a, b) => b.d - a.d);
+  for (const f of faces) {
+    poly(ctx, v, f.pts);
+    ctx.fillStyle = f.col;
+    ctx.fill();
+  }
+}
+
+/** 패드 윗면 그림 — 앱 BrandArt.drawPad 와 같은 무늬(512px, 스킨마다 한 번만 만든다) */
+const padTex = new Map<string, HTMLCanvasElement>();
+function padTexture(skin: PadSkin): HTMLCanvasElement | null {
+  if (typeof document === 'undefined') return null;
+  const hit = padTex.get(skin.id);
+  if (hit) return hit;
+  const S = 512, k = S / 1024;
+  const c = document.createElement('canvas');
+  c.width = c.height = S;
+  const g = c.getContext('2d')!;
+  g.fillStyle = skin.base;
+  g.fillRect(0, 0, S, S);
+  let seed = 23;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  if (skin.pattern === 'asphalt') {
+    for (let i = 0; i < 2600; i++) {
+      g.fillStyle = rnd() > 0.5 ? 'rgba(107,107,107,.35)' : 'rgba(26,26,26,.35)';
+      g.fillRect(rnd() * S, rnd() * S, 2, 2);
+    }
+    g.fillStyle = skin.ink;
+    g.globalAlpha = 0.8;
+    for (const x of [S * 0.14, S * 0.86]) g.fillRect(x - 7 * k, S * 0.2, 14 * k, S * 0.6);
+    g.globalAlpha = 1;
+  } else if (skin.pattern === 'grass') {
+    for (let i = 0; i < 2200; i++) {
+      g.fillStyle = `rgba(${(51 + rnd() * 51) | 0},${(107 + rnd() * 77) | 0},46,.5)`;
+      g.fillRect(rnd() * S, rnd() * S, 3 * k, 9 * k);
+    }
+  } else if (skin.pattern === 'neon') {
+    g.lineWidth = 5 * k;
+    [S * 0.47, S * 0.34].forEach((r, i) => {
+      g.strokeStyle = i === 0 ? skin.ink : '#33e6ff';
+      g.shadowColor = g.strokeStyle;
+      g.shadowBlur = 14 * k;
+      g.beginPath();
+      g.arc(S / 2, S / 2, r, 0, Math.PI * 2);
+      g.stroke();
+    });
+    g.shadowBlur = 0;
+  } else if (skin.pattern === 'finish') {
+    const a = S / 14;
+    g.fillStyle = '#1a1a1a';
+    for (let y = 0; y < 14; y++) for (let x = 0; x < 14; x++) if ((x + y) % 2 === 0 && (x < 2 || x > 11)) g.fillRect(x * a, y * a, a, a);
+  } else if (skin.pattern === 'harbor') {
+    g.strokeStyle = 'rgba(0,0,0,.28)';
+    g.lineWidth = 5 * k;
+    for (let p = S / 6; p < S; p += S / 6) {
+      g.beginPath();
+      g.moveTo(p, 0);
+      g.lineTo(p, S);
+      g.moveTo(0, p);
+      g.lineTo(S, p);
+      g.stroke();
+    }
+    g.fillStyle = 'rgba(128,71,31,.2)';
+    for (let i = 0; i < 120; i++) {
+      const r = (6 + rnd() * 30) * k;
+      g.beginPath();
+      g.ellipse(rnd() * S, rnd() * S, r / 2, r * 0.35, 0, 0, Math.PI * 2);
+      g.fill();
+    }
+  }
+  padTex.set(skin.id, c);
+  return c;
+}
+
+/** 발사대 상자 — 앱 MountRig 와 같은 치수. clear = 그려진 기체의 가장 바깥(헤비는 옆 탱크까지), k 0 = 감싼 자리 … 1 = 물러난 자리 */
+const MOUNT_CLEAR: Record<VCls, number> = { standard: 3.2, heavy: 7.4, sprint: 3.0, twin: 3.8 };
+export function mountBoxes(m: Mount, cls: VCls, k: number): Box[] {
+  const S = 0.004, H = 62, e = clamp(k) * clamp(k) * (3 - 2 * clamp(k));
+  const clear = MOUNT_CLEAR[cls];
+  const out: Box[] = [];
+  const B = (w: number, h: number, d: number, x: number, y: number, z: number, extra: Partial<Box> = {}) =>
+    out.push({ c: [x * S, y * S, z * S], s: [w * S, h * S, d * S], col: m.color, ...extra });
+  if (m.kind === 'tower') {
+    const x0 = clear + 8;
+    for (const [x, z] of [[x0, -3], [x0 + 6, -3], [x0, 3], [x0 + 6, 3]]) B(0.8, H, 0.8, x, H / 2, z);
+    for (let y = 6; y < H; y += 9) {
+      B(7, 0.6, 0.6, x0 + 3, y, -3);
+      B(7, 0.6, 0.6, x0 + 3, y, 3);
+      B(0.6, 0.6, 7, x0, y, 0);
+      B(0.6, 0.6, 7, x0 + 6, y, 0);
+    }
+    const len = x0 - clear - 0.3;
+    for (const h of [H * 0.45, H * 0.8]) B(len, 0.9, 0.9, x0 - len / 2, h, 0, { yaw: -e * Math.PI * 0.45, pivot: [x0 * S, h * S, 0] });
+  } else {
+    // 웹 무대에서는 카메라 반대쪽(−z)으로 물러난다 — 앞으로 굴러오면 기체를 가린다
+    const half = clear + 12, zb = -40 * e;
+    for (const x of [-half, half]) {
+      for (const z of [-3, 3]) B(1.4, H + 6, 1.4, x, (H + 6) / 2, z + zb);
+      B(1.6, 1.2, 8, x, 0.8, zb);
+      out.push({ c: [x * S, 0.25 * S, -22 * S], s: [1.2 * S, 0.5 * S, 52 * S], col: '#4d4d4d' }); // 레일 — 뒤로 굴러갈 길
+    }
+    B(half * 2 + 2, 2.2, 8, 0, H + 6, zb);
+  }
+  return out;
+}
+/** 발사대를 기체 앞뒤로 나눠 그린다 */
+export function drawMount(ctx: CanvasRenderingContext2D, v: View, boxes: Box[], splitDepth: number, side: 'back' | 'front') {
+  drawBoxes(ctx, v, boxes.filter((b) => (side === 'back' ? boxDepth(v, b) > splitDepth : boxDepth(v, b) <= splitDepth)));
+}
+
 /* ─── 패드 ─── */
 /** 주식회사 예아플러스 로고 — 1080 격자 좌표(앱 Theme.swift logoBars 와 같다) */
 const LOGO_BARS: [number, number][][] = [
@@ -375,15 +543,72 @@ const LOGO_BARS: [number, number][][] = [
 ];
 
 export function drawPad(ctx: CanvasRenderingContext2D, v: View, glow = 0, ringHint: number | null = null, hintNow = false, ringR = RING_R) {
+  drawPadStyled(ctx, v, HOUSE_SKIN, 'round', glow, ringHint, hintNow, ringR);
+}
+
+/** 패드 — 스킨(윗면 무늬 · 글자 색) × 모양(원형 · 주차 칸 · 바지선 · 옥상). 앱 makePad · BrandArt.pad 와 같은 치수(앱 단위 × 0.004 = m).
+    솟은 구조물(차막이 · 뱃전 · 귀퉁이 등) 가운데 기체보다 카메라 쪽 것은 돌려준다 — 기체를 그린 뒤 그려야 가린다 */
+export function drawPadStyled(
+  ctx: CanvasRenderingContext2D,
+  v: View,
+  skin: PadSkin,
+  shape: PadShape,
+  glow = 0,
+  ringHint: number | null = null,
+  hintNow = false,
+  ringR = RING_R,
+  splitDepth = Infinity,
+): (() => void)[] {
+  const S = 0.004;
+  const dark = '#1f2023';
+  const front: (() => void)[] = [];
+  const raised: Box[] = [];
   const N = 64;
   const circ = (r: number, y = 0.0005): Vec3[] => Array.from({ length: N }, (_, i) => [Math.cos((i / N) * Math.PI * 2) * r, y, Math.sin((i / N) * Math.PI * 2) * r]);
-  // 두께
-  poly(ctx, v, circ(PAD_R, -0.003));
-  ctx.fillStyle = '#121316';
-  ctx.fill();
-  poly(ctx, v, circ(PAD_R, 0.001));
-  ctx.fillStyle = '#26282d';
-  ctx.fill();
+  // 받침 — 모양마다
+  if (shape === 'round') {
+    poly(ctx, v, circ(PAD_R, -0.003));
+    ctx.fillStyle = '#121316';
+    ctx.fill();
+    poly(ctx, v, circ(PAD_R, 0.001));
+    ctx.fillStyle = skin.base;
+    ctx.fill();
+  } else {
+    const flat: Box[] = [];
+    if (shape === 'lot') {
+      flat.push({ c: [0, 0.25 * S, 0], s: [56 * S, 0.5 * S, 56 * S], col: skin.base });
+      for (const x of [-27, 27]) flat.push({ c: [x * S, 0.58 * S, 0], s: [1.6 * S, 0.1 * S, 56 * S], col: '#ebebeb' });
+      raised.push({ c: [0, 1.1 * S, 25 * S], s: [26 * S, 1.8 * S, 2.4 * S], col: '#f2bf29' });
+    } else if (shape === 'barge') {
+      flat.push({ c: [0, -0.7 * S, 0], s: [76 * S, 1.6 * S, 54 * S], col: dark });
+      flat.push({ c: [0, 0.25 * S, 0], s: [72 * S, 0.5 * S, 52 * S], col: skin.base });
+      for (const z of [-26.5, 26.5]) raised.push({ c: [0, 1 * S, z * S], s: [74 * S, 1.6 * S, 1.2 * S], col: dark });
+      for (const x of [-33, 33]) raised.push({ c: [x * S, 2.8 * S, 0], s: [6 * S, 5 * S, 14 * S], col: dark });
+    } else if (shape === 'roof') {
+      flat.push({ c: [0, -0.2 * S, 0], s: [62 * S, 1 * S, 62 * S], col: dark });
+      flat.push({ c: [0, 0.25 * S, 0], s: [58 * S, 0.5 * S, 58 * S], col: skin.base });
+      for (const x of [-29, 29]) for (const z of [-29, 29]) raised.push({ c: [x * S, 1.8 * S, z * S], s: [1.8 * S, 3.2 * S, 1.8 * S], col: '#ff4733', lit: true });
+    }
+    drawBoxes(ctx, v, flat);
+    // 카메라에서 먼 구조물은 지금, 가까운 것은 기체 뒤에
+    const back = raised.filter((r) => boxDepth(v, r) > splitDepth);
+    drawBoxes(ctx, v, back);
+    const near = raised.filter((r) => boxDepth(v, r) <= splitDepth);
+    if (near.length) front.push(() => drawBoxes(ctx, v, near));
+  }
+  // 윗면 — 스킨 무늬(앱 패드 그림과 같은 배치)를 원판에 붙인다
+  const tex = padTexture(skin);
+  if (tex) {
+    const FR = 25.8 * S, y = 0.0022;
+    const q0 = v.p([0, y, 0]), qx = v.p([FR, y, 0]), qz = v.p([0, y, FR]);
+    const ax = qx.x - q0.x, ay = qx.y - q0.y, bx = qz.x - q0.x, by = qz.y - q0.y, T = tex.width;
+    ctx.save();
+    poly(ctx, v, circ(FR, y));
+    ctx.clip();
+    ctx.transform((2 * ax) / T, (2 * ay) / T, (2 * bx) / T, (2 * by) / T, q0.x - ax - bx, q0.y - ay - by);
+    ctx.drawImage(tex, 0, 0);
+    ctx.restore();
+  }
   // 판정 고리
   ctx.save();
   poly(ctx, v, circ(ringR + 0.003, 0.0015));
@@ -400,14 +625,15 @@ export function drawPad(ctx: CanvasRenderingContext2D, v: View, glow = 0, ringHi
   // 가운데 주식회사 예아플러스 로고 — 막대 4개 방패(앱 Theme.swift drawLogo · drift/docs/brand/yeahplus_mark.svg 격자 그대로).
   // 앱과 같은 크기: 패드 면 1024px 중 400px = 8.2cm. 로고 위쪽이 카메라 반대편이라 정면에서 바로 읽힌다
   const LK = (PAD_R * 2 * (400 / 1024)) / 526;
-  ctx.fillStyle = 'rgba(237,237,237,.95)';
+  ctx.fillStyle = skin.logo ?? 'rgba(237,237,237,.95)';
   for (const bar of LOGO_BARS) {
     poly(ctx, v, bar.map(([x, y]) => [(x - 540) * LK, 0.0018, (y - 556) * LK] as Vec3));
     ctx.fill();
   }
   // 가장자리 글자
   const txt = 'ROCKET PARKING · YEAHPLUS · ';
-  ctx.fillStyle = 'rgba(244,246,248,.75)';
+  ctx.fillStyle = skin.ink;
+  ctx.globalAlpha *= 0.8;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   // 글자도 바닥에 눕힌다 — 원의 접선 방향으로 돌리고, 내려다보는 각만큼 납작하게
@@ -426,6 +652,7 @@ export function drawPad(ctx: CanvasRenderingContext2D, v: View, glow = 0, ringHi
     ctx.fillText(txt[i], 0, 0);
     ctx.restore();
   }
+  ctx.globalAlpha /= 0.8;
   // 엔진 빛이 패드를 비춘다
   if (glow > 0.01) {
     const c = v.p([0, 0, 0]);
@@ -453,6 +680,7 @@ export function drawPad(ctx: CanvasRenderingContext2D, v: View, glow = 0, ringHi
     ctx.stroke();
     ctx.restore();
   }
+  return front;
 }
 
 /* ─── 그림자 ─── */
@@ -478,12 +706,18 @@ export function boosterBase(f: Frame | Pose): Vec3 {
   return [f.x * SCALE, f.y * SCALE + LIFT, (f as Pose).z ?? 0];
 }
 
-export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, t: number, liv: Livery = STD, scale = 1, flame = true) {
+export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, t: number, liv: Livery = STD, scale = 1, flame = true, cls: VCls = 'standard') {
+  const shp = CLASS_SHAPE[cls];
+  const R = BR * shp.r; // 동체 반지름
+  const hEnd = 0.062 + 0.143 * shp.h; // 몸통 끝(머리 시작)
+  const top = hEnd + 0.035 * shp.nose; // 머리 끝
+  const U = (u: number) => 0.062 + (u - 0.062) * shp.h; // 표준 기체의 몸통 자리 → 이 기체 자리
   const O = boosterBase(pose);
   const ax: Vec3 = [Math.sin(pose.lean), Math.cos(pose.lean), 0];
   const side: Vec3 = [Math.cos(pose.lean), -Math.sin(pose.lean), 0];
-  const at = (u: number): Vec3 => add(O, mul(ax, u * scale));
-  const P0 = v.p(at(0)), P1 = v.p(at(BL));
+  const zed: Vec3 = [0, 0, 1];
+  const at = (u: number, off: Vec3 = [0, 0, 0]): Vec3 => add(add(O, off), mul(ax, u * scale));
+  const P0 = v.p(at(0)), P1 = v.p(at(top));
   let dx = P1.x - P0.x, dy = P1.y - P0.y;
   const dl = Math.hypot(dx, dy) || 1;
   dx /= dl;
@@ -491,22 +725,22 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
   const nx = -dy, ny = dx; // 옆
   const k = clamp(Math.abs(dot(ax, v.f)), 0.04, 1);
   const rot = Math.atan2(ny, nx);
-  // 원통 앞면이 보이는 쪽: 축 반대(화면 아래)
-  const mx = -ny, my = nx; // n 을 +90° 돌린 것
+  const mx = -ny, my = nx;
   const frontPos = mx * dx + my * dy < 0;
+  const toCam = norm(sub(v.E, O));
+  const depthOf = (p: Vec3) => dot(sub(p, v.E), v.f);
+  const dO = depthOf(O);
 
   const legsBehind: (() => void)[] = [], legsFront: (() => void)[] = [];
   const legCol = '#1d1f23';
   for (let i = 0; i < 4; i++) {
     const a = Math.PI / 4 + (i * Math.PI) / 2;
-    const dir: Vec3 = add(mul(side, Math.cos(a)), [0, 0, Math.sin(a)]);
-    const hinge = add(at(HINGE), mul(dir, BR * scale));
+    const dir: Vec3 = add(mul(side, Math.cos(a)), mul(zed, Math.sin(a)));
+    const hinge = add(at(HINGE), mul(dir, R * scale));
     const dep = clamp(pose.legs);
-    // 접힘: 동체를 따라 위로 / 펼침: 바깥 · 아래로 125°
-    const ang = (1 - dep) * 0 + dep * ((125 * Math.PI) / 180);
+    const ang = dep * ((125 * Math.PI) / 180); // 접힘: 동체를 따라 위로 / 펼침: 바깥 · 아래로 125°
     const len = 0.072 * scale;
     const foot = add(hinge, add(mul(ax, Math.cos(ang) * len), mul(dir, Math.sin(ang) * len)));
-    const depth = dot(sub(hinge, v.E), v.f) - dot(sub(O, v.E), v.f);
     const draw = () => {
       const a2 = v.p(hinge), b2 = v.p(foot);
       ctx.strokeStyle = legCol;
@@ -516,9 +750,8 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
       ctx.moveTo(a2.x, a2.y);
       ctx.lineTo(b2.x, b2.y);
       ctx.stroke();
-      // 버팀대
       const mid = add(hinge, mul(sub(foot, hinge), 0.55));
-      const strut = add(at(HINGE + 0.03), mul(dir, BR * scale));
+      const strut = add(at(HINGE + 0.03), mul(dir, R * scale));
       const m2 = v.p(mid), s2 = v.p(strut);
       ctx.lineWidth = Math.max(0.8, 0.0022 * scale * a2.s);
       ctx.beginPath();
@@ -532,12 +765,12 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
         ctx.fill();
       }
     };
-    (depth > 0 ? legsBehind : legsFront).push(draw);
+    (depthOf(hinge) > dO ? legsBehind : legsFront).push(draw);
   }
-  legsBehind.forEach((d) => d());
 
-  const sec = (u0: number, u1: number, r0: number, r1: number, col: string, hi = 0.35) => {
-    const a = v.p(at(u0)), b = v.p(at(u1));
+  /** 원통 한 토막 — off 만큼 비켜 선 축(헤비의 옆 탱크 · 쌍발 노즐)도 같은 방법으로 */
+  const sec = (u0: number, u1: number, r0: number, r1: number, col: string, hi = 0.35, off: Vec3 = [0, 0, 0]) => {
+    const a = v.p(at(u0, off)), b = v.p(at(u1, off));
     const w0 = r0 * scale * a.s, w1 = r1 * scale * b.s;
     ctx.beginPath();
     ctx.moveTo(a.x + nx * w0, a.y + ny * w0);
@@ -556,21 +789,43 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
     ctx.fill();
   };
   const soot = clamp(pose.soot ?? 0);
-  sec(0, 0.018, 0.0095, 0.0068, '#2c2e33', 0.2);
-  sec(0.018, 0.04, BR, BR, '#3b3d42', 0.2);
-  sec(0.04, 0.062, BR, BR, '#5a5048', 0.2);
-  sec(0.062, 0.205, BR, BR, soot > 0 ? mix(liv.hull, '#4a4038', soot * 0.6) : liv.hull);
+  const hullCol = soot > 0 ? mix(liv.hull, '#4a4038', soot * 0.6) : liv.hull;
+
+  // 헤비의 옆 탱크 둘 — 동체 옆 1.3R, 몸통 길이의 62%. 동체보다 먼 쪽은 먼저, 가까운 쪽은 나중에
+  const tanks: { off: Vec3; d: number }[] = [];
+  if (cls === 'heavy')
+    for (const sgn of [-1, 1]) {
+      const off = mul(side, sgn * R * 1.3 * scale);
+      tanks.push({ off, d: depthOf(add(O, off)) });
+    }
+  const tank = (off: Vec3) => {
+    const r = R * 0.42;
+    sec(0.03, 0.03 + 0.143 * shp.h * 0.62, r, r, hullCol, 0.35, off);
+    sec(0.03 + 0.143 * shp.h * 0.62, 0.03 + 0.143 * shp.h * 0.72, r, r * 0.3, liv.accent, 0.35, off);
+  };
+  for (const tk of tanks) if (tk.d > dO) tank(tk.off);
+  legsBehind.forEach((d) => d());
+
+  // 노즐 — 쌍발은 둘
+  const bells: Vec3[] = cls === 'twin' ? [mul(side, -R * 0.46 * scale), mul(side, R * 0.46 * scale)] : [[0, 0, 0]];
+  const bellK = cls === 'twin' ? 0.62 : 1;
+  for (const b of [...bells].sort((p, q) => depthOf(add(O, q)) - depthOf(add(O, p)))) sec(0, 0.018, 0.0095 * shp.r * bellK, 0.0068 * shp.r * bellK, '#2c2e33', 0.2, b);
+  sec(0.018, 0.04, R, R, '#3b3d42', 0.2);
+  sec(0.04, 0.062, R, R, '#5a5048', 0.2);
+  sec(0.062, hEnd, R, R, hullCol);
+  // 감싼 무늬 — 동체 둘레(θ)와 높이(u) 칸으로 그리고, 카메라 쪽 반만 보인다
+  if (liv.pattern && liv.pattern !== 'plain') wrapPattern(ctx, v, liv, (uu, th) => add(at(uu), mul(add(mul(side, Math.cos(th)), mul(zed, Math.sin(th))), R * 1.004 * scale)), (th) => dot(add(mul(side, Math.cos(th)), mul(zed, Math.sin(th))), toCam), U(0.068), U(0.158), R * scale, soot);
   for (const [u0, u1, c] of liv.bands ?? [
-    [0.142, 0.15, liv.accent],
-    [0.185, 0.19, liv.accent],
+    [0.168, 0.176, liv.accent],
+    [0.188, 0.192, liv.accent],
   ])
-    sec(u0, u1, BR * 1.003, BR * 1.003, c);
-  sec(0.205, BL, BR, 0.0005, liv.hull, 0.45);
+    sec(U(u0), U(u1), R * 1.003, R * 1.003, c);
+  sec(hEnd, top, R, 0.0005, liv.hull, 0.45);
   // 격자 날개
   for (let i = 0; i < 4; i++) {
     const a = Math.PI / 4 + (i * Math.PI) / 2;
-    const dir: Vec3 = add(mul(side, Math.cos(a)), [0, 0, Math.sin(a)]);
-    const p1 = v.p(add(at(0.196), mul(dir, BR * scale))), p2 = v.p(add(at(0.196), mul(dir, BR * 1.7 * scale)));
+    const dir: Vec3 = add(mul(side, Math.cos(a)), mul(zed, Math.sin(a)));
+    const p1 = v.p(add(at(hEnd - 0.009), mul(dir, R * scale))), p2 = v.p(add(at(hEnd - 0.009), mul(dir, R * 1.7 * scale)));
     ctx.strokeStyle = '#4a4d53';
     ctx.lineWidth = Math.max(1, 0.0028 * scale * p1.s);
     ctx.beginPath();
@@ -578,14 +833,15 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
     ctx.lineTo(p2.x, p2.y);
     ctx.stroke();
   }
-  // 세로 글자
-  const mid = v.p(at(0.11));
-  const fs = BR * scale * mid.s * 0.75; // YEAHPLUS 는 짧아서 글자를 키운다
+  // 세로 글자 — 무늬 띠 가운데
+  const mid = v.p(at(U(0.113)));
+  const fs = Math.min(BR * scale * mid.s * 0.75, (0.143 * shp.h * 0.6 * scale * mid.s) / 8 / 0.62);
   if (fs > 4.5) {
     ctx.save();
     ctx.translate(mid.x, mid.y);
     ctx.rotate(Math.atan2(dy, dx));
-    ctx.fillStyle = 'rgba(20,22,26,.8)';
+    ctx.fillStyle = liv.ink ? liv.ink : 'rgba(20,22,26,.8)';
+    ctx.globalAlpha = 0.85;
     ctx.font = `800 ${fs}px ui-monospace,Menlo,monospace`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -593,9 +849,87 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
     ctx.restore();
   }
   legsFront.forEach((d) => d());
+  for (const tk of tanks) if (tk.d <= dO) tank(tk.off);
 
-  // 불꽃
-  if (flame && pose.on && pose.th > 0) drawFlame(ctx, v, at, ax, pose, t, scale);
+  if (flame && pose.on && pose.th > 0) {
+    if (bells.length > 1) for (const b of bells) drawFlame(ctx, v, (u) => at(u, b), ax, pose, t, scale * 0.7);
+    else drawFlame(ctx, v, at, ax, pose, t, scale);
+  }
+}
+
+/* 동체를 감싼 무늬 — 앱 BrandArt.drawPattern 의 배치를 둘레 θ(0…1) × 높이 h(0…1, 아래 → 위) 칸으로 옮긴 것.
+   칸 하나 = 원통 위 네 점. 카메라를 등진 칸은 그리지 않고, 비스듬할수록 어둡게 */
+function wrapPattern(
+  ctx: CanvasRenderingContext2D,
+  v: View,
+  liv: Livery,
+  surf: (u: number, th: number) => Vec3,
+  facing: (th: number) => number,
+  u0: number,
+  u1: number,
+  Rw: number,
+  soot: number,
+) {
+  const H = u1 - u0;
+  const circ = 2 * Math.PI * Rw; // 둘레(m)
+  const col = soot > 0 ? mix(liv.accent, '#2a241f', soot * 0.5) : liv.accent;
+  const quad = (t0: number, t1: number, h0: number, h1: number) => {
+    const th0 = t0 * Math.PI * 2, th1 = t1 * Math.PI * 2;
+    const f = facing((th0 + th1) / 2);
+    if (f <= 0.02) return;
+    const pts = [surf(u0 + h0 * H, th0), surf(u0 + h0 * H, th1), surf(u0 + h1 * H, th1), surf(u0 + h1 * H, th0)].map((p) => v.p(p));
+    ctx.beginPath();
+    pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+    ctx.closePath();
+    ctx.fillStyle = shade(col, -0.55 * (1 - f));
+    ctx.fill();
+  };
+  // 칸을 잘게 — 둘레 64칸이면 곡면이 매끄럽다
+  const strip = (h0: number, h1: number, on: (t: number) => boolean, n = 64) => {
+    for (let i = 0; i < n; i++) if (on((i + 0.5) / n)) quad(i / n, (i + 1) / n, h0, h1);
+  };
+  const p = liv.pattern;
+  if (p === 'checker') {
+    // 둘레 16칸 정사각, 위아래 두 줄씩
+    const a = circ / 16 / H; // 칸 높이(h 비율)
+    for (let row = 0; row < 2; row++) {
+      for (const base of [row * a, 1 - (row + 1) * a]) strip(base, base + a, (t) => (Math.floor(t * 16) + row) % 2 === 0, 64);
+    }
+  } else if (p === 'hazard') {
+    // 위아래 20% 띠에 사선 줄무늬
+    const band = 0.2, n = 18;
+    for (const y0 of [0, 1 - band])
+      for (let j = 0; j < 4; j++) {
+        const h0 = y0 + (j / 4) * band, h1 = y0 + ((j + 1) / 4) * band;
+        strip(h0, h1, (t) => ((t * n + (j / 4) * 0.5) % 1) < 0.5, 72);
+      }
+  } else if (p === 'crosswalk') {
+    for (const [h0, h1] of [[0, 0.26], [0.74, 1]]) strip(h0, h1, (t) => Math.floor(t * 12) % 2 === 0, 48);
+  } else if (p === 'pinstripe') {
+    for (const y of [0.06, 0.28, 0.72, 0.94]) strip(y, y + 0.025, () => true, 48);
+  } else if (p === 'stencil') {
+    for (const [h0, h1] of [[0.1, 0.19], [0.81, 0.9]]) strip(h0, h1, () => true, 48);
+  } else if (p === 'petals') {
+    // 꽃잎 70장 — 가운데 글자 자리는 비운다
+    for (let i = 0; i < 70; i++) {
+      const t = hash(i * 3.1 + 11), h = hash(i * 7.7 + 5);
+      if (Math.abs(h - 0.5) < 0.16) continue;
+      const th = t * Math.PI * 2;
+      const f = facing(th);
+      if (f <= 0.05) continue;
+      const c = v.p(surf(u0 + h * H, th));
+      const r = (0.0022 + 0.0024 * hash(i + 2)) * c.s;
+      ctx.save();
+      ctx.translate(c.x, c.y);
+      ctx.rotate(hash(i + 9) * Math.PI);
+      ctx.scale(Math.max(0.15, f), 1);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, r, r * 0.55, 0, 0, Math.PI * 2);
+      ctx.fillStyle = shade(col, -0.45 * (1 - f));
+      ctx.fill();
+      ctx.restore();
+    }
+  }
 }
 
 function mix(a: string, b: string, k: number) {
@@ -605,11 +939,18 @@ function mix(a: string, b: string, k: number) {
 }
 
 /** 불꽃만 — 사진 판 위에서는 기체를 색 보정한 뒤 불꽃을 따로 얹는다(불꽃까지 어두워지지 않게) */
-export function drawFlameOnly(ctx: CanvasRenderingContext2D, v: View, pose: Pose, t: number, scale = 1, bloom = 1) {
+export function drawFlameOnly(ctx: CanvasRenderingContext2D, v: View, pose: Pose, t: number, scale = 1, bloom = 1, cls: VCls = 'standard') {
   if (!pose.on || pose.th <= 0) return;
   const O = boosterBase(pose);
   const ax: Vec3 = [Math.sin(pose.lean), Math.cos(pose.lean), 0];
-  drawFlame(ctx, v, (u) => add(O, mul(ax, u * scale)), ax, pose, t, scale, bloom);
+  if (cls === 'twin') {
+    // 쌍발 — 노즐 둘, 화염도 둘(조금 가늘게)
+    const side: Vec3 = [Math.cos(pose.lean), -Math.sin(pose.lean), 0];
+    const R = BR * CLASS_SHAPE.twin.r * 0.46 * scale;
+    for (const sg of [-1, 1]) drawFlame(ctx, v, (u) => add(add(O, mul(side, sg * R)), mul(ax, u * scale)), ax, pose, t, scale * 0.7, bloom);
+    return;
+  }
+  drawFlame(ctx, v, (u) => add(O, mul(ax, u * scale)), ax, pose, t, scale * (cls === 'heavy' ? 1.25 : 1), bloom);
 }
 
 /* ─── 화염 — 노즐에서 꼬리까지 겹친 빛 덩어리(흰 심 → 노랑 → 주황 → 붉은 꼬리) · 깜빡임 · 충격파 무늬 ·
@@ -1026,6 +1367,9 @@ export type Plate = {
   bloom?: number; // 밝은 장소일수록 낮춘다(빛 번짐이 사진을 하얗게 덮지 않게)
 };
 
+/** 격납고 무대의 한 벌 — 기체 종류 · 도색 · 패드 스킨 · 모양 · 발사대(k = 물러난 정도) */
+export type Look = { cls: VCls; liv: Livery; skin: PadSkin; shape: PadShape; mount: Mount | null; mountK: number };
+
 export type PlateCam = { zoom: number; look: number; anchorY?: number }; // look 0…1 = 위로 올려다보는 정도
 
 /** 사진을 화면에 덮어 그릴 자리와 그에 맞는 카메라 */
@@ -1074,7 +1418,7 @@ function drawOnPlate(
   v: View,
   pl: Plate,
   rect: { ox: number; oy: number; W: number; H: number },
-  o: { pose: Pose; t: number; clock: number; puffs: Puff[]; hint?: number | null; hintNow?: boolean; liv?: Livery; ringR?: number; parked?: number | null; padAlpha?: number },
+  o: { pose: Pose; t: number; clock: number; puffs: Puff[]; hint?: number | null; hintNow?: boolean; liv?: Livery; ringR?: number; parked?: number | null; padAlpha?: number; look?: Look },
 ) {
   const { width: cw, height: ch } = ctx.canvas;
   ctx.drawImage(pl.img!, rect.ox, rect.oy, rect.W, rect.H);
@@ -1119,12 +1463,19 @@ function drawOnPlate(
   lc.arc(c0.x, c0.y + pr * 0.12, pr * 1.15, 0, Math.PI * 2);
   lc.fill();
   lc.restore();
+  const lk = o.look;
+  const cls = lk?.cls ?? 'standard';
+  const split = dot(sub(boosterBase(o.pose), v.E), v.f);
   lc.globalAlpha = o.padAlpha ?? 1;
-  drawPad(lc, v, glow * 0.6, o.hint ?? null, !!o.hintNow, o.ringR);
+  const padFront = drawPadStyled(lc, v, lk?.skin ?? HOUSE_SKIN, lk?.shape ?? 'round', glow * 0.6, o.hint ?? null, !!o.hintNow, o.ringR, split);
   lc.globalAlpha = 1;
   drawShadow(lc, v, o.pose.x * SCALE, hAbove, o.pose.z ?? 0);
+  const mb = lk?.mount ? mountBoxes(lk.mount, cls, lk.mountK) : null;
+  if (mb) drawMount(lc, v, mb, split, 'back');
   if (o.parked != null) drawBooster(lc, v, { x: o.parked, y: 0, lean: 0, legs: 1, th: 0, on: false, soot: 0.4 }, o.clock, { hull: '#d8d4cc', accent: '#9aa0a6' });
-  drawBooster(lc, v, o.pose, o.clock, o.liv, 1, false);
+  drawBooster(lc, v, o.pose, o.clock, lk?.liv ?? o.liv, 1, false, cls);
+  padFront.forEach((f) => f());
+  if (mb) drawMount(lc, v, mb, split, 'front');
   // 장소 빛 — 물건만(source-atop)
   const [tr, tg, tb, ta] = pl.tint;
   lc.globalCompositeOperation = 'source-atop';
@@ -1142,11 +1493,11 @@ function drawOnPlate(
   }
   lc.globalCompositeOperation = 'source-over';
   // 기체보다 먼 입자는 기체 뒤에, 가까운 입자는 앞에
-  const split = v.p(boosterBase(o.pose)).z;
-  drawPuffs(ctx, v, o.puffs, o.t, 'desk', pl.dust, pl.smoke, engineLight(o.pose), { split, side: 'back' });
+  const pz = v.p(boosterBase(o.pose)).z;
+  drawPuffs(ctx, v, o.puffs, o.t, 'desk', pl.dust, pl.smoke, engineLight(o.pose), { split: pz, side: 'back' });
   ctx.drawImage(L, 0, 0);
-  drawFlameOnly(ctx, v, o.pose, o.clock, 1, bloom);
-  drawPuffs(ctx, v, o.puffs, o.t, 'desk', pl.dust, pl.smoke, engineLight(o.pose), { split, side: 'front' });
+  drawFlameOnly(ctx, v, o.pose, o.clock, 1, bloom, cls);
+  drawPuffs(ctx, v, o.puffs, o.t, 'desk', pl.dust, pl.smoke, engineLight(o.pose), { split: pz, side: 'front' });
   // 폰 카메라 느낌 — 그레인 · 비네트
   ctx.save();
   ctx.globalAlpha = 0.045;
@@ -1183,6 +1534,7 @@ export function drawFrame(
     plate?: Plate | null;
     plateCam?: PlateCam;
     padAlpha?: number;
+    look?: Look;
   },
 ) {
   const clock = o.clock ?? o.t;

@@ -20,8 +20,31 @@ export const V = {
   terminalSpeed: 180,
   padRadius: 20,
 };
-const maxThrust = V.maxTWR * (V.dryMass + V.fuelMass) * G;
-const fuelRate = V.fuelMass / V.fullBurn;
+let maxThrust = V.maxTWR * (V.dryMass + V.fuelMass) * G;
+let fuelRate = V.fuelMass / V.fullBurn;
+
+/* 기체 종류 — 앱 RocketCore VehicleClass.vehicle 과 같은 값. 그림만이 아니라 물리도 다르다 */
+export type VClass = 'standard' | 'heavy' | 'sprint' | 'twin';
+const BASE = { ...V };
+const CLASS: Record<VClass, Partial<typeof V>> = {
+  standard: {},
+  heavy: { dryMass: 32_000, fuelMass: 13_000, maxTWR: 2.7, angularGain: 0.21 }, // 무겁다 — 일찍 켜야 한다
+  sprint: { dryMass: 20_000, fuelMass: 7_000, fullBurn: 10, maxTWR: 3.8, angularGain: 0.32 }, // 가볍고 세다 — 늦게 켜도 선다
+  twin: { dryMass: 26_000, gimbalMaxDeg: 11, angularGain: 0.36, minThrottle: 0.5 }, // 옆으로 민첩 — 출력을 낮게 못 줄인다
+};
+/** 그 기체로 fn 을 돌리고 표준으로 되돌린다(기록을 미리 만들 때 — 한 스레드라 다른 판과 섞이지 않는다) */
+export function withClass<T>(c: VClass, fn: () => T): T {
+  Object.assign(V, BASE, CLASS[c]);
+  maxThrust = V.maxTWR * (V.dryMass + V.fuelMass) * G;
+  fuelRate = V.fuelMass / V.fullBurn;
+  try {
+    return fn();
+  } finally {
+    Object.assign(V, BASE);
+    maxThrust = V.maxTWR * (V.dryMass + V.fuelMass) * G;
+    fuelRate = V.fuelMass / V.fullBurn;
+  }
+}
 
 export type Input = { throttle: number; gimbal: number };
 
