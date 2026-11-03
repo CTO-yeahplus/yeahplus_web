@@ -74,8 +74,15 @@ html:not([data-lang="en"]) [data-l="en"]{display:none}
 }
 .rp-lang-btn:hover{border-color:var(--rp-lime);color:var(--rp-lime)}
 @media (max-width:600px){
-  .rp-nav-links{gap:11px;font-size:12.5px}
+  .rp-navbar nav{flex-wrap:nowrap}
+  .rp-brand{white-space:nowrap;font-size:14px}
+  .rp-nav-links{gap:11px;font-size:12.5px;flex-wrap:nowrap;white-space:nowrap}
   .rp-nav-links .rp-nav-anchor{display:none}
+}
+/* 영어는 낱말이 길어 휴대폰 폭에서 바가 두 줄이 된다 — 개인정보 링크는 푸터에 있으니 바에서는 뺀다 */
+@media (max-width:430px){
+  html[data-lang="en"] .rp-nav-links a[href="/rocketparking/privacy"]{display:none}
+  .rp-brand .rp-mark{width:26px;height:26px;flex-basis:26px}
 }
 
 /* ─────────── 0. 히어로 — 휠 = 시간 ─────────── */
