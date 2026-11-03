@@ -19,6 +19,9 @@ const T_OPEN = (() => {
   return T_IGN;
 })();
 const T_LEGS = FR.find((f) => f.legs > 0)?.t ?? T_TD;
+/** 접지 뒤 화염이 사그라드는 시간(초) — 끈 순간의 출력에서 0 으로 */
+const TAIL = 0.45;
+const TH_LAST = [...FR].reverse().find((f) => f.on)?.th ?? 0.4;
 const PUFFS: Puff[] = (() => {
   const out: Puff[] = [];
   FR.forEach((f, i) => i % 2 === 0 && emit(out, f.t, f, Math.round(f.th * 2), i));
@@ -166,7 +169,13 @@ export default function Descent() {
         plate: getPlate(spec),
         plateCam: calP ? { zoom: 1, look: 0 } : pf.pc,
         place: placeRef.current,
-        pose: calP ? { x: 0, y: 0, lean: 0, legs: 1, th: 0, on: false } : visible ? { x: f.x, y: f.y, lean: f.lean, legs: f.legs, th: f.th, on: f.on } : { x: 0, y: 900, lean: 0, legs: 0, th: 0, on: false },
+        pose: calP
+          ? { x: 0, y: 0, lean: 0, legs: 1, th: 0, on: false }
+          : visible
+            ? ts >= T_TD && ts < T_TD + TAIL
+              ? { x: f.x, y: f.y, lean: f.lean, legs: f.legs, th: TH_LAST, on: true, fade: 1 - (ts - T_TD) / TAIL }
+              : { x: f.x, y: f.y, lean: f.lean, legs: f.legs, th: f.th, on: f.on }
+            : { x: 0, y: 900, lean: 0, legs: 0, th: 0, on: false },
         t: ts,
         clock: now,
         puffs: PUFFS,

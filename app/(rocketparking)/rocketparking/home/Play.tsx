@@ -125,6 +125,8 @@ export default function Play() {
     sound: true,
     ticks: 0,
     endAt: 0,
+    lastTh: 0,
+    offAt: -1,
     doneAt: 0,
   });
 
@@ -171,6 +173,8 @@ export default function Play() {
       step(ref, { throttle: 0, gimbal: 0 }, 1 / 120, d?.wind ?? 0, 250);
     }
     L.puffs = [];
+    L.lastTh = 0;
+    L.offAt = -1;
     L.grip = 0;
     L.press = false;
     L.dly = d;
@@ -343,6 +347,12 @@ export default function Play() {
           hintNow = windowStatus(s).status === 'now';
         }
       }
+      if (s) {
+        if (s.engineOn) {
+          L.lastTh = s.throttle;
+          L.offAt = -1;
+        } else if (L.lastTh > 0 && L.offAt < 0) L.offAt = t / 1000;
+      }
       const place = d?.kind === 1 ? 'bench' : d ? 'station' : 'desk';
       // 사진 판: 폰은 제자리 — 높이 떠 있으면 조금 올려다보고, 끝나면 패드로 다가간다
       const doneK = L.phase === 'done' ? Math.min(1, (t / 1000 - (L.doneAt || t / 1000)) / 1.2) : 0;
@@ -350,7 +360,13 @@ export default function Play() {
         plate: getPlate(PLATES[place].A),
         plateCam: { zoom: 1.16 + doneK * 0.08, look: idle ? 0.3 : clamp((by - 0.08) / 0.5), anchorY: 0.66 + doneK * 0.06 },
         place,
-        pose: s ? { x: s.x, y: s.y, lean: s.lean, legs: s.legs, th: s.throttle, on: s.engineOn } : { x: 0, y: 900, lean: 0, legs: 0, th: 0, on: false },
+        pose: !s
+          ? { x: 0, y: 900, lean: 0, legs: 0, th: 0, on: false }
+          : s.engineOn
+            ? { x: s.x, y: s.y, lean: s.lean, legs: s.legs, th: s.throttle, on: true }
+            : L.offAt >= 0 && t / 1000 - L.offAt < 0.45 // 꺼진 뒤 0.45초 동안 사그라든다(접지 · 직접 끔 · 연료 바닥)
+              ? { x: s.x, y: s.y, lean: s.lean, legs: s.legs, th: L.lastTh, on: true, fade: 1 - (t / 1000 - L.offAt) / 0.45 }
+              : { x: s.x, y: s.y, lean: s.lean, legs: s.legs, th: 0, on: false },
         t: L.phase === 'done' ? (L.endAt += dt * 0.5) : (s?.t ?? 0),
         clock: t / 1000,
         puffs: L.puffs,

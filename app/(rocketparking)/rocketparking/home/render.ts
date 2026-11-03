@@ -471,7 +471,8 @@ export function drawShadow(ctx: CanvasRenderingContext2D, v: View, x: number, hg
 }
 
 /* ─── 기체 ─── */
-export type Pose = { x: number; y: number; lean: number; legs: number; th: number; on: boolean; soot?: number; z?: number };
+/** fade: 엔진을 끈 뒤 화염이 사그라드는 정도(1 = 그대로, 0 = 꺼짐) — 접지 순간 화염이 뚝 끊기지 않게 */
+export type Pose = { x: number; y: number; lean: number; legs: number; th: number; on: boolean; soot?: number; z?: number; fade?: number };
 
 export function boosterBase(f: Frame | Pose): Vec3 {
   return [f.x * SCALE, f.y * SCALE + LIFT, (f as Pose).z ?? 0];
@@ -647,7 +648,8 @@ function drawFlame(ctx: CanvasRenderingContext2D, v: View, at: (u: number) => Ve
   // 착륙 화염 — 굵은 기둥(예전의 세 배). 덩어리를 촘촘히 겹쳐 끊김 없이, 겹마다 색이 다르다.
   // 빛은 노즐 아래쪽에만 — 위로 번지면 화염이 로켓 쪽으로 거꾸로 올라가는 것처럼 보인다.
   const th = pose.th;
-  const fl = 0.88 + 0.12 * nz(t * 31);
+  const fade = clamp(pose.fade ?? 1);
+  const fl = (0.88 + 0.12 * nz(t * 31)) * (0.35 + 0.65 * fade); // 사그라들수록 짧게
   const hAbove = pose.y * SCALE + LIFT;
   const full = (0.06 + 0.17 * th) * fl * scale;
   const len = Math.min(full, Math.max(0.008, hAbove + 0.004));
@@ -657,6 +659,7 @@ function drawFlame(ctx: CanvasRenderingContext2D, v: View, at: (u: number) => Ve
   const dx = tip.x - n0.x, dy = tip.y - n0.y, Lp = Math.hypot(dx, dy) || 1;
   const nx = -dy / Lp, ny = dx / Lp;
   ctx.save();
+  ctx.globalAlpha = fade * fade;
   ctx.globalCompositeOperation = 'lighter';
   // 바깥 빛무리 — 기둥 아래쪽 가운데에, 기둥 방향으로 길쭉하게
   ctx.save();
@@ -1002,7 +1005,7 @@ export function drawPuffs(
 /** 엔진이 켜져 있으면 노즐 아래 빛 — 연기 · 먼지의 그쪽 면을 주황으로 */
 function engineLight(p: Pose) {
   if (!p.on || p.th <= 0) return null;
-  return { x: p.x * SCALE, y: Math.max(0.01, p.y * SCALE), z: p.z ?? 0, power: p.th };
+  return { x: p.x * SCALE, y: Math.max(0.01, p.y * SCALE), z: p.z ?? 0, power: p.th * clamp(p.fade ?? 1) };
 }
 
 /* ─── 사진 판 — 폰 카메라가 보는 실제 장소 ─── */
@@ -1077,7 +1080,7 @@ function drawOnPlate(
   ctx.drawImage(pl.img!, rect.ox, rect.oy, rect.W, rect.H);
   const hAbove = o.pose.y * SCALE;
   const bloom = pl.bloom ?? 1;
-  const glow = (o.pose.on ? o.pose.th * clamp(1 - hAbove / 0.5) : 0) * bloom;
+  const glow = (o.pose.on ? o.pose.th * clamp(1 - hAbove / 0.5) * clamp(o.pose.fade ?? 1) : 0) * bloom;
   // 엔진 빛이 실제 바닥을 비춘다(사진 위에 더하기)
   if (glow > 0.01) {
     const c = v.p([o.pose.x * SCALE, 0, o.pose.z ?? 0]);
@@ -1190,7 +1193,7 @@ export function drawFrame(
   }
   drawPlace(ctx, v, o.place, clock);
   const hAbove = o.pose.y * SCALE;
-  const glow = o.pose.on ? o.pose.th * clamp(1 - hAbove / 0.45) : 0;
+  const glow = o.pose.on ? o.pose.th * clamp(1 - hAbove / 0.45) * clamp(o.pose.fade ?? 1) : 0;
   drawPad(ctx, v, glow, o.hint ?? null, !!o.hintNow, o.ringR);
   drawShadow(ctx, v, o.pose.x * SCALE, hAbove, o.pose.z ?? 0);
   if (o.parked != null) drawBooster(ctx, v, { x: o.parked, y: 0, lean: 0, legs: 1, th: 0, on: false, soot: 0.4 }, clock, { hull: '#d8d4cc', accent: '#9aa0a6' });
