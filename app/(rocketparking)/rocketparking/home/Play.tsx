@@ -319,7 +319,7 @@ export default function Play() {
         }
         step(s, inp, dt, d?.wind ?? 0, 250);
         if (!was && s.ignited && L.sound) L.snd?.blip(180, 0.18, 0.25, 'sawtooth');
-        emit(L.puffs, s.t, { x: s.x, y: s.y, th: s.throttle, on: s.engineOn }, s.engineOn ? 1 : 0, Math.floor(s.t * 240));
+        emit(L.puffs, s.t, { x: s.x, y: s.y, th: s.throttle, on: s.engineOn }, s.engineOn && (Math.floor(s.t * 60) & 1) === 0 ? 1 : 0, Math.floor(s.t * 240)); // 두 프레임에 한 번(히어로와 같은 밀도)
         if (L.sound) L.snd?.engine(s.throttle, s.engineOn);
         if (s.done) finish(s);
       }

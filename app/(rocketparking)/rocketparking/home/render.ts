@@ -635,71 +635,81 @@ function blob(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, c:
 }
 
 function drawFlame(ctx: CanvasRenderingContext2D, v: View, at: (u: number) => Vec3, ax: Vec3, pose: Pose, t: number, scale: number, bloom = 1) {
+  // 착륙 화염 — 굵은 기둥(예전의 세 배). 덩어리를 촘촘히 겹쳐 끊김 없이, 겹마다 색이 다르다.
+  // 빛은 노즐 아래쪽에만 — 위로 번지면 화염이 로켓 쪽으로 거꾸로 올라가는 것처럼 보인다.
   const th = pose.th;
-  const fl = 0.86 + 0.14 * nz(t * 31);
+  const fl = 0.88 + 0.12 * nz(t * 31);
   const hAbove = pose.y * SCALE + LIFT;
   const full = (0.06 + 0.17 * th) * fl * scale;
   const len = Math.min(full, Math.max(0.008, hAbove + 0.004));
   const n0 = v.p(at(0));
   const tip = v.p(add(at(0), mul(ax, -len)));
-  const wN = 0.0078 * scale * n0.s;
-  const dx = tip.x - n0.x, dy = tip.y - n0.y, L = Math.hypot(dx, dy) || 1;
-  const nx = -dy / L, ny = dx / L;
+  const W = 0.0078 * 3 * scale * n0.s; // 노즐 출구 반폭 × 3
+  const dx = tip.x - n0.x, dy = tip.y - n0.y, Lp = Math.hypot(dx, dy) || 1;
+  const nx = -dy / Lp, ny = dx / Lp;
   ctx.save();
   ctx.globalCompositeOperation = 'lighter';
-  // 바깥 빛무리
-  blob(ctx, n0.x + dx * 0.3, n0.y + dy * 0.3, Math.min(v.h * 0.3, wN * (10 + 6 * th)), [255, 140, 60], 0.22 * th * bloom);
-  // 몸통 — 꼬리로 갈수록 넓고 붉게, 덩어리마다 따로 흔들린다
-  const N = 18;
-  for (let i = N - 1; i >= 0; i--) {
-    const k = i / (N - 1);
-    const wob = nz(t * 23 + i * 1.7) * wN * 0.5 * k;
-    const x = n0.x + dx * k + nx * wob, y = n0.y + dy * k + ny * wob;
-    const r = wN * (0.85 + 2.6 * k) * (0.85 + 0.25 * nz(t * 41 + i * 3.1));
-    blob(ctx, x, y, r, flameColor(k), (0.55 - 0.35 * k) * (0.6 + 0.4 * th));
+  // 바깥 빛무리 — 기둥 아래쪽 가운데에, 기둥 방향으로 길쭉하게
+  ctx.save();
+  ctx.translate(n0.x + dx * 0.62, n0.y + dy * 0.62);
+  ctx.rotate(Math.atan2(dy, dx));
+  ctx.scale(1, 0.62);
+  blob(ctx, 0, 0, Math.min(v.h * 0.35, Math.max(Lp * 0.75, W * 3)), [255, 140, 60], 0.24 * th * bloom);
+  ctx.restore();
+  // 기둥 — 세 겹(바깥 주황 · 가운데 노랑 · 흰 심), 촘촘히
+  const layers: [number, number, number, number][] = [
+    // [굵기 배수, 길이 비율, 시작 색 위치, 세기]
+    [1.0, 1.0, 0.35, 0.22],
+    [0.62, 0.86, 0.12, 0.3],
+    [0.3, 0.5, 0, 0.55],
+  ];
+  for (const [wk, lk, c0, a0] of layers) {
+    const N = 34;
+    for (let i = N - 1; i >= 0; i--) {
+      const k = (i / (N - 1)) * lk;
+      const wob = nz(t * 19 + i * 0.9 + wk * 7) * W * 0.18 * k;
+      const x = n0.x + dx * k + nx * wob, y = n0.y + dy * k + ny * wob;
+      const r = W * wk * (0.75 + 1.1 * k) * (0.92 + 0.12 * nz(t * 37 + i * 1.3));
+      blob(ctx, x, y, r, flameColor(Math.min(1, c0 + k * (1 - c0))), a0 * (1 - 0.7 * (k / lk)) * (0.65 + 0.35 * th));
+    }
   }
-  // 흰 심 — 노즐 바로 아래 짧고 밝게
-  for (let i = 0; i < 6; i++) {
-    const k = (i / 5) * 0.32;
-    blob(ctx, n0.x + dx * k, n0.y + dy * k, wN * (0.65 - k), [255, 255, 250], 0.85);
-  }
-  // 충격파 다이아몬드
+  // 충격파 무늬
   for (let i = 1; i <= 4; i++) {
-    const k = i * 0.13;
-    ctx.fillStyle = `rgba(255,236,210,${(0.42 - i * 0.08) * th})`;
+    const k = i * 0.11;
+    ctx.fillStyle = `rgba(255,240,215,${(0.36 - i * 0.07) * th})`;
     ctx.beginPath();
-    ctx.ellipse(n0.x + dx * k, n0.y + dy * k, wN * 0.42, wN * 0.2, Math.atan2(ny, nx), 0, Math.PI * 2);
+    ctx.ellipse(n0.x + dx * k, n0.y + dy * k, W * 0.3, W * 0.14, Math.atan2(ny, nx), 0, Math.PI * 2);
     ctx.fill();
   }
   // 렌즈 빛 — 노즐을 지나는 가로 줄
-  const fw = wN * (26 + 20 * th);
+  const fw = W * (10 + 8 * th);
   const lg = ctx.createLinearGradient(n0.x - fw, 0, n0.x + fw, 0);
   lg.addColorStop(0, 'rgba(255,170,90,0)');
-  lg.addColorStop(0.5, `rgba(255,214,170,${0.32 * th})`);
+  lg.addColorStop(0.5, `rgba(255,214,170,${0.3 * th})`);
   lg.addColorStop(1, 'rgba(255,170,90,0)');
   ctx.fillStyle = lg;
-  ctx.fillRect(n0.x - fw, n0.y + dy * 0.12 - wN * 0.18, fw * 2, wN * 0.36 * bloom);
-  // 바닥에 닿은 불 — 납작한 빛 판 + 사방으로 기어 나가는 불 혀
+  ctx.fillRect(n0.x - fw, n0.y + dy * 0.2 - W * 0.06, fw * 2, W * 0.12 * bloom);
+  // 바닥에 닿은 불 — 납작한 빛 판 + 사방으로 기어 나가는 불 혀(기둥이 굵어진 만큼 넓게)
   if (full > hAbove) {
     const over = full - hAbove;
     const gx = pose.x * SCALE, gz = pose.z ?? 0;
     const c = v.p([gx, 0.001, gz]);
     const flat = clamp(Math.sin(v.cam.el), 0.12, 1);
-    const R = (0.03 + over * 2.4) * c.s;
+    const R = (0.05 + over * 3.4) * c.s;
     ctx.save();
     ctx.translate(c.x, c.y);
     ctx.scale(1, flat);
-    blob(ctx, 0, 0, R, [255, 226, 170], 0.6 * bloom);
+    blob(ctx, 0, 0, R, [255, 228, 175], 0.6 * bloom);
     blob(ctx, 0, 0, R * 1.9, [255, 130, 50], 0.25 * bloom);
     ctx.restore();
-    const J = 12;
+    const J = 16;
     for (let j = 0; j < J; j++) {
       const a = (j / J) * Math.PI * 2 + nz(t * 3 + j) * 0.25;
-      const reach = (0.04 + over * (2.2 + 1.4 * (0.5 + 0.5 * nz(t * 17 + j * 2.7)))) ;
-      for (let m = 1; m <= 4; m++) {
-        const k = m / 4;
-        const p = v.p([gx + Math.cos(a) * reach * k, 0.004 + k * 0.006, gz + Math.sin(a) * reach * k]);
-        blob(ctx, p.x, p.y, (0.012 + 0.02 * k) * p.s, flameColor(0.25 + k * 0.6), 0.32 * (1 - k * 0.6) * (0.5 + 0.5 * bloom));
+      const reach = 0.06 + over * (3 + 2 * (0.5 + 0.5 * nz(t * 17 + j * 2.7)));
+      for (let m = 1; m <= 6; m++) {
+        const k = m / 6;
+        const p = v.p([gx + Math.cos(a) * reach * k, 0.004 + k * 0.008, gz + Math.sin(a) * reach * k]);
+        blob(ctx, p.x, p.y, (0.02 + 0.03 * k) * p.s, flameColor(0.25 + k * 0.6), 0.28 * (1 - k * 0.6) * (0.5 + 0.5 * bloom));
       }
     }
   }
@@ -722,20 +732,21 @@ export function emit(list: Puff[], t: number, f: { x: number; y: number; th: num
   const hy = f.y * SCALE + LIFT;
   const x = f.x * SCALE;
   const push = (kind: Puff['kind'], k: number, y = hy) => {
-    for (let i = 0; i < k; i++) list.push({ ts: t, x, y, kind, seed: seed * 31 + kind * 1009 + i, pow: f.th });
+    for (let i = 0; i < k; i++) list.push({ ts: t, x, y, kind, seed: seed * 131 + kind * 10007 + i, pow: f.th });
   };
-  push(1, 2 * n); // 지나온 자리 연기
-  push(3, 2 * n); // 불티
-  const near = clamp(1 - hy / 0.38); // 바닥에 가까울수록
+  // 작은 입자를 많이 — 연기는 노즐 아래로 뿜어져 내려가고(로켓보다 빨리), 바닥에 닿으면 퍼진다
+  push(1, 8 * n);
+  push(3, 8 * n); // 불티
+  const near = clamp(1 - hy / 0.38);
   if (near > 0) {
-    push(0, Math.round(11 * n * f.th * near + 1), 0);
-    push(4, Math.round(7 * n * f.th * near), 0);
+    push(0, Math.round(44 * n * f.th * near + 4), 0);
+    push(4, Math.round(28 * n * f.th * near), 0);
   }
 }
 export function burst(list: Puff[], t: number, x: number, n: number, seed: number) {
   const X = x * SCALE;
-  for (let i = 0; i < n * 6; i++) list.push({ ts: t, x: X, y: 0.004, kind: 2, seed: seed * 13 + i, pow: 1 });
-  for (let i = 0; i < n * 4; i++) list.push({ ts: t, x: X, y: 0, kind: 4, seed: seed * 17 + 5000 + i, pow: 1.3 });
+  for (let i = 0; i < n * 24; i++) list.push({ ts: t, x: X, y: 0.004, kind: 2, seed: seed * 13 + i, pow: 1 });
+  for (let i = 0; i < n * 16; i++) list.push({ ts: t, x: X, y: 0, kind: 4, seed: seed * 17 + 50000 + i, pow: 1.3 });
   list.push({ ts: t, x: X, y: 0, kind: 5, seed, pow: 1 });
 }
 
@@ -800,6 +811,10 @@ export function cloudSprite(variant: number, rgb: number[]): HTMLCanvasElement |
   return c;
 }
 
+/* 그리기 — 입자는 작게(예전의 30%) · 많이(네 배) · 진하게. 수천 개라 회전 없이 drawImage 한 번씩, 숫자 기록만 모아 정렬한다 */
+type Rec = { z: number; x: number; y: number; r: number; a: number; sq: number; spr: HTMLCanvasElement | null; lit: number };
+const SZ = 0.3; // 크기 배율
+
 export function drawPuffs(
   ctx: CanvasRenderingContext2D,
   v: View,
@@ -812,56 +827,66 @@ export function drawPuffs(
   pass: { split: number; side: 'back' | 'front' } | null = null,
 ) {
   const keep = (z: number) => !pass || (pass.side === 'back' ? z > pass.split : z <= pass.split);
-  const capR = ctx.canvas.height * 0.16;
+  const capR = ctx.canvas.height * 0.08;
   const dust = dustRGB ?? (place === 'desk' ? [120, 100, 84] : place === 'bench' ? [150, 130, 120] : [175, 180, 186]);
   const smoke = smokeRGB ?? [205, 200, 196];
   const grit = [Math.max(0, dust[0] - 70), Math.max(0, dust[1] - 70), Math.max(0, dust[2] - 70)];
   const flat = clamp(Math.sin(v.cam.el), 0.15, 1);
-  type Item = { z: number; fn: () => void };
-  const clouds: Item[] = [], adds: (() => void)[] = [], grits: (() => void)[] = [];
+  const dustSpr = [0, 1, 2, 3].map((i) => cloudSprite(i, dust));
+  const smokeSpr = [0, 1, 2, 3].map((i) => cloudSprite(i, smoke));
+  const recs: Rec[] = [];
+  const sparks: number[] = []; // x1, y1, x2, y2, k, w
+  const grits: number[] = []; // x, y, s, a, shade
+  const rings: { x: number; y: number; r: number; k: number; z: number }[] = [];
+  const litOf = (x: number, y: number, z: number, fall: number) =>
+    light && y < light.y ? light.power * Math.exp(-Math.hypot(x - light.x, y - light.y, z - light.z) / fall) : 0;
   for (const p of list) {
     const age = t - p.ts;
     if (age < 0) continue;
-    if (hash(p.seed + 0.37) > density && p.kind !== 5) continue;
+    if (p.kind !== 5 && hash(p.seed + 0.37) > density) continue;
     const a1 = hash(p.seed) * Math.PI * 2;
     const r1 = hash(p.seed + 1), r2 = hash(p.seed + 2), r3 = hash(p.seed + 3);
     if (p.kind === 0 || p.kind === 2) {
-      // 바닥을 따라 굴러 나가며 커지고 위로 말려 오른다
-      const life = p.kind === 2 ? 3 + r3 * 1.6 : 2.2 + r3 * 1.4;
+      const big = p.kind === 2;
+      const life = big ? 3.2 + r3 * 2 : 2.4 + r3 * 1.6;
       if (age > life) continue;
-      const v0 = (p.kind === 2 ? 0.25 + 0.95 * r1 * r1 : 0.18 + 0.6 * r1 * r1) * (0.6 + 0.5 * p.pow);
+      const v0 = (big ? 0.25 + 0.95 * r1 * r1 : 0.18 + 0.6 * r1 * r1) * (0.6 + 0.5 * p.pow);
       const kk = 1.5 + r2 * 1.3;
       const d = 0.03 + (v0 / kk) * (1 - Math.exp(-kk * age));
       const x = p.x + Math.cos(a1) * d, z = Math.sin(a1) * d;
-      const y = 0.004 + age * (0.006 + 0.022 * r2 * r2) + (p.kind === 2 ? 0.003 : 0);
-      const size = (p.kind === 2 ? 0.02 : 0.012) + age * (p.kind === 2 ? 0.034 + 0.05 * r3 : 0.018 + 0.03 * r3);
+      const y = 0.003 + age * (0.005 + 0.024 * r2 * r2) + (big ? 0.003 : 0);
+      const size = SZ * ((big ? 0.02 : 0.012) + age * (big ? 0.034 + 0.05 * r3 : 0.018 + 0.03 * r3));
       const k = age / life;
-      const alpha = (k < 0.05 ? k / 0.05 : 1) * Math.pow(1 - k, 1.3) * (p.kind === 2 ? 0.44 : 0.26);
+      const a = Math.min(0.95, (k < 0.05 ? k / 0.05 : 1) * Math.pow(1 - k, 1.3) * (big ? 0.95 : 0.6));
       const q = v.p([x, y, z]);
       if (!keep(q.z)) continue;
-      const rot = a1 + age * (r2 - 0.5) * 1.4;
-      const spr = cloudSprite(p.seed, dust);
-      const lit = light ? light.power * Math.exp(-Math.hypot(x - light.x, y - light.y, z - light.z) / 0.08) : 0;
-      clouds.push({
-        z: q.z,
-        fn: () => drawSprite(ctx, spr, q.x, q.y, Math.min(capR, size * q.s), rot, alpha, 0.6 + 0.3 * flat, lit),
-      });
+      recs.push({ z: q.z, x: q.x, y: q.y, r: Math.min(capR, size * q.s), a, sq: 0.6 + 0.3 * flat, spr: dustSpr[p.seed & 3], lit: litOf(x, y, z, 0.07) });
     } else if (p.kind === 1) {
-      // 지나온 자리에 남는 연기 — 아래로 조금 밀리며 부풀고 옅어진다
-      const life = 2.2 + r3 * 1.6;
+      // 노즐 아래로 뿜어져 로켓보다 빨리 내려가고, 바닥에 닿으면 옆으로 퍼진다
+      const life = 1.8 + r3 * 1.6;
       if (age > life) continue;
-      const x = p.x + Math.cos(a1) * (0.004 + age * 0.012) , z = Math.sin(a1) * (0.004 + age * 0.012);
-      const y = Math.max(0.01, p.y - 0.025 - age * (0.05 + 0.04 * r2));
-      const size = 0.008 + age * (0.016 + 0.018 * r1);
+      const vy = 0.32 + 0.34 * r1;
+      const y0 = Math.max(0.004, p.y - 0.015);
+      const tg = y0 / vy;
+      let x = p.x + Math.cos(a1) * 0.006, z = Math.sin(a1) * 0.006, y: number;
+      if (age < tg) {
+        y = y0 - vy * age;
+        x += Math.cos(a1) * age * 0.03;
+        z += Math.sin(a1) * age * 0.03;
+      } else {
+        const ta = age - tg;
+        const dd = (0.12 + 0.22 * r2) * (1 - Math.exp(-2.4 * ta));
+        x += Math.cos(a1) * dd;
+        z += Math.sin(a1) * dd;
+        y = 0.004 + ta * 0.012 * r2;
+      }
+      const size = SZ * (0.012 + age * (0.02 + 0.022 * r1));
       const k = age / life;
-      const alpha = (k < 0.1 ? k / 0.1 : 1) * Math.pow(1 - k, 1.3) * 0.13;
+      const a = Math.min(0.9, (k < 0.08 ? k / 0.08 : 1) * Math.pow(1 - k, 1.2) * 0.5);
       const q = v.p([x, y, z]);
       if (!keep(q.z)) continue;
-      const spr = cloudSprite(p.seed + 1, smoke);
-      const lit = light ? light.power * Math.exp(-Math.hypot(x - light.x, y - light.y, z - light.z) / 0.1) : 0;
-      clouds.push({ z: q.z, fn: () => drawSprite(ctx, spr, q.x, q.y, Math.min(capR, size * q.s), a1 + age * 0.5, alpha, 1, lit) });
+      recs.push({ z: q.z, x: q.x, y: q.y, r: Math.min(capR, size * q.s), a, sq: 1, spr: smokeSpr[(p.seed >> 2) & 3], lit: litOf(x, y, z, 0.06) });
     } else if (p.kind === 3) {
-      // 불티 — 노즐에서 아래로 튀고 바닥에 닿으면 옆으로 튄다
       const life = 0.25 + r3 * 0.4;
       if (age > life) continue;
       const sp = 0.35 + 0.6 * r1;
@@ -876,18 +901,9 @@ export function drawPuffs(
       }
       const q = v.p([x, y, z]);
       if (!keep(q.z)) continue;
-      const q2 = v.p([x - vx * 0.02, y + sp * 0.012, z - vz * 0.02]);
-      const k = age / life;
-      adds.push(() => {
-        ctx.strokeStyle = `rgba(255,${200 + 55 * (1 - k) | 0},${110 + 90 * (1 - k) | 0},${(1 - k) * 0.85})`;
-        ctx.lineWidth = Math.max(0.7, Math.min(2.2, 0.0011 * q.s));
-        ctx.beginPath();
-        ctx.moveTo(q2.x, q2.y);
-        ctx.lineTo(q.x, q.y);
-        ctx.stroke();
-      });
+      const q2 = v.p([x - vx * 0.012, y + sp * 0.006, z - vz * 0.012]);
+      sparks.push(q2.x, q2.y, q.x, q.y, age / life, Math.max(0.5, Math.min(1, 0.00035 * q.s)));
     } else if (p.kind === 4) {
-      // 파편 — 포물선으로 튀었다가 떨어져 미끄러진다
       const life = 1.4 + r3 * 1.2;
       if (age > life) continue;
       const hv = (0.15 + 0.6 * r1) * p.pow, vy0 = (0.25 + 0.75 * r2) * p.pow;
@@ -906,83 +922,74 @@ export function drawPuffs(
       }
       const q = v.p([x, Math.max(0.001, y), z]);
       if (!keep(q.z)) continue;
-      const sz = Math.max(0.7, Math.min(4, (0.0006 + 0.0022 * r3 * r3 * r3) * q.s));
       const k = age / life;
-      const al = k > 0.75 ? (1 - k) / 0.25 : 1;
-      const spin = a1 + age * (6 + 10 * r2);
-      grits.push(() => {
-        ctx.save();
-        ctx.translate(q.x, q.y);
-        ctx.rotate(spin);
-        ctx.globalAlpha = al;
-        const lite = r1 > 0.85 ? 50 : -20 * r2; // 대부분 어두운 알갱이, 몇 개만 밝은 돌가루
-        const gc = (c: number) => Math.max(0, Math.round(c + lite));
-        ctx.fillStyle = `rgb(${gc(grit[0])},${gc(grit[1])},${gc(grit[2])})`;
-        ctx.beginPath(); // 알갱이 — 고르지 않은 세모
-        ctx.moveTo(-sz, -sz * 0.4);
-        ctx.lineTo(sz * (0.6 + r1 * 0.6), -sz * 0.7);
-        ctx.lineTo(sz * (0.2 + r2 * 0.5), sz * 0.8);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-      });
+      grits.push(q.x, q.y, Math.max(0.5, Math.min(1.6, SZ * (0.0008 + 0.0026 * r3 * r3) * q.s)), k > 0.75 ? (1 - k) / 0.25 : 1, r1 > 0.85 ? 50 : -20 * r2);
     } else if (p.kind === 5) {
-      // 접지 충격 고리 — 바닥을 쓸고 나가는 옅은 고리
       const life = 0.9;
       if (age > life) continue;
       const k = age / life;
-      const R = 0.05 + 0.32 * (1 - Math.pow(1 - k, 2.2));
       const c = v.p([p.x, 0.002, 0]);
       if (!keep(c.z)) continue;
-      const rr = R * c.s;
-      clouds.push({
-        z: c.z + 1,
-        fn: () => {
-          ctx.save();
-          ctx.translate(c.x, c.y);
-          ctx.scale(1, flat);
-          const g = ctx.createRadialGradient(0, 0, rr * 0.7, 0, 0, rr);
-          g.addColorStop(0, `rgba(${dust[0]},${dust[1]},${dust[2]},0)`);
-          g.addColorStop(0.8, `rgba(${dust[0]},${dust[1]},${dust[2]},${0.45 * (1 - k)})`);
-          g.addColorStop(1, `rgba(${dust[0]},${dust[1]},${dust[2]},0)`);
-          ctx.fillStyle = g;
-          ctx.beginPath();
-          ctx.arc(0, 0, rr, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.restore();
-        },
-      });
+      rings.push({ x: c.x, y: c.y, r: (0.05 + 0.32 * (1 - Math.pow(1 - k, 2.2))) * c.s, k, z: c.z });
     }
   }
-  grits.forEach((f) => f());
-  clouds.sort((a, b) => b.z - a.z).forEach((i) => i.fn());
-  ctx.save();
+  // 파편 — 아주 작은 점
+  for (let i = 0; i < grits.length; i += 5) {
+    const sh = grits[i + 4];
+    ctx.globalAlpha = grits[i + 3];
+    ctx.fillStyle = `rgb(${Math.max(0, Math.round(grit[0] + sh))},${Math.max(0, Math.round(grit[1] + sh))},${Math.max(0, Math.round(grit[2] + sh))})`;
+    const sz = grits[i + 2];
+    ctx.fillRect(grits[i] - sz, grits[i + 1] - sz * 0.7, sz * 2, sz * 1.4);
+  }
+  ctx.globalAlpha = 1;
+  for (const g of rings) {
+    ctx.save();
+    ctx.translate(g.x, g.y);
+    ctx.scale(1, flat);
+    const gr = ctx.createRadialGradient(0, 0, g.r * 0.7, 0, 0, g.r);
+    gr.addColorStop(0, `rgba(${dust[0]},${dust[1]},${dust[2]},0)`);
+    gr.addColorStop(0.8, `rgba(${dust[0]},${dust[1]},${dust[2]},${0.55 * (1 - g.k)})`);
+    gr.addColorStop(1, `rgba(${dust[0]},${dust[1]},${dust[2]},0)`);
+    ctx.fillStyle = gr;
+    ctx.beginPath();
+    ctx.arc(0, 0, g.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+  // 구름 — 먼 것부터
+  recs.sort((a, b) => b.z - a.z);
+  for (const r of recs) {
+    if (!r.spr || r.r < 0.4 || r.a < 0.004) continue;
+    ctx.globalAlpha = r.a;
+    ctx.drawImage(r.spr, r.x - r.r, r.y - r.r * r.sq, r.r * 2, r.r * 2 * r.sq);
+  }
+  // 엔진 빛을 받은 쪽 — 주황을 더한다(노즐 아래 입자만)
+  const warm = cloudSprite(3, [255, 150, 70]);
+  if (warm) {
+    ctx.globalCompositeOperation = 'lighter';
+    for (const r of recs) {
+      if (r.lit < 0.03 || r.r < 0.4) continue;
+      ctx.globalAlpha = Math.min(0.5, r.lit * r.a * 1.1);
+      ctx.drawImage(warm, r.x - r.r, r.y - r.r * r.sq, r.r * 2, r.r * 2 * r.sq);
+    }
+  }
+  // 불티
   ctx.globalCompositeOperation = 'lighter';
-  adds.forEach((f) => f());
-  ctx.restore();
-}
-
-function drawSprite(ctx: CanvasRenderingContext2D, spr: HTMLCanvasElement | null, x: number, y: number, r: number, rot: number, alpha: number, squash: number, lit: number) {
-  if (!spr || r < 0.6 || alpha <= 0.004) return;
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.rotate(rot);
-  ctx.scale(1, squash);
-  ctx.globalAlpha = Math.min(1, alpha);
-  ctx.drawImage(spr, -r, -r, r * 2, r * 2);
-  if (lit > 0.02) {
-    // 엔진 빛을 받은 쪽 — 주황으로 더한다
-    const warm = cloudSprite(3, [255, 150, 70]);
-    if (warm) {
-      ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha = Math.min(0.55, lit * alpha * 1.3);
-      ctx.drawImage(warm, -r, -r, r * 2, r * 2);
-    }
+  for (let i = 0; i < sparks.length; i += 6) {
+    const k = sparks[i + 4];
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = `rgba(255,${(200 + 55 * (1 - k)) | 0},${(110 + 90 * (1 - k)) | 0},${(1 - k) * 0.85})`;
+    ctx.lineWidth = sparks[i + 5];
+    ctx.beginPath();
+    ctx.moveTo(sparks[i], sparks[i + 1]);
+    ctx.lineTo(sparks[i + 2], sparks[i + 3]);
+    ctx.stroke();
   }
-  ctx.restore();
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.globalAlpha = 1;
 }
 
-/** 장면 하나를 그린다 — 배경 · 패드 · 그림자 · 입자 · 기체 */
+
 /** 엔진이 켜져 있으면 노즐 아래 빛 — 연기 · 먼지의 그쪽 면을 주황으로 */
 function engineLight(p: Pose) {
   if (!p.on || p.th <= 0) return null;
@@ -1114,7 +1121,7 @@ function drawOnPlate(
   // 엔진 빛이 동체 아래를 비춘다
   if (glow > 0.01) {
     const n = v.p([o.pose.x * SCALE, hAbove + 0.02, o.pose.z ?? 0]);
-    const gg = lc.createRadialGradient(n.x, n.y, 0, n.x, n.y, 0.12 * n.s);
+    const gg = lc.createRadialGradient(n.x, n.y, 0, n.x, n.y, 0.06 * n.s);
     gg.addColorStop(0, `rgba(255,170,80,${0.5 * glow})`);
     gg.addColorStop(1, 'rgba(255,170,80,0)');
     lc.globalCompositeOperation = 'source-atop';
