@@ -530,7 +530,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 //   ios     : App Store 주소      android : Google Play 주소
 // NOTI_EDITION 은 build.py 가 넣는다:  full(개발용) · app(여덟 화) · demo(웹, 1화만)
 // ─────────────────────────────────────────────────────────────
-const CONFIG = { site: '', ios: '', android: '' };
+const CONFIG = { site: '', ios: 'https://apps.apple.com/kr/app/id6819720298?pt=121180501&ct=web_demo&mt=8', android: '' };   // App Store: 2026-11-03 출시(App ID 6819720298, 한국)
 const EDITION = window.NOTI_EDITION || 'full';
 // 네이티브(Capacitor) — 웹에선 null
 const NATIVE = window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform() ? window.Capacitor.Plugins : null;

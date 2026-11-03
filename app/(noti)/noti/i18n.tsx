@@ -29,9 +29,10 @@ export const EFFECTIVE = '2026-10-09';
  * App Store — 출시 후 ASC 'App Apple ID'(숫자)를 넣는다. 비어 있으면 버튼이 '출시 준비 중'으로 바뀐다.
  * ⚠️ 국가 코드 없는 링크는 출시 직후 404 가 잦다 — 항상 kr/us 를 붙인다.
  */
-export const APP_ID = '';
-export const appStoreUrl = (lang: Lang) =>
-  APP_ID ? `https://apps.apple.com/${lang === 'en' ? 'us' : 'kr'}/app/id${APP_ID}` : '';
+export const APP_ID = '6819720298';   // 2026-11-03 출시
+/** 판매 지역이 한국뿐이라 영어 화면에서도 kr 스토어로 보낸다(us 는 404). 지역을 넓히면 lang 으로 나눈다 */
+export const appStoreUrl = (_lang: Lang) =>
+  APP_ID ? `https://apps.apple.com/kr/app/id${APP_ID}` : '';
 /** Google Play — 출시 후 주소를 넣는다 */
 export const PLAY_URL = '';
 /** 웹 체험판(1화) — public/noti/demo/index.html. GAME/APLUS/noti 의 build.py 가 만든 것을 tools/sync_site.sh 로 옮긴다 */
