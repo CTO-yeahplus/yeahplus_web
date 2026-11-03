@@ -6,7 +6,7 @@
    40% 선을 넘는 순간 점화, 점화 뒤 40% 아래로 내리면 엔진 끔(다시 못 켠다). 손을 떼도 출력은 그대로. 마우스 좌우 = 폰을 옆으로 옮기는 몸짓(카메라가 돈다). 오늘의 주차는 앱과 같은 날 같은 조건. */
 import { useEffect, useRef, useState } from 'react';
 import { bot, daily, dayIndex, makeState, needAt, SCALE, step, V, verdict, windowStatus, type Daily, type State, type Verdict } from './sim';
-import { burst, clamp, drawFrame, emit, View, type Puff } from './render';
+import { burst, clamp, drawFrame, emit, setFxDensity, View, type Puff } from './render';
 import { PLATES, preload } from './plates';
 import { fit, lerp } from './stage';
 
@@ -294,6 +294,8 @@ export default function Play() {
       const r = c.getBoundingClientRect();
       if (r.bottom < 0 || r.top > window.innerHeight) return;
       fit(c);
+      // 입자 수 — 큰 화면(픽셀 많음)과 휴대폰에서는 덜 그린다
+      setFxDensity(c.width * c.height > 4.5e6 ? 0.7 : c.width < 900 ? 0.6 : 1);
       L.yaw += (L.yawT - L.yaw) * 0.08;
       const s = L.s;
       const d = L.dly;

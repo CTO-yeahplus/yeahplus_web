@@ -5,6 +5,12 @@
    하늘색은 시각으로 정한다. 24시간 안에 받지 않으면 궤도 이탈(기체를 잃는다). */
 import { useEffect, useRef } from 'react';
 import { ease, fit, lerp, progressOf, reduced, seg } from './stage';
+import { cloudSprite } from './render';
+
+const hashN = (n: number) => {
+  const x = Math.sin(n * 127.1 + 311.7) * 43758.5453;
+  return x - Math.floor(x);
+};
 
 const T0 = 7 * 60 + 42, T1 = 18 * 60 + 54; // 분
 const SKY: [number, string, string][] = [
@@ -138,41 +144,97 @@ export default function Commute() {
         ctx.fill();
         ctx.restore();
       }
-      // 발사 · 귀환 — 아래에서 솟는 기둥과 불꽃
+      // 발사 · 귀환 — 발사대를 덮는 구름 둑 · 로켓을 따라 솟는 연기 기둥 · 층진 화염 · 불티(진행도의 함수라 되감아도 같다)
       const rk = p < 0.2 ? launch : p >= 0.82 ? 1 - ret : -1;
       if (rk >= 0 && rk <= 1) {
         const up = p < 0.2;
-        const k = up ? ease(rk) : ease(rk);
-        const x = W * (up ? 0.5 : 0.5), y = lerp(H * 0.86, -H * 0.1, k);
+        const k = ease(rk);
         const s = H / 900;
-        // 연기 기둥(발사만)
+        const gy = H * 0.9; // 발사대 높이
+        const x = W * 0.5, y = lerp(H * 0.86, -H * 0.12, k);
+        const T = up ? rk * 3.2 : (1 - rk) * 3.2; // 연출 시각(초)
+        const sm = up ? [236, 232, 226] : [214, 208, 200];
+        const air = 1 - space * 0.85;
+        // 연기 기둥 — 아래(먼저 나온 것)일수록 크고 옅고, 바람에 조금 밀린다
         if (up) {
-          for (let i = 0; i < 26; i++) {
-            const yy = lerp(H * 0.9, y, i / 26);
-            const rr = (18 + i * 1.6) * s * (1 + (1 - i / 26) * 1.6);
-            const gg = ctx.createRadialGradient(x, yy, 0, x, yy, rr);
-            gg.addColorStop(0, `rgba(230,225,220,${0.18 * (1 - space)})`);
-            gg.addColorStop(1, 'rgba(230,225,220,0)');
-            ctx.fillStyle = gg;
-            ctx.beginPath();
-            ctx.arc(x + Math.sin(i + now) * 4, yy, rr, 0, Math.PI * 2);
-            ctx.fill();
+          const NC = 70;
+          for (let i = 0; i < NC; i++) {
+            const f = i / NC;
+            const yy = lerp(gy, y + 70 * s, f);
+            if (yy < y + 40 * s) continue;
+            const age = (1 - f) * T;
+            const r = (16 + 120 * Math.min(1, age / 2.5) + hashN(i) * 30) * s;
+            const dx = (hashN(i + 7) - 0.5) * r * 0.5 + age * 18 * s;
+            const spr = cloudSprite(i, sm);
+            if (spr) {
+              ctx.save();
+              ctx.translate(x + dx, yy);
+              ctx.rotate(i * 1.3 + age * 0.2);
+              ctx.globalAlpha = (0.32 + 0.3 * (1 - f)) * air;
+              ctx.drawImage(spr, -r, -r, r * 2, r * 2);
+              ctx.restore();
+            }
           }
         }
-        // 불꽃
+        // 구름 둑 — 발사대에서 양옆으로 굴러 나간다(귀환은 착륙 직전에 일어나는 먼지)
+        const bankT = up ? Math.min(T, 3) : Math.max(0, 1.2 - (1 - rk) * 4);
+        if (bankT > 0) {
+          const NB = 46;
+          for (let i = 0; i < NB; i++) {
+            const side = i % 2 ? 1 : -1;
+            const rr = hashN(i + 3);
+            const d = (20 + 520 * rr) * s * (1 - Math.exp(-bankT * (0.9 + rr)));
+            const r = (40 + 90 * rr + bankT * 40) * s;
+            const spr = cloudSprite(i + 2, sm);
+            if (spr) {
+              ctx.save();
+              ctx.translate(x + side * d, gy - r * 0.35 - hashN(i + 9) * 40 * s);
+              ctx.rotate(i);
+              ctx.globalAlpha = 0.55 * air * Math.min(1, bankT * 1.5);
+              ctx.drawImage(spr, -r, -r * 0.8, r * 2, r * 1.6);
+              ctx.restore();
+            }
+          }
+        }
+        // 화염 — 흰 심에서 붉은 꼬리까지 겹친 빛, 바닥 가까우면 구름 아래를 비춘다
         ctx.save();
         ctx.globalCompositeOperation = 'lighter';
-        const fl = (up ? 70 : 40) * s * (0.85 + 0.15 * Math.sin(now * 50));
-        const fg = ctx.createLinearGradient(0, y + 30 * s, 0, y + 30 * s + fl);
-        fg.addColorStop(0, 'rgba(255,240,200,.95)');
-        fg.addColorStop(0.4, 'rgba(255,150,50,.7)');
-        fg.addColorStop(1, 'rgba(255,80,20,0)');
-        ctx.fillStyle = fg;
-        ctx.beginPath();
-        ctx.moveTo(x - 6 * s, y + 30 * s);
-        ctx.quadraticCurveTo(x, y + 30 * s + fl * 1.4, x + 6 * s, y + 30 * s);
-        ctx.fill();
+        const fl = (up ? 120 : 70) * s * (0.88 + 0.12 * Math.sin(now * 53) * Math.sin(now * 29));
+        const fy = y + 30 * s;
+        for (let i = 15; i >= 0; i--) {
+          const f = i / 15;
+          const r = (5 + 26 * f) * s * (0.9 + 0.2 * Math.sin(now * 40 + i));
+          const c = f < 0.15 ? [255, 250, 235] : f < 0.4 ? [255, 210, 120] : f < 0.7 ? [255, 140, 50] : [210, 70, 30];
+          const g = ctx.createRadialGradient(x, fy + fl * f, 0, x, fy + fl * f, r);
+          g.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},${0.7 - 0.45 * f})`);
+          g.addColorStop(1, `rgba(${c[0]},${c[1]},${c[2]},0)`);
+          ctx.fillStyle = g;
+          ctx.fillRect(x - r, fy + fl * f - r, r * 2, r * 2);
+        }
+        const near = Math.max(0, 1 - Math.abs(gy - fy) / (H * 0.35));
+        if (near > 0) {
+          const g = ctx.createRadialGradient(x, gy, 0, x, gy, 360 * s);
+          g.addColorStop(0, `rgba(255,170,90,${0.55 * near})`);
+          g.addColorStop(1, 'rgba(255,120,40,0)');
+          ctx.fillStyle = g;
+          ctx.fillRect(x - 360 * s, gy - 360 * s, 720 * s, 720 * s);
+        }
+        // 불티
+        ctx.strokeStyle = 'rgba(255,220,150,.85)';
+        for (let i = 0; i < 40; i++) {
+          const a = (hashN(i) - 0.5) * 1.6, sp = (80 + 260 * hashN(i + 1)) * s;
+          const ph = (now * (1.4 + hashN(i + 2)) + hashN(i + 3)) % 1;
+          const px = x + Math.sin(a) * sp * ph, py = fy + fl * 0.3 + Math.cos(a) * sp * ph + 120 * s * ph * ph;
+          ctx.globalAlpha = 1 - ph;
+          ctx.lineWidth = 1.5 * s;
+          ctx.beginPath();
+          ctx.moveTo(px, py);
+          ctx.lineTo(px - Math.sin(a) * 10 * s, py - Math.cos(a) * 10 * s);
+          ctx.stroke();
+        }
         ctx.restore();
+        // 기체
+        ctx.globalAlpha = 1;
         ctx.fillStyle = '#F1F2F0';
         ctx.fillRect(x - 5 * s, y - 34 * s, 10 * s, 64 * s);
         ctx.fillStyle = '#C7ED40';

@@ -5,7 +5,7 @@
    구간: 착륙장 놓기 → 낙하 → 점화 창 → 점화 → 접지 → 정적 · 도장 → 다시 착륙(0.25×, 카메라가 돈다). */
 import { useEffect, useRef, useState } from 'react';
 import { frameAt, needAt, record, SCALE, type Frame } from './sim';
-import { burst, clamp, drawFrame, emit, RING_R, View, type Place, type PlateCam, type Puff } from './render';
+import { burst, clamp, drawFrame, emit, RING_R, setFxDensity, View, type Place, type PlateCam, type Puff } from './render';
 import { PLATES, preload } from './plates';
 import { ease, fit, lerp, progressOf, reduced, seg } from './stage';
 
@@ -142,6 +142,8 @@ export default function Descent() {
       pS = still ? pT : pS + (pT - pS) * 0.16;
       const p = pS;
       fit(c);
+      // 입자 수 — 큰 화면(픽셀 많음)과 휴대폰에서는 덜 그린다
+      setFxDensity(c.width * c.height > 4.5e6 ? 0.7 : c.width < 900 ? 0.6 : 1);
       const ts = simTime(p);
       const f = frameAt(FR, ts);
       const now = (performance.now() - t0) / 1000;

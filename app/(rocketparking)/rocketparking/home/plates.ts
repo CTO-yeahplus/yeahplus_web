@@ -15,17 +15,17 @@ export const PLATES: Record<Place, { A: Spec; B: Spec }> = {
     B: { src: 'benchB', iw: 16, ih: 9, px: 0.5, py: 0.7, el: 0.12, dist: 0.8, fovY: FOV, tint: [24, 34, 70, 0.34], dust: [140, 128, 120], smoke: [120, 126, 140], glow: [255, 170, 90] },
   },
   desk: {
-    A: { src: 'deskA', iw: 16, ih: 9, px: 0.5, py: 0.68, el: 0.48, dist: 0.7, fovY: FOV, tint: [255, 170, 90, 0.12], dust: [150, 120, 92], smoke: [225, 212, 196], glow: [255, 180, 100] },
-    B: { src: 'deskB', iw: 16, ih: 9, px: 0.5, py: 0.64, el: 0.1, dist: 0.8, fovY: FOV, tint: [255, 170, 90, 0.14], dust: [150, 120, 92], smoke: [225, 212, 196], glow: [255, 180, 100] },
+    A: { src: 'deskA', iw: 16, ih: 9, px: 0.5, py: 0.68, el: 0.48, dist: 0.7, fovY: FOV, tint: [255, 170, 90, 0.12], dust: [150, 120, 92], smoke: [225, 212, 196], glow: [255, 180, 100], bloom: 0.5 },
+    B: { src: 'deskB', iw: 16, ih: 9, px: 0.5, py: 0.64, el: 0.1, dist: 0.8, fovY: FOV, tint: [255, 170, 90, 0.14], dust: [150, 120, 92], smoke: [225, 212, 196], glow: [255, 180, 100], bloom: 0.5 },
   },
   station: {
-    A: { src: 'stationA', iw: 16, ih: 9, px: 0.5, py: 0.76, el: 0.46, dist: 1.55, fovY: FOV, tint: [200, 220, 255, 0.1], dust: [175, 178, 182], smoke: [215, 220, 228], glow: [255, 190, 120] },
-    B: { src: 'stationB', iw: 16, ih: 9, px: 0.5, py: 0.64, el: 0.12, dist: 0.85, fovY: FOV, tint: [200, 220, 255, 0.1], dust: [175, 178, 182], smoke: [215, 220, 228], glow: [255, 190, 120] },
+    A: { src: 'stationA', iw: 16, ih: 9, px: 0.5, py: 0.76, el: 0.46, dist: 1.55, fovY: FOV, tint: [200, 220, 255, 0.1], dust: [175, 178, 182], smoke: [215, 220, 228], glow: [255, 190, 120], bloom: 0.75 },
+    B: { src: 'stationB', iw: 16, ih: 9, px: 0.5, py: 0.64, el: 0.12, dist: 0.85, fovY: FOV, tint: [200, 220, 255, 0.1], dust: [175, 178, 182], smoke: [215, 220, 228], glow: [255, 190, 120], bloom: 0.75 },
   },
 };
 
 /** 몸짓 섹션 — 같은 책상을 폰을 왼쪽으로 옮겨 본 판(같은 방, 생성 이미지) */
-export const DESK_SIDE: Spec = { src: 'deskSide', iw: 16, ih: 9, px: 0.54, py: 0.63, el: 0.5, dist: 0.8, fovY: FOV, yaw: -0.6, tint: [255, 170, 90, 0.12], dust: [150, 120, 92], smoke: [225, 212, 196], glow: [255, 180, 100] };
+export const DESK_SIDE: Spec = { src: 'deskSide', iw: 16, ih: 9, px: 0.54, py: 0.63, el: 0.5, dist: 0.8, fovY: FOV, yaw: -0.6, tint: [255, 170, 90, 0.12], dust: [150, 120, 92], smoke: [225, 212, 196], glow: [255, 180, 100], bloom: 0.5 };
 
 const cache = new Map<string, HTMLImageElement>();
 function load(name: string, onload: () => void) {

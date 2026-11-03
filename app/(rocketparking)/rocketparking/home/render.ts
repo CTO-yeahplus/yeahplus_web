@@ -595,142 +595,400 @@ function mix(a: string, b: string, k: number) {
 }
 
 /** 불꽃만 — 사진 판 위에서는 기체를 색 보정한 뒤 불꽃을 따로 얹는다(불꽃까지 어두워지지 않게) */
-export function drawFlameOnly(ctx: CanvasRenderingContext2D, v: View, pose: Pose, t: number, scale = 1) {
+export function drawFlameOnly(ctx: CanvasRenderingContext2D, v: View, pose: Pose, t: number, scale = 1, bloom = 1) {
   if (!pose.on || pose.th <= 0) return;
   const O = boosterBase(pose);
   const ax: Vec3 = [Math.sin(pose.lean), Math.cos(pose.lean), 0];
-  drawFlame(ctx, v, (u) => add(O, mul(ax, u * scale)), ax, pose, t, scale);
+  drawFlame(ctx, v, (u) => add(O, mul(ax, u * scale)), ax, pose, t, scale, bloom);
 }
 
-function drawFlame(ctx: CanvasRenderingContext2D, v: View, at: (u: number) => Vec3, ax: Vec3, pose: Pose, t: number, scale: number) {
-  const fl = 0.85 + 0.15 * Math.sin(t * 61) * Math.sin(t * 37 + 1);
+/* ─── 화염 — 노즐에서 꼬리까지 겹친 빛 덩어리(흰 심 → 노랑 → 주황 → 붉은 꼬리) · 깜빡임 · 충격파 무늬 ·
+   바닥에 닿으면 사방으로 번지는 불 · 가로로 긴 렌즈 빛 ─── */
+const FLAME_STOPS: [number, number, number, number][] = [
+  // [위치, r, g, b]
+  [0, 255, 252, 240],
+  [0.12, 255, 236, 180],
+  [0.35, 255, 190, 90],
+  [0.6, 255, 128, 44],
+  [1, 200, 60, 26],
+];
+function flameColor(k: number): [number, number, number] {
+  for (let i = 0; i < FLAME_STOPS.length - 1; i++) {
+    const [a, r0, g0, b0] = FLAME_STOPS[i], [b, r1, g1, b1] = FLAME_STOPS[i + 1];
+    if (k <= b) {
+      const m = (k - a) / (b - a);
+      return [r0 + (r1 - r0) * m, g0 + (g1 - g0) * m, b0 + (b1 - b0) * m];
+    }
+  }
+  return [200, 60, 26];
+}
+const nz = (x: number) => Math.sin(x) * 0.5 + Math.sin(x * 2.3 + 1.7) * 0.3 + Math.sin(x * 5.1 + 0.4) * 0.2;
+
+function blob(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, c: [number, number, number], a: number) {
+  if (r < 0.5 || a <= 0.003) return;
+  const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+  g.addColorStop(0, `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${a})`);
+  g.addColorStop(0.45, `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${a * 0.45})`);
+  g.addColorStop(1, `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},0)`);
+  ctx.fillStyle = g;
+  ctx.fillRect(x - r, y - r, r * 2, r * 2);
+}
+
+function drawFlame(ctx: CanvasRenderingContext2D, v: View, at: (u: number) => Vec3, ax: Vec3, pose: Pose, t: number, scale: number, bloom = 1) {
+  const th = pose.th;
+  const fl = 0.86 + 0.14 * nz(t * 31);
   const hAbove = pose.y * SCALE + LIFT;
-  const full = (0.05 + 0.14 * pose.th) * fl * scale;
-  const len = Math.min(full, Math.max(0.006, hAbove + 0.004));
+  const full = (0.06 + 0.17 * th) * fl * scale;
+  const len = Math.min(full, Math.max(0.008, hAbove + 0.004));
   const n0 = v.p(at(0));
   const tip = v.p(add(at(0), mul(ax, -len)));
   const wN = 0.0078 * scale * n0.s;
-  ctx.save();
-  ctx.globalCompositeOperation = 'lighter';
   const dx = tip.x - n0.x, dy = tip.y - n0.y, L = Math.hypot(dx, dy) || 1;
   const nx = -dy / L, ny = dx / L;
-  const lobe = (wk: number, lk: number, c0: string, c1: string) => {
-    const tx = n0.x + dx * lk, ty = n0.y + dy * lk;
-    const g = ctx.createLinearGradient(n0.x, n0.y, tx, ty);
-    g.addColorStop(0, c0);
-    g.addColorStop(1, c1);
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.moveTo(n0.x + nx * wN * wk, n0.y + ny * wN * wk);
-    ctx.quadraticCurveTo(n0.x + dx * lk * 0.45 + nx * wN * wk * 1.6, n0.y + dy * lk * 0.45 + ny * wN * wk * 1.6, tx, ty);
-    ctx.quadraticCurveTo(n0.x + dx * lk * 0.45 - nx * wN * wk * 1.6, n0.y + dy * lk * 0.45 - ny * wN * wk * 1.6, n0.x - nx * wN * wk, n0.y - ny * wN * wk);
-    ctx.closePath();
-    ctx.fill();
-  };
-  lobe(1.9, 1.15, 'rgba(255,140,40,.55)', 'rgba(255,60,20,0)');
-  lobe(1.25, 0.95, 'rgba(255,200,110,.85)', 'rgba(255,120,40,0)');
-  lobe(0.7, 0.6, 'rgba(255,255,240,.95)', 'rgba(170,200,255,0)');
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  // 바깥 빛무리
+  blob(ctx, n0.x + dx * 0.3, n0.y + dy * 0.3, Math.min(v.h * 0.3, wN * (10 + 6 * th)), [255, 140, 60], 0.22 * th * bloom);
+  // 몸통 — 꼬리로 갈수록 넓고 붉게, 덩어리마다 따로 흔들린다
+  const N = 18;
+  for (let i = N - 1; i >= 0; i--) {
+    const k = i / (N - 1);
+    const wob = nz(t * 23 + i * 1.7) * wN * 0.5 * k;
+    const x = n0.x + dx * k + nx * wob, y = n0.y + dy * k + ny * wob;
+    const r = wN * (0.85 + 2.6 * k) * (0.85 + 0.25 * nz(t * 41 + i * 3.1));
+    blob(ctx, x, y, r, flameColor(k), (0.55 - 0.35 * k) * (0.6 + 0.4 * th));
+  }
+  // 흰 심 — 노즐 바로 아래 짧고 밝게
+  for (let i = 0; i < 6; i++) {
+    const k = (i / 5) * 0.32;
+    blob(ctx, n0.x + dx * k, n0.y + dy * k, wN * (0.65 - k), [255, 255, 250], 0.85);
+  }
   // 충격파 다이아몬드
-  for (let i = 1; i <= 3; i++) {
-    const k = i * 0.16;
-    if (k > 0.8) break;
-    ctx.fillStyle = `rgba(255,240,220,${0.5 - i * 0.12})`;
+  for (let i = 1; i <= 4; i++) {
+    const k = i * 0.13;
+    ctx.fillStyle = `rgba(255,236,210,${(0.42 - i * 0.08) * th})`;
     ctx.beginPath();
-    ctx.ellipse(n0.x + dx * k, n0.y + dy * k, wN * 0.45, wN * 0.25, Math.atan2(ny, nx), 0, Math.PI * 2);
+    ctx.ellipse(n0.x + dx * k, n0.y + dy * k, wN * 0.42, wN * 0.2, Math.atan2(ny, nx), 0, Math.PI * 2);
     ctx.fill();
   }
-  // 노즐 빛
-  const g = ctx.createRadialGradient(n0.x, n0.y, 0, n0.x, n0.y, wN * 9);
-  g.addColorStop(0, `rgba(255,190,110,${0.35 * pose.th})`);
-  g.addColorStop(1, 'rgba(255,120,40,0)');
-  ctx.fillStyle = g;
-  ctx.beginPath();
-  ctx.arc(n0.x, n0.y, wN * 9, 0, Math.PI * 2);
-  ctx.fill();
-  // 바닥에 닿은 불꽃이 퍼진다
+  // 렌즈 빛 — 노즐을 지나는 가로 줄
+  const fw = wN * (26 + 20 * th);
+  const lg = ctx.createLinearGradient(n0.x - fw, 0, n0.x + fw, 0);
+  lg.addColorStop(0, 'rgba(255,170,90,0)');
+  lg.addColorStop(0.5, `rgba(255,214,170,${0.32 * th})`);
+  lg.addColorStop(1, 'rgba(255,170,90,0)');
+  ctx.fillStyle = lg;
+  ctx.fillRect(n0.x - fw, n0.y + dy * 0.12 - wN * 0.18, fw * 2, wN * 0.36 * bloom);
+  // 바닥에 닿은 불 — 납작한 빛 판 + 사방으로 기어 나가는 불 혀
   if (full > hAbove) {
-    const c = v.p([pose.x * SCALE, 0.001, pose.z ?? 0]);
-    const spread = (full - hAbove) * 1.8 * c.s;
-    const sg = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, spread);
-    sg.addColorStop(0, 'rgba(255,230,180,.7)');
-    sg.addColorStop(0.5, 'rgba(255,140,50,.35)');
-    sg.addColorStop(1, 'rgba(255,100,30,0)');
-    ctx.fillStyle = sg;
-    ctx.beginPath();
-    ctx.ellipse(c.x, c.y, spread, spread * clamp(Math.sin(v.cam.el), 0.15, 1), 0, 0, Math.PI * 2);
-    ctx.fill();
+    const over = full - hAbove;
+    const gx = pose.x * SCALE, gz = pose.z ?? 0;
+    const c = v.p([gx, 0.001, gz]);
+    const flat = clamp(Math.sin(v.cam.el), 0.12, 1);
+    const R = (0.03 + over * 2.4) * c.s;
+    ctx.save();
+    ctx.translate(c.x, c.y);
+    ctx.scale(1, flat);
+    blob(ctx, 0, 0, R, [255, 226, 170], 0.6 * bloom);
+    blob(ctx, 0, 0, R * 1.9, [255, 130, 50], 0.25 * bloom);
+    ctx.restore();
+    const J = 12;
+    for (let j = 0; j < J; j++) {
+      const a = (j / J) * Math.PI * 2 + nz(t * 3 + j) * 0.25;
+      const reach = (0.04 + over * (2.2 + 1.4 * (0.5 + 0.5 * nz(t * 17 + j * 2.7)))) ;
+      for (let m = 1; m <= 4; m++) {
+        const k = m / 4;
+        const p = v.p([gx + Math.cos(a) * reach * k, 0.004 + k * 0.006, gz + Math.sin(a) * reach * k]);
+        blob(ctx, p.x, p.y, (0.012 + 0.02 * k) * p.s, flameColor(0.25 + k * 0.6), 0.32 * (1 - k * 0.6) * (0.5 + 0.5 * bloom));
+      }
+    }
   }
   ctx.restore();
 }
 
-/* ─── 입자 — 태어난 시각 · 자리만 기억하고, 그리는 순간 위치를 계산한다(휠로 되감아도 같은 그림) ─── */
-export type Puff = { ts: number; x: number; y: number; kind: 0 | 1 | 2; seed: number; pow: number };
+/* ─── 입자 — 태어난 시각 · 자리만 기억하고, 그리는 순간 위치를 계산한다(휠로 되감아도 같은 그림)
+   kind 0 바닥 먼지(분사가 바닥을 때려 번지는 것) · 1 공중 연기(지나온 자리에 남는 줄기) · 2 접지 먼지 폭발
+   3 불티(가산 · 짧은 줄) · 4 파편(어두운 알갱이 · 포물선 · 떨어져 미끄러짐) · 5 접지 충격 고리 ─── */
+export type Puff = { ts: number; x: number; y: number; kind: 0 | 1 | 2 | 3 | 4 | 5; seed: number; pow: number };
+
+/** 화면이 작거나 픽셀이 많으면 입자를 덜 그린다(1 = 전부) */
+let density = 1;
+export function setFxDensity(d: number) {
+  density = clamp(d, 0.25, 1);
+}
 
 export function emit(list: Puff[], t: number, f: { x: number; y: number; th: number; on: boolean }, n: number, seed: number) {
-  if (!f.on || f.th <= 0) return;
+  if (!f.on || f.th <= 0 || n <= 0) return;
   const hy = f.y * SCALE + LIFT;
-  for (let i = 0; i < n; i++) list.push({ ts: t, x: f.x * SCALE, y: hy, kind: hy < 0.2 ? 0 : 1, seed: seed * 7 + i, pow: f.th });
+  const x = f.x * SCALE;
+  const push = (kind: Puff['kind'], k: number, y = hy) => {
+    for (let i = 0; i < k; i++) list.push({ ts: t, x, y, kind, seed: seed * 31 + kind * 1009 + i, pow: f.th });
+  };
+  push(1, 2 * n); // 지나온 자리 연기
+  push(3, 2 * n); // 불티
+  const near = clamp(1 - hy / 0.38); // 바닥에 가까울수록
+  if (near > 0) {
+    push(0, Math.round(11 * n * f.th * near + 1), 0);
+    push(4, Math.round(7 * n * f.th * near), 0);
+  }
 }
 export function burst(list: Puff[], t: number, x: number, n: number, seed: number) {
-  for (let i = 0; i < n; i++) list.push({ ts: t, x: x * SCALE, y: 0.005, kind: 2, seed: seed * 13 + i, pow: 1 });
+  const X = x * SCALE;
+  for (let i = 0; i < n * 6; i++) list.push({ ts: t, x: X, y: 0.004, kind: 2, seed: seed * 13 + i, pow: 1 });
+  for (let i = 0; i < n * 4; i++) list.push({ ts: t, x: X, y: 0, kind: 4, seed: seed * 17 + 5000 + i, pow: 1.3 });
+  list.push({ ts: t, x: X, y: 0, kind: 5, seed, pow: 1 });
 }
 
-export function drawPuffs(ctx: CanvasRenderingContext2D, v: View, list: Puff[], t: number, place: Place, dustRGB?: number[], smokeRGB?: number[]) {
+/* 구름 스프라이트 — 값 노이즈 fBm × 둥근 감쇠. 네 가지 모양을 한 번 만들고 색마다 칠한 사본을 둔다 */
+const sprites: HTMLCanvasElement[] = [];
+const tinted = new Map<string, HTMLCanvasElement>();
+function makeSprites() {
+  if (sprites.length || typeof document === 'undefined') return;
+  const S = 96;
+  for (let vtx = 0; vtx < 4; vtx++) {
+    const c = document.createElement('canvas');
+    c.width = c.height = S;
+    const g = c.getContext('2d')!;
+    const d = g.createImageData(S, S);
+    const rnd = (ix: number, iy: number, o: number) => hash(ix * 57.1 + iy * 131.7 + o * 17.3 + vtx * 977);
+    const vn = (x: number, y: number, o: number) => {
+      const ix = Math.floor(x), iy = Math.floor(y), fx = x - ix, fy = y - iy;
+      const sx = fx * fx * (3 - 2 * fx), sy = fy * fy * (3 - 2 * fy);
+      const a = rnd(ix, iy, o), b = rnd(ix + 1, iy, o), c2 = rnd(ix, iy + 1, o), e = rnd(ix + 1, iy + 1, o);
+      return a + (b - a) * sx + (c2 - a) * sy + (a - b - c2 + e) * sx * sy;
+    };
+    for (let y = 0; y < S; y++)
+      for (let x = 0; x < S; x++) {
+        const u = x / S - 0.5, w = y / S - 0.5;
+        const r = Math.hypot(u, w) * 2;
+        let n = 0, amp = 0.5, fr = 3;
+        for (let o = 0; o < 4; o++) {
+          n += vn(x / S * fr + 10, y / S * fr + 10, o) * amp;
+          amp *= 0.5;
+          fr *= 2;
+        }
+        const edge = clamp(1 - r * (0.75 + 0.5 * n));
+        const a = Math.pow(edge, 1.25) * (0.35 + 0.95 * n * n * 1.6);
+        const i = (y * S + x) * 4;
+        const shade = 200 + 55 * (1 - w * 1.2) * n; // 위가 밝고 아래가 어둡다
+        d.data[i] = d.data[i + 1] = d.data[i + 2] = Math.min(255, shade);
+        d.data[i + 3] = Math.round(clamp(a) * 255);
+      }
+    g.putImageData(d, 0, 0);
+    sprites.push(c);
+  }
+}
+/** 색을 입힌 구름 한 장 — 하루 섹션(발사 연기 기둥)도 쓴다 */
+export function cloudSprite(variant: number, rgb: number[]): HTMLCanvasElement | null {
+  makeSprites();
+  if (!sprites.length) return null;
+  const vi = ((variant % 4) + 4) % 4;
+  const key = `${vi}:${rgb[0] | 0},${rgb[1] | 0},${rgb[2] | 0}`;
+  let c = tinted.get(key);
+  if (!c) {
+    c = document.createElement('canvas');
+    c.width = c.height = 96;
+    const g = c.getContext('2d')!;
+    g.drawImage(sprites[vi], 0, 0);
+    g.globalCompositeOperation = 'multiply';
+    g.fillStyle = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+    g.fillRect(0, 0, 96, 96);
+    g.globalCompositeOperation = 'destination-in';
+    g.drawImage(sprites[vi], 0, 0);
+    tinted.set(key, c);
+  }
+  return c;
+}
+
+export function drawPuffs(
+  ctx: CanvasRenderingContext2D,
+  v: View,
+  list: Puff[],
+  t: number,
+  place: Place,
+  dustRGB?: number[],
+  smokeRGB?: number[],
+  light?: { x: number; y: number; z: number; power: number } | null,
+  pass: { split: number; side: 'back' | 'front' } | null = null,
+) {
+  const keep = (z: number) => !pass || (pass.side === 'back' ? z > pass.split : z <= pass.split);
+  const capR = ctx.canvas.height * 0.16;
   const dust = dustRGB ?? (place === 'desk' ? [120, 100, 84] : place === 'bench' ? [150, 130, 120] : [175, 180, 186]);
-  const items: { z: number; fn: () => void }[] = [];
+  const smoke = smokeRGB ?? [205, 200, 196];
+  const grit = [Math.max(0, dust[0] - 70), Math.max(0, dust[1] - 70), Math.max(0, dust[2] - 70)];
+  const flat = clamp(Math.sin(v.cam.el), 0.15, 1);
+  type Item = { z: number; fn: () => void };
+  const clouds: Item[] = [], adds: (() => void)[] = [], grits: (() => void)[] = [];
   for (const p of list) {
     const age = t - p.ts;
-    const life = p.kind === 2 ? 2.8 : 1.9;
-    if (age < 0 || age > life) continue;
+    if (age < 0) continue;
+    if (hash(p.seed + 0.37) > density && p.kind !== 5) continue;
     const a1 = hash(p.seed) * Math.PI * 2;
-    const r1 = hash(p.seed + 1);
-    // 아래로 뿜어져 → 바닥에 닿으면 옆으로 퍼진다
-    let x = p.x, y = p.y, z = 0;
-    let size: number;
-    if (p.kind === 2) {
-      const d = (0.06 + 0.22 * r1) * (1 - Math.exp(-age * 1.6));
-      x += Math.cos(a1) * d;
-      z += Math.sin(a1) * d;
-      y = 0.004 + age * 0.012 * (0.5 + r1);
-      size = 0.012 + age * 0.03;
-    } else {
-      const vy = 0.9 * (0.6 + p.pow);
-      const tg = p.y / vy;
-      if (age < tg) {
-        y = p.y - vy * age;
-        x += Math.cos(a1) * 0.01 * age;
-        z += Math.sin(a1) * 0.01 * age;
-        size = 0.006 + age * 0.02;
-      } else {
-        const a = age - tg;
-        const d = (0.08 + 0.16 * r1) * (1 - Math.exp(-a * 2.2));
-        x += Math.cos(a1) * d;
-        z += Math.sin(a1) * d;
-        y = 0.004 + a * 0.02 * r1;
-        size = 0.012 + a * 0.035;
+    const r1 = hash(p.seed + 1), r2 = hash(p.seed + 2), r3 = hash(p.seed + 3);
+    if (p.kind === 0 || p.kind === 2) {
+      // 바닥을 따라 굴러 나가며 커지고 위로 말려 오른다
+      const life = p.kind === 2 ? 3 + r3 * 1.6 : 2.2 + r3 * 1.4;
+      if (age > life) continue;
+      const v0 = (p.kind === 2 ? 0.25 + 0.95 * r1 * r1 : 0.18 + 0.6 * r1 * r1) * (0.6 + 0.5 * p.pow);
+      const kk = 1.5 + r2 * 1.3;
+      const d = 0.03 + (v0 / kk) * (1 - Math.exp(-kk * age));
+      const x = p.x + Math.cos(a1) * d, z = Math.sin(a1) * d;
+      const y = 0.004 + age * (0.006 + 0.022 * r2 * r2) + (p.kind === 2 ? 0.003 : 0);
+      const size = (p.kind === 2 ? 0.02 : 0.012) + age * (p.kind === 2 ? 0.034 + 0.05 * r3 : 0.018 + 0.03 * r3);
+      const k = age / life;
+      const alpha = (k < 0.05 ? k / 0.05 : 1) * Math.pow(1 - k, 1.3) * (p.kind === 2 ? 0.44 : 0.26);
+      const q = v.p([x, y, z]);
+      if (!keep(q.z)) continue;
+      const rot = a1 + age * (r2 - 0.5) * 1.4;
+      const spr = cloudSprite(p.seed, dust);
+      const lit = light ? light.power * Math.exp(-Math.hypot(x - light.x, y - light.y, z - light.z) / 0.08) : 0;
+      clouds.push({
+        z: q.z,
+        fn: () => drawSprite(ctx, spr, q.x, q.y, Math.min(capR, size * q.s), rot, alpha, 0.6 + 0.3 * flat, lit),
+      });
+    } else if (p.kind === 1) {
+      // 지나온 자리에 남는 연기 — 아래로 조금 밀리며 부풀고 옅어진다
+      const life = 2.2 + r3 * 1.6;
+      if (age > life) continue;
+      const x = p.x + Math.cos(a1) * (0.004 + age * 0.012) , z = Math.sin(a1) * (0.004 + age * 0.012);
+      const y = Math.max(0.01, p.y - 0.025 - age * (0.05 + 0.04 * r2));
+      const size = 0.008 + age * (0.016 + 0.018 * r1);
+      const k = age / life;
+      const alpha = (k < 0.1 ? k / 0.1 : 1) * Math.pow(1 - k, 1.3) * 0.13;
+      const q = v.p([x, y, z]);
+      if (!keep(q.z)) continue;
+      const spr = cloudSprite(p.seed + 1, smoke);
+      const lit = light ? light.power * Math.exp(-Math.hypot(x - light.x, y - light.y, z - light.z) / 0.1) : 0;
+      clouds.push({ z: q.z, fn: () => drawSprite(ctx, spr, q.x, q.y, Math.min(capR, size * q.s), a1 + age * 0.5, alpha, 1, lit) });
+    } else if (p.kind === 3) {
+      // 불티 — 노즐에서 아래로 튀고 바닥에 닿으면 옆으로 튄다
+      const life = 0.25 + r3 * 0.4;
+      if (age > life) continue;
+      const sp = 0.35 + 0.6 * r1;
+      const vx = Math.cos(a1) * (0.06 + 0.26 * r2), vz = Math.sin(a1) * (0.06 + 0.26 * r2);
+      let y = p.y - 0.02 - sp * age - 0.6 * age * age;
+      let x = p.x + vx * age, z = vz * age;
+      if (y < 0.002) {
+        const tg = Math.max(0, age - p.y / sp);
+        x += vx * tg * 2;
+        z += vz * tg * 2;
+        y = 0.002 + Math.abs(Math.sin(tg * 22)) * 0.006 * (1 - age / life);
       }
-    }
-    const fade = Math.sin(Math.PI * Math.min(1, age / life)) * (p.kind === 2 ? 0.26 : 0.15);
-    const q = v.p([x, y, z]);
-    const rr = size * q.s;
-    const col = p.kind === 1 ? (smokeRGB ?? [210, 205, 200]) : dust;
-    items.push({
-      z: q.z,
-      fn: () => {
-        const g = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, rr);
-        g.addColorStop(0, `rgba(${col[0]},${col[1]},${col[2]},${fade})`);
-        g.addColorStop(1, `rgba(${col[0]},${col[1]},${col[2]},0)`);
-        ctx.fillStyle = g;
+      const q = v.p([x, y, z]);
+      if (!keep(q.z)) continue;
+      const q2 = v.p([x - vx * 0.02, y + sp * 0.012, z - vz * 0.02]);
+      const k = age / life;
+      adds.push(() => {
+        ctx.strokeStyle = `rgba(255,${200 + 55 * (1 - k) | 0},${110 + 90 * (1 - k) | 0},${(1 - k) * 0.85})`;
+        ctx.lineWidth = Math.max(0.7, Math.min(2.2, 0.0011 * q.s));
         ctx.beginPath();
-        ctx.arc(q.x, q.y, rr, 0, Math.PI * 2);
+        ctx.moveTo(q2.x, q2.y);
+        ctx.lineTo(q.x, q.y);
+        ctx.stroke();
+      });
+    } else if (p.kind === 4) {
+      // 파편 — 포물선으로 튀었다가 떨어져 미끄러진다
+      const life = 1.4 + r3 * 1.2;
+      if (age > life) continue;
+      const hv = (0.15 + 0.6 * r1) * p.pow, vy0 = (0.25 + 0.75 * r2) * p.pow;
+      const tLand = (2 * vy0) / 9.8;
+      let x: number, z: number, y: number;
+      if (age < tLand) {
+        x = p.x + Math.cos(a1) * (0.03 + hv * age);
+        z = Math.sin(a1) * (0.03 + hv * age);
+        y = vy0 * age - 4.9 * age * age;
+      } else {
+        const ta = age - tLand;
+        const dd = 0.03 + hv * tLand + (hv * 0.35 / 4) * (1 - Math.exp(-4 * ta));
+        x = p.x + Math.cos(a1) * dd;
+        z = Math.sin(a1) * dd;
+        y = 0;
+      }
+      const q = v.p([x, Math.max(0.001, y), z]);
+      if (!keep(q.z)) continue;
+      const sz = Math.max(0.7, Math.min(4, (0.0006 + 0.0022 * r3 * r3 * r3) * q.s));
+      const k = age / life;
+      const al = k > 0.75 ? (1 - k) / 0.25 : 1;
+      const spin = a1 + age * (6 + 10 * r2);
+      grits.push(() => {
+        ctx.save();
+        ctx.translate(q.x, q.y);
+        ctx.rotate(spin);
+        ctx.globalAlpha = al;
+        const lite = r1 > 0.85 ? 50 : -20 * r2; // 대부분 어두운 알갱이, 몇 개만 밝은 돌가루
+        const gc = (c: number) => Math.max(0, Math.round(c + lite));
+        ctx.fillStyle = `rgb(${gc(grit[0])},${gc(grit[1])},${gc(grit[2])})`;
+        ctx.beginPath(); // 알갱이 — 고르지 않은 세모
+        ctx.moveTo(-sz, -sz * 0.4);
+        ctx.lineTo(sz * (0.6 + r1 * 0.6), -sz * 0.7);
+        ctx.lineTo(sz * (0.2 + r2 * 0.5), sz * 0.8);
+        ctx.closePath();
         ctx.fill();
-      },
-    });
+        ctx.restore();
+      });
+    } else if (p.kind === 5) {
+      // 접지 충격 고리 — 바닥을 쓸고 나가는 옅은 고리
+      const life = 0.9;
+      if (age > life) continue;
+      const k = age / life;
+      const R = 0.05 + 0.32 * (1 - Math.pow(1 - k, 2.2));
+      const c = v.p([p.x, 0.002, 0]);
+      if (!keep(c.z)) continue;
+      const rr = R * c.s;
+      clouds.push({
+        z: c.z + 1,
+        fn: () => {
+          ctx.save();
+          ctx.translate(c.x, c.y);
+          ctx.scale(1, flat);
+          const g = ctx.createRadialGradient(0, 0, rr * 0.7, 0, 0, rr);
+          g.addColorStop(0, `rgba(${dust[0]},${dust[1]},${dust[2]},0)`);
+          g.addColorStop(0.8, `rgba(${dust[0]},${dust[1]},${dust[2]},${0.45 * (1 - k)})`);
+          g.addColorStop(1, `rgba(${dust[0]},${dust[1]},${dust[2]},0)`);
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(0, 0, rr, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        },
+      });
+    }
   }
-  items.sort((a, b) => b.z - a.z).forEach((i) => i.fn());
+  grits.forEach((f) => f());
+  clouds.sort((a, b) => b.z - a.z).forEach((i) => i.fn());
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  adds.forEach((f) => f());
+  ctx.restore();
+}
+
+function drawSprite(ctx: CanvasRenderingContext2D, spr: HTMLCanvasElement | null, x: number, y: number, r: number, rot: number, alpha: number, squash: number, lit: number) {
+  if (!spr || r < 0.6 || alpha <= 0.004) return;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(rot);
+  ctx.scale(1, squash);
+  ctx.globalAlpha = Math.min(1, alpha);
+  ctx.drawImage(spr, -r, -r, r * 2, r * 2);
+  if (lit > 0.02) {
+    // 엔진 빛을 받은 쪽 — 주황으로 더한다
+    const warm = cloudSprite(3, [255, 150, 70]);
+    if (warm) {
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = Math.min(0.55, lit * alpha * 1.3);
+      ctx.drawImage(warm, -r, -r, r * 2, r * 2);
+    }
+  }
+  ctx.restore();
 }
 
 /** 장면 하나를 그린다 — 배경 · 패드 · 그림자 · 입자 · 기체 */
+/** 엔진이 켜져 있으면 노즐 아래 빛 — 연기 · 먼지의 그쪽 면을 주황으로 */
+function engineLight(p: Pose) {
+  if (!p.on || p.th <= 0) return null;
+  return { x: p.x * SCALE, y: Math.max(0.01, p.y * SCALE), z: p.z ?? 0, power: p.th };
+}
+
 /* ─── 사진 판 — 폰 카메라가 보는 실제 장소 ─── */
 export type Plate = {
   img: HTMLImageElement | null; // 아직 안 받았으면 null → 그림 배경으로
@@ -746,6 +1004,7 @@ export type Plate = {
   dust: number[];
   smoke: number[];
   glow: [number, number, number]; // 엔진 빛이 바닥을 비추는 색
+  bloom?: number; // 밝은 장소일수록 낮춘다(빛 번짐이 사진을 하얗게 덮지 않게)
 };
 
 export type PlateCam = { zoom: number; look: number; anchorY?: number }; // look 0…1 = 위로 올려다보는 정도
@@ -801,22 +1060,25 @@ function drawOnPlate(
   const { width: cw, height: ch } = ctx.canvas;
   ctx.drawImage(pl.img!, rect.ox, rect.oy, rect.W, rect.H);
   const hAbove = o.pose.y * SCALE;
-  const glow = o.pose.on ? o.pose.th * clamp(1 - hAbove / 0.5) : 0;
+  const bloom = pl.bloom ?? 1;
+  const glow = (o.pose.on ? o.pose.th * clamp(1 - hAbove / 0.5) : 0) * bloom;
   // 엔진 빛이 실제 바닥을 비춘다(사진 위에 더하기)
   if (glow > 0.01) {
     const c = v.p([o.pose.x * SCALE, 0, o.pose.z ?? 0]);
     const rr = 0.26 * c.s;
     const g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, rr);
     const [r, gg, b] = pl.glow;
-    g.addColorStop(0, `rgba(${r},${gg},${b},${0.55 * glow})`);
-    g.addColorStop(0.35, `rgba(${r},${gg},${b},${0.2 * glow})`);
+    g.addColorStop(0, `rgba(${r},${gg},${b},${0.42 * glow})`);
+    g.addColorStop(0.35, `rgba(${r},${gg},${b},${0.16 * glow})`);
     g.addColorStop(1, `rgba(${r},${gg},${b},0)`);
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
+    // 바닥에 누운 빛 — 원 그라디언트를 납작하게 눌러 가장자리 선이 생기지 않게
+    ctx.translate(c.x, c.y);
+    ctx.scale(1, clamp(Math.sin(v.cam.el) + 0.1, 0.2, 1));
+    ctx.translate(-c.x, -c.y);
     ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.ellipse(c.x, c.y, rr, rr * clamp(Math.sin(v.cam.el) + 0.1, 0.2, 1), 0, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.fillRect(c.x - rr, c.y - rr, rr * 2, rr * 2);
     ctx.restore();
   }
   // 합성할 물건은 따로 그려 장소 빛을 입힌다
@@ -860,12 +1122,12 @@ function drawOnPlate(
     lc.fillRect(0, 0, cw, ch);
   }
   lc.globalCompositeOperation = 'source-over';
+  // 기체보다 먼 입자는 기체 뒤에, 가까운 입자는 앞에
+  const split = v.p(boosterBase(o.pose)).z;
+  drawPuffs(ctx, v, o.puffs, o.t, 'desk', pl.dust, pl.smoke, engineLight(o.pose), { split, side: 'back' });
   ctx.drawImage(L, 0, 0);
-  drawFlameOnly(ctx, v, o.pose, o.clock);
-  ctx.save();
-  ctx.globalAlpha = 0.6; // 사진 위에서는 연기 · 먼지를 옅게 — 진하면 장면 전체가 뿌옇게 덮인다
-  drawPuffs(ctx, v, o.puffs, o.t, 'desk', pl.dust, pl.smoke);
-  ctx.restore();
+  drawFlameOnly(ctx, v, o.pose, o.clock, 1, bloom);
+  drawPuffs(ctx, v, o.puffs, o.t, 'desk', pl.dust, pl.smoke, engineLight(o.pose), { split, side: 'front' });
   // 폰 카메라 느낌 — 그레인 · 비네트
   ctx.save();
   ctx.globalAlpha = 0.045;
@@ -918,5 +1180,5 @@ export function drawFrame(
   if (o.parked != null) drawBooster(ctx, v, { x: o.parked, y: 0, lean: 0, legs: 1, th: 0, on: false, soot: 0.4 }, clock, { hull: '#d8d4cc', accent: '#9aa0a6' });
   // 입자는 기체 뒤 · 앞을 섞어야 하지만, 대부분 바닥이라 기체 앞에 한 번에 그려도 자연스럽다
   drawBooster(ctx, v, o.pose, clock, o.liv);
-  drawPuffs(ctx, v, o.puffs, o.t, o.place);
+  drawPuffs(ctx, v, o.puffs, o.t, o.place, undefined, undefined, engineLight(o.pose));
 }
