@@ -396,3 +396,13 @@ ul.sb-bullets li::before{content:"";position:absolute;left:0;top:.72em;width:6px
   .sb-page *,.sb-page *::before,.sb-page *::after{animation-duration:.001ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
   .sb-tip,.sb-strap-hint b,.sb-scrollcue i,.sb-cairn-new{animation:none!important}
 }
+
+/* 05 보내기 — 연말 결산 카드 · 함께 오른 사람에게(앱 §19) */
+.sb-more { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; }
+.sb-more-card { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.sb-more-card canvas { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 14px 30px rgba(0,0,0,.28); transform: rotate(-1.2deg); transition: transform .5s cubic-bezier(.2,.9,.2,1); }
+.sb-more-card:nth-child(2) canvas { transform: rotate(1.4deg); }
+.sb-more-card:hover canvas { transform: rotate(0) translateY(-6px) scale(1.02); }
+.sb-more-card figcaption { display: flex; flex-direction: column; gap: 4px; font-size: 13px; line-height: 1.5; opacity: .85; }
+.sb-more-card figcaption b { font-size: 15px; opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .sb-more-card canvas { transition: none; } }

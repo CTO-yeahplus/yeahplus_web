@@ -932,6 +932,93 @@ export function yearCover(a: { year: number; owner: string; climbs: number; summ
   return cv;
 }
 
+/* ───────── 연말 결산 카드 · 함께 오른 사람에게 (앱 render.js recap · companion, GDD §19) ───────── */
+function kraft(x: Ctx, w: number, h: number, seed: string | number) {
+  const g = x.createRadialGradient(w * 0.7, h * 0.1, 40, w * 0.6, h * 0.4, h * 1.1);
+  g.addColorStop(0, '#D6B78B'); g.addColorStop(0.6, '#C29E6C'); g.addColorStop(1, '#AE8757');
+  x.fillStyle = g; x.fillRect(0, 0, w, h);
+  const R0 = rng('kraft' + seed);
+  x.save(); x.globalAlpha = 0.07; x.strokeStyle = '#fff'; x.lineWidth = 1.2;
+  for (let i = 0; i < 260; i++) { const px = R0() * w, py = R0() * h, l = 6 + R0() * 18, an = 2 + R0() * 0.5; x.beginPath(); x.moveTo(px, py); x.lineTo(px + Math.cos(an) * l, py + Math.sin(an) * l); x.stroke(); }
+  x.restore();
+  x.save(); x.strokeStyle = 'rgba(92,70,48,.55)'; x.lineWidth = 3; x.setLineDash([16, 14]); x.beginPath(); x.moveTo(26, 10); x.lineTo(26, h - 10); x.stroke(); x.restore();
+}
+function paperLabel(x: Ctx, rx: number, ry: number, rw: number, rh: number, rot: number) {
+  x.save(); x.translate(rx + rw / 2, ry + rh / 2); x.rotate(rot);
+  x.shadowColor = 'rgba(60,40,15,.25)'; x.shadowBlur = 18; x.shadowOffsetY = 6;
+  x.fillStyle = '#F4EEDF'; x.fillRect(-rw / 2, -rh / 2, rw, rh); x.shadowColor = 'transparent';
+  x.strokeStyle = '#b9a98a'; x.lineWidth = 2; x.strokeRect(-rw / 2, -rh / 2, rw, rh); x.restore();
+}
+export type RecapClimb = { summit: Summit; ink: string; season: Season; at: Date; id: string };
+export type RecapArgs = { year: number; owner: string; list: RecapClimb[]; strip: { h: number; ink: string | null; now: boolean }[]; done: number };
+/** 연말 결산 카드 1080×1350 */
+export function recap(a: RecapArgs, canvas: HTMLCanvasElement) {
+  const [cv, x] = sized(canvas, PW, PH), W = PW, H = PH, st: St = { overflow: false };
+  kraft(x, W, H, a.year);
+  paperLabel(x, 70, 64, 800, 200, -0.02);
+  x.save(); x.translate(470, 164); x.rotate(-0.02); x.fillStyle = '#23211D'; x.textAlign = 'left'; x.textBaseline = 'alphabetic';
+  x.font = `900 84px ${FONT}`; x.fillText(`${a.year} 산행 결산`, -370, 0);
+  x.font = `italic 700 34px ${FONT}`; x.fillStyle = '#5b544a'; x.fillText(a.owner ? `${a.owner}의 한 해` : '올해의 수첩', -370, 62); x.restore();
+  const L = a.list, summits = new Set(L.map((c) => c.summit.id)).size, sum = L.reduce((s, c) => s + (c.summit.height || 0), 0);
+  const stats: [string, string, string][] = [[`${L.length}`, '번', '정상에 섰다'], [`${summits}`, '곳', '서로 다른 산'], [sum.toLocaleString('ko-KR'), 'm', '정상 높이를 더하면']];
+  stats.forEach(([n, u, cap], i) => {
+    const bx = 70 + i * 320; x.textAlign = 'left'; x.fillStyle = '#2a2016';
+    let s = 96; x.font = `900 ${s}px ${FONT}`; while (x.measureText(n).width > 250 && s > 50) { s -= 4; x.font = `900 ${s}px ${FONT}`; }
+    x.fillText(n, bx, 400); const w = x.measureText(n).width;
+    x.font = `800 38px ${FONT}`; x.fillText(u, bx + w + 6, 400);
+    x.font = `700 28px ${FONT}`; x.fillStyle = 'rgba(42,32,22,.7)'; x.fillText(cap, bx, 446);
+  });
+  const hi = L.slice().sort((p, q) => q.summit.height - p.summit.height)[0];
+  if (hi) { x.font = `700 32px ${FONT}`; x.fillStyle = '#2a2016'; x.textAlign = 'left'; x.fillText(fit(x, `가장 높았던 곳 · ${hi.summit.name} ${hi.summit.height.toLocaleString('ko-KR')}m · ${dotDate(hi.at)}`, 940, 32, 24, 700, st), 70, 512); }
+  const many = L.length > 18, show = many ? L.slice(-17) : L, n0 = show.length + (many ? 1 : 0);
+  const cols = n0 <= 3 ? Math.max(1, n0) : n0 <= 8 ? Math.ceil(n0 / 2) : 6, rows = Math.ceil(n0 / cols), cw = 940 / cols, ch = 420 / rows, top = 556;
+  const rr = Math.min(n0 <= 3 ? 130 : 96, cw * 0.4, ch * 0.42);
+  show.forEach((c, i) => {
+    const inRow = Math.min(cols, n0 - Math.floor(i / cols) * cols), cx = 70 + (940 - inRow * cw) / 2 + ((i % cols) + 0.5) * cw, cy = top + (Math.floor(i / cols) + 0.5) * ch;
+    stampOn(x, cx, cy, rr, { summit: c.summit, ink: c.ink, sheet: n0 > 3, inkSeed: c.id, date: n0 <= 3 ? dotDate(c.at) : undefined });
+  });
+  if (many) { const cx = 70 + (17 % cols + 0.5) * cw, cy = top + (Math.floor(17 / cols) + 0.5) * ch; x.fillStyle = '#2a2016'; x.font = `900 44px ${FONT}`; x.textAlign = 'center'; x.fillText(`+${L.length - 17}`, cx, cy + 14); }
+  const months: string[][] = Array.from({ length: 12 }, () => []); L.forEach((c) => months[c.at.getMonth()].push(c.ink));
+  const mw = 940 / 12, mb = 1060;
+  months.forEach((inks, m) => {
+    const mx = 70 + (m + 0.5) * mw;
+    inks.slice(0, 5).forEach((ink, k) => { x.fillStyle = ink; x.beginPath(); x.arc(mx, mb - 14 - k * 22, 9, 0, 7); x.fill(); });
+    if (inks.length > 5) { x.fillStyle = '#2a2016'; x.font = `800 20px ${FONT}`; x.textAlign = 'center'; x.fillText(`+${inks.length - 5}`, mx, mb - 14 - 5 * 22 + 6); }
+    x.fillStyle = inks.length ? '#2a2016' : 'rgba(42,32,22,.4)'; x.font = `800 22px ${FONT}`; x.textAlign = 'center'; x.fillText(`${m + 1}월`, mx, mb + 26);
+  });
+  let sx = 70; x.textAlign = 'left';
+  SEASONS.forEach((s) => { const n = L.filter((c) => c.season.id === s.id).length; x.fillStyle = s.ink; x.beginPath(); x.arc(sx + 12, 1130, 12, 0, 7); x.fill(); x.fillStyle = '#2a2016'; x.font = `800 28px ${FONT}`; const tt = `${s.name} ${n}`; x.fillText(tt, sx + 32, 1140); sx += 32 + x.measureText(tt).width + 40; });
+  const n = a.strip.length, sw = 940 / n, hs = a.strip.map((s) => s.h), lo = Math.min(...hs), hh = Math.max(...hs);
+  a.strip.forEach((s, i) => { const bh = 8 + ((s.h - lo) / (hh - lo || 1)) * 52; x.fillStyle = s.now && s.ink ? s.ink : s.ink ? '#5c4630' : 'rgba(60,40,18,.18)'; x.fillRect(70 + i * sw + sw * 0.15, 1250 - bh, sw * 0.7, bh); });
+  x.fillStyle = '#2a2016'; x.font = `800 28px ${FONT}`; x.textAlign = 'left'; x.fillText('100대 명산', 70, 1292);
+  x.textAlign = 'right'; x.font = `900 30px ${FONT}`; x.fillText(`수첩 ${a.done} / 100`, W - 70, 1292);
+  brandLine(x, W / 2, H - 18, { size: 22, color: 'rgba(42,32,22,.6)' });
+  return cv;
+}
+/** 함께 오른 사람에게 — 그날 쪽을 사진처럼 붙이고 아래 손편지 1080×1350 */
+export function companion(a: PageArgs & { to: string; from: string }, canvas: HTMLCanvasElement) {
+  const [cv, x] = sized(canvas, PW, PH), W = PW, H = PH, f = a.facts, st: St = { overflow: false };
+  x.fillStyle = '#F2ECDF'; x.fillRect(0, 0, W, H);
+  contours(x, W * 0.78, H * 0.86, 14, 26, f.summit.id + 3, '#DCD2BC', 1.4);
+  const pc = page(a, null), pw = 660, ph = (pw * H) / W;
+  x.save(); x.translate(W / 2, 70 + ph / 2 + 16); x.rotate(-0.035);
+  x.shadowColor = 'rgba(0,0,0,.22)'; x.shadowBlur = 28; x.shadowOffsetY = 10; x.fillStyle = '#fff'; x.fillRect(-pw / 2 - 16, -ph / 2 - 16, pw + 32, ph + 32); x.shadowColor = 'transparent';
+  x.drawImage(pc, -pw / 2, -ph / 2, pw, ph);
+  x.fillStyle = 'rgba(232,220,190,.82)';
+  x.save(); x.translate(-pw / 2 + 30, -ph / 2 - 10); x.rotate(-0.5); x.fillRect(-60, -18, 120, 36); x.restore();
+  x.save(); x.translate(pw / 2 - 30, -ph / 2 - 10); x.rotate(0.5); x.fillRect(-60, -18, 120, 36); x.restore();
+  x.restore();
+  const ty = 70 + ph + 112; x.fillStyle = '#23211D'; x.textAlign = 'left'; x.textBaseline = 'alphabetic';
+  x.fillText(fit(x, `${a.to}에게`, 640, 64, 40, 900, st), 90, ty);
+  x.fillStyle = '#4a4339'; x.font = `600 36px ${FONT}`;
+  x.fillText(fit(x, `${f.date}, ${f.summit.name}${f.summit.peak ? ' ' + f.summit.peak : ''} ${f.height}.`, 640, 36, 26, 600, st), 90, ty + 66);
+  x.fillText('함께 정상에 섰던 날.', 90, ty + 118);
+  if (a.from) { x.textAlign = 'right'; x.fillText(fit(x, `— ${a.from}`, 400, 36, 26, 600, st), 700, ty + 182); }
+  if (f.ok) stampOn(x, W - 180, ty + 70, 110, stampOpts(f, a.seasons, a.climb)); else seal(x, W - 180, ty + 70, 96, '#7C7364');
+  brandLine(x, W / 2, H - 22, { size: 22, color: '#7C7364' });
+  return cv;
+}
+
 /* ───────── 소리(합성, 기본 끔) — 도장 쾅 · 돌 톡 · 연필 ───────── */
 let AC: AudioContext | null = null;
 function ac() {
