@@ -706,6 +706,8 @@ export function boosterBase(f: Frame | Pose): Vec3 {
   return [f.x * SCALE, f.y * SCALE + LIFT, (f as Pose).z ?? 0];
 }
 
+const LEG_WHITE = '#e9e7e1';
+
 export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, t: number, liv: Livery = STD, scale = 1, flame = true, cls: VCls = 'standard') {
   const shp = CLASS_SHAPE[cls];
   const R = BR * shp.r; // 동체 반지름
@@ -730,6 +732,10 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
   const toCam = norm(sub(v.E, O));
   const depthOf = (p: Vec3) => dot(sub(p, v.E), v.f);
   const dO = depthOf(O);
+  /** 동체 둘레 θ 방향(옆 · 앞뒤) · 그 자리 표면 점 · 카메라 쪽을 보는 정도 */
+  const radial = (th: number): Vec3 => add(mul(side, Math.cos(th)), mul(zed, Math.sin(th)));
+  const surf = (u: number, th: number, rr = R * 1.004) => add(at(u), mul(radial(th), rr * scale));
+  const facing = (th: number) => dot(radial(th), toCam);
 
   const legsBehind: (() => void)[] = [], legsFront: (() => void)[] = [];
   const legCol = '#1d1f23';
@@ -741,27 +747,42 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
     const ang = dep * ((125 * Math.PI) / 180); // 접힘: 동체를 따라 위로 / 펼침: 바깥 · 아래로 125°
     const len = 0.072 * scale;
     const foot = add(hinge, add(mul(ax, Math.cos(ang) * len), mul(dir, Math.sin(ang) * len)));
+    // 히어로 기체(앱 4단계, 2026-11-04): 흰 복합재 지주 + 크롬 유압 피스톤 + 둥근 검은 발판
     const draw = () => {
       const a2 = v.p(hinge), b2 = v.p(foot);
-      ctx.strokeStyle = legCol;
+      const w = Math.max(1.4, 0.0046 * scale * a2.s);
       ctx.lineCap = 'round';
-      ctx.lineWidth = Math.max(1.2, 0.0042 * scale * a2.s);
+      ctx.strokeStyle = legCol; // 테두리
+      ctx.lineWidth = w + 1.2;
       ctx.beginPath();
       ctx.moveTo(a2.x, a2.y);
       ctx.lineTo(b2.x, b2.y);
       ctx.stroke();
-      const mid = add(hinge, mul(sub(foot, hinge), 0.55));
+      ctx.strokeStyle = shade(LEG_WHITE, -0.25 * (1 - Math.max(0, dot(dir, toCam))));
+      ctx.lineWidth = w;
+      ctx.stroke();
+      // 크롬 피스톤 — 지주 옆을 따라 동체에서 지주 가운데까지
+      const mid = add(hinge, mul(sub(foot, hinge), 0.62));
       const strut = add(at(HINGE + 0.03), mul(dir, R * scale));
       const m2 = v.p(mid), s2 = v.p(strut);
-      ctx.lineWidth = Math.max(0.8, 0.0022 * scale * a2.s);
+      ctx.strokeStyle = '#2a2c30';
+      ctx.lineWidth = Math.max(1, 0.0026 * scale * a2.s) + 1;
       ctx.beginPath();
       ctx.moveTo(s2.x, s2.y);
       ctx.lineTo(m2.x, m2.y);
       ctx.stroke();
+      ctx.strokeStyle = '#cfd4da';
+      ctx.lineWidth = Math.max(0.8, 0.0026 * scale * a2.s);
+      ctx.stroke();
+      // 힌지 금속 덩어리
+      ctx.fillStyle = '#3a3c41';
+      ctx.beginPath();
+      ctx.arc(a2.x, a2.y, Math.max(1, 0.0032 * scale * a2.s), 0, Math.PI * 2);
+      ctx.fill();
       if (dep > 0.95) {
-        ctx.fillStyle = '#111';
+        ctx.fillStyle = '#141518';
         ctx.beginPath();
-        ctx.ellipse(b2.x, b2.y, 0.006 * scale * b2.s, 0.006 * scale * b2.s * k, 0, 0, Math.PI * 2);
+        ctx.ellipse(b2.x, b2.y, 0.0075 * scale * b2.s, 0.0075 * scale * b2.s * k, 0, 0, Math.PI * 2);
         ctx.fill();
       }
     };
@@ -809,10 +830,94 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
   // 노즐 — 쌍발은 둘
   const bells: Vec3[] = cls === 'twin' ? [mul(side, -R * 0.46 * scale), mul(side, R * 0.46 * scale)] : [[0, 0, 0]];
   const bellK = cls === 'twin' ? 0.62 : 1;
-  for (const b of [...bells].sort((p, q) => depthOf(add(O, q)) - depthOf(add(O, p)))) sec(0, 0.018, 0.0095 * shp.r * bellK, 0.0068 * shp.r * bellK, '#2c2e33', 0.2, b);
-  sec(0.018, 0.04, R, R, '#3b3d42', 0.2);
-  sec(0.04, 0.062, R, R, '#5a5048', 0.2);
+  // 엔진(앱 4단계): 무광 금속 종 + 구리빛 출구 테 · 그 위 열린 엔진 칸(터보펌프 덩어리 + 금빛 · 은빛 배관) · 얇은 추력판
+  for (const b of [...bells].sort((p, q) => depthOf(add(O, q)) - depthOf(add(O, p)))) {
+    sec(0, 0.02, 0.0105 * shp.r * bellK, 0.0058 * shp.r * bellK, '#3a3b40', 0.3, b);
+    sec(0, 0.0022, 0.0106 * shp.r * bellK, 0.0102 * shp.r * bellK, '#b0643a', 0.45, b);
+  }
+  sec(0.02, 0.043, R * 0.5, R * 0.6, '#26272b', 0.35);
+  for (let i = 0; i < 9; i++) {
+    const th = (i / 9) * Math.PI * 2 + 0.3;
+    const f = facing(th);
+    if (f <= 0.05) continue;
+    const gold = i % 3 !== 1;
+    const p0 = v.p(surf(0.021, th, R * 0.56)), p1 = v.p(surf(0.03 + 0.004 * (i % 3), th + 0.25, R * 0.7)), p2 = v.p(surf(0.042, th + 0.25, R * 0.74));
+    ctx.strokeStyle = shade(gold ? '#c9a24a' : '#a7adb4', -0.5 * (1 - f));
+    ctx.lineWidth = Math.max(0.6, (gold ? 0.0008 : 0.0013) * scale * p0.s);
+    ctx.beginPath();
+    ctx.moveTo(p0.x, p0.y);
+    ctx.quadraticCurveTo(p1.x, p1.y, p2.x, p2.y);
+    ctx.stroke();
+  }
+  sec(0.043, 0.0455, R * 1.04, R * 1.04, '#34363b', 0.25);
+  sec(0.0455, 0.062, R, R, '#5a5048', 0.2);
+  // 에어브레이크 꽃잎 넷(앱 4단계 — 격자 핀 대신): 코 아래 동체를 따라 눕고 아래 끝이 힌지, 6° 벌림. 동체 뒤쪽 것은 동체보다 먼저
+  const petal = (th: number) => {
+    const n = 10, pts: { x: number; y: number }[] = [], back: { x: number; y: number }[] = [];
+    const tan = add(mul(side, -Math.sin(th)), mul(zed, Math.cos(th)));
+    const u0 = hEnd - 0.032 * shp.h, u1 = hEnd + 0.014 * shp.nose;
+    for (let j = 0; j <= n; j++) {
+      const tt = j / n, u = u0 + (u1 - u0) * tt;
+      const rr = u <= hEnd ? R * (1.07 + 0.1 * tt) : R * (1.1 - 0.5 * (u - hEnd) / (top - hEnd)) + 0.0006;
+      const c = add(at(u), mul(radial(th), rr * scale));
+      const w = 0.0062 * scale * Math.pow(Math.sin(Math.PI * Math.min(1, tt * 1.08)), 0.55) + 0.0012 * scale * (1 - tt);
+      pts.push(v.p(add(c, mul(tan, w))));
+      back.unshift(v.p(add(c, mul(tan, -w))));
+    }
+    const f = facing(th);
+    ctx.beginPath();
+    [...pts, ...back].forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+    ctx.closePath();
+    ctx.fillStyle = shade(LEG_WHITE, -0.6 * (1 - Math.max(0, f)) - 0.05);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(30,32,36,.55)';
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+    const h = v.p(add(at(u0), mul(radial(th), R * 1.05 * scale)));
+    ctx.fillStyle = '#2c2e33';
+    ctx.beginPath();
+    ctx.arc(h.x, h.y, Math.max(0.8, 0.0018 * scale * h.s), 0, Math.PI * 2);
+    ctx.fill();
+  };
+  const petals = [0, 1, 2, 3].map((i) => (i * Math.PI) / 2);
+  for (const th of petals) if (facing(th) < 0) petal(th);
   sec(0.062, hEnd, R, R, hullCol);
+  // 패널 이음매 · 해치(앱 동체 질감) — 카메라 쪽 반만
+  const seam = (u: number) => {
+    let started = false;
+    ctx.beginPath();
+    for (let i = 0; i <= 40; i++) {
+      const th = (i / 40) * Math.PI * 2;
+      const f = facing(th);
+      if (f < 0.04) { started = false; continue; }
+      const p = v.p(surf(u, th));
+      if (!started) { ctx.moveTo(p.x, p.y); started = true; } else ctx.lineTo(p.x, p.y);
+    }
+    ctx.stroke();
+  };
+  ctx.strokeStyle = 'rgba(40,42,48,.28)';
+  ctx.lineWidth = 0.7;
+  for (const u of [0.088, 0.134, 0.182]) seam(U(u));
+  for (let i = 0; i < 6; i++) {
+    const th = (i / 6) * Math.PI * 2 + 0.5;
+    const f = facing(th);
+    if (f < 0.08) continue;
+    const a2 = v.p(surf(U(0.062), th)), b2 = v.p(surf(hEnd, th));
+    ctx.globalAlpha = Math.min(1, f * 1.4);
+    ctx.beginPath();
+    ctx.moveTo(a2.x, a2.y);
+    ctx.lineTo(b2.x, b2.y);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+  for (const [u, th] of [[0.1, 1.1], [0.15, 3.9]] as [number, number][]) {
+    if (facing(th) < 0.25) continue;
+    const q = [surf(U(u), th - 0.18), surf(U(u), th + 0.18), surf(U(u + 0.012), th + 0.18), surf(U(u + 0.012), th - 0.18)].map((p) => v.p(p));
+    ctx.beginPath();
+    q.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+    ctx.closePath();
+    ctx.stroke();
+  }
   // 감싼 무늬 — 동체 둘레(θ)와 높이(u) 칸으로 그리고, 카메라 쪽 반만 보인다
   if (liv.pattern && liv.pattern !== 'plain') wrapPattern(ctx, v, liv, (uu, th) => add(at(uu), mul(add(mul(side, Math.cos(th)), mul(zed, Math.sin(th))), R * 1.004 * scale)), (th) => dot(add(mul(side, Math.cos(th)), mul(zed, Math.sin(th))), toCam), U(0.068), U(0.158), R * scale, soot);
   for (const [u0, u1, c] of liv.bands ?? [
@@ -821,33 +926,27 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
   ])
     sec(U(u0), U(u1), R * 1.003, R * 1.003, c);
   sec(hEnd, top, R, 0.0005, liv.hull, 0.45);
-  // 격자 날개
-  for (let i = 0; i < 4; i++) {
-    const a = Math.PI / 4 + (i * Math.PI) / 2;
-    const dir: Vec3 = add(mul(side, Math.cos(a)), mul(zed, Math.sin(a)));
-    const p1 = v.p(add(at(hEnd - 0.009), mul(dir, R * scale))), p2 = v.p(add(at(hEnd - 0.009), mul(dir, R * 1.7 * scale)));
-    ctx.strokeStyle = '#4a4d53';
-    ctx.lineWidth = Math.max(1, 0.0028 * scale * p1.s);
-    ctx.beginPath();
-    ctx.moveTo(p1.x, p1.y);
-    ctx.lineTo(p2.x, p2.y);
-    ctx.stroke();
-  }
-  // 세로 글자 — 무늬 띠 가운데
-  const mid = v.p(at(U(0.113)));
-  const fs = Math.min(BR * scale * mid.s * 0.75, (0.143 * shp.h * 0.6 * scale * mid.s) / 8 / 0.62);
-  if (fs > 4.5) {
-    ctx.save();
-    ctx.translate(mid.x, mid.y);
-    ctx.rotate(Math.atan2(dy, dx));
-    ctx.fillStyle = liv.ink ? liv.ink : 'rgba(20,22,26,.8)';
-    ctx.globalAlpha = 0.85;
-    ctx.font = `800 ${fs}px ui-monospace,Menlo,monospace`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('YEAHPLUS', 0, 0);
-    ctx.restore();
-  }
+  // 세로 글자 — 동체 앞뒤 두 곳에 인쇄(2026-11-04 유진 "돌려도 글자가 안 돌아간다"): 카메라 쪽을 볼 때만, 비스듬할수록 좁고 옅게
+  const mid0 = v.p(at(U(0.113)));
+  const fs = Math.min(BR * scale * mid0.s * 0.75, (0.143 * shp.h * 0.6 * scale * mid0.s) / 8 / 0.62);
+  if (fs > 4.5)
+    for (const th of [Math.PI / 2, -Math.PI / 2]) {
+      const f = facing(th);
+      if (f < 0.12) continue;
+      const m = v.p(surf(U(0.113), th));
+      ctx.save();
+      ctx.translate(m.x, m.y);
+      ctx.rotate(Math.atan2(dy, dx));
+      ctx.scale(1, Math.max(0.15, f));
+      ctx.fillStyle = liv.ink ? liv.ink : 'rgba(20,22,26,.8)';
+      ctx.globalAlpha = 0.85 * Math.min(1, (f - 0.12) / 0.3);
+      ctx.font = `800 ${fs}px ui-monospace,Menlo,monospace`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('YEAHPLUS', 0, 0);
+      ctx.restore();
+    }
+  for (const th of petals) if (facing(th) >= 0) petal(th);
   legsFront.forEach((d) => d());
   for (const tk of tanks) if (tk.d <= dO) tank(tk.off);
 
