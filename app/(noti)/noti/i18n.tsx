@@ -26,7 +26,7 @@ export const BIZ = {
 export const EFFECTIVE = '2026-10-09';
 
 /**
- * App Store — 출시 후 ASC 'App Apple ID'(숫자)를 넣는다. 비어 있으면 버튼이 '출시 준비 중'으로 바뀐다.
+ * App Store — ASC 'App Apple ID'(숫자). 2026-11-04 출시. 비우면 버튼이 '출시 준비 중'으로 바뀐다.
  * ⚠️ 국가 코드 없는 링크는 출시 직후 404 가 잦다 — 항상 kr/us 를 붙인다.
  */
 export const APP_ID = '6819720298';   // 2026-11-03 출시

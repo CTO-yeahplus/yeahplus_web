@@ -27,6 +27,7 @@ function Header() {
         <span>{L('새벽 3시의 인턴', 'The 3 A.M. Intern')}</span>
       </Link>
       <div className="nt-links">
+        {appStoreUrl(lang) && <a href={appStoreUrl(lang)} target="_blank" rel="noreferrer">App Store</a>}
         <NavItem href={`${BASE}/support`}>{L('지원', 'Support')}</NavItem>
         <NavItem href={`${BASE}/privacy`}>{L('개인정보', 'Privacy')}</NavItem>
         <NavItem href={`${BASE}/terms`}>{L('약관', 'Terms')}</NavItem>
@@ -39,7 +40,7 @@ function Header() {
 }
 
 function Footer({ year }: { year: number }) {
-  const { L } = useLang();
+  const { lang, L } = useLang();
   return (
     <footer className="nt-foot">
       <p>
@@ -47,6 +48,7 @@ function Footer({ year }: { year: number }) {
       </p>
       <p>
         <Link href={BASE}>{L('홈', 'Home')}</Link>
+        {appStoreUrl(lang) && <a href={appStoreUrl(lang)} target="_blank" rel="noreferrer">App Store</a>}
         <a href={DEMO_URL}>{L('1화 체험판', 'Play episode 1')}</a>
         <Link href={`${BASE}/support`}>{L('지원', 'Support')}</Link>
         <Link href={`${BASE}/privacy`}>{L('개인정보 처리방침', 'Privacy Policy')}</Link>
@@ -78,22 +80,18 @@ export default function SiteShell({ year, children }: { year: number; children: 
   );
 }
 
-/** 스토어 버튼 둘 — 주소(i18n.tsx 의 APP_ID · PLAY_URL)가 비어 있으면 '출시 준비 중'으로 바뀐다. */
+/** 스토어 버튼 — App Store 는 금색 첫 버튼(2026-11-04 출시). Google Play 는 주소(PLAY_URL)가 생기면 나온다. */
 export function StoreButtons() {
   const { lang, L } = useLang();
   const ios = appStoreUrl(lang);
   return (
     <>
       {ios ? (
-        <a className="nt-btn" href={ios} target="_blank" rel="noreferrer">App Store</a>
+        <a className="nt-btn nt-gold" href={ios} target="_blank" rel="noreferrer">{L('App Store에서 받기 · 1~2화 무료', 'Get it on the App Store · Ep. 1–2 free')}</a>
       ) : (
         <span className="nt-btn nt-off">{L('App Store · 출시 준비 중', 'App Store · coming soon')}</span>
       )}
-      {PLAY_URL ? (
-        <a className="nt-btn" href={PLAY_URL} target="_blank" rel="noreferrer">Google Play</a>
-      ) : (
-        <span className="nt-btn nt-off">{L('Google Play · 출시 준비 중', 'Google Play · coming soon')}</span>
-      )}
+      {PLAY_URL && <a className="nt-btn" href={PLAY_URL} target="_blank" rel="noreferrer">Google Play</a>}
     </>
   );
 }

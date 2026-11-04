@@ -218,7 +218,7 @@ function Three() {
               {pick === 'knock' && <Tb as="p" ko={<>“(두 장을 3초쯤 본다) 똑같잖아. 다음엔 결론부터 말해.”<br />문이 다시 닫힌다.</>} en={<>“(He looks at the two ECGs for three seconds.) They’re the same. Next time, lead with the bottom line.”<br />The door closes again.</>} />}
               {pick === 'wait' && <Tb as="p" ko={<>환자 옆에 의자를 끌어다 앉았다.<br />시계는 03시 25분이었다.</>} en={<>You pull a chair up beside him.<br />The clock says 3:25.</>} />}
               <Tb as="p" className="nt-gold" ko={<>03:40. 길게 한 번 우는 소리.<br />정답은 없다. 고른 것은 되돌릴 수 없고, 다음 화가 그 선택을 기억한다.</>} en={<>3:40. One long alarm.<br />There is no right answer. You can’t take it back, and the next episode remembers.</>} />
-              <a className="nt-btn nt-gold" href={DEMO_URL}><Tx ko="1화를 처음부터 해 보기 →" en="Play episode 1 from the start →" /></a>
+              <div className="nt-btns"><StoreButtons /><a className="nt-btn" href={DEMO_URL}><Tx ko="웹에서 1화 해 보기" en="Play episode 1 in your browser" /></a></div>
             </div>
           </motion.div>
         </div>
@@ -340,8 +340,8 @@ function Cta() {
       <p className="nt-when"><Tx ko="3월 2일 18:40" en="March 2, 6:40 p.m." /></p>
       <h2><Tx ko="첫 당직이 시작된다" en="Your first shift begins" /></h2>
       <div className="nt-btns">
-        <a className="nt-btn nt-gold" href={DEMO_URL}><Tx ko="웹에서 1화 해 보기" en="Play episode 1 in your browser" /></a>
         <StoreButtons />
+        <a className="nt-btn" href={DEMO_URL}><Tx ko="웹에서 1화 해 보기" en="Play episode 1 in your browser" /></a>
       </div>
     </section>
   );

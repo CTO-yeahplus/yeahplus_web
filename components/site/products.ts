@@ -128,7 +128,7 @@ export const PRODUCTS: Product[] = [
   },
 
   {
-    id: 'noti', cat: 'game', ko: '노티', en: 'NOTI', href: '/noti', status: 'soon',
+    id: 'noti', cat: 'game', ko: '노티', en: 'NOTI', href: '/noti', status: 'live',
     icon: I('noti'), accent: '#f2b33d',
     descKo: '새벽 3시, 첫 당직의 결정이 1년을 따라옵니다. 여덟 화의 메디컬 드라마 게임.',
     descEn: 'One call at 3 a.m. follows you for a year. An eight-episode medical drama you play.',
