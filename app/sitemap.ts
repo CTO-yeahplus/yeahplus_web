@@ -18,6 +18,7 @@ const PRODUCTS: { base: string; sub: string[] }[] = [
   { base: "steelrace", sub: ["privacy", "support"] },
   { base: "onetake", sub: ["privacy", "support", "terms"] },
   { base: "rocketparking", sub: ["privacy", "support", "terms"] },
+  { base: "summitbook", sub: ["privacy", "support", "terms", "data"] },
   { base: "cinelook", sub: ["privacy", "support", "terms"] },
   { base: "contraptionlab", sub: ["privacy", "support", "terms"] },
   { base: "seodang", sub: ["privacy", "support", "terms"] },
