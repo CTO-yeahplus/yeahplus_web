@@ -11,8 +11,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { LangProvider, useLang } from './lang';
-import { Logo } from './Logo';
-import { useActiveIndex, useProgressVar, useReveal, useTopProgress } from './motion';
+import { BARS, Logo } from './Logo';
+import { useActiveIndex, usePinVar, useProgressVar, useReveal } from './motion';
 import { CATS, COUNT, PRODUCTS } from './products';
 import type { Product } from './products';
 
@@ -111,9 +111,91 @@ const HERO_SHOTS: { f: string; ko: string; en: string }[] = [
   { f: 'kkorong', ko: '꼬롱을 찾아라 시장 장면', en: 'Find Kkorong market scene' },
 ];
 
+/** 네 기둥의 이름 — 히어로의 「세워지는 로고」와 아래 강점 장이 같이 쓴다. */
+const PILLAR_TITLES = [
+  { ko: '결정은 빠르게, 완성은 끝까지', en: 'Decide fast, finish fully' },
+  { ko: '영화를 만들던 눈', en: 'An eye trained on film' },
+  { ko: '사람을 존중하는 설계', en: 'Design that respects people' },
+  { ko: '근거가 있는 콘텐츠', en: 'Content with sources' },
+];
+/** 기둥마다 휠 진행도(0..1)의 어느 구간에서 그려지는지 [시작, 길이] */
+const BUILD_SEG: [number, number][] = [[0.08, 0.18], [0.26, 0.18], [0.44, 0.18], [0.62, 0.16]];
+
+/**
+ * 히어로 — 휠을 내리면 한 점에서 로고의 네 기둥이 하나씩 세워지고(기둥마다 강점 이름),
+ * 바닥 격자와 앱 아이콘이 올라온 뒤 헤드라인이 나타난다(byholm.co 의 「점 → 선 → 로고」 방식).
+ * 값은 --b 하나만 JS 가 쓰고, 나머지는 CSS 가 계산한다. JS 가 없거나 모션 줄이기면 처음부터 완성된 장면.
+ */
+function HeroBuild() {
+  const { L } = useLang();
+  const ref = usePinVar<HTMLElement>();
+  return (
+    <section className="yp-build" id="top" ref={ref}>
+      <div className="yp-build-stage">
+        <div className="yp-build-floor" aria-hidden="true" />
+        <div className="yp-build-mark" aria-hidden="true">
+          <svg viewBox="-4 -4 108 122.4">
+            {BARS.map((pts, k) => (
+              <polygon key={k} points={pts} pathLength={1} className="yp-bb" style={css({ '--a': BUILD_SEG[k][0], '--z': BUILD_SEG[k][1] })} />
+            ))}
+            <circle className="yp-build-dot" cx="0" cy="0" r="2.6" />
+          </svg>
+        </div>
+        <ol className="yp-build-caps" aria-hidden="true">
+          {PILLAR_TITLES.map((t, k) => (
+            <li key={k} style={css({ '--a': BUILD_SEG[k][0], '--z': BUILD_SEG[k][1] })}>
+              <span>{`0${k + 1} / 04`}</span>
+              {L(t.ko, t.en)}
+            </li>
+          ))}
+        </ol>
+        <p className="yp-build-cue" aria-hidden="true">{L('휠을 내려 보세요', 'Scroll to build')}</p>
+        <div className="yp-build-apps" aria-hidden="true">
+          {PRODUCTS.map((p, k) => (
+            <span key={p.id} style={css({ '--k': k })}>
+              <AppIcon p={p} size={44} />
+            </span>
+          ))}
+        </div>
+        <div className="yp-wrap yp-hero-copy yp-build-copy">
+          <p className="yp-eyebrow">{L('주식회사 예아플러스', 'YeahPlus Inc.')}</p>
+          <h1 className="yp-h1">
+            {L(
+              <>
+                매일 손에 쥐는 앱을
+                <br />
+                처음부터 끝까지 만듭니다.
+              </>,
+              <>
+                Apps people keep in hand,
+                <br />
+                made from start to finish.
+              </>
+            )}
+          </h1>
+          <p className="yp-lead">
+            {L(
+              '예아플러스는 사진과 배움, 놀이에 기술을 더하는 작은 스튜디오입니다. 기획과 디자인, 개발과 출시, 제품 페이지와 약관까지 한 팀이 직접 만듭니다.',
+              'YeahPlus is a small studio that brings technology to photos, learning and play. One team handles the planning, design, engineering and launch, down to each product page and policy.'
+            )}
+          </p>
+          <div className="yp-cta-row">
+            <a href="#products" className="yp-btn yp-btn-dark">
+              {L('제품 보기', 'See the products')}
+            </a>
+            <a href="#contact" className="yp-btn">
+              {L('함께 일하기', 'Work with us')}
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Hero() {
   const { L } = useLang();
-  const ref = useTopProgress<HTMLElement>(560);
+  const ref = useProgressVar<HTMLElement>(1, 0.1);
   const facts = [
     { n: COUNT.all, ko: '제품', en: 'products' },
     { n: COUNT.live, ko: '출시·운영 중', en: 'live today' },
@@ -121,39 +203,7 @@ function Hero() {
     { n: 2022, ko: '창업', en: 'founded' },
   ];
   return (
-    <section className="yp-hero" id="top" ref={ref}>
-      <div className="yp-wrap yp-hero-copy">
-        <p className="yp-eyebrow">{L('주식회사 예아플러스', 'YeahPlus Inc.')}</p>
-        <h1 className="yp-h1">
-          {L(
-            <>
-              매일 손에 쥐는 앱을
-              <br />
-              처음부터 끝까지 만듭니다.
-            </>,
-            <>
-              Apps people keep in hand,
-              <br />
-              made from start to finish.
-            </>
-          )}
-        </h1>
-        <p className="yp-lead">
-          {L(
-            '예아플러스는 사진과 배움, 놀이에 기술을 더하는 작은 스튜디오입니다. 기획과 디자인, 개발과 출시, 제품 페이지와 약관까지 한 팀이 직접 만듭니다.',
-            'YeahPlus is a small studio that brings technology to photos, learning and play. One team handles the planning, design, engineering and launch, down to each product page and policy.'
-          )}
-        </p>
-        <div className="yp-cta-row">
-          <a href="#products" className="yp-btn yp-btn-dark">
-            {L('제품 보기', 'See the products')}
-          </a>
-          <a href="#contact" className="yp-btn">
-            {L('함께 일하기', 'Work with us')}
-          </a>
-        </div>
-      </div>
-
+    <section className="yp-hero yp-hero-after" ref={ref}>
       <div className="yp-fan" aria-label={L('예아플러스 앱 화면', 'YeahPlus app screens')}>
         {HERO_SHOTS.map((s, k) => {
           const o = k - 2;
@@ -210,12 +260,7 @@ function IconWall() {
 function Pillars() {
   const { L } = useLang();
   const active = useActiveIndex(PILLAR_IDS);
-  const titles = [
-    L('결정은 빠르게, 완성은 끝까지', 'Decide fast, finish fully'),
-    L('영화를 만들던 눈', 'An eye trained on film'),
-    L('사람을 존중하는 설계', 'Design that respects people'),
-    L('근거가 있는 콘텐츠', 'Content with sources'),
-  ];
+  const titles = PILLAR_TITLES.map((t) => L(t.ko, t.en));
   const promiseApps = PRODUCTS.filter((p) => p.promise);
   const looks = ['original', 'goldenhour', 'noir', 'tealorange', 'toylens', 'pastelsym'];
   const lookNames: Record<string, string> = {
@@ -696,6 +741,7 @@ function Page() {
     <div className="yp">
       <Header />
       <main>
+        <HeroBuild />
         <Hero />
         <Pillars />
         <Products />

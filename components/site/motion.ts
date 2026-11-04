@@ -120,3 +120,37 @@ export function useActiveIndex(ids: string[]) {
   }, [ids.join('|')]);
   return i;
 }
+
+/**
+ * 키가 큰 구역(안에 position:sticky 무대)을 지나가는 동안 0..1 을 --b 로 쓴다 — 히어로의 「네 기둥」 연출.
+ * 끝 무렵(0.9 넘음)에는 data-done 을 붙여 마지막 장면의 버튼을 누를 수 있게 한다.
+ * 모션 줄이기에서는 아무것도 쓰지 않는다 — CSS 가 완성된 장면(--b: 1)을 그린다.
+ */
+export function usePinVar<T extends HTMLElement = HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || reduceMotion()) return;
+    let raf = 0;
+    const tick = () => {
+      raf = 0;
+      const r = el.getBoundingClientRect();
+      const span = r.height - window.innerHeight;
+      const p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 1;
+      el.style.setProperty('--b', p.toFixed(4));
+      el.toggleAttribute('data-done', p > 0.9);
+    };
+    const on = () => {
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+    tick();
+    window.addEventListener('scroll', on, { passive: true });
+    window.addEventListener('resize', on);
+    return () => {
+      window.removeEventListener('scroll', on);
+      window.removeEventListener('resize', on);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+  return ref;
+}

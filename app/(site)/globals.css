@@ -97,7 +97,7 @@ ol, ul { padding: 0; list-style: none; }
 
 /* ── 히어로 ── */
 .yp-hero { padding-top: calc(var(--yp-head) + env(safe-area-inset-top, 0px) + clamp(56px, 9vw, 104px)); text-align: center;
-  background: linear-gradient(180deg, var(--yp-bg) 0%, var(--yp-alt) 100%); overflow: hidden; --h: 0; }
+  background: linear-gradient(180deg, var(--yp-bg) 0%, var(--yp-alt) 100%); overflow: hidden; --h: var(--p, 0); }
 .yp-fan { position: relative; height: clamp(380px, 54vw, 560px); margin-top: clamp(48px, 7vw, 80px);
   --step: min(176px, 21vw); }
 .yp-fan .yp-phone { position: absolute; left: 50%; top: 0; width: min(214px, 38vw);
@@ -369,3 +369,63 @@ ol, ul { padding: 0; list-style: none; }
 }
 .yp-foot-sep { color: var(--yp-ink-3); }
 .yp-status.yp-soon-date { color: var(--yp-accent); background: transparent; box-shadow: inset 0 0 0 1px var(--yp-accent); }
+
+/* ── 히어로: 네 기둥이 세워지는 구역 (Home.tsx HeroBuild) ─────────────────────────
+   JS 가 --b(0..1) 하나만 쓴다. 기둥 k 는 [--a, --a + --z] 동안 선으로 그려지고 끝에서 채워진다.
+   --sg 바닥 격자 · 아이콘, --sc 로고가 작아지며 올라가고 헤드라인이 나타나는 정도.
+   JS 가 없거나(.js 없음) 모션 줄이기면 --b: 1 — 처음부터 완성된 장면이고 붙잡지 않는다. */
+.yp-build { position: relative; --b: 1;
+  --sg: clamp(0, (var(--b) - .74) / .12, 1);
+  --sc: clamp(0, (var(--b) - .82) / .14, 1); }
+.js .yp-build { height: 330vh; --b: 0; }
+.yp-build-stage { position: sticky; top: 0; height: 100vh; height: 100svh; min-height: 560px; overflow: hidden;
+  background: linear-gradient(180deg, var(--yp-bg) 0%, var(--yp-alt) 100%); }
+.yp-build-floor { position: absolute; left: -30%; right: -30%; bottom: -6%; height: 52%;
+  background-image: linear-gradient(var(--yp-line) 1px, transparent 1px), linear-gradient(90deg, var(--yp-line) 1px, transparent 1px);
+  background-size: 72px 72px; background-position: center top;
+  transform-origin: 50% 0; transform: perspective(620px) rotateX(66deg) translateY(calc((1 - var(--sg)) * 30%));
+  opacity: var(--sg);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 30%); mask-image: linear-gradient(to bottom, transparent 0%, #000 30%); }
+.yp-build-mark { position: absolute; left: 50%; top: 46%; width: min(30vh, 230px);
+  transform: translate(-50%, -50%) translateY(calc(var(--sc) * -28vh)) scale(calc(1 - var(--sc) * .64)); }
+.yp-build-mark svg { display: block; width: 100%; height: auto; overflow: visible; }
+.yp-bb { --s: clamp(0, (var(--b) - var(--a)) / var(--z), 1);
+  fill: var(--yp-ink); fill-opacity: clamp(0, (var(--s) - .62) / .38, 1);
+  stroke: var(--yp-ink); stroke-width: .9; stroke-linejoin: round;   /* vector-effect 를 쓰면 pathLength 기준 점선이 화면 px 로 풀려 회색 점선이 된다 */
+  stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--s)); }
+.yp-build-dot { fill: var(--yp-accent); opacity: clamp(0, (.14 - var(--b)) * 10, 1); }
+.js .yp-build-dot { animation: yp-dot 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes yp-dot { 50% { transform: scale(1.8); } }
+.yp-build-caps { list-style: none; margin: 0; padding: 0 22px; position: absolute; left: 0; right: 0; top: calc(46% + min(17vh, 132px) + 22px); text-align: center; }
+.yp-build-caps li { position: absolute; left: 0; right: 0; font-size: clamp(22px, 3.2vw, 36px); font-weight: 800; letter-spacing: -.035em; line-height: 1.2;
+  --in: clamp(0, (var(--b) - var(--a)) * 28, 1); --out: clamp(0, (var(--a) + var(--z) - var(--b)) * 28, 1);
+  opacity: min(var(--in), var(--out)); transform: translateY(calc((1 - var(--in)) * 14px)); }
+.yp-build-caps li span { display: block; margin-bottom: 8px; font-family: var(--yp-mono); font-size: 13px; font-weight: 600; letter-spacing: .12em; color: var(--yp-accent); }
+.yp-build-cue { position: absolute; left: 0; right: 0; bottom: 34px; margin: 0; text-align: center; font-size: 13px; color: var(--yp-ink-3);
+  opacity: clamp(0, 1 - var(--b) * 14, 1); }
+.yp-build-cue::after { content: ""; display: block; width: 1px; height: 30px; margin: 10px auto 0; background: linear-gradient(var(--yp-ink-3), transparent); }
+.yp-build-apps { position: absolute; left: 50%; bottom: 5%; width: min(860px, 92vw); transform: translateX(-50%);
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.yp-build-apps span { --t: clamp(0, (var(--b) - .76 - var(--k) * .005) / .07, 1); opacity: var(--t); transform: translateY(calc((1 - var(--t)) * 70px)); }
+.yp-build-apps .yp-icon { border-radius: 11px; box-shadow: 0 6px 16px rgba(15, 18, 23, .12); }
+.yp-build-copy { position: absolute; left: 0; right: 0; top: calc(var(--yp-head) + 21vh); margin: 0 auto; text-align: center;
+  opacity: var(--sc); transform: translateY(calc((1 - var(--sc)) * 28px)); }
+.js .yp-build:not([data-done]) .yp-build-copy { pointer-events: none; }
+.yp-build-copy .yp-h1 { font-size: clamp(36px, 5.6vw, 72px); }
+.yp-build-copy .yp-lead { margin-top: 16px; }
+.yp-build-copy .yp-cta-row { margin-top: 24px; }
+.yp-hero.yp-hero-after { padding-top: clamp(24px, 4vw, 48px); background: linear-gradient(180deg, var(--yp-alt) 0%, var(--yp-bg) 55%, var(--yp-alt) 100%); }   /* 위 구역의 끝 색에서 이어지게 */
+@media (max-width: 760px) {
+  .yp-build-mark { width: min(24vh, 170px); }
+  .yp-build-caps { top: calc(46% + min(14vh, 98px) + 18px); }
+  .yp-build-apps { gap: 6px; bottom: 3%; }
+  .yp-build-apps .yp-icon { width: 30px !important; height: 30px !important; border-radius: 8px; }
+  .yp-build-copy { top: calc(var(--yp-head) + 17vh); }
+  .yp-build-copy .yp-lead { font-size: 15px; }
+}
+@media (max-height: 700px) { .yp-build-copy .yp-lead { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .js .yp-build { height: auto; --b: 1; }
+  .js .yp-build-dot { animation: none; }
+  .js .yp-build:not([data-done]) .yp-build-copy { pointer-events: auto; }
+}
