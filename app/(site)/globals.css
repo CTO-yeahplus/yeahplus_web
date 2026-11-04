@@ -389,10 +389,62 @@ ol, ul { padding: 0; list-style: none; }
 .yp-build-mark { position: absolute; left: 50%; top: 46%; width: min(30vh, 230px);
   transform: translate(-50%, -50%) translateY(calc(var(--sc) * -28vh)) scale(calc(1 - var(--sc) * .64)); }
 .yp-build-mark svg { display: block; width: 100%; height: auto; overflow: visible; }
-.yp-bb { --s: clamp(0, (var(--b) - var(--a)) / var(--z), 1);
-  fill: var(--yp-ink); fill-opacity: clamp(0, (var(--s) - .62) / .38, 1);
-  stroke: var(--yp-ink); stroke-width: .9; stroke-linejoin: round;   /* vector-effect 를 쓰면 pathLength 기준 점선이 화면 px 로 풀려 회색 점선이 된다 */
-  stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--s)); }
+/* 기둥 하나의 렌더 패스 (Home.tsx PASS_AT 와 같은 경계): --s 0–.35 WIRE 선과 메시 · .35–.6 NORMAL 노멀 색 · .6–.85 LIGHT 먹이 차오르며 빛이 쓸고 감 · .85– COMP */
+.yp-bar { --s: clamp(0, (var(--b) - var(--a)) / var(--z), 1);
+  --c: clamp(0, (var(--s) - .6) / .25, 1); }
+.yp-bb { fill: var(--yp-ink); fill-opacity: clamp(0, (var(--s) - .6) / .2, 1);
+  stroke: var(--yp-accent); stroke: color-mix(in srgb, var(--yp-ink) calc(var(--c) * 100%), var(--yp-accent));
+  stroke-width: .9; stroke-linejoin: round;   /* vector-effect 를 쓰면 pathLength 기준 점선이 화면 px 로 풀려 회색 점선이 된다 */
+  stroke-dasharray: 1; stroke-dashoffset: calc(1 - clamp(0, var(--s) / .35, 1)); }
+.yp-mesh-line { stroke: var(--yp-accent); stroke-width: .28; opacity: .55; }
+.yp-bb-mesh { opacity: calc(clamp(0, (var(--s) - .06) / .14, 1) * (1 - clamp(0, (var(--s) - .38) / .1, 1))); }
+.yp-bb-nrm { opacity: calc(clamp(0, (var(--s) - .33) / .1, 1) * (1 - clamp(0, (var(--s) - .8) / .08, 1))); }
+.yp-bb-sheen { transform: translateX(calc(var(--c) * 190px)) skewX(-20deg);
+  opacity: calc(clamp(0, (var(--s) - .58) / .04, 1) * (1 - clamp(0, (var(--s) - .84) / .04, 1))); }
+/* 뷰파인더 모서리 · 렌더 표시: 세우는 동안만 (--hud) */
+.yp-build { --hud: min(clamp(0, (var(--b) - .03) * 30, 1), clamp(0, (.8 - var(--b)) * 25, 1)); }
+.yp-build-frame { fill: none; stroke: var(--yp-accent); stroke-width: .7; opacity: calc(var(--hud) * .7); }
+.yp-build-hud { position: absolute; left: 0; right: 0; top: calc(var(--yp-head) + 18px); padding: 0 clamp(16px, 3vw, 32px);
+  display: flex; justify-content: space-between; gap: 16px; pointer-events: none;
+  font-family: var(--yp-mono); font-size: 11px; letter-spacing: .1em; color: var(--yp-ink-3); opacity: var(--hud); }
+.yp-build-hud b { display: block; font-weight: 600; color: var(--yp-ink-2); margin-bottom: 8px; }
+.yp-build-hud b::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 8px; border-radius: 50%; background: #e5484d; vertical-align: 1px; }
+.js .yp-build-hud b::before { animation: yp-rec 1s steps(2, jump-none) infinite; }
+@keyframes yp-rec { 50% { opacity: .15; } }
+.yp-hud-pass { display: flex; gap: 4px; }
+.yp-hud-pass i { font-style: normal; padding: 3px 6px; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--yp-line); transition: background .15s, color .15s; }
+.yp-build-hud[data-pass="0"] i:nth-child(1), .yp-build-hud[data-pass="1"] i:nth-child(2),
+.yp-build-hud[data-pass="2"] i:nth-child(3), .yp-build-hud[data-pass="3"] i:nth-child(4) { background: var(--yp-accent); color: #fff; box-shadow: none; }
+.yp-hud-r { text-align: right; display: flex; flex-direction: column; gap: 6px; font-variant-numeric: tabular-nums; }
+
+/* 임팩트 프레임 — 로고가 완성되는 순간 0.7초 (JS 가 HIT_AT 을 앞으로 지날 때 data-hit 을 붙인다). 평소엔 전부 보이지 않는다. */
+.yp-fx-bloom, .yp-fx-ring, .yp-fx-flare { position: absolute; left: 50%; top: 50%; pointer-events: none; opacity: 0; }
+.yp-fx-bloom { width: 340%; aspect-ratio: 1; transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(110, 140, 255, .45), rgba(36, 72, 216, .12) 55%, transparent); }
+.yp-fx-ring { width: 120%; aspect-ratio: 1; border-radius: 50%; box-shadow: 0 0 0 2px var(--yp-accent), 0 0 24px 2px rgba(36, 72, 216, .35);
+  transform: translate(-50%, -50%) scale(.3); }
+.yp-fx-ring2 { box-shadow: 0 0 0 1px #8b86ff; }
+.yp-fx-flare { width: 900%; height: 3px; transform: translate(-50%, -50%) scaleX(0);
+  background: linear-gradient(90deg, transparent, rgba(127, 180, 255, .0) 10%, #7fb4ff 38%, #fff 50%, #7fb4ff 62%, rgba(127, 180, 255, 0) 90%, transparent); }
+.yp-fx-flare::before { content: ""; position: absolute; inset: -9px 20%; background: inherit; filter: blur(8px); opacity: .7; }
+.yp-fx-grain { position: absolute; inset: 0; pointer-events: none; opacity: 0; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.yp-build[data-hit] .yp-fx-bloom { animation: yp-bloom .7s ease-out; }
+.yp-build[data-hit] .yp-fx-ring { animation: yp-ring .75s cubic-bezier(.15, .7, .3, 1); }
+.yp-build[data-hit] .yp-fx-ring2 { animation-delay: .09s; animation-duration: .9s; }
+.yp-build[data-hit] .yp-fx-flare { animation: yp-flare .8s cubic-bezier(.2, .8, .3, 1); }
+.yp-build[data-hit] .yp-fx-grain { animation: yp-grain .55s steps(1, end); }
+.yp-build[data-hit] .yp-build-mark svg { animation: yp-split .5s ease-out; }
+@keyframes yp-bloom { 0% { opacity: 0; } 18% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes yp-ring { 0% { opacity: 1; transform: translate(-50%, -50%) scale(.3); } 45% { opacity: .75; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(3.4); } }
+@keyframes yp-flare { 0% { opacity: 1; transform: translate(-50%, -50%) scaleX(0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -50%) scaleX(1); } }
+@keyframes yp-grain { 0% { opacity: .1; background-position: 0 0; } 20% { opacity: .13; background-position: -40px 60px; }
+  40% { opacity: .08; background-position: 70px -30px; } 60% { opacity: .1; background-position: -90px -80px; } 80% { opacity: .05; background-position: 30px 90px; } 100% { opacity: 0; } }
+@keyframes yp-split {   /* RGB 색수차 + 짧은 흔들림 */
+  0% { filter: drop-shadow(-9px 0 0 rgba(255, 40, 120, .8)) drop-shadow(9px 0 0 rgba(0, 200, 255, .8)); transform: translate(3px, -2px) scale(1.06); }
+  15% { transform: translate(-3px, 2px) scale(1.04); }
+  30% { filter: drop-shadow(-3px 0 0 rgba(255, 40, 120, .6)) drop-shadow(3px 0 0 rgba(0, 200, 255, .6)); transform: translate(2px, 1px) scale(1.02); }
+  100% { filter: drop-shadow(0 0 0 rgba(255, 40, 120, 0)) drop-shadow(0 0 0 rgba(0, 200, 255, 0)); transform: none; } }
 .yp-build-dot { fill: var(--yp-accent); opacity: clamp(0, (.14 - var(--b)) * 10, 1); }
 .js .yp-build-dot { animation: yp-dot 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
 @keyframes yp-dot { 50% { transform: scale(1.8); } }
@@ -422,10 +474,13 @@ ol, ul { padding: 0; list-style: none; }
   .yp-build-apps .yp-icon { width: 30px !important; height: 30px !important; border-radius: 8px; }
   .yp-build-copy { top: calc(var(--yp-head) + 17vh); }
   .yp-build-copy .yp-lead { font-size: 15px; }
+  .yp-build-hud { font-size: 9.5px; letter-spacing: .06em; }
+  .yp-hud-pass i { padding: 2px 4px; }
 }
 @media (max-height: 700px) { .yp-build-copy .yp-lead { display: none; } }
 @media (prefers-reduced-motion: reduce) {
   .js .yp-build { height: auto; --b: 1; }
   .js .yp-build-dot { animation: none; }
   .js .yp-build:not([data-done]) .yp-build-copy { pointer-events: auto; }
+  .js .yp-build-hud b::before, .yp-build[data-hit] * { animation: none !important; }
 }

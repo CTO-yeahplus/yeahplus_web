@@ -8,7 +8,7 @@
  * 숫자는 전부 products.ts 에서 센다 — 손으로 적어 둔 숫자가 제품 목록과 어긋나지 않게.
  */
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { LangProvider, useLang } from './lang';
 import { BARS, Logo } from './Logo';
@@ -121,26 +121,111 @@ const PILLAR_TITLES = [
 /** 기둥마다 휠 진행도(0..1)의 어느 구간에서 그려지는지 [시작, 길이] */
 const BUILD_SEG: [number, number][] = [[0.08, 0.18], [0.26, 0.18], [0.44, 0.18], [0.62, 0.16]];
 
+/** 기둥 하나가 세워지는 동안 지나는 렌더 패스 — VFX 브레이크다운처럼 선 → 노멀 → 빛 → 합성 (globals.css 의 .yp-bar 구간과 같은 경계) */
+const PASSES = ['WIRE', 'NORMAL', 'LIGHT', 'COMP'];
+const PASS_AT = [0.35, 0.6, 0.85];
+/** 네 번째 기둥이 다 서는 지점 — 여기를 앞으로 지나가면 임팩트 프레임(0.7초)을 한 번 터뜨린다 */
+const HIT_AT = 0.775;
+const pad = (n: number, w = 2) => String(n).padStart(w, '0');
+
 /**
  * 히어로 — 휠을 내리면 한 점에서 로고의 네 기둥이 하나씩 세워지고(기둥마다 강점 이름),
  * 바닥 격자와 앱 아이콘이 올라온 뒤 헤드라인이 나타난다(byholm.co 의 「점 → 선 → 로고」 방식).
+ * 기둥마다 VFX 렌더 패스(와이어 → 노멀 → 빛 → 합성)를 지나고, 로고가 완성되는 순간 임팩트 프레임
+ * (충격파 · 아나모픽 플레어 · 색수차 · 그레인)이 한 번 터진다 — 대표가 영화 VFX 를 하던 사람이라는 표시.
  * 값은 --b 하나만 JS 가 쓰고, 나머지는 CSS 가 계산한다. JS 가 없거나 모션 줄이기면 처음부터 완성된 장면.
  */
 function HeroBuild() {
   const { L } = useLang();
-  const ref = usePinVar<HTMLElement>();
+  const hud = useRef<HTMLDivElement>(null);
+  const armed = useRef<boolean | null>(null);
+  const ref = usePinVar<HTMLElement>((p, el) => {
+    // 화면 구석의 렌더 표시: 지금 패스 · 프레임 · 타임코드(24fps, 240프레임 = 10초 컷)
+    const h = hud.current;
+    if (h) {
+      let k = -1;
+      for (let i = BUILD_SEG.length - 1; i >= 0; i--) if (p >= BUILD_SEG[i][0]) { k = i; break; }
+      const s = k < 0 ? 0 : Math.min(1, (p - BUILD_SEG[k][0]) / BUILD_SEG[k][1]);
+      const pass = k < 0 ? 0 : PASS_AT.filter((x) => s >= x).length;
+      const f = Math.round(p * 240);
+      if (h.dataset.pass !== String(pass)) h.dataset.pass = String(pass);
+      const tc = `TC 00:00:${pad(Math.floor(f / 24))}:${pad(f % 24)}`;
+      const fr = `F ${pad(f, 4)} / 0240`;
+      const [a, b] = h.querySelectorAll<HTMLElement>('[data-t]');
+      if (a && a.textContent !== tc) a.textContent = tc;
+      if (b && b.textContent !== fr) b.textContent = fr;
+    }
+    // 임팩트 프레임: 앞으로 지나갈 때만 한 번. 처음부터 그 너머에서 열렸으면 터뜨리지 않는다.
+    if (armed.current === null) armed.current = p < HIT_AT;
+    if (p >= HIT_AT && armed.current) {
+      armed.current = false;
+      el.removeAttribute('data-hit');
+      void el.offsetWidth; // 다시 붙일 때 애니메이션이 처음부터 돌게
+      el.setAttribute('data-hit', '');
+    } else if (p < HIT_AT - 0.06) {
+      armed.current = true;
+      el.removeAttribute('data-hit');
+    }
+  });
   return (
     <section className="yp-build" id="top" ref={ref}>
       <div className="yp-build-stage">
         <div className="yp-build-floor" aria-hidden="true" />
         <div className="yp-build-mark" aria-hidden="true">
+          <div className="yp-fx-bloom" />
+          <div className="yp-fx-ring" />
+          <div className="yp-fx-ring yp-fx-ring2" />
           <svg viewBox="-4 -4 108 122.4">
+            <defs>
+              <linearGradient id="yp-nrm" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stopColor="#7fdcff" />
+                <stop offset=".5" stopColor="#8b86ff" />
+                <stop offset="1" stopColor="#ff8ad8" />
+              </linearGradient>
+              <linearGradient id="yp-sheen" x1="0" x2="1">
+                <stop offset="0" stopColor="#fff" stopOpacity="0" />
+                <stop offset=".5" stopColor="#fff" stopOpacity=".9" />
+                <stop offset="1" stopColor="#fff" stopOpacity="0" />
+              </linearGradient>
+              <pattern id="yp-mesh" width="6" height="6" patternUnits="userSpaceOnUse">
+                <path d="M6 0H0V6M0 6L6 0" fill="none" className="yp-mesh-line" />
+              </pattern>
+              {BARS.map((pts, k) => (
+                <clipPath key={k} id={`yp-bc${k}`}>
+                  <polygon points={pts} />
+                </clipPath>
+              ))}
+            </defs>
+            <path className="yp-build-frame" d="M-10 0V-10H0M100 -10H110V0M110 114.4V124.4H100M0 124.4H-10V114.4" />
             {BARS.map((pts, k) => (
-              <polygon key={k} points={pts} pathLength={1} className="yp-bb" style={css({ '--a': BUILD_SEG[k][0], '--z': BUILD_SEG[k][1] })} />
+              <g key={k} className="yp-bar" style={css({ '--a': BUILD_SEG[k][0], '--z': BUILD_SEG[k][1] })}>
+                <polygon points={pts} className="yp-bb-mesh" fill="url(#yp-mesh)" />
+                <polygon points={pts} className="yp-bb-nrm" fill="url(#yp-nrm)" />
+                <polygon points={pts} pathLength={1} className="yp-bb" />
+                <g clipPath={`url(#yp-bc${k})`}>
+                  <rect className="yp-bb-sheen" x="-34" y="-8" width="24" height="132" fill="url(#yp-sheen)" />
+                </g>
+              </g>
             ))}
             <circle className="yp-build-dot" cx="0" cy="0" r="2.6" />
           </svg>
+          <div className="yp-fx-flare" />
         </div>
+        <div className="yp-build-hud" ref={hud} data-pass="0" aria-hidden="true">
+          <div>
+            <b>YP_MARK · v04</b>
+            <span className="yp-hud-pass">
+              {PASSES.map((x) => (
+                <i key={x}>{x}</i>
+              ))}
+            </span>
+          </div>
+          <div className="yp-hud-r">
+            <span data-t="">TC 00:00:00:00</span>
+            <span data-t="">F 0000 / 0240</span>
+          </div>
+        </div>
+        <div className="yp-fx-grain" aria-hidden="true" />
         <ol className="yp-build-caps" aria-hidden="true">
           {PILLAR_TITLES.map((t, k) => (
             <li key={k} style={css({ '--a': BUILD_SEG[k][0], '--z': BUILD_SEG[k][1] })}>
