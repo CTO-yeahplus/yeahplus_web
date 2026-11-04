@@ -748,6 +748,7 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
     const len = 0.072 * scale;
     const foot = add(hinge, add(mul(ax, Math.cos(ang) * len), mul(dir, Math.sin(ang) * len)));
     // 히어로 기체(앱 4단계, 2026-11-04): 흰 복합재 지주 + 크롬 유압 피스톤 + 둥근 검은 발판
+    const behind = depthOf(hinge) > dO;
     const draw = () => {
       const a2 = v.p(hinge), b2 = v.p(foot);
       const w = Math.max(1.4, 0.0046 * scale * a2.s);
@@ -761,24 +762,26 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
       ctx.strokeStyle = shade(LEG_WHITE, -0.25 * (1 - Math.max(0, dot(dir, toCam))));
       ctx.lineWidth = w;
       ctx.stroke();
-      // 크롬 피스톤 — 지주 옆을 따라 동체에서 지주 가운데까지
-      const mid = add(hinge, mul(sub(foot, hinge), 0.62));
-      const strut = add(at(HINGE + 0.03), mul(dir, R * scale));
-      const m2 = v.p(mid), s2 = v.p(strut);
+      // 크롬 피스톤 — 앱 다리처럼 지주 옆을 나란히(예전 웹은 동체 3cm 위에서 다리 가운데로 비스듬히 버팀대를 그려 동체를 가로지르는 선이 됐다 — 2026-11-04 유진 "뒤 다리가 보인다")
+      const along = sub(foot, hinge);
+      const offs = mul(norm(cross(dir, along)), 0.0032 * scale);
+      const p0 = v.p(add(add(hinge, mul(along, 0.1)), offs)), p1 = v.p(add(add(hinge, mul(along, 0.72)), offs));
       ctx.strokeStyle = '#2a2c30';
-      ctx.lineWidth = Math.max(1, 0.0026 * scale * a2.s) + 1;
+      ctx.lineWidth = Math.max(1, 0.0022 * scale * a2.s) + 1;
       ctx.beginPath();
-      ctx.moveTo(s2.x, s2.y);
-      ctx.lineTo(m2.x, m2.y);
+      ctx.moveTo(p0.x, p0.y);
+      ctx.lineTo(p1.x, p1.y);
       ctx.stroke();
       ctx.strokeStyle = '#cfd4da';
-      ctx.lineWidth = Math.max(0.8, 0.0026 * scale * a2.s);
+      ctx.lineWidth = Math.max(0.8, 0.0022 * scale * a2.s);
       ctx.stroke();
-      // 힌지 금속 덩어리
-      ctx.fillStyle = '#3a3c41';
-      ctx.beginPath();
-      ctx.arc(a2.x, a2.y, Math.max(1, 0.0032 * scale * a2.s), 0, Math.PI * 2);
-      ctx.fill();
+      // 힌지 금속 덩어리 — 앞쪽 다리만(뒤쪽은 동체에 가려진다)
+      if (!behind) {
+        ctx.fillStyle = '#3a3c41';
+        ctx.beginPath();
+        ctx.arc(a2.x, a2.y, Math.max(1, 0.0032 * scale * a2.s), 0, Math.PI * 2);
+        ctx.fill();
+      }
       if (dep > 0.95) {
         ctx.fillStyle = '#141518';
         ctx.beginPath();
@@ -786,7 +789,7 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
         ctx.fill();
       }
     };
-    (depthOf(hinge) > dO ? legsBehind : legsFront).push(draw);
+    (behind ? legsBehind : legsFront).push(draw);
   }
 
   /** 원통 한 토막 — off 만큼 비켜 선 축(헤비의 옆 탱크 · 쌍발 노즐)도 같은 방법으로 */
