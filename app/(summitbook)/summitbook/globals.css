@@ -406,3 +406,38 @@ ul.sb-bullets li::before{content:"";position:absolute;left:0;top:.72em;width:6px
 .sb-more-card figcaption { display: flex; flex-direction: column; gap: 4px; font-size: 13px; line-height: 1.5; opacity: .85; }
 .sb-more-card figcaption b { font-size: 15px; opacity: 1; }
 @media (prefers-reduced-motion: reduce) { .sb-more-card canvas { transition: none; } }
+
+/* 05 도장 면 — 「100대 명산 도장」 10×10 (앱 render.js sheet) */
+.sb-sheet-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:48px;align-items:start;margin-top:44px}
+.sb-sheet-paper{background:var(--sb-sheet);border-radius:4px 12px 12px 4px;padding:22px 18px 18px;box-shadow:2px 2px 0 #E2D8C3,4px 4px 0 #D6CBB3,0 26px 50px rgba(60,40,15,.2)}
+.sb-sheet-head{display:flex;align-items:baseline;justify-content:space-between;padding:0 4px 10px}
+.sb-sheet-head b{font-size:22px;font-weight:900;letter-spacing:-.02em}
+.sb-sheet-n{font-size:15px;font-weight:800;color:var(--sb-ink-3)}
+.sb-sheet-n em{font-style:normal;font-size:34px;font-weight:900;color:var(--sb-ink);font-variant-numeric:tabular-nums}
+.sb-sheet-legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:0 4px 10px;font-size:12px;font-weight:800;color:var(--sb-ink-3)}
+.sb-sheet-legend>span{display:inline-flex;align-items:center;gap:5px}
+.sb-sheet-legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.sb-sheet-four{margin-left:auto}
+.sb-cells{display:grid;grid-template-columns:repeat(10,1fr);gap:2px}
+.sb-cell{position:relative;aspect-ratio:1;border:0;padding:0;background:none;cursor:pointer;border-radius:50%;transition:opacity .35s,transform .25s}
+.sb-cell canvas{width:100%;height:100%;display:block}
+.sb-cell.dim{opacity:.16}
+.sb-cell:hover{transform:scale(1.18);z-index:2}
+.sb-cell.on{transform:scale(1.32);z-index:3;filter:drop-shadow(0 4px 8px rgba(60,40,15,.35))}
+.sb-cell:focus-visible{outline:2px solid var(--sb-autumn);outline-offset:1px}
+.sb-sheet-side{display:flex;flex-direction:column;gap:18px}
+.sb-sheet-mode{align-self:flex-start}
+.sb-sheet-mode button{display:inline-flex;align-items:center;gap:6px}
+.sb-tag-life{font-style:normal;font-size:10px;font-weight:900;padding:2px 6px;border-radius:6px;background:rgba(201,168,106,.25);color:#8a6a2c}
+.sb-regions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sb-regions button{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 12px;border:1px solid var(--sb-line-2);border-radius:12px;background:rgba(255,255,255,.35);cursor:pointer;font-weight:900;font-size:14px;color:var(--sb-ink);text-align:left}
+.sb-regions button small{font-size:12px;font-weight:800;color:var(--sb-ink-3);font-variant-numeric:tabular-nums}
+.sb-regions button i{position:absolute;left:0;bottom:0;height:3px;background:var(--sb-autumn);transition:width .5s cubic-bezier(.2,.9,.2,1)}
+.sb-regions button[aria-pressed="true"]{background:var(--sb-ink);color:var(--sb-paper);border-color:var(--sb-ink)}
+.sb-regions button[aria-pressed="true"] small{color:rgba(242,236,223,.7)}
+.sb-sheet-pick{min-height:84px;margin-top:14px;display:flex;flex-direction:column;gap:3px;padding:12px 14px;border-radius:10px;border:1px dashed var(--sb-line-2);font-size:13.5px;font-weight:700}
+.sb-sheet-pick b{font-size:18px;font-weight:900}
+.sb-muted{color:var(--sb-ink-3)}
+.sb-sheet-note{margin:0;font-size:12.5px;color:var(--sb-ink-3)}
+@media (max-width:900px){.sb-sheet-grid{grid-template-columns:1fr;gap:28px}.sb-sheet-paper{padding:16px 10px 12px}}
+@media (prefers-reduced-motion:reduce){.sb-cell,.sb-regions button i{transition:none}}

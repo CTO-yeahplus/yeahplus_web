@@ -11,6 +11,7 @@ import HoldStamp from './home/HoldStamp';
 import Riffle from './home/Riffle';
 import Pages from './home/Pages';
 import Seasons from './home/Seasons';
+import Sheet from './home/Sheet';
 import Share from './home/Share';
 import { Shield } from './chrome';
 import { APP } from './names';
@@ -55,13 +56,14 @@ export default function HomeContent() {
       <Riffle />
       <Pages />
       <Seasons />
+      <Sheet />
       <Share />
 
       <section className="sb-sec">
         <div className="sb-wrap">
           <div className="sb-eyebrow">
-            <span data-l="ko">06 · 무료와 평생권</span>
-            <span data-l="en">06 · FREE AND LIFETIME</span>
+            <span data-l="ko">07 · 무료와 평생권</span>
+            <span data-l="en">07 · FREE AND LIFETIME</span>
           </div>
           <h2 className="sb-h2">
             <span data-l="ko">도장은 끝까지 무료.</span>
@@ -100,8 +102,8 @@ export default function HomeContent() {
       <section className="sb-sec sb-dark sb-privacy-sec">
         <div className="sb-wrap">
           <div className="sb-eyebrow">
-            <span data-l="ko">07 · 수첩은 내 것</span>
-            <span data-l="en">07 · YOUR NOTEBOOK</span>
+            <span data-l="ko">08 · 수첩은 내 것</span>
+            <span data-l="en">08 · YOUR NOTEBOOK</span>
           </div>
           <div className="sb-trust">
             <div>
@@ -146,8 +148,8 @@ export default function HomeContent() {
         <div className="sb-wrap">
           <div className="sb-safety-box">
             <div className="sb-eyebrow">
-              <span data-l="ko">08 · 안전</span>
-              <span data-l="en">08 · SAFETY</span>
+              <span data-l="ko">09 · 안전</span>
+              <span data-l="en">09 · SAFETY</span>
             </div>
             <p className="sb-safety-big">
               <span data-l="ko">이 수첩은 입산 통제 · 날씨 · 길을 모른다.</span>

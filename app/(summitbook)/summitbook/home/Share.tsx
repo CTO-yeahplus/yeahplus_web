@@ -43,8 +43,8 @@ export default function Share() {
       <div className="sb-wrap sb-share-grid">
         <div className="sb-share-copy">
           <div className="sb-eyebrow">
-            <span data-l="ko">05 · 보내기</span>
-            <span data-l="en">05 · SHARE</span>
+            <span data-l="ko">06 · 보내기</span>
+            <span data-l="en">06 · SHARE</span>
           </div>
           <h2 className="sb-h2">
             <span data-l="ko">피드 한 장, 스토리 한 장.</span>
