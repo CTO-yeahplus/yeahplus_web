@@ -3,6 +3,7 @@
    패드 앞마당 지름 21cm · 판정 고리 16cm · 기체 24cm(앱 RocketVisual 과 같은 1.5배 그림).
    기체 · 다리 · 패드는 진짜 3D 점을 투영하므로 카메라를 돌리면 실제로 돌아 보인다. */
 
+import { drawRocket3d, rocket3dReady } from './rocket3d';
 import { SCALE, type Frame } from './sim';
 
 export type Vec3 = [number, number, number];
@@ -707,6 +708,7 @@ export function boosterBase(f: Frame | Pose): Vec3 {
 }
 
 const LEG_WHITE = '#e9e7e1';
+const USE_3D = typeof location === 'undefined' || !/[?&]r3d=0/.test(location.search);
 
 export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, t: number, liv: Livery = STD, scale = 1, flame = true, cls: VCls = 'standard') {
   const shp = CLASS_SHAPE[cls];
@@ -719,6 +721,14 @@ export function drawBooster(ctx: CanvasRenderingContext2D, v: View, pose: Pose, 
   const side: Vec3 = [Math.cos(pose.lean), -Math.sin(pose.lean), 0];
   const zed: Vec3 = [0, 0, 1];
   const at = (u: number, off: Vec3 = [0, 0, 0]): Vec3 => add(add(O, off), mul(ax, u * scale));
+  // 앱의 히어로 기체 3D(rocket3d.ts) — 불러왔으면 그것으로 그리고 불꽃만 2D 로. ?r3d=0 이면 예전 2D 그림
+  if (USE_3D && rocket3dReady() && drawRocket3d(ctx, v, { O, lean: pose.lean, legs: pose.legs, soot: pose.soot ?? 0, scale, R, h: shp.h, nose: shp.nose, cls, liv })) {
+    if (flame && pose.on && pose.th > 0) {
+      if (cls === 'twin') for (const sg of [-1, 1]) drawFlame(ctx, v, (u) => at(u, mul(side, sg * R * 0.46 * scale)), ax, pose, t, scale * 0.7);
+      else drawFlame(ctx, v, at, ax, pose, t, scale);
+    }
+    return;
+  }
   const P0 = v.p(at(0)), P1 = v.p(at(top));
   let dx = P1.x - P0.x, dy = P1.y - P0.y;
   const dl = Math.hypot(dx, dy) || 1;
