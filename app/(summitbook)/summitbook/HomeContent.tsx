@@ -22,7 +22,7 @@ const PASS: { ko: string; en: string; free: T; life: T }[] = [
   { ko: '수첩 · 후루룩 줄 · 리본 · 귀퉁이 접기', en: 'Notebook · riffle strip · ribbon · dog-ears', free: '✓', life: '✓' },
   { ko: '사진 놓기 · 쪽에 쓰기 · 공유(피드 · 스토리) · 백업', en: 'Photo drop · notes · share (feed · story) · backup', free: '✓', life: '✓' },
   { ko: '정상 쪽 판형', en: 'Page layouts', free: { ko: '정상석 · 등고선', en: 'Summit stone · Contour' }, life: { ko: '+ 필름 · 엽서', en: '+ Film · Postcard' } },
-  { ko: '내 산 — 100곳 밖의 정상', en: 'My Mountain — any summit off the list', free: '—', life: '✓' },
+  { ko: '내 산 — 100대 명산 밖에서, 선 자리를 내가 정상으로 정하기(공식 정상 아님)', en: 'My Mountain — off the list, you declare the spot you stand on as the summit (not an official one)', free: '—', life: '✓' },
   { ko: '돌탑 돌', en: 'Cairn stone', free: { ko: '화강암', en: 'Granite' }, life: { ko: '+ 현무암 · 청석 · 사암 · 지역 따라', en: '+ Basalt · Slate · Sandstone · By region' } },
   { ko: '뒤 면지', en: 'Back endpaper', free: { ko: '한 철', en: 'One season' }, life: { ko: '+ 사계판', en: '+ Four seasons' } },
   { ko: '한 권 PDF', en: 'Notebook PDF', free: '—', life: { ko: '화면용 · 인쇄용 · 모든 해', en: 'Screen · print · all years' } },

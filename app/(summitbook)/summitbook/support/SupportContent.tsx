@@ -70,13 +70,16 @@ const FAQ: { q: [string, string]; a: [React.ReactNode, React.ReactNode] }[] = [
     q: ['‘내 산’이 무엇인가요?', 'What is “My Mountain”?'],
     a: [
       <>
-        100곳 목록에 없는 산의 정상에서 찍는 도장입니다(평생권). 찍는 화면에서 <strong>여기가 정상 · 내 산으로</strong>를 누르고 이름을 적으면 그 자리가 반경
-        150m 정상이 됩니다. 그 자리는 이 기기 안에만 저장되고, n / 100 에는 세지 않습니다. 이미 만든 내 산과 도장은 평생권이 없어져도 잠기지 않습니다.
+        100대 명산 밖의 산에서, <strong>내가 선 자리를 직접 정상으로 정하는 것</strong>입니다(평생권). 앱이 확인한 공식 정상이나 공식 목록이 아니고, 가고 싶은 산을
+        모아 두는 목록도 아닙니다(그건 수첩 쪽 오른쪽 위 &lsquo;귀퉁이 접기&rsquo;). 정상석 앞이나 가장 높은 곳에서 도장을 꾹 누른 뒤 <strong>이 자리를 정상으로 정하기</strong>를 누르고
+        이름을 적으면, 다음부터 그 자리 150m 안에서 도장이 찍힙니다. 자리는 이 기기 안에만 저장되고, 100칸 · n / 100 에는 들지 않습니다. 이미 만든 내 산과 도장은
+        평생권이 없어져도 잠기지 않습니다.
       </>,
       <>
-        A stamp for a summit that is not on the list of 100 (Lifetime pass). On the stamp screen, tap <strong>This is the summit · My Mountain</strong> and
-        name it; that spot becomes a summit with a 150 m radius. The spot is stored only on this device and does not count toward n / 100. Mountains and
-        stamps you already made never get locked.
+        For mountains outside the list of 100, <strong>you declare the spot you stand on to be the summit</strong> (Lifetime pass). It is not an official summit
+        the app has verified, and it is not a wish list either (that&rsquo;s the folded corner on a page). At the summit marker or the highest point, press and
+        hold the stamp, tap <strong>Make this spot the summit</strong> and name it; from then on the stamp lands within 150 m of that spot. The spot stays on this
+        device and does not count toward the 100 squares or n / 100. Mountains and stamps you already made never get locked.
       </>,
     ],
   },
