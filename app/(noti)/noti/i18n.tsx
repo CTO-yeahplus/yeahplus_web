@@ -32,7 +32,7 @@ export const EFFECTIVE = '2026-10-09';
 export const APP_ID = '6819720298';   // 2026-11-03 출시
 /** 판매 지역이 한국뿐이라 영어 화면에서도 kr 스토어로 보낸다(us 는 404). 지역을 넓히면 lang 으로 나눈다 */
 export const appStoreUrl = (_lang: Lang) =>
-  APP_ID ? `https://apps.apple.com/kr/app/id${APP_ID}` : '';
+  APP_ID ? `https://apps.apple.com/kr/app/id${APP_ID}?pt=121180501&ct=noti_site&mt=8` : '';   // 캠페인 값을 붙인다 — 출시 직후 맨 주소(쿼리 없음)만 한동안 404 로 남았다(2026-11-04)
 /** Google Play — 출시 후 주소를 넣는다 */
 export const PLAY_URL = '';
 /** 웹 체험판(1화) — public/noti/demo/index.html. GAME/APLUS/noti 의 build.py 가 만든 것을 tools/sync_site.sh 로 옮긴다 */
