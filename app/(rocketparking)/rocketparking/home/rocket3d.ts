@@ -34,6 +34,151 @@ let renderer: THREE.WebGLRenderer | null = null;
 let scene: THREE.Scene | null = null;
 let camera: THREE.Camera | null = null;
 let key: THREE.DirectionalLight | null = null;
+let rim: THREE.DirectionalLight | null = null;
+let fillLight: THREE.HemisphereLight | null = null;
+let engineLight: THREE.PointLight | null = null;
+let pmrem: THREE.PMREMGenerator | null = null;
+let roomEnv: THREE.Texture | null = null;
+
+/* ─── 장소 빛(IBL) — 2026-11-05 유진 "배경 불빛이 기체에 반사가 안 된다" ───
+   사진 판이 있으면 그 사진으로 주변 반사를 만든다(앱 CameraIBL 과 같은 생각): 앞 반구 = 사진을 넓혀 펼침,
+   뒤 반구 = 좌우 뒤집은 사진(이음매 없이). 밝은 곳(가로등 · 창 · 스탠드)은 HDR 처럼 키워 코팅에 맺히게 하고,
+   가장 밝은 자리에서 테두리 빛, 사진 평균 밝기 · 색으로 정면 빛을 맞춘다. 사진이 없으면 예전 스튜디오 방. */
+type PlateEnv = { tex: THREE.Texture; sx: number; sy: number; hot: THREE.Color; hotK: number; mean: number; avg: THREE.Color };
+const envCache = new Map<string, PlateEnv>();
+type PlateLight = { img: HTMLImageElement; el: number; fovY: number; engine: number; engineColor: [number, number, number] };
+let plateNow: PlateLight | null = null;
+const NO_IBL = typeof location !== 'undefined' && /[?&]ibl=0/.test(location.search); // 비교용 — 예전 스튜디오 방
+
+/** drawOnPlate 가 기체를 그리기 전에 부른다 — null 이면 스튜디오 방 */
+export function setRocketPlate(p: PlateLight | null) {
+  plateNow = p;
+}
+
+const srgbToLin = (c: number) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+
+function plateEnv(img: HTMLImageElement, el: number, fovY: number): PlateEnv | null {
+  if (!renderer || !pmrem) return null;
+  const hit = envCache.get(img.src);
+  if (hit) return hit;
+  const W = 512, H = 256;
+  const cv = document.createElement('canvas');
+  cv.width = W;
+  cv.height = H;
+  const c = cv.getContext('2d', { willReadFrequently: true });
+  if (!c) return null;
+  // 앞 반구(u 0.25…0.75) = 사진, 뒤(0.75…1 · 0…0.25) = 좌우 뒤집은 사진 — 경계에서 같은 쪽 가장자리끼리 만난다.
+  // 세로는 실제 높이각에 — 사진 한 줄 = 카메라가 내려다본 각(el) ± 화각. 서 있는 원통은 수평 근처만 비추므로
+  // 지평선 부근의 가로등 · 전조등이 그 줄에 와야 동체에 맺힌다(처음엔 사진을 위아래 끝까지 늘려 불빛이 위로 밀렸다).
+  const half = document.createElement('canvas');
+  half.width = W / 2;
+  half.height = H;
+  const hc = half.getContext('2d')!;
+  const eTop = -el + fovY / 2, eBot = -el - fovY / 2;
+  const yTop = Math.max(1, (0.5 - eTop / Math.PI) * H), yBot = Math.min(H - 1, (0.5 - eBot / Math.PI) * H);
+  const iw = img.naturalWidth, ih = img.naturalHeight;
+  hc.drawImage(img, 0, 0, iw, 2, 0, 0, W / 2, yTop); // 사진 위 = 하늘 · 천장을 천정까지
+  hc.drawImage(img, 0, ih - 2, iw, 2, 0, yBot, W / 2, H - yBot); // 사진 아래 = 바닥을 천저까지
+  hc.drawImage(img, 0, 0, iw, ih, 0, yTop, W / 2, yBot - yTop);
+  c.drawImage(half, W * 0.25, 0);
+  const fl = document.createElement('canvas');
+  fl.width = W / 2;
+  fl.height = H;
+  const fc = fl.getContext('2d')!;
+  fc.translate(W / 2, 0);
+  fc.scale(-1, 1);
+  fc.drawImage(half, 0, 0);
+  c.drawImage(fl, W * 0.75, 0); // 오른쪽 끝에서 이어지고
+  c.drawImage(fl, -W * 0.25, 0); // 둘레를 돌아 왼쪽 0.25 에서 사진 왼쪽 끝과 만난다
+  const px = c.getImageData(0, 0, W, H).data;
+  const n = W * H;
+  const lin = new Float32Array(n * 3);
+  const lums = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    const r = srgbToLin(px[i * 4] / 255), g = srgbToLin(px[i * 4 + 1] / 255), b = srgbToLin(px[i * 4 + 2] / 255);
+    lin[i * 3] = r;
+    lin[i * 3 + 1] = g;
+    lin[i * 3 + 2] = b;
+    lums[i] = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  }
+  // 밝은 점만 HDR 처럼 — 사진마다 위 3% 밝기부터(밝은 대합실 전체가 '불빛'이 되지 않게).
+  // 8비트 사진에선 가로등도 1.0 에서 잘려 반사가 흐렸다. 그 대신 전체 밝기는 원래 사진 근처로 되돌린다.
+  const sorted = Float32Array.from(lums).sort();
+  const cut = sorted[Math.floor(n * 0.97)], top = Math.max(cut + 1e-3, sorted[n - 1]);
+  let mean0 = 0, mean1 = 0;
+  const gain = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    const t = Math.max(0, (lums[i] - cut) / (top - cut));
+    gain[i] = 1 + 160 * t * t;
+    mean0 += lums[i];
+    mean1 += lums[i] * gain[i];
+  }
+  // 더해진 빛만 줄인다(사진 바탕은 그대로) — 불빛이 더한 에너지는 사진 평균의 6배까지
+  const norm = Math.min(1, (6 * mean0) / Math.max(1e-6, mean1 - mean0));
+  const data = new Uint16Array(n * 4);
+  const avg = [0, 0, 0];
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const i = y * W + x;
+      const k = 1 + (gain[i] - 1) * norm;
+      const o = ((H - 1 - y) * W + x) * 4; // 데이터 첫 줄 = 아래(천저)
+      data[o] = THREE.DataUtils.toHalfFloat(lin[i * 3] * k);
+      data[o + 1] = THREE.DataUtils.toHalfFloat(lin[i * 3 + 1] * k);
+      data[o + 2] = THREE.DataUtils.toHalfFloat(lin[i * 3 + 2] * k);
+      data[o + 3] = THREE.DataUtils.toHalfFloat(1);
+      avg[0] += lin[i * 3];
+      avg[1] += lin[i * 3 + 1];
+      avg[2] += lin[i * 3 + 2];
+    }
+  }
+  const lumSum = mean0;
+  const tex = new THREE.DataTexture(data, W, H, THREE.RGBAFormat, THREE.HalfFloatType);
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  tex.colorSpace = THREE.LinearSRGBColorSpace;
+  tex.magFilter = THREE.LinearFilter;
+  tex.minFilter = THREE.LinearFilter;
+  tex.needsUpdate = true;
+  const env = pmrem.fromEquirectangular(tex).texture;
+  tex.dispose();
+  // 사진 자체에서 가장 밝은 자리(테두리 빛) — 작게 줄여 위 2% 의 밝기 가중 중심
+  const sw = 48, sh = 27;
+  const sc = document.createElement('canvas');
+  sc.width = sw;
+  sc.height = sh;
+  const s2 = sc.getContext('2d', { willReadFrequently: true })!;
+  s2.drawImage(img, 0, 0, sw, sh);
+  const sp = s2.getImageData(0, 0, sw, sh).data;
+  const lum: number[] = [];
+  for (let i = 0; i < sw * sh; i++) lum.push(0.2126 * srgbToLin(sp[i * 4] / 255) + 0.7152 * srgbToLin(sp[i * 4 + 1] / 255) + 0.0722 * srgbToLin(sp[i * 4 + 2] / 255));
+  const hotCut = [...lum].sort((a, b) => b - a)[Math.floor(sw * sh * 0.02)];
+  let wx = 0, wy = 0, ws = 0;
+  const hot = [0, 0, 0];
+  for (let i = 0; i < sw * sh; i++) {
+    if (lum[i] < hotCut) continue;
+    const w = lum[i];
+    wx += ((i % sw) + 0.5) * w;
+    wy += (Math.floor(i / sw) + 0.5) * w;
+    ws += w;
+    hot[0] += srgbToLin(sp[i * 4] / 255) * w;
+    hot[1] += srgbToLin(sp[i * 4 + 1] / 255) * w;
+    hot[2] += srgbToLin(sp[i * 4 + 2] / 255) * w;
+  }
+  const hotC = new THREE.Color(hot[0] / ws, hot[1] / ws, hot[2] / ws);
+  const hm = Math.max(hotC.r, hotC.g, hotC.b, 1e-4);
+  const avgC = new THREE.Color(avg[0] / n, avg[1] / n, avg[2] / n);
+  const am = Math.max(avgC.r, avgC.g, avgC.b, 1e-4);
+  const out: PlateEnv = {
+    tex: env,
+    sx: wx / ws / sw,
+    sy: wy / ws / sh,
+    hot: hotC.multiplyScalar(1 / hm),
+    hotK: ws / Math.max(1, Math.floor(sw * sh * 0.02)),
+    mean: lumSum / n,
+    avg: avgC.multiplyScalar(1 / am),
+  };
+  envCache.set(img.src, out);
+  return out;
+}
 const parts: Record<string, Part> = {};
 let detailImg: HTMLImageElement | null = null;
 let normalTex: THREE.Texture | null = null;
@@ -55,7 +200,9 @@ async function load() {
     r.toneMappingExposure = 0.9;
     const s = new THREE.Scene();
     const pm = new THREE.PMREMGenerator(r);
-    s.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture;
+    roomEnv = pm.fromScene(new RoomEnvironment(), 0.04).texture;
+    pmrem = pm;
+    s.environment = roomEnv;
     s.environmentIntensity = 0.42; // 너무 고르게 밝으면 원통이 납작한 흰 판처럼 보였다
     const k = new THREE.DirectionalLight(0xfff2e2, 2.6);
     k.position.set(0.5, 1, 0.6);
@@ -63,6 +210,14 @@ async function load() {
     s.add(k.target);
     const fill = new THREE.HemisphereLight(0xdfe8ff, 0x3a3028, 0.25);
     s.add(fill);
+    const rm = new THREE.DirectionalLight(0xffffff, 0);
+    s.add(rm);
+    s.add(rm.target);
+    const el = new THREE.PointLight(0xffaa55, 0, 0.5, 2);
+    s.add(el);
+    rim = rm;
+    fillLight = fill;
+    engineLight = el;
     const loader = new GLTFLoader();
     const grab = async (name: string) => {
       const g = await loader.loadAsync(BASE + name + '.glb');
@@ -205,7 +360,7 @@ function hullTexture(liv: Liv, h: number): THREE.CanvasTexture {
 }
 
 function physical(color: string | THREE.Color, extra: Partial<THREE.MeshPhysicalMaterialParameters> = {}) {
-  return new THREE.MeshPhysicalMaterial({ color, roughness: 0.38, metalness: 0, clearcoat: 0.85, clearcoatRoughness: 0.08, ...extra });
+  return new THREE.MeshPhysicalMaterial({ color, roughness: 0.3, metalness: 0, ior: 1.6, clearcoat: 0.85, clearcoatRoughness: 0.08, ...extra });
 }
 
 function build(s: Spec): Built {
@@ -296,6 +451,48 @@ function build(s: Spec): Built {
   return { root, legs, hullMats, key: '' };
 }
 
+/** 이번 그림의 빛 — 사진 판이면 그 사진의 반사 · 밝기 · 색, 아니면 스튜디오 방 */
+function lightForPlate(v: Cam, s: Spec) {
+  const pe = plateNow && !NO_IBL ? plateEnv(plateNow.img, plateNow.el, plateNow.fovY) : null;
+  const sc = scene!;
+  if (!pe) {
+    sc.environment = roomEnv;
+    sc.environmentIntensity = 0.42;
+    sc.environmentRotation.set(0, 0, 0);
+    key!.color.set(0xfff2e2);
+    key!.intensity = 2.6;
+    fillLight!.intensity = 0.25;
+    rim!.intensity = 0;
+    engineLight!.intensity = 0;
+    return;
+  }
+  sc.environment = pe.tex;
+  // 사진 가운데(환경 +x)가 카메라가 보는 쪽(수평)으로 — 셰이더는 R_y(−θ)·방향으로 찾는다
+  sc.environmentRotation.set(0, Math.atan2(-v.f[2], v.f[0]), 0);
+  // 사진이 이제 빛 — 평균 밝기로 세기를 맞춘다(밤 정류장은 어둡게 · 낮 책상은 밝게)
+  const m = Math.min(1, pe.mean / 0.22);
+  sc.environmentIntensity = 0.7 + 0.2 * m;
+  key!.color.copy(pe.avg).lerp(new THREE.Color(1, 1, 1), 0.35);
+  key!.intensity = 0.15 + 1.65 * Math.pow(m, 1.5); // 밤엔 정면 빛을 줄여 불빛 반사가 묻히지 않게
+  fillLight!.intensity = 0.08 + 0.12 * m;
+  // 테두리 빛 — 사진에서 가장 밝은 자리 쪽(기체 뒤 먼 곳)에서
+  const tanY = Math.tan((plateNow!.fovY || 0.74) / 2);
+  const tanX = tanY * (plateNow!.img.naturalWidth / Math.max(1, plateNow!.img.naturalHeight));
+  const ax = (pe.sx - 0.5) * 2 * tanX, ay = -(pe.sy - 0.5) * 2 * tanY;
+  const d: Vec3 = [v.f[0] + v.r[0] * ax + v.u[0] * ay, v.f[1] + v.r[1] * ax + v.u[1] * ay, v.f[2] + v.r[2] * ax + v.u[2] * ay];
+  rim!.position.set(s.O[0] + d[0], s.O[1] + Math.max(0.2, d[1]) + 0.1, s.O[2] + d[2]);
+  rim!.target.position.set(s.O[0], s.O[1] + 0.1, s.O[2]);
+  rim!.color.copy(pe.hot);
+  rim!.intensity = Math.min(3, 0.6 + 2.2 * pe.hotK);
+  // 엔진 불빛이 동체 아래 · 다리를 비춘다
+  const g = plateNow!.engine;
+  engineLight!.intensity = g > 0.01 ? 0.06 * g * s.scale : 0;
+  engineLight!.position.set(s.O[0], s.O[1] - 0.01 * s.scale, s.O[2]);
+  engineLight!.distance = 0.4 * s.scale;
+  const [er, eg, eb] = plateNow!.engineColor;
+  engineLight!.color.setRGB(er / 255, eg / 255, eb / 255, THREE.SRGBColorSpace);
+}
+
 const camMat = new THREE.Matrix4();
 const projMat = new THREE.Matrix4();
 
@@ -375,6 +572,7 @@ export function drawRocket3d(ctx: CanvasRenderingContext2D, v: Cam, s: Spec): bo
   // 키 빛 — 화면 왼쪽 위 · 카메라 쪽에서(사진 대부분이 그쪽이 밝다)
   key!.position.set(s.O[0] - v.r[0] * 0.5 + v.u[0] * 0.8 - v.f[0] * 0.4, s.O[1] - v.r[1] * 0.5 + v.u[1] * 0.8 - v.f[1] * 0.4, s.O[2] - v.r[2] * 0.5 + v.u[2] * 0.8 - v.f[2] * 0.4);
   key!.target.position.set(s.O[0], s.O[1] + 0.1, s.O[2]);
+  lightForPlate(v, s);
 
   renderer.setViewport(0, 0, bw, bh);
   renderer.setScissor(0, 0, bw, bh);

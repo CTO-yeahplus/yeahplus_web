@@ -3,7 +3,7 @@
    패드 앞마당 지름 21cm · 판정 고리 16cm · 기체 24cm(앱 RocketVisual 과 같은 1.5배 그림).
    기체 · 다리 · 패드는 진짜 3D 점을 투영하므로 카메라를 돌리면 실제로 돌아 보인다. */
 
-import { drawRocket3d, rocket3dReady } from './rocket3d';
+import { drawRocket3d, rocket3dReady, setRocketPlate } from './rocket3d';
 import { SCALE, type Frame } from './sim';
 
 export type Vec3 = [number, number, number];
@@ -1584,12 +1584,17 @@ function drawOnPlate(
   drawShadow(lc, v, o.pose.x * SCALE, hAbove, o.pose.z ?? 0);
   const mb = lk?.mount ? mountBoxes(lk.mount, cls, lk.mountK) : null;
   if (mb) drawMount(lc, v, mb, split, 'back');
+  // 3D 기체는 이 사진으로 주변 반사 · 빛을 만든다(사진 IBL)
+  setRocketPlate({ img: pl.img!, el: pl.el, fovY: pl.fovY, engine: glow, engineColor: pl.glow });
   if (o.parked != null) drawBooster(lc, v, { x: o.parked, y: 0, lean: 0, legs: 1, th: 0, on: false, soot: 0.4 }, o.clock, { hull: '#d8d4cc', accent: '#9aa0a6' });
   drawBooster(lc, v, o.pose, o.clock, lk?.liv ?? o.liv, 1, false, cls);
+  setRocketPlate(null);
   padFront.forEach((f) => f());
   if (mb) drawMount(lc, v, mb, split, 'front');
   // 장소 빛 — 물건만(source-atop)
-  const [tr, tg, tb, ta] = pl.tint;
+  const [tr, tg, tb, ta0] = pl.tint;
+  // 3D 기체는 사진 IBL 로 이미 장소 빛을 받는다 — 덮개를 반만(다 덮으면 코팅에 맺힌 불빛이 다시 흐려졌다)
+  const ta = USE_3D && rocket3dReady() ? ta0 * 0.5 : ta0;
   lc.globalCompositeOperation = 'source-atop';
   lc.fillStyle = `rgba(${tr},${tg},${tb},${ta})`;
   lc.fillRect(0, 0, cw, ch);
