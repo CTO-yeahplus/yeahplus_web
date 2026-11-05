@@ -3,7 +3,7 @@
 /* 로켓주차 랜딩 — 휠이 곧 조작이다.
    0 착륙 한 판(휠 = 시간) → 1 직접 세우기(브라우저 게임, 앱과 같은 물리) → 2 옮기는 몸짓(휠 · 마우스 = 카메라)
    → 3 아침 발사 · 저녁 귀환(휠 = 하루) → 4 비상 · 기체 일지(휠 = 비행 수) → 5 격납고(휠 = 두 줄 트랙)
-   → 6 주차 수첩(이름 적어 찍기) → 7 무료와 평생 주차권 → 8 조건표 → 끝.
+   → 6 주차 수첩(이름 적어 찍기) → 7 하루의 빈칸(첫차 · 점심 끝 · 회의 사이 · 막차, 가져가는 것) → 8 무료와 평생 주차권 → 9 조건표 → 끝.
    글은 한 번에 한 문장 — 기능 나열 대신 해 보는 것. 그림은 전부 캔버스 · 앱 실제 화면, 외부 라이브러리 · CDN 없음. */
 import Descent from './home/Descent';
 import Play from './home/Play';
@@ -12,6 +12,7 @@ import Commute from './home/Commute';
 import Faults from './home/Faults';
 import Hangar from './home/Hangar';
 import Logbook from './home/Logbook';
+import Gaps from './home/Gaps';
 
 type T = string | { ko: string; en: string };
 const PASS: { ko: string; en: string; free: T; life: T }[] = [
@@ -55,6 +56,7 @@ export default function HomeContent() {
       <Faults />
       <Hangar />
       <Logbook />
+      <Gaps />
 
       <section className="rp-sec">
         <div className="rp-wrap">

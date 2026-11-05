@@ -237,6 +237,32 @@ html:not([data-lang="en"]) [data-l="en"]{display:none}
 /* ─────────── 3. 하루 ─────────── */
 .rp-commute-ui{position:absolute;inset:0;pointer-events:none;padding:96px max(20px,6vw) 0;text-shadow:0 2px 18px rgba(0,0,0,.6)}
 .rp-commute-ui .rp-h2{max-width:720px}
+
+/* 7. 하루의 빈칸 — 네 순간(첫차 · 점심 끝 · 회의 사이 · 막차) */
+.rp-gaps{position:relative;height:460vh;background:#000}
+.rp-gaps-ui{position:absolute;inset:0;pointer-events:none;text-shadow:0 2px 18px rgba(0,0,0,.75)}
+.rp-gaps-intro,.rp-gaps-outro{position:absolute;left:50%;top:50%;width:min(760px,calc(100vw - 40px));transform:translate(-50%,-46%);text-align:center;opacity:0;transition:opacity .5s,transform .5s}
+.rp-gaps-intro[data-on="1"],.rp-gaps-outro[data-on="1"]{opacity:1;transform:translate(-50%,-50%)}
+.rp-gaps-sub{margin-top:18px;font-size:clamp(16px,1.8vw,20px);font-weight:600;color:var(--rp-ink-2);line-height:1.55}
+.rp-gaps-card{position:absolute;left:max(20px,6vw);top:13vh;width:min(560px,calc(100vw - 40px));opacity:0;transform:translateY(14px);transition:opacity .45s,transform .45s}
+.rp-gaps-card[data-on="1"]{opacity:1;transform:none}
+.rp-gaps-time{font-size:clamp(56px,9vw,112px);font-weight:800;line-height:1;letter-spacing:-2px;font-variant-numeric:tabular-nums}
+.rp-gaps-where{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;font-size:14px;letter-spacing:.4px;color:var(--rp-ink)}
+.rp-gaps-left{color:var(--rp-ink-2)}
+.rp-gaps-left b{color:var(--rp-lime);font-weight:700;font-variant-numeric:tabular-nums}
+.rp-gaps-line{margin-top:22px;font-size:clamp(20px,2.4vw,28px);font-weight:800;letter-spacing:-.6px;line-height:1.35}
+.rp-gaps-take{margin-top:12px;font-size:clamp(15px,1.7vw,19px);font-weight:600;color:var(--rp-ink-2);line-height:1.5;padding-left:12px;border-left:3px solid var(--rp-lime)}
+.rp-gaps-day{position:absolute;left:max(20px,6vw);right:max(20px,6vw);bottom:34px;height:1px;background:var(--rp-line-2)}
+.rp-gaps-day span{position:absolute;top:10px;transform:translateX(-50%);font-size:11px;color:var(--rp-ink-3);letter-spacing:1px}
+.rp-gaps-day span::before{content:"";position:absolute;left:50%;top:-14px;width:1px;height:8px;background:var(--rp-line-2)}
+.rp-gaps-dot{position:absolute;top:-4px;width:9px;height:9px;border-radius:50%;background:var(--rp-lime);box-shadow:0 0 12px rgba(199,237,64,.7);transform:translateX(-50%)}
+@media (max-width:600px){
+  .rp-gaps-card{top:11vh}
+  .rp-gaps-line{margin-top:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  .rp-gaps-card,.rp-gaps-intro,.rp-gaps-outro{transition:none}
+}
 .rp-commute-clock{position:absolute;right:max(20px,6vw);top:96px;text-align:right}
 .rp-commute-clock b{display:block;font-size:clamp(48px,9vw,120px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-2px}
 .rp-commute-cd{font-size:22px;color:var(--rp-amber);font-weight:800}
