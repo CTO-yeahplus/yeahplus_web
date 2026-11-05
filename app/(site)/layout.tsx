@@ -6,7 +6,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const TITLE = "YeahPlus — 매일 손에 쥐는 앱을 처음부터 끝까지";
 // 제품 수는 products.ts 에서 센다 — 손으로 적은 숫자가 목록과 어긋나지 않게
-const DESCRIPTION = `예아플러스는 사진과 배움, 놀이에 기술을 더하는 작은 스튜디오입니다. 조선왕조실록, TOWER 68, 24STILLS, 묘해, 꼬롱을 찾아라를 비롯한 ${COUNT.all}개의 제품을 기획부터 출시까지 직접 만듭니다.`;
+const DESCRIPTION = `예아플러스는 사진과 배움, 놀이에 기술을 더하는 앱 스튜디오입니다. 조선왕조실록, TOWER 68, 24STILLS, 묘해, 꼬롱을 찾아라를 비롯한 ${COUNT.all}개의 제품을 기획부터 출시까지 직접 만듭니다.`;
 
 /** JS 가 있을 때만 등장 연출을 켠다 — 없으면 처음부터 모두 보인다. */
 const JS_FLAG = "document.documentElement.classList.add('js')";

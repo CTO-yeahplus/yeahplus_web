@@ -260,8 +260,8 @@ function HeroBuild() {
           </h1>
           <p className="yp-lead">
             {L(
-              '예아플러스는 사진과 배움, 놀이에 기술을 더하는 작은 스튜디오입니다. 기획과 디자인, 개발과 출시, 제품 페이지와 약관까지 한 팀이 직접 만듭니다.',
-              'YeahPlus is a small studio that brings technology to photos, learning and play. One team handles the planning, design, engineering and launch, down to each product page and policy.'
+              '예아플러스는 사진과 배움, 놀이에 기술을 더하는 앱 스튜디오입니다. 기획과 디자인, 개발과 출시, 제품 페이지와 약관까지 한 팀이 직접 만듭니다.',
+              'YeahPlus is an app studio that brings technology to photos, learning and play. One team handles the planning, design, engineering and launch, down to each product page and policy.'
             )}
           </p>
           <div className="yp-cta-row">
