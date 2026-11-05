@@ -1473,6 +1473,7 @@ export type Plate = {
   fovY: number; // 사진 세로 화각(rad)
   yaw?: number;
   tint: [number, number, number, number]; // 합성한 물건에 덮는 장소 빛(r, g, b, 세기)
+  ibl?: { k?: number; soft?: number; coat?: number }; // 3D 기체의 사진 IBL — 세기 배율 · 불빛 반사 넓히기 · 코팅 거칠기
   dust: number[];
   smoke: number[];
   glow: [number, number, number]; // 엔진 빛이 바닥을 비추는 색
@@ -1585,7 +1586,7 @@ function drawOnPlate(
   const mb = lk?.mount ? mountBoxes(lk.mount, cls, lk.mountK) : null;
   if (mb) drawMount(lc, v, mb, split, 'back');
   // 3D 기체는 이 사진으로 주변 반사 · 빛을 만든다(사진 IBL)
-  setRocketPlate({ img: pl.img!, el: pl.el, fovY: pl.fovY, engine: glow, engineColor: pl.glow });
+  setRocketPlate({ img: pl.img!, el: pl.el, fovY: pl.fovY, engine: glow, engineColor: pl.glow, ibl: pl.ibl?.k, soft: pl.ibl?.soft, coat: pl.ibl?.coat });
   if (o.parked != null) drawBooster(lc, v, { x: o.parked, y: 0, lean: 0, legs: 1, th: 0, on: false, soot: 0.4 }, o.clock, { hull: '#d8d4cc', accent: '#9aa0a6' });
   drawBooster(lc, v, o.pose, o.clock, lk?.liv ?? o.liv, 1, false, cls);
   setRocketPlate(null);

@@ -46,7 +46,8 @@ let roomEnv: THREE.Texture | null = null;
    가장 밝은 자리에서 테두리 빛, 사진 평균 밝기 · 색으로 정면 빛을 맞춘다. 사진이 없으면 예전 스튜디오 방. */
 type PlateEnv = { tex: THREE.Texture; sx: number; sy: number; hot: THREE.Color; hotK: number; mean: number; avg: THREE.Color };
 const envCache = new Map<string, PlateEnv>();
-type PlateLight = { img: HTMLImageElement; el: number; fovY: number; engine: number; engineColor: [number, number, number] };
+/** ibl = 이 장소 빛 세기 배율 · soft = 불빛 반사를 넓히는 정도(환경 그림 px) · coat = 코팅 거칠기(기본 0.08) */
+type PlateLight = { img: HTMLImageElement; el: number; fovY: number; engine: number; engineColor: [number, number, number]; ibl?: number; soft?: number; coat?: number };
 let plateNow: PlateLight | null = null;
 const NO_IBL = typeof location !== 'undefined' && /[?&]ibl=0/.test(location.search); // 비교용 — 예전 스튜디오 방
 
@@ -57,9 +58,10 @@ export function setRocketPlate(p: PlateLight | null) {
 
 const srgbToLin = (c: number) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
 
-function plateEnv(img: HTMLImageElement, el: number, fovY: number): PlateEnv | null {
+function plateEnv(img: HTMLImageElement, el: number, fovY: number, soft = 0): PlateEnv | null {
   if (!renderer || !pmrem) return null;
-  const hit = envCache.get(img.src);
+  const ck = img.src + '|' + soft;
+  const hit = envCache.get(ck);
   if (hit) return hit;
   const W = 512, H = 256;
   const cv = document.createElement('canvas');
@@ -115,16 +117,54 @@ function plateEnv(img: HTMLImageElement, el: number, fovY: number): PlateEnv | n
   }
   // 더해진 빛만 줄인다(사진 바탕은 그대로) — 불빛이 더한 에너지는 사진 평균의 6배까지
   const norm = Math.min(1, (6 * mean0) / Math.max(1e-6, mean1 - mean0));
+  // 더한 빛(불빛)만 따로 — soft 만큼 번지게 하면 동체에 맺히는 줄이 굵어진다.
+  // 실처럼 가는 줄은 기체가 움직일 때 화소 사이를 오가며 깜빡였다(2026-11-05 유진 '정류장 flickering').
+  let add = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) {
+    const e = (gain[i] - 1) * norm;
+    add[i * 3] = lin[i * 3] * e;
+    add[i * 3 + 1] = lin[i * 3 + 1] * e;
+    add[i * 3 + 2] = lin[i * 3 + 2] * e;
+  }
+  if (soft > 0) {
+    const r = Math.round(soft);
+    const tmp = new Float32Array(n * 3);
+    for (let pass = 0; pass < 2; pass++) {
+      // 가로(둘레를 돌아 이어짐)
+      for (let y = 0; y < H; y++)
+        for (let ch = 0; ch < 3; ch++) {
+          let acc = 0;
+          for (let x = -r; x <= r; x++) acc += add[(y * W + ((x + W) % W)) * 3 + ch];
+          for (let x = 0; x < W; x++) {
+            tmp[(y * W + x) * 3 + ch] = acc / (2 * r + 1);
+            acc += add[(y * W + ((x + r + 1) % W)) * 3 + ch] - add[(y * W + ((x - r + W) % W)) * 3 + ch];
+          }
+        }
+      // 세로(위아래 끝은 붙잡음)
+      const rv = Math.max(1, Math.round(r * 0.6));
+      for (let x = 0; x < W; x++)
+        for (let ch = 0; ch < 3; ch++) {
+          let acc = 0;
+          for (let y = -rv; y <= rv; y++) acc += tmp[(Math.min(H - 1, Math.max(0, y)) * W + x) * 3 + ch];
+          for (let y = 0; y < H; y++) {
+            add[(y * W + x) * 3 + ch] = acc / (2 * rv + 1);
+            acc += tmp[(Math.min(H - 1, y + rv + 1) * W + x) * 3 + ch] - tmp[(Math.max(0, y - rv) * W + x) * 3 + ch];
+          }
+        }
+    }
+    // 번지며 낮아진 꼭대기를 조금 되돌린다
+    const k = 1 + soft * 0.12;
+    add = add.map((a) => a * k);
+  }
   const data = new Uint16Array(n * 4);
   const avg = [0, 0, 0];
   for (let y = 0; y < H; y++) {
     for (let x = 0; x < W; x++) {
       const i = y * W + x;
-      const k = 1 + (gain[i] - 1) * norm;
       const o = ((H - 1 - y) * W + x) * 4; // 데이터 첫 줄 = 아래(천저)
-      data[o] = THREE.DataUtils.toHalfFloat(lin[i * 3] * k);
-      data[o + 1] = THREE.DataUtils.toHalfFloat(lin[i * 3 + 1] * k);
-      data[o + 2] = THREE.DataUtils.toHalfFloat(lin[i * 3 + 2] * k);
+      data[o] = THREE.DataUtils.toHalfFloat(lin[i * 3] + add[i * 3]);
+      data[o + 1] = THREE.DataUtils.toHalfFloat(lin[i * 3 + 1] + add[i * 3 + 1]);
+      data[o + 2] = THREE.DataUtils.toHalfFloat(lin[i * 3 + 2] + add[i * 3 + 2]);
       data[o + 3] = THREE.DataUtils.toHalfFloat(1);
       avg[0] += lin[i * 3];
       avg[1] += lin[i * 3 + 1];
@@ -176,7 +216,7 @@ function plateEnv(img: HTMLImageElement, el: number, fovY: number): PlateEnv | n
     mean: lumSum / n,
     avg: avgC.multiplyScalar(1 / am),
   };
-  envCache.set(img.src, out);
+  envCache.set(ck, out);
   return out;
 }
 const parts: Record<string, Part> = {};
@@ -453,8 +493,10 @@ function build(s: Spec): Built {
 
 /** 이번 그림의 빛 — 사진 판이면 그 사진의 반사 · 밝기 · 색, 아니면 스튜디오 방 */
 function lightForPlate(v: Cam, s: Spec) {
-  const pe = plateNow && !NO_IBL ? plateEnv(plateNow.img, plateNow.el, plateNow.fovY) : null;
+  const pe = plateNow && !NO_IBL ? plateEnv(plateNow.img, plateNow.el, plateNow.fovY, plateNow.soft ?? 0) : null;
   const sc = scene!;
+  const coat = plateNow && !NO_IBL ? (plateNow.coat ?? 0.08) : 0.08;
+  for (const [, o] of built) for (const m of o.hullMats) m.clearcoatRoughness = coat;
   if (!pe) {
     sc.environment = roomEnv;
     sc.environmentIntensity = 0.42;
@@ -471,10 +513,11 @@ function lightForPlate(v: Cam, s: Spec) {
   sc.environmentRotation.set(0, Math.atan2(-v.f[2], v.f[0]), 0);
   // 사진이 이제 빛 — 평균 밝기로 세기를 맞춘다(밤 정류장은 어둡게 · 낮 책상은 밝게)
   const m = Math.min(1, pe.mean / 0.22);
-  sc.environmentIntensity = 0.7 + 0.2 * m;
+  const ib = plateNow!.ibl ?? 1; // 장소마다 눈으로 맞춘 배율(대합실은 밝은 바닥 · 천장이 사방에서 비춰 넘쳤다)
+  sc.environmentIntensity = (0.7 + 0.2 * m) * ib;
   key!.color.copy(pe.avg).lerp(new THREE.Color(1, 1, 1), 0.35);
-  key!.intensity = 0.15 + 1.65 * Math.pow(m, 1.5); // 밤엔 정면 빛을 줄여 불빛 반사가 묻히지 않게
-  fillLight!.intensity = 0.08 + 0.12 * m;
+  key!.intensity = (0.15 + 1.65 * Math.pow(m, 1.5)) * ib; // 밤엔 정면 빛을 줄여 불빛 반사가 묻히지 않게
+  fillLight!.intensity = (0.08 + 0.12 * m) * ib;
   // 테두리 빛 — 사진에서 가장 밝은 자리 쪽(기체 뒤 먼 곳)에서
   const tanY = Math.tan((plateNow!.fovY || 0.74) / 2);
   const tanX = tanY * (plateNow!.img.naturalWidth / Math.max(1, plateNow!.img.naturalHeight));
@@ -483,7 +526,7 @@ function lightForPlate(v: Cam, s: Spec) {
   rim!.position.set(s.O[0] + d[0], s.O[1] + Math.max(0.2, d[1]) + 0.1, s.O[2] + d[2]);
   rim!.target.position.set(s.O[0], s.O[1] + 0.1, s.O[2]);
   rim!.color.copy(pe.hot);
-  rim!.intensity = Math.min(3, 0.6 + 2.2 * pe.hotK);
+  rim!.intensity = Math.min(3, 0.6 + 2.2 * pe.hotK) * ib;
   // 엔진 불빛이 동체 아래 · 다리를 비춘다
   const g = plateNow!.engine;
   engineLight!.intensity = g > 0.01 ? 0.06 * g * s.scale : 0;

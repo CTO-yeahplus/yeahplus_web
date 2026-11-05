@@ -9,18 +9,22 @@ import type { Plate, Place } from './render';
 type Spec = Omit<Plate, 'img'> & { src: string };
 
 const FOV = 0.74;
+// 3D 기체 사진 IBL 맞춤(2026-11-05 유진): 정류장 = 가로등 줄이 실처럼 가늘어 깜빡임 → 넓히고 코팅을 조금 거칠게,
+// 대합실 = 기체가 너무 밝음 → 빛 세기 낮춤, 책상 = 그대로
+const BENCH_IBL = { soft: 6, coat: 0.16 };
+const STATION_IBL = { k: 0.25 };
 export const PLATES: Record<Place, { A: Spec; B: Spec }> = {
   bench: {
-    A: { src: 'benchA', iw: 16, ih: 9, px: 0.5, py: 0.8, el: 0.3, dist: 0.68, fovY: FOV, tint: [18, 28, 64, 0.42], dust: [140, 128, 120], smoke: [120, 126, 140], glow: [255, 170, 90] },
-    B: { src: 'benchB', iw: 16, ih: 9, px: 0.5, py: 0.7, el: 0.12, dist: 0.8, fovY: FOV, tint: [24, 34, 70, 0.34], dust: [140, 128, 120], smoke: [120, 126, 140], glow: [255, 170, 90] },
+    A: { src: 'benchA', iw: 16, ih: 9, px: 0.5, py: 0.8, el: 0.3, dist: 0.68, fovY: FOV, tint: [18, 28, 64, 0.42], dust: [140, 128, 120], smoke: [120, 126, 140], glow: [255, 170, 90], ibl: BENCH_IBL },
+    B: { src: 'benchB', iw: 16, ih: 9, px: 0.5, py: 0.7, el: 0.12, dist: 0.8, fovY: FOV, tint: [24, 34, 70, 0.34], dust: [140, 128, 120], smoke: [120, 126, 140], glow: [255, 170, 90], ibl: BENCH_IBL },
   },
   desk: {
     A: { src: 'deskA', iw: 16, ih: 9, px: 0.5, py: 0.68, el: 0.48, dist: 0.7, fovY: FOV, tint: [255, 170, 90, 0.12], dust: [150, 120, 92], smoke: [225, 212, 196], glow: [255, 180, 100], bloom: 0.5 },
     B: { src: 'deskB', iw: 16, ih: 9, px: 0.5, py: 0.64, el: 0.1, dist: 0.8, fovY: FOV, tint: [255, 170, 90, 0.14], dust: [150, 120, 92], smoke: [225, 212, 196], glow: [255, 180, 100], bloom: 0.5 },
   },
   station: {
-    A: { src: 'stationA', iw: 16, ih: 9, px: 0.5, py: 0.76, el: 0.46, dist: 1.55, fovY: FOV, tint: [200, 220, 255, 0.1], dust: [175, 178, 182], smoke: [215, 220, 228], glow: [255, 190, 120], bloom: 0.75 },
-    B: { src: 'stationB', iw: 16, ih: 9, px: 0.5, py: 0.64, el: 0.12, dist: 0.85, fovY: FOV, tint: [200, 220, 255, 0.1], dust: [175, 178, 182], smoke: [215, 220, 228], glow: [255, 190, 120], bloom: 0.75 },
+    A: { src: 'stationA', iw: 16, ih: 9, px: 0.5, py: 0.76, el: 0.46, dist: 1.55, fovY: FOV, tint: [200, 220, 255, 0.1], dust: [175, 178, 182], smoke: [215, 220, 228], glow: [255, 190, 120], bloom: 0.75, ibl: STATION_IBL },
+    B: { src: 'stationB', iw: 16, ih: 9, px: 0.5, py: 0.64, el: 0.12, dist: 0.85, fovY: FOV, tint: [200, 220, 255, 0.1], dust: [175, 178, 182], smoke: [215, 220, 228], glow: [255, 190, 120], bloom: 0.75, ibl: STATION_IBL },
   },
 };
 
