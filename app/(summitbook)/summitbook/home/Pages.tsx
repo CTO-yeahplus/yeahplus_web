@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { byName } from './summits';
 import { facts, page, PH, PW, samplePhoto, stoneLayers, type Climb, type Layout, type Photo } from './engine';
 import { reduced, useNear } from './stage';
+import { Nb, sceneAttrs, Slug } from './Scene';
 
 const LAYS: { id: Layout; ko: string; en: string; pass: boolean }[] = [
   { id: 'stone', ko: '정상석', en: 'Summit stone', pass: false },
@@ -57,27 +58,28 @@ export default function Pages() {
   const isStone = LAYS[lay].id === 'stone';
 
   return (
-    <section className="sb-sec sb-dark" id="pages" ref={wrapRef}>
+    <section className="sb-sec sb-dark" id="pages" ref={wrapRef} {...sceneAttrs('down')}>
       <div className="sb-wrap sb-pages-grid">
         <div className="sb-pages-copy">
-          <div className="sb-eyebrow">
-            <span data-l="ko">03 · 정상 쪽</span>
-            <span data-l="en">03 · THE SUMMIT PAGE</span>
-          </div>
+          <Slug id="down" />
           <h2 className="sb-h2">
-            <span data-l="ko">사진 한 장을 놓으면, 한 쪽이 선다.</span>
-            <span data-l="en">Drop in one photo, and a page stands up.</span>
+            <span data-l="ko">내려와서 한 장. 사진 속 내가 산 이름 앞에 섭니다.</span>
+            <span data-l="en">One photo at the bottom. You, standing in front of the mountain&rsquo;s name.</span>
           </h2>
           <p className="sb-lead">
             <span data-l="ko">
-              정상석 앞에서 찍은 사진을 고르면 기기 안에서 사람만 오려 내, 새긴 듯한 산 이름 앞에 세운다. 해발 · 날짜 · 철 · 몇 번째 오름 · 함께 간
-              사람까지 한 쪽에. 인스타그램 피드 크기(4:5) 그대로.
+              내리막에서 다리가 후들거리고, 긴장이 풀리며 말이 많아진다. &ldquo;다음엔 어디 갈까.&rdquo; 걸을 때는 휴대폰을 보지 않는다. 들머리에 내려와 신발
+              끈을 풀고서야, 정상석 앞 줄에서 서둘러 찍은 사진을 넘겨 본다.
             </span>
             <span data-l="en">
-              Pick the photo you took at the summit stone. The phone cuts out the person — on the device — and stands them in front of the carved
-              mountain name. Height, date, season, which climb this is, who came along: one page, in Instagram feed size (4:5).
+              Your legs shake on the way down; you loosen up and start talking. &ldquo;Where next?&rdquo; You don&rsquo;t look at your phone while
+              walking. Only at the bottom, laces undone, do you flick through the photo you snapped in a hurry at the summit stone.
             </span>
           </p>
+          <Nb
+            ko="그 사진 한 장을 놓으면, 기기 안에서 사람만 오려 내 새긴 산 이름 앞에 세운다. 해발 · 날짜 · 철 · 몇 번째 오름이 함께 적힌 한 쪽."
+            en="Drop that one photo in, and the phone cuts out the person — on the device — and stands them in front of the carved name. Height, date, season, which climb: one page."
+          />
           <div className="sb-tabs" role="tablist" aria-label="layouts">
             {LAYS.map((l, k) => (
               <button key={l.id} type="button" role="tab" aria-selected={k === lay} onClick={() => pick(k)}>

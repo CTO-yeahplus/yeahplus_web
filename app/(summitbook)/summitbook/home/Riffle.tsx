@@ -5,8 +5,9 @@
    견본 수첩: 23곳에 도장(철 색) — 실제 기록이 아니다. */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { BOOK_ORDER, REGION_EN, REGIONS } from './summits';
-import { makeStamp, no3, rng, SEASONS, tilt } from './engine';
+import { makeStamp, no3, rng, seasonOf, SEASONS, tilt, type Season } from './engine';
 import { reduced, useNear } from './stage';
+import { Nb, sceneAttrs, Slug } from './Scene';
 
 const LO = Math.min(...BOOK_ORDER.map((s) => s.height));
 const HI = Math.max(...BOOK_ORDER.map((s) => s.height));
@@ -30,6 +31,21 @@ export default function Riffle() {
   const dragging = useRef(false);
   const s = BOOK_ORDER[i];
   const si = DONE.get(s.id);
+  // 리본 — 내일 갈 산 하나(앱 닫힌 수첩의 리본 줄과 같은 말)
+  const [rib, setRib] = useState<number | null>(null);
+  const [nowS, setNowS] = useState<Season>(SEASONS[2]);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setNowS(seasonOf(new Date()));
+  }, []);
+  const ribS = rib == null ? null : BOOK_ORDER.find((x) => x.id === rib) || null;
+  const ribSi = ribS ? DONE.get(ribS.id) : undefined;
+  const tail =
+    ribSi == null
+      ? ['아직 오르지 않았다', 'not climbed yet']
+      : SEASONS[ribSi].id === nowS.id
+        ? [`${nowS.name} 도장은 찍었다 · 3철 남음`, `${nowS.en} stamp done · three seasons to go`]
+        : [`${nowS.name} 칸이 비었다`, `the ${nowS.en.toLowerCase()} box is empty`];
 
   const go = (k: number) => {
     const n = Math.max(0, Math.min(99, k));
@@ -76,20 +92,28 @@ export default function Riffle() {
   const groups = useMemo(() => REGIONS.map((r) => ({ r, n: BOOK_ORDER.filter((x) => x.region === r).length })), []);
 
   return (
-    <section className="sb-sec sb-riffle" ref={wrapRef}>
+    <section className="sb-sec sb-riffle" ref={wrapRef} {...sceneAttrs('eve')}>
       <div className="sb-wrap">
-        <div className="sb-eyebrow">
-          <span data-l="ko">02 · 백 칸</span>
-          <span data-l="en">02 · ONE HUNDRED PAGES</span>
-        </div>
+        <Slug id="eve" />
         <h2 className="sb-h2">
-          <span data-l="ko">훑으면 능선이 된다.</span>
-          <span data-l="en">Riffle the pages, and they form a ridge.</span>
+          <span data-l="ko">리본을 끼우는 건, 내일 일찍 일어나겠다는 약속이다.</span>
+          <span data-l="en">Slipping in the ribbon is a promise to get up early tomorrow.</span>
         </h2>
         <p className="sb-lead">
-          <span data-l="ko">수첩 아래 눈금 100칸은 산 100곳의 실제 높이다. 지역마다 한 줄기 능선. 손가락으로 훑으면 그 산 쪽이 펼쳐진다.</span>
-          <span data-l="en">The 100 ticks under the notebook are the real heights of the 100 mountains, region by region. Run a finger along them to flip to that page.</span>
+          <span data-l="ko">
+            물병을 채우고, 귤 두 개, 핫팩, 장갑 한 켤레 더. 날씨를 몇 번이고 새로 고치고, 알람은 세 개. 그 산을 고른 이유가 있다 — 오래전에
+            &lsquo;언젠가&rsquo;라고 접어 둔 산이거나, 작년 가을에 갔던 산의 겨울이 궁금해서.
+          </span>
+          <span data-l="en">
+            Fill the water bottle; two tangerines, hand warmers, a spare pair of gloves. Refresh the weather again and again, set three alarms. You
+            picked this mountain for a reason — one you folded down as &ldquo;someday&rdquo; long ago, or last autumn&rsquo;s mountain whose winter
+            you want to see.
+          </span>
         </p>
+        <Nb
+          ko="아래 줄 100칸은 산 100곳의 실제 높이. 훑어서 내일 산을 고르고 리본을 끼우면, 닫힌 수첩 위에 그 산이 남는다. 언젠가의 산엔 귀퉁이를 접는다."
+          en="The 100 ticks below are the real heights of the 100 mountains. Riffle to tomorrow's mountain and slip in the ribbon — it stays on the closed notebook. Someday-mountains get a dog-ear."
+        />
 
         <div className="sb-riffle-stage">
           <div className="sb-rpage-stack" aria-live="polite">
@@ -102,6 +126,15 @@ export default function Riffle() {
                 </small>
                 <small className="sb-mono">{i + 1} / 100</small>
               </div>
+              <button
+                type="button"
+                className={`sb-rib${rib === s.id ? ' sb-rib-on' : ''}`}
+                aria-pressed={rib === s.id}
+                aria-label="리본"
+                onClick={() => setRib((r) => (r === s.id ? null : s.id))}
+              >
+                <i />
+              </button>
               <h3>{s.name}</h3>
               <p>
                 <span data-l="ko">
@@ -175,6 +208,23 @@ export default function Riffle() {
               </span>
             ))}
           </div>
+          <p className="sb-ribline" aria-live="polite">
+            {ribS ? (
+              <>
+                <span data-l="ko">
+                  리본이 끼워진 쪽 — <b>{ribS.name}</b> · {tail[0]}
+                </span>
+                <span data-l="en">
+                  Ribbon in — <b>{ribS.name}</b> · {tail[1]}
+                </span>
+              </>
+            ) : (
+              <>
+                <span data-l="ko">쪽 오른쪽 위 리본을 눌러, 내일 갈 산에 끼워 보기</span>
+                <span data-l="en">Tap the ribbon at the top right of the page to mark tomorrow&rsquo;s mountain</span>
+              </>
+            )}
+          </p>
           <p className="sb-note">
             <span data-l="ko">색칸 = 견본 수첩에서 도장 받은 산(철 색). 실제 기록이 아니다.</span>
             <span data-l="en">Coloured ticks = stamped mountains in a sample notebook (in season ink). Not real records.</span>

@@ -8,6 +8,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { byName, REGION_EN, type Summit } from './summits';
 import { cairnSide, dotDate, makeStamp, no3, ordinal, seasonOf, sound, sunset, tilt } from './engine';
 import { buzz, reduced } from './stage';
+import { Nb, sceneAttrs, Slug } from './Scene';
 
 type Phase = 'idle' | 'hold' | 'ready' | 'stamped' | 'pencil' | 'blur';
 const PICKS = ['북한산', '설악산', '지리산', '한라산'];
@@ -149,26 +150,28 @@ export default function HoldStamp() {
         : 'out';
 
   return (
-    <section className="sb-sec sb-desk" id="stamp">
+    <section className="sb-sec sb-desk" id="stamp" {...sceneAttrs('summit')}>
       <div className="sb-wrap sb-stamp-grid">
         <div className="sb-stamp-copy">
-          <div className="sb-eyebrow">
-            <span data-l="ko">01 · 꾹 눌러 찍기</span>
-            <span data-l="en">01 · PRESS AND HOLD</span>
-          </div>
+          <Slug id="summit" />
           <h2 className="sb-h2">
-            <span data-l="ko">정상에서는 돌탑을 꾹 누른다.</span>
-            <span data-l="en">At the top, press and hold the cairn.</span>
+            <span data-l="ko">정상에서는 생각하지 않아도 됩니다. 꾹 누르고, 떼면 됩니다.</span>
+            <span data-l="en">At the top, there&rsquo;s nothing to think about. Press, hold, let go.</span>
           </h2>
           <p className="sb-lead">
             <span data-l="ko">
-              누르는 동안 위치가 한 번 잡히고, 고리가 정확도만큼 찬다. 놓으면 쾅. 산을 고를 필요도 없다 — 가장 가까운 정상을 수첩이 스스로 찾는다.
+              마지막 계단 끝에서 하늘이 갑자기 열린다. 말이 없어지고, 바람에 손가락이 곱는다. 정상석 앞엔 줄이 있고, 해는 기다려 주지 않는다. 다섯 시간
+              걸어 머무는 시간은, 길게 잡아 십 분.
             </span>
             <span data-l="en">
-              While you hold, the phone takes one location fix and the ring fills with its accuracy. Let go and it lands. No need to pick a
-              mountain — the notebook finds the nearest summit itself.
+              At the top of the last steps the sky suddenly opens. You go quiet; your fingers stiffen in the wind. There&rsquo;s a queue at the
+              summit stone and the sun won&rsquo;t wait. Five hours up, and you stay — ten minutes, at most.
             </span>
           </p>
+          <Nb
+            ko="숨이 가쁜 사람에게 복잡한 화면은 없다. 돌탑을 꾹 누르는 동안 위치를 한 번 받고(고리 = 정확도), 떼면 쾅. 산을 고를 필요도, 정상석 앞 줄을 설 필요도 없다. 도장 아래 한 줄은 '해 지기까지 남은 시간' — 산에 다니는 사람이 정상에서 가장 먼저 셈하는 숫자."
+            en="No busy screen for someone out of breath. Hold the cairn and the phone takes one fix (the ring = accuracy); let go and it lands. No mountain to pick, no queue at the stone. The line under the stamp is the time left until sunset — the first sum anyone does at the top."
+          />
           <ul className="sb-rules">
             <li>
               <b>150m</b>

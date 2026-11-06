@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { BOOK_ORDER, byName } from './summits';
 import { makeStamp, ridgeSheet, rng, SEASONS, tilt } from './engine';
 import { ease, reduced, seg, useNear } from './stage';
+import { Nb, sceneAttrs, Slug } from './Scene';
 
 const MT = byName('덕유산');
 const PEAK_SEASON = (() => {
@@ -122,20 +123,21 @@ export default function Seasons() {
   };
 
   return (
-    <section className="sb-sec sb-seasons" ref={secRef}>
+    <section className="sb-sec sb-seasons" ref={secRef} {...sceneAttrs('year')}>
       <div className="sb-wrap">
-        <div className="sb-eyebrow">
-          <span data-l="ko">04 · 철 도장</span>
-          <span data-l="en">04 · SEASON INK</span>
-        </div>
+        <Slug id="year" />
         <h2 className="sb-h2">
-          <span data-l="ko">같은 산도, 철이 바뀌면 다른 도장.</span>
-          <span data-l="en">Same mountain, new season, new stamp.</span>
+          <span data-l="ko">같은 산을 네 철 오르면, 네 개의 산을 오른 것이다.</span>
+          <span data-l="en">Climb one mountain in four seasons, and you&rsquo;ve climbed four mountains.</span>
         </h2>
         <p className="sb-lead">
-          <span data-l="ko">잉크는 그 철의 색. 아래 호에는 그날 날짜가 찍혀서 오를 때마다 자국이 다르다. 네 철을 다 채우면 가장자리 네 칸이 다 찬다.</span>
-          <span data-l="en">The ink is the season&rsquo;s colour, and the lower arc carries that day&rsquo;s date, so every climb leaves a different mark. Fill all four seasons and the four rim segments close.</span>
+          <span data-l="ko">가을에 올랐던 산을 겨울에 다시 오른다. 같은 길인데, 다른 산이다. 단풍이 있던 자리에 상고대가 피고, 귤 대신 보온병을 꺼낸다.</span>
+          <span data-l="en">You climb last autumn&rsquo;s mountain again in winter. Same trail, different mountain. Frost where the leaves were; a thermos instead of tangerines.</span>
         </p>
+        <Nb
+          ko="도장 잉크는 그 철의 색, 아래 호엔 그날 날짜 — 오를 때마다 자국이 다르다. 네 철을 다 채우면 가장자리 네 칸이 다 찬다. 뒤 면지 「백 개의 봉우리」에는 오른 봉우리마다 철 색 깃발."
+          en="The ink is the season's colour and the lower arc carries the date, so every climb leaves a different mark. Fill all four and the rim closes. On the back endpaper, every peak you've stood on gets a flag in season ink."
+        />
 
         <div className="sb-seasons-grid">
           <div className="sb-four" ref={nearRef}>

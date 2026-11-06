@@ -398,7 +398,6 @@ ul.sb-bullets li::before{content:"";position:absolute;left:0;top:.72em;width:6px
 }
 
 /* 05 보내기 — 연말 결산 카드 · 함께 오른 사람에게(앱 §19) */
-.sb-more { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; }
 .sb-more-card { margin: 0; display: flex; flex-direction: column; gap: 10px; }
 .sb-more-card canvas { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 14px 30px rgba(0,0,0,.28); transform: rotate(-1.2deg); transition: transform .5s cubic-bezier(.2,.9,.2,1); }
 .sb-more-card:nth-child(2) canvas { transform: rotate(1.4deg); }
@@ -441,3 +440,93 @@ ul.sb-bullets li::before{content:"";position:absolute;left:0;top:.72em;width:6px
 .sb-sheet-note{margin:0;font-size:12.5px;color:var(--sb-ink-3)}
 @media (max-width:900px){.sb-sheet-grid{grid-template-columns:1fr;gap:28px}.sb-sheet-paper{padding:16px 10px 12px}}
 @media (prefers-reduced-motion:reduce){.sb-cell,.sb-regions button i{transition:none}}
+
+/* ═══════════ 산행 하루(2026-11-06) — 장면 머리 · 수첩 한 줄 · 하루 시계 · 새 장 넷 ═══════════ */
+.sb-slug{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;font-family:var(--sb-mono);font-size:12.5px;letter-spacing:.6px;color:var(--sb-ink-3);margin-bottom:16px}
+.sb-slug b{color:var(--sb-autumn);font-weight:800;letter-spacing:0}
+.sb-slug time{padding:1px 9px;border:1px solid currentColor;border-radius:999px;font-size:11.5px;font-weight:700}
+.sb-dark .sb-slug,.sb-desk .sb-slug{color:rgba(242,236,223,.62)}
+.sb-dark .sb-slug b,.sb-desk .sb-slug b{color:var(--sb-brass)}
+.sb-nb{display:flex;gap:12px;align-items:flex-start;margin:22px 0 0;max-width:620px;padding-top:14px;border-top:1px dashed var(--sb-line-2);font-size:14.5px;line-height:1.75;color:var(--sb-ink-2)}
+.sb-nb em{flex:0 0 auto;margin-top:3px;padding:3px 8px 2px;border-radius:3px;background:var(--sb-kraft);color:#2a2620;font-style:normal;font-family:var(--sb-mono);font-size:10.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.sb-dark .sb-nb,.sb-desk .sb-nb,.sb-walk .sb-nb{color:rgba(242,236,223,.82);border-top-color:rgba(242,236,223,.28)}
+
+/* 하루 시계 */
+.sb-clock{position:fixed;left:14px;bottom:14px;z-index:25;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 28px);padding:5px 13px 5px 5px;border-radius:999px;background:rgba(242,236,223,.93);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid var(--sb-line);box-shadow:0 6px 18px rgba(0,0,0,.18);font-size:12px;color:var(--sb-ink-2);opacity:0;transform:translateY(10px);transition:opacity .35s,transform .35s;pointer-events:none;white-space:nowrap}
+.sb-clock[data-on="1"]{opacity:1;transform:none}
+.sb-clock i{flex:0 0 24px;width:24px;height:24px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);transition:background .8s}
+.sb-clock b{font-family:var(--sb-mono);color:var(--sb-autumn);font-size:12px}
+.sb-clock-t{font-family:var(--sb-mono);font-weight:800;color:var(--sb-ink)}
+.sb-clock-p{overflow:hidden;text-overflow:ellipsis;max-width:44vw;color:var(--sb-ink-3)}
+@media (max-width:420px){.sb-clock-p{display:none}}
+
+/* S#2 · S#3 — 앱이 나오지 않는 장 */
+.sb-walk{position:relative;height:300vh;background:#0B1426}
+.sb-walk-rest{background:#6E86B3}
+.sb-walk-stick{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden}
+.sb-walk-art{position:absolute;inset:0;width:100%;height:100%}
+.sb-walk-slug{position:absolute;left:0;right:0;top:72px;z-index:2;display:flex;justify-content:center}
+.sb-walk-slug .sb-slug{color:rgba(255,255,255,.85);text-shadow:0 1px 8px rgba(0,0,0,.4)}
+.sb-walk-slug .sb-slug b{color:#FFD9A0}
+.sb-walk-copy{position:absolute;left:0;right:0;top:clamp(120px,21vh,200px);z-index:2;color:#fff;text-align:center}
+.sb-beat{position:absolute;left:0;right:0;padding:0 24px;will-change:opacity,transform}
+.sb-beat-m{margin:0 auto;max-width:860px;font-size:clamp(22px,3.3vw,40px);font-weight:900;letter-spacing:-.8px;line-height:1.35;text-shadow:0 2px 22px rgba(0,0,0,.5)}
+.sb-beat small{display:block;margin:12px auto 0;max-width:620px;font-size:clamp(14.5px,1.5vw,17px);line-height:1.65;font-weight:600;color:rgba(255,255,255,.86);text-shadow:0 1px 12px rgba(0,0,0,.5)}
+.sb-beat-xl p{margin:0;font-size:clamp(42px,8.4vw,104px);font-weight:900;letter-spacing:-2.5px;line-height:1.1;text-shadow:0 4px 40px rgba(0,0,0,.5)}
+.sb-beat-talk p{margin:0 0 10px;font-size:clamp(25px,3.8vw,46px);font-weight:800;letter-spacing:-1px;text-shadow:0 2px 22px rgba(0,0,0,.45)}
+.sb-beat-talk p:first-child{font-weight:600;opacity:.85}
+.sb-beat-end .sb-h2{margin:0 auto;color:#fff;text-shadow:0 2px 26px rgba(0,0,0,.5)}
+.sb-beat-end .sb-nb{margin:22px auto 0;padding:12px 16px;text-align:left;color:rgba(255,255,255,.94);border-top:0;border-radius:10px;background:rgba(12,16,26,.42);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.sb-trail{fill:none;stroke:rgba(255,255,255,.2);stroke-width:.9;stroke-dasharray:2 3;stroke-linejoin:round;stroke-linecap:round}
+.sb-trail-on{stroke:rgba(255,222,160,.75);stroke-dasharray:none;stroke-width:1.2}
+.sb-trail-day{stroke:rgba(255,246,228,.8);stroke-width:.9}
+.sb-lamp-glow{fill:rgba(255,212,140,.38);filter:blur(2.5px)}
+.sb-walk-snd{position:absolute;right:18px;bottom:18px;z-index:3;padding:6px 14px;border-radius:999px;border:1px dashed rgba(255,255,255,.55);background:rgba(0,0,0,.2);color:rgba(255,255,255,.9);font-size:12.5px;font-weight:700;cursor:pointer}
+.sb-walk-snd[aria-pressed="true"]{border-style:solid;background:rgba(255,255,255,.15)}
+@media (max-height:640px){.sb-walk-copy{top:104px}.sb-walk-slug{top:62px}}
+
+/* S#1 리본 */
+.sb-rib{position:absolute;top:-5px;right:52px;width:22px;height:74px;padding:0;border:0;background:none;cursor:pointer;z-index:2}
+.sb-rib i{position:absolute;left:0;right:0;top:0;height:34px;background:rgba(142,42,30,.22);clip-path:polygon(0 0,100% 0,100% 100%,50% 84%,0 100%);transition:height .35s cubic-bezier(.2,1.3,.4,1),background .2s}
+.sb-rib:hover i{background:rgba(142,42,30,.4)}
+.sb-rib-on i{height:74px;background:#8E2A1E;box-shadow:inset -3px 0 0 rgba(0,0,0,.15)}
+.sb-ribline{margin:20px 0 0;text-align:center;font-size:14px;color:var(--sb-ink-2)}
+.sb-ribline b{color:#8E2A1E}
+
+/* S#5 돌아선 날 */
+.sb-turn{background:linear-gradient(#A3ACB6,#CDD0D3 60%,#DCDDDB)}
+.sb-turn .sb-lead{color:#2f2c27}
+.sb-turn .sb-nb{color:#36322c}
+.sb-turn .sb-note{color:#4b463e;text-align:center}
+.sb-turn-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.sb-turn-play{display:flex;flex-direction:column;align-items:center;gap:12px;min-width:0}
+.sb-turn-page{min-height:430px}
+.sb-turn-page .sb-stamp-box{opacity:.32}
+.sb-turn-again{font-style:italic;font-weight:700;color:#5b544a !important;animation:sb-fade .6s 1.3s both}
+@media (max-width:900px){.sb-turn-grid{grid-template-columns:1fr;gap:40px}}
+
+/* S#8 그날 밤 */
+.sb-night{background:radial-gradient(80% 60% at 70% 20%,#1B2742,#0B1426 70%)}
+.sb-night-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.sb-night-play{display:flex;flex-direction:column;align-items:center;min-width:0}
+.sb-writer{width:min(380px,100%);padding:16px 20px 8px;background:var(--sb-sheet);color:var(--sb-ink);border-radius:3px 10px 10px 3px;box-shadow:0 22px 46px rgba(0,0,0,.5);transform:rotate(1.2deg)}
+.sb-writer-row{padding:10px 0;border-bottom:1px solid #E2D8C3}
+.sb-writer-row:last-child{border-bottom:0}
+.sb-writer-row small{font-family:var(--sb-mono);font-size:11px;letter-spacing:1px;color:var(--sb-ink-3)}
+.sb-writer-row p{margin:2px 0 0;min-height:1.6em;font-size:15.5px;line-height:1.6;font-weight:700;color:#3b352d}
+.sb-writer-on > span::after{content:"";display:inline-block;width:2px;height:1em;margin-left:2px;vertical-align:-2px;background:var(--sb-autumn);animation:sb-caret .8s steps(1) infinite}
+@keyframes sb-caret{50%{opacity:0}}
+.sb-mini{--bw:clamp(170px,42vw,212px);position:relative;width:var(--bw);aspect-ratio:3/4.15;margin:40px auto 0;transform:rotate(-4deg) translateY(14px);opacity:.5;transition:transform .7s cubic-bezier(.2,1.3,.4,1),opacity .6s}
+.sb-mini-shut{transform:rotate(-4deg);opacity:1}
+.sb-mini .sb-cover-front{position:absolute;inset:0}
+.sb-night-thunk{animation:sb-stamp-in .45s cubic-bezier(.2,1.5,.4,1) .2s both}
+@media (max-width:900px){.sb-night-grid{grid-template-columns:1fr;gap:40px}}
+
+/* S#7 · S#10 카드 */
+.sb-cards{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;margin-top:28px;align-items:center}
+.sb-cards-side{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+@media (max-width:520px){.sb-cards{grid-template-columns:1fr}}
+.sb-recap-fig{margin-top:24px;max-width:300px}
+.sb-promise-h{margin-bottom:38px;max-width:900px;color:var(--sb-paper)}
+.sb-final-sub{margin:14px 0 0;color:var(--sb-ink-3);font-weight:700}
+@media (prefers-reduced-motion:reduce){.sb-mini,.sb-rib i{transition:none}.sb-night-thunk,.sb-turn-again{animation:none}}

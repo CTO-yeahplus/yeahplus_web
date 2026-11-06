@@ -1,9 +1,10 @@
 'use client';
 
-/* 완등 수첩 소개 — 수첩 한 권을 손에 들고 넘기는 순서.
-   0 닫힌 수첩(지금 시각의 하늘 · 끈 밀기 · 펼침) → 1 꾹 눌러 찍기(도장 / 연필 기록) → 2 백 칸 후루룩(실제 산 높이)
-   → 3 정상 쪽(네 겹이 서는 연출 · 판형 넷) → 4 철 도장 · 백 개의 봉우리 → 5 보내기(피드 · 스토리 · 연말 카드 예고)
-   → 무료와 평생권 → 위치 · 계정 · 서버 → 안전 → 끝. 그림은 전부 앱과 같은 조판 엔진(home/engine.ts), 외부 라이브러리 · CDN 없음.
+/* 완등 수첩 소개 — '산행 하루'(2026-11-06 개편, 원본 문장 = APLUS/summitbook/marketing/BRAND_STORY.md §5).
+   스크롤 = 하루. 열기(닫힌 수첩 · 약속 문장) → S#1 전날 밤(백 칸 · 리본) → S#2 첫걸음 · S#3 쉼(앱 없음) → S#4 정상(꾹)
+   → S#5 돌아선 날(연필) → S#6 하산(사진 놓기) → S#7 돌아가는 길(함께 · 보내기) → S#8 그날 밤(쪽에 쓰기 · 표지 도장)
+   → S#9 일 년 뒤(철 도장) → S#10 섣달(도장 면 · 결산 카드) → 수첩의 약속 → 정상은 반환점 → 무료와 평생권 → 다음 산에 리본을.
+   각 장 = 큰 한 문장(정서) → 수첩 한 줄(Nb) → 만지는 것. 왼쪽 아래 하루 시계(DayClock). 그림은 전부 앱과 같은 조판 엔진(home/engine.ts), 외부 라이브러리 · CDN 없음.
    쓰지 않는 말: 다른 회사 · 민간 등산 프로그램 · 앱 이름, 자사 다른 앱, 길 안내 · 소요 시간 · 겨루기 · 건강 효과. */
 import Link from 'next/link';
 import Cover from './home/Cover';
@@ -13,6 +14,10 @@ import Pages from './home/Pages';
 import Seasons from './home/Seasons';
 import Sheet from './home/Sheet';
 import Share from './home/Share';
+import { FirstSteps, Rest } from './home/Walk';
+import TurnBack from './home/TurnBack';
+import Night from './home/Night';
+import DayClock from './home/DayClock';
 import { Shield } from './chrome';
 import { APP } from './names';
 
@@ -52,59 +57,28 @@ export default function HomeContent() {
   return (
     <>
       <Cover />
-      <HoldStamp />
       <Riffle />
+      <FirstSteps />
+      <Rest />
+      <HoldStamp />
+      <TurnBack />
       <Pages />
+      <Share />
+      <Night />
       <Seasons />
       <Sheet />
-      <Share />
-
-      <section className="sb-sec">
-        <div className="sb-wrap">
-          <div className="sb-eyebrow">
-            <span data-l="ko">07 · 무료와 평생권</span>
-            <span data-l="en">07 · FREE AND LIFETIME</span>
-          </div>
-          <h2 className="sb-h2">
-            <span data-l="ko">도장은 끝까지 무료.</span>
-            <span data-l="en">The stamps stay free. All hundred.</span>
-          </h2>
-          <div className="sb-pass">
-            <div className="sb-pass-row sb-pass-head">
-              <span />
-              <span>
-                <span data-l="ko">무료</span>
-                <span data-l="en">Free</span>
-              </span>
-              <span>
-                <span data-l="ko">평생권</span>
-                <span data-l="en">Lifetime</span>
-              </span>
-            </div>
-            {PASS.map((r) => (
-              <div className="sb-pass-row" key={r.en}>
-                <span>
-                  <span data-l="ko">{r.ko}</span>
-                  <span data-l="en">{r.en}</span>
-                </span>
-                <span>{cell(r.free)}</span>
-                <span className="sb-pass-life">{cell(r.life)}</span>
-              </div>
-            ))}
-            <p className="sb-pass-foot">
-              <span data-l="ko">평생권 ₩6,600 · 한 번 구입 · 구독 아님 · 가족 공유. 이미 만든 내 산과 도장은 어떤 경우에도 잠기지 않는다.</span>
-              <span data-l="en">Lifetime pass: one purchase, not a subscription, Family Sharing. Mountains and stamps you already made never get locked.</span>
-            </p>
-          </div>
-        </div>
-      </section>
+      <DayClock />
 
       <section className="sb-sec sb-dark sb-privacy-sec">
         <div className="sb-wrap">
           <div className="sb-eyebrow">
-            <span data-l="ko">08 · 수첩은 내 것</span>
-            <span data-l="en">08 · YOUR NOTEBOOK</span>
+            <span data-l="ko">수첩의 약속</span>
+            <span data-l="en">THE NOTEBOOK&rsquo;S PROMISE</span>
           </div>
+          <h2 className="sb-h2 sb-promise-h">
+            <span data-l="ko">산에서 휴대폰은 주머니에. 수첩은 아무에게도 아무것도 보내지 않는다.</span>
+            <span data-l="en">On the mountain, the phone stays in your pocket. The notebook sends nothing to anyone.</span>
+          </h2>
           <div className="sb-trust">
             <div>
               <b>
@@ -148,22 +122,65 @@ export default function HomeContent() {
         <div className="sb-wrap">
           <div className="sb-safety-box">
             <div className="sb-eyebrow">
-              <span data-l="ko">09 · 안전</span>
-              <span data-l="en">09 · SAFETY</span>
+              <span data-l="ko">안전</span>
+              <span data-l="en">SAFETY</span>
             </div>
             <p className="sb-safety-big">
-              <span data-l="ko">이 수첩은 입산 통제 · 날씨 · 길을 모른다.</span>
-              <span data-l="en">This notebook knows nothing about closures, weather or trails.</span>
+              <span data-l="ko">정상은 반환점이다.</span>
+              <span data-l="en">The summit is the halfway point.</span>
             </p>
             <p>
               <span data-l="ko">
-                코스 · 소요 시간을 말하지 않고, 누가 더 빨리 올랐는지도 겨루지 않는다. 앱이 말하는 것은 &lsquo;여기가 정상 반경 안이다&rsquo;와 &lsquo;오늘 해 지는
-                시각&rsquo;뿐이다. 산에 가기 전에는 산림청 · 국립공원의 안내를 확인하는 편이 안전하다.
+                산에 오래 다닌 사람들은 정상을 끝이 아니라 반으로 센다. 내려가야 산행이 끝난다. 이 수첩은 입산 통제 · 날씨 · 길을 모른다. 코스 · 소요 시간을 말하지
+                않고, 누가 더 빨리 올랐는지도 겨루지 않는다. 앱이 말하는 것은 &lsquo;여기가 정상 반경 안이다&rsquo;와 &lsquo;해 지기까지 남은 시간&rsquo;뿐이다.
+                산에 가기 전에는 산림청 · 국립공원의 안내를 확인하는 편이 안전하다.
               </span>
               <span data-l="en">
-                It gives no routes or travel times, and nobody races anybody. All it ever says is &ldquo;you are within the summit radius&rdquo; and
-                &ldquo;today&rsquo;s sunset time&rdquo;. Before you go, the notices of the Korea Forest Service and the national parks are the place to check.
+                People who&rsquo;ve hiked for years count the summit as halfway, not the end — the hike ends at the bottom. This notebook knows nothing
+                about closures, weather or trails. It gives no routes or travel times, and nobody races anybody. All it ever says is &ldquo;you are within
+                the summit radius&rdquo; and &ldquo;time left until sunset&rdquo;. Before you go, check the notices of the Korea Forest Service and the
+                national parks.
               </span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="sb-sec">
+        <div className="sb-wrap">
+          <div className="sb-eyebrow">
+            <span data-l="ko">무료와 평생권</span>
+            <span data-l="en">FREE AND LIFETIME</span>
+          </div>
+          <h2 className="sb-h2">
+            <span data-l="ko">도장은 끝까지 무료.</span>
+            <span data-l="en">The stamps stay free. All hundred.</span>
+          </h2>
+          <div className="sb-pass">
+            <div className="sb-pass-row sb-pass-head">
+              <span />
+              <span>
+                <span data-l="ko">무료</span>
+                <span data-l="en">Free</span>
+              </span>
+              <span>
+                <span data-l="ko">평생권</span>
+                <span data-l="en">Lifetime</span>
+              </span>
+            </div>
+            {PASS.map((r) => (
+              <div className="sb-pass-row" key={r.en}>
+                <span>
+                  <span data-l="ko">{r.ko}</span>
+                  <span data-l="en">{r.en}</span>
+                </span>
+                <span>{cell(r.free)}</span>
+                <span className="sb-pass-life">{cell(r.life)}</span>
+              </div>
+            ))}
+            <p className="sb-pass-foot">
+              <span data-l="ko">평생권 ₩6,600 · 한 번 구입 · 구독 아님 · 가족 공유. 이미 만든 내 산과 도장은 어떤 경우에도 잠기지 않는다.</span>
+              <span data-l="en">Lifetime pass: one purchase, not a subscription, Family Sharing. Mountains and stamps you already made never get locked.</span>
             </p>
           </div>
         </div>
@@ -194,9 +211,13 @@ export default function HomeContent() {
         <div className="sb-wrap">
           <div className="sb-eyebrow">{APP.en.toUpperCase()}</div>
           <h2 className="sb-h2">
-            <span data-l="ko">백 개의 봉우리, 한 권.</span>
-            <span data-l="en">A hundred peaks, one notebook.</span>
+            <span data-l="ko">다음 산에 리본을.</span>
+            <span data-l="en">Slip the ribbon into the next one.</span>
           </h2>
+          <p className="sb-final-sub">
+            <span data-l="ko">다섯 시간 걸어 십 분 머문 자리, 한 쪽 — {APP.ko}</span>
+            <span data-l="en">Five hours up, ten minutes at the top, one page — {APP.en}</span>
+          </p>
           <div className="sb-soon" aria-label="App Store">
             <span>
               <small>

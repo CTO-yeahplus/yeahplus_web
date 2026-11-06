@@ -104,8 +104,16 @@ export default function Cover() {
             <span data-l="en">Korea&rsquo;s 100 famous mountains · a summit stamp notebook</span>
           </div>
           <h1 className="sb-hero-h1">
-            <span data-l="ko">정상에 설 때마다 한 쪽.</span>
-            <span data-l="en">One page for every summit.</span>
+            <span data-l="ko">
+              다섯 시간 걸어,
+              <br />
+              십 분 머문 자리.
+            </span>
+            <span data-l="en">
+              Five hours up.
+              <br />
+              Ten minutes at the top.
+            </span>
           </h1>
         </div>
 
@@ -176,8 +184,8 @@ export default function Cover() {
 
         <div className="sb-hero-beat" style={{ opacity: beat1 }}>
           <p>
-            <span data-l="ko">정상석 앞의 나를 오려, 산 이름 뒤에 세운다.</span>
-            <span data-l="en">You, cut out of your summit photo, standing in front of the mountain&rsquo;s name.</span>
+            <span data-l="ko">그 십 분이 날아가지 않게, 수첩에 한 쪽.</span>
+            <span data-l="en">So those ten minutes don&rsquo;t blow away — one page in the notebook.</span>
           </p>
         </div>
         <div className="sb-hero-beat" style={{ opacity: beat2 }}>
@@ -186,8 +194,8 @@ export default function Cover() {
             <span data-l="en">The stamp lands only within 150 m of the summit.</span>
           </p>
           <small>
-            <span data-l="ko">위치는 기기 안에서만 판정하고, 밖으로 보내지 않는다.</span>
-            <span data-l="en">Location is judged on the phone and never leaves it.</span>
+            <span data-l="ko">산행은 전날 밤에 시작된다 — 내리면 하루가 흐른다.</span>
+            <span data-l="en">A hike starts the night before — scroll, and the day goes by.</span>
           </small>
         </div>
 

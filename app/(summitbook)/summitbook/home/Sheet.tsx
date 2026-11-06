@@ -4,8 +4,9 @@
    내리는 만큼 칸에 도장이 쾅 · 칸을 누르면 그 산 · 지역을 누르면 그 지역 칸만 밝게 · [사계] = 칸마다 네 철 테(평생권).
    같은 백 곳을 뒤 면지 「백 개의 봉우리」는 능선으로, 도장 면은 칸으로 본다(견본 — 실제 사람 기록이 아니다). */
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { REGIONS, SUMMITS, type Summit } from './summits';
-import { dotDate, makeStamp, no3, rng, SEASONS, tilt } from './engine';
+import { BOOK_ORDER, byName, REGIONS, SUMMITS, type Summit } from './summits';
+import { dotDate, makeStamp, no3, recap, rng, seasonOf, SEASONS, tilt, type RecapClimb } from './engine';
+import { Nb, sceneAttrs, Slug } from './Scene';
 import { ease, reduced, seg, useNear } from './stage';
 
 const CELLS: Summit[] = SUMMITS.slice().sort((a, b) => a.id - b.id);
@@ -94,27 +95,26 @@ export default function Sheet() {
   const sel = pick != null ? CELLS[pick] : null, selC = pick != null ? SAMPLE.cell[pick] : null, selOn = pick != null && stamped.has(pick);
 
   return (
-    <section className="sb-sec sb-sheet" ref={secRef}>
+    <section className="sb-sec sb-sheet" ref={secRef} {...sceneAttrs('yearend')}>
       <div className="sb-wrap">
-        <div className="sb-eyebrow">
-          <span data-l="ko">05 · 도장 면</span>
-          <span data-l="en">05 · THE STAMP SHEET</span>
-        </div>
+        <Slug id="yearend" />
         <h2 className="sb-h2">
-          <span data-l="ko">백 칸, 한 장에.</span>
-          <span data-l="en">A hundred squares, one sheet.</span>
+          <span data-l="ko">올해를 날짜 말고, 산으로 기억한다.</span>
+          <span data-l="en">You remember the year by mountains, not dates.</span>
         </h2>
         <p className="sb-lead">
           <span data-l="ko">
-            「100대 명산 도장」은 백 곳을 번호 순서대로 열 줄 열 칸에 모은 한 장이다. 비어 있는 칸은 점선 동그라미에 산 이름, 정상에 서면 그 칸에 마지막 철 색 도장.
-            뒤 면지 「백 개의 봉우리」가 같은 백 곳을 능선으로 그린다면, 도장 면은 칸으로 센다.
+            연말이면 한 해를 돌아본다. 몇 번 갔는지보다, 어느 산이었는지로. 오래 다닌 사람들의 집엔 손때 묻은 산행 수첩이 있고, 언젠가 아이가 그걸 넘겨 본다.
           </span>
           <span data-l="en">
-            The &ldquo;100 Mountains&rdquo; sheet lines up all hundred in ten rows of ten, by number. An empty square is a dotted circle with the
-            mountain&rsquo;s name; stand on the summit and it takes a stamp in the latest season&rsquo;s ink. The back endpaper draws the same hundred as
-            ridgelines; the sheet counts them in squares.
+            At the end of the year you look back — not at how many times, but at which mountains. People who&rsquo;ve hiked for years keep a worn
+            notebook at home, and someday their kids leaf through it.
           </span>
         </p>
+        <Nb
+          ko="「100대 명산 도장」 한 장 — 백 곳을 열 줄 열 칸에, 빈 칸은 점선 동그라미. 12월이면 한 해의 정상 · 철 · 달을 담은 결산 카드 한 장. 수첩 전체는 한 권 PDF로(인쇄용은 평생권)."
+          en="The “100 Mountains” sheet — ten rows of ten, empty squares as dotted circles. In December, a year-end card with the year's summits, seasons and months. The whole notebook as one PDF (print-ready with the Lifetime pass)."
+        />
 
         <div className="sb-sheet-grid" ref={nearRef}>
           <div className="sb-sheet-paper">
@@ -223,6 +223,8 @@ export default function Sheet() {
               })}
             </div>
 
+            <RecapFig />
+
             <p className="sb-sheet-note">
               <span data-l="ko">이 장은 그대로 이미지로 공유된다. 견본 수첩이다.</span>
               <span data-l="en">The sheet shares as an image, just like this. Sample notebook.</span>
@@ -231,5 +233,38 @@ export default function Sheet() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* 연말 결산 카드 견본 — 한 해 11번(지어낸 견본, 실제 사람 기록이 아니다). 화면 근처에서 한 번 그린다 */
+function RecapFig() {
+  const [ref, near] = useNear<HTMLElement>('200px');
+  const cv = useRef<HTMLCanvasElement | null>(null);
+  const drawn = useRef(false);
+  useEffect(() => {
+    if (!near || drawn.current || !cv.current) return;
+    drawn.current = true;
+    const plan: [string, number, number][] = [['관악산', 1, 18], ['도봉산', 3, 9], ['북한산', 4, 13], ['소백산', 5, 24], ['한라산', 5, 31], ['설악산', 6, 21], ['지리산', 7, 12], ['오대산', 8, 30], ['덕유산', 9, 27], ['한라산', 9, 3], ['내장산', 10, 25]];
+    const list: RecapClimb[] = plan.map(([n, m, d], i) => {
+      const at = new Date(2026, m, d, 11, 30);
+      return { summit: byName(n), ink: seasonOf(at).ink, season: seasonOf(at), at, id: 'rc' + i };
+    });
+    const now = new Map(list.map((c) => [c.summit.id, c.ink]));
+    const R2 = rng('recap-strip');
+    const strip = BOOK_ORDER.map((m) => ({ h: m.height, now: now.has(m.id), ink: now.get(m.id) || (R2() < 0.12 ? '#5c4630' : null) }));
+    recap({ year: 2026, owner: '', list, strip, done: strip.filter((x) => x.ink).length }, cv.current);
+  }, [near]);
+  return (
+    <figure className="sb-more-card sb-recap-fig" ref={ref}>
+      <canvas ref={cv} width={1080} height={1350} role="img" aria-label="연말 결산 카드 — 견본" />
+      <figcaption>
+        <b>
+          <span data-l="ko">연말 결산 카드</span>
+          <span data-l="en">Year-end card</span>
+        </b>
+        <span data-l="ko">12~1월, 닫힌 수첩 아래에 나타난다. 견본이다.</span>
+        <span data-l="en">Appears under the closed notebook in December and January. A sample.</span>
+      </figcaption>
+    </figure>
   );
 }

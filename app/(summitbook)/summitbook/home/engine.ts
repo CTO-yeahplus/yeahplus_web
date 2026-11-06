@@ -1021,7 +1021,7 @@ export function companion(a: PageArgs & { to: string; from: string }, canvas: HT
 
 /* ───────── 소리(합성, 기본 끔) — 도장 쾅 · 돌 톡 · 연필 ───────── */
 let AC: AudioContext | null = null;
-function ac() {
+export function ac() {
   if (!AC) {
     const C = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     if (!C) return null;
